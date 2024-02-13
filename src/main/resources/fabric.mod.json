@@ -1,0 +1,41 @@
+{
+	"schemaVersion": 1,
+	"id": "crawling-mysteries",
+	"version": "${version}",
+	"name": "Crawling Mysteries",
+	"description": "There is always another mystery to uncover.",
+	"authors": [
+		"Larguma"
+	],
+	"contact": {
+		"homepage": "",
+		"sources": ""
+	},
+	"license": "MIT",
+	"icon": "assets/crawling-mysteries/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+			"larguma.crawling_mysteries.CrawlingMysteries"
+		],
+		"client": [
+			"larguma.crawling_mysteries.CrawlingMysteriesClient"
+		],
+		"fabric-datagen": [
+			"larguma.crawling_mysteries.CrawlingMysteriesDataGenerator"
+		]
+	},
+	"mixins": [
+		"crawling-mysteries.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.15.6",
+		"minecraft": "~1.20.1",
+		"java": ">=17",
+		"fabric-api": "*",
+		"trinkets": "*"
+	},
+	"suggests": {
+		"another-mod": "*"
+	}
+}
