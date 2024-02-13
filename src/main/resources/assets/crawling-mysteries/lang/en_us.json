@@ -1,0 +1,8 @@
+{
+  "item.crawling-mysteries.mysterious_amulet": "Mysterious Amulet",
+  "item.crawling_mysteries.mysterious_amulet.tooltip.line1": "A mysterious amulet that seems to be pulsating with energy.",
+  "item.crawling_mysteries.mysterious_amulet.tooltip.line2": "It's warm to the touch and seems to be calling out to you.",
+  "item.crawling_mysteries.mysterious_amulet.tooltip.line3": "Perhaps it's worth investigating further.",
+  
+  "itemgroup.crawling_mysteries": "Crawling Mysteries"
+}
