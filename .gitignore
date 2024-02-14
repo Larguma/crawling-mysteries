@@ -42,3 +42,4 @@ replay_*.log
 # personal
 
 TODO.md
+src/main/generated/.cache

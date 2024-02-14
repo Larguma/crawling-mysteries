@@ -1,0 +1,38 @@
+{
+  "criteria": {
+    "got_mysterious_amulet": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "crawling-mysteries:mysterious_amulet"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": false,
+    "background": "minecraft:textures/block/end_stone_bricks.png",
+    "description": {
+      "translate": "advancement.crawling_mysteries.desc"
+    },
+    "frame": "task",
+    "hidden": false,
+    "icon": {
+      "item": "crawling-mysteries:mysterious_amulet"
+    },
+    "show_toast": false,
+    "title": {
+      "translate": "general.crawling_mysteries.mod_name"
+    }
+  },
+  "requirements": [
+    [
+      "got_mysterious_amulet"
+    ]
+  ],
+  "sends_telemetry_event": true
+}

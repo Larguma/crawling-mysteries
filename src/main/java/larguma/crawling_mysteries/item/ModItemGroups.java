@@ -13,7 +13,7 @@ public class ModItemGroups {
 
   public static final ItemGroup EXAMPLE_GROUP = Registry.register(Registries.ITEM_GROUP,
       new Identifier(CrawlingMysteries.MOD_ID, "example_group"),
-      FabricItemGroup.builder().displayName(Text.translatable("itemgroup.crawling_mysteries"))
+      FabricItemGroup.builder().displayName(Text.translatable("general.crawling_mysteries.mod_name"))
           .icon(() -> new ItemStack(ModItems.MYSTERIOUS_AMULET)).entries((displayContext, entries) -> {
             // Add items to the group  
             entries.add(ModItems.MYSTERIOUS_AMULET);
