@@ -1,6 +1,7 @@
 plugins {
 	id 'fabric-loom' version '1.5-SNAPSHOT'
 	id 'maven-publish'
+	id "com.modrinth.minotaur" version "2.+"
 }
 
 version = project.mod_version
@@ -93,4 +94,17 @@ publishing {
 		// The repositories here will be used for publishing your artifact, not for
 		// retrieving dependencies.
 	}
+}
+
+modrinth {
+    token = System.getenv("MODRINTH_TOKEN")
+    projectId = "${mod_id}"
+    versionNumber = "${mod_version}"
+    versionType = "${mod_version_type}"
+    uploadFile = jar
+    gameVersions = ["${minecraft_version}"]
+    loaders = ["fabric"]
+    dependencies {
+				required.project "trinkets"
+    }
 }

@@ -8,8 +8,9 @@
 		"Larguma"
 	],
 	"contact": {
-		"homepage": "",
-		"sources": ""
+		"homepage": "https://modrinth.com/project/crawling-mysteries",
+    "sources": "https://github.com/Larguma/crawling-mysteries",
+    "issues": "https://github.com/Larguma/crawling-mysteries/issues"
 	},
 	"license": "MIT",
 	"icon": "assets/crawling-mysteries/icon.png",
@@ -34,8 +35,5 @@
 		"java": ">=17",
 		"fabric-api": "*",
 		"trinkets": "*"
-	},
-	"suggests": {
-		"another-mod": "*"
 	}
 }
