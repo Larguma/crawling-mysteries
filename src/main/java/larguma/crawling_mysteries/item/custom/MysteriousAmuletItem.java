@@ -25,20 +25,23 @@ public class MysteriousAmuletItem extends TrinketItem {
     super(settings);
   }
 
-   public Multimap<EntityAttribute, EntityAttributeModifier> getModifiers(ItemStack stack, SlotReference slot, LivingEntity entity, UUID uuid) {
+  public Multimap<EntityAttribute, EntityAttributeModifier> getModifiers(ItemStack stack, SlotReference slot,
+      LivingEntity entity, UUID uuid) {
     var modifiers = super.getModifiers(stack, slot, entity, uuid);
     // +10% movement speed
-    modifiers.put(EntityAttributes.GENERIC_MOVEMENT_SPEED, new EntityAttributeModifier(uuid, CrawlingMysteries.MOD_ID + ":movement_speed", 0.1, EntityAttributeModifier.Operation.MULTIPLY_TOTAL));
+    modifiers.put(EntityAttributes.GENERIC_MOVEMENT_SPEED,
+        new EntityAttributeModifier(uuid, CrawlingMysteries.MOD_ID + ":movement_speed", 0.1,
+            EntityAttributeModifier.Operation.MULTIPLY_TOTAL));
     // If the player has access to ring slots, this will give them an extra one
     SlotAttributes.addSlotModifier(modifiers, "hand/ring", uuid, 1, EntityAttributeModifier.Operation.ADDITION);
     return modifiers;
   }
- 
+
   @Override
   public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
     tooltip.add(Text.translatable("item.crawling_mysteries.mysterious_amulet.tooltip.line1"));
-    tooltip.add(Text.translatable("item.crawling_mysteries.mysterious_amulet.tooltip.line2"));
-    tooltip.add(Text.translatable("item.crawling_mysteries.mysterious_amulet.tooltip.line3").formatted(Formatting.ITALIC, Formatting.LIGHT_PURPLE));
+    tooltip.add(Text.translatable("item.crawling_mysteries.mysterious_amulet.tooltip.line2")
+        .formatted(Formatting.ITALIC, Formatting.LIGHT_PURPLE));
     super.appendTooltip(stack, world, tooltip, context);
   }
 }

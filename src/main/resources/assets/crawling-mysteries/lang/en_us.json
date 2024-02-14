@@ -1,8 +1,10 @@
 {
+  "general.crawling_mysteries.mod_name": "Crawling Mysteries",
+
   "item.crawling-mysteries.mysterious_amulet": "Mysterious Amulet",
-  "item.crawling_mysteries.mysterious_amulet.tooltip.line1": "A mysterious amulet that seems to be pulsating with energy.",
-  "item.crawling_mysteries.mysterious_amulet.tooltip.line2": "It's warm to the touch and seems to be calling out to you.",
-  "item.crawling_mysteries.mysterious_amulet.tooltip.line3": "Perhaps it's worth investigating further.",
-  
-  "itemgroup.crawling_mysteries": "Crawling Mysteries"
+  "item.crawling_mysteries.mysterious_amulet.tooltip.line1": "A mysterious amulet that seems to be watching you.",
+  "item.crawling_mysteries.mysterious_amulet.tooltip.line2": "Perhaps it's worth investigating further.",  
+
+  "advancement.crawling_mysteries.desc": "You awoke with this strange amulet, where does it come from ?"
+
 }
