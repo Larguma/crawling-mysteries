@@ -21,6 +21,14 @@ repositories {
 			name = "Ladysnake Libs"
 			url = 'https://maven.ladysnake.org/releases'
 		}
+		maven {
+			name = 'GeckoLib'
+			url 'https://dl.cloudsmith.io/public/geckolib3/geckolib/maven/'
+			content {
+				includeGroupByRegex("software\\.bernie.*")
+				includeGroup("com.eliotlash.mclib")
+			}
+}
 	}
 }
 
@@ -49,6 +57,7 @@ dependencies {
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 	
 	modImplementation "dev.emi:trinkets:${trinkets_version}"
+	modImplementation "software.bernie.geckolib:geckolib-fabric-1.20.1:${geckolib_version}"
 }
 
 processResources {
@@ -105,6 +114,12 @@ modrinth {
     gameVersions = ["${minecraft_version}"]
     loaders = ["fabric"]
     dependencies {
-				required.project "trinkets"
+			required.version "trinkets", "3.7.1"
+			required.version "geckolib", "1.20.1-4.4.2"
+
+			// The scope can be `required`, `optional`, `incompatible`, or `embedded`
+			// The type can either be `project` or `version`
+			// required.project "fabric-api" // Creates a new required dependency on Fabric API
+			// optional.version "sodium", "mc1.19.3-0.4.8" // Creates a new optional dependency on this specific version of Sodium
     }
 }
