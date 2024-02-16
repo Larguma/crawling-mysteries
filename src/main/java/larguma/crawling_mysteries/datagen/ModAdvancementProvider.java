@@ -25,7 +25,7 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
   public void generateAdvancement(Consumer<Advancement> consumer) {
     Advancement rootAdvancement = Advancement.Builder.create()
         .display(
-            ModItems.MYSTERIOUS_AMULET, // The display icon
+            ModItems.CRYPTIC_EYE, // The display icon
             Text.translatable("general.crawling_mysteries.mod_name"), // The title
             Text.translatable("advancement.crawling_mysteries.desc"), // The description
             new Identifier("textures/block/end_stone_bricks.png"), // Background image used
@@ -36,7 +36,7 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
         )
         // The first string used in criterion is the name referenced by other
         // advancements when they want to have 'requirements'
-        .criterion("got_mysterious_amulet", InventoryChangedCriterion.Conditions.items(ModItems.MYSTERIOUS_AMULET))
+        .criterion("got_cryptic_eye", InventoryChangedCriterion.Conditions.items(ModItems.CRYPTIC_EYE))
         .build(consumer, CrawlingMysteries.MOD_ID + "/root");
 
     Advancement gotOakAdvancement = Advancement.Builder.create().parent(rootAdvancement)

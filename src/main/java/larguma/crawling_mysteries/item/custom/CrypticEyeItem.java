@@ -11,7 +11,7 @@ import dev.emi.trinkets.api.SlotAttributes;
 import dev.emi.trinkets.api.SlotReference;
 import dev.emi.trinkets.api.TrinketItem;
 import larguma.crawling_mysteries.CrawlingMysteries;
-import larguma.crawling_mysteries.item.client.MysteriousAmuletItemRenderer;
+import larguma.crawling_mysteries.item.client.CrypticEyeItemRenderer;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.client.render.item.BuiltinModelItemRenderer;
 import net.minecraft.entity.LivingEntity;
@@ -35,12 +35,12 @@ import software.bernie.geckolib.core.animation.AnimatableManager.ControllerRegis
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.RenderUtils;
 
-public class MysteriousAmuletItem extends TrinketItem implements GeoItem {
+public class CrypticEyeItem extends TrinketItem implements GeoItem {
 
   private AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
   private final Supplier<Object> renderProvider = GeoItem.makeRenderer(this);
 
-  public MysteriousAmuletItem(Settings settings) {
+  public CrypticEyeItem(Settings settings) {
     super(settings);
   }
  
@@ -59,8 +59,8 @@ public class MysteriousAmuletItem extends TrinketItem implements GeoItem {
 
   @Override
   public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
-    tooltip.add(Text.translatable("item.crawling_mysteries.mysterious_amulet.tooltip.line1"));
-    tooltip.add(Text.translatable("item.crawling_mysteries.mysterious_amulet.tooltip.line2")
+    tooltip.add(Text.translatable("item.crawling_mysteries.cryptic_eye.tooltip.line1"));
+    tooltip.add(Text.translatable("item.crawling_mysteries.cryptic_eye.tooltip.line2")
         .formatted(Formatting.ITALIC, Formatting.LIGHT_PURPLE));
     super.appendTooltip(stack, world, tooltip, context);
   }
@@ -68,7 +68,7 @@ public class MysteriousAmuletItem extends TrinketItem implements GeoItem {
   @Override
   public void createRenderer(Consumer<Object> consumer) {
     consumer.accept(new RenderProvider() {
-      private final MysteriousAmuletItemRenderer renderer = new MysteriousAmuletItemRenderer();
+      private final CrypticEyeItemRenderer renderer = new CrypticEyeItemRenderer();
 
       @Override
       public BuiltinModelItemRenderer getCustomRenderer() {

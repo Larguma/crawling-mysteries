@@ -15,7 +15,7 @@ public class CrawlingMysteriesClient implements ClientModInitializer {
   @SuppressWarnings("unchecked")
   @Override
   public void onInitializeClient() {
-    TrinketRendererRegistry.registerRenderer(ModItems.MYSTERIOUS_AMULET,
+    TrinketRendererRegistry.registerRenderer(ModItems.CRYPTIC_EYE,
         (stack, slotReference, contextModel, matrices, vertexConsumers, light, entity, limbAngle, limbDistance,
             tickDelta, animationProgress, headYaw, headPitch) -> {
           if (entity instanceof AbstractClientPlayerEntity player) {
@@ -24,7 +24,7 @@ public class CrawlingMysteriesClient implements ClientModInitializer {
             // x: + gauche; - droite
             // y: + bas; - haut
             // z: + derrière; - devant
-            matrices.translate(-0.2F, -0.4F, 1.0F);
+            matrices.translate(-0.2F, -0.4F, 0.5F);
             MinecraftClient.getInstance().getItemRenderer()
                 .renderItem(stack, ModelTransformationMode.HEAD, light, OverlayTexture.DEFAULT_UV, matrices,
                     vertexConsumers, null, 0);
