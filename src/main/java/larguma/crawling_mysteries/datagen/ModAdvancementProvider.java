@@ -26,8 +26,8 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
     Advancement rootAdvancement = Advancement.Builder.create()
         .display(
             ModItems.CRYPTIC_EYE, // The display icon
-            Text.translatable("general.crawling_mysteries.mod_name"), // The title
-            Text.translatable("advancement.crawling_mysteries.desc"), // The description
+            Text.translatable("general.crawling-mysteries.mod_name"), // The title
+            Text.translatable("advancement.crawling-mysteries.desc"), // The description
             new Identifier("textures/block/end_stone_bricks.png"), // Background image used
             AdvancementFrame.TASK, // Options: TASK, CHALLENGE, GOAL
             false, // Show toast top right

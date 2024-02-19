@@ -9,6 +9,8 @@ import com.google.common.collect.Multimap;
 
 import dev.emi.trinkets.api.SlotAttributes;
 import dev.emi.trinkets.api.SlotReference;
+import dev.emi.trinkets.api.TrinketEnums;
+import dev.emi.trinkets.api.TrinketEnums.DropRule;
 import dev.emi.trinkets.api.TrinketItem;
 import larguma.crawling_mysteries.CrawlingMysteries;
 import larguma.crawling_mysteries.item.client.CrypticEyeItemRenderer;
@@ -43,7 +45,8 @@ public class CrypticEyeItem extends TrinketItem implements GeoItem {
   public CrypticEyeItem(Settings settings) {
     super(settings);
   }
- 
+
+  // #region Trinkets
   @SuppressWarnings("null")
   public Multimap<EntityAttribute, EntityAttributeModifier> getModifiers(ItemStack stack, SlotReference slot,
       LivingEntity entity, UUID uuid) {
@@ -57,14 +60,26 @@ public class CrypticEyeItem extends TrinketItem implements GeoItem {
     return modifiers;
   }
 
+  public boolean canUnequip(ItemStack stack, SlotReference slot, LivingEntity entity) {
+    return false;
+  }
+
+  public TrinketEnums.DropRule getDropRule(ItemStack stack, SlotReference slot, LivingEntity entity) {
+    return DropRule.KEEP;
+  }
+  // #endregion
+
+  // #region Base
   @Override
   public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
-    tooltip.add(Text.translatable("item.crawling_mysteries.cryptic_eye.tooltip.line1"));
-    tooltip.add(Text.translatable("item.crawling_mysteries.cryptic_eye.tooltip.line2")
+    tooltip.add(Text.translatable("item.crawling-mysteries.cryptic_eye.tooltip.line1"));
+    tooltip.add(Text.translatable("item.crawling-mysteries.cryptic_eye.tooltip.line2")
         .formatted(Formatting.ITALIC, Formatting.LIGHT_PURPLE));
     super.appendTooltip(stack, world, tooltip, context);
   }
+  // #endregion
 
+  // #region 3d animated
   @Override
   public void createRenderer(Consumer<Object> consumer) {
     consumer.accept(new RenderProvider() {
@@ -99,6 +114,7 @@ public class CrypticEyeItem extends TrinketItem implements GeoItem {
 
   @Override
   public AnimatableInstanceCache getAnimatableInstanceCache() {
-   return cache;
+    return cache;
   }
+  // #endregion
 }

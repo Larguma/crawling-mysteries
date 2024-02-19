@@ -17,7 +17,7 @@
     "announce_to_chat": false,
     "background": "minecraft:textures/block/end_stone_bricks.png",
     "description": {
-      "translate": "advancement.crawling_mysteries.desc"
+      "translate": "advancement.crawling-mysteries.desc"
     },
     "frame": "task",
     "hidden": false,
@@ -26,7 +26,7 @@
     },
     "show_toast": false,
     "title": {
-      "translate": "general.crawling_mysteries.mod_name"
+      "translate": "general.crawling-mysteries.mod_name"
     }
   },
   "requirements": [

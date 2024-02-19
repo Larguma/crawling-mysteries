@@ -1,10 +1,11 @@
 {
-  "general.crawling_mysteries.mod_name": "Crawling Mysteries",
+  "general.crawling-mysteries.mod_name": "Crawling Mysteries",
 
   "item.crawling-mysteries.cryptic_eye": "Cryptic Eye",
-  "item.crawling_mysteries.cryptic_eye.tooltip.line1": "A cryptic eye that seems to be watching you.",
-  "item.crawling_mysteries.cryptic_eye.tooltip.line2": "Perhaps it's worth investigating further.",  
+  "item.crawling-mysteries.cryptic_eye.tooltip.line1": "A cryptic eye that seems to be following you.",
+  "item.crawling-mysteries.cryptic_eye.tooltip.line2": "Perhaps it's worth investigating further.",  
 
-  "advancement.crawling_mysteries.desc": "You awoke with this strange eye watching you, where does it come from ?"
+  "advancement.crawling-mysteries.desc": "You awoke with this strange eye watching you, where does it come from ?",
 
+  "text.config.crawling-mysteries.section.someSection": "OWO Config"
 }

@@ -21,6 +21,7 @@ public class CrawlingMysteriesClient implements ClientModInitializer {
           if (entity instanceof AbstractClientPlayerEntity player) {
             TrinketRenderer.translateToFace(matrices,
                 (PlayerEntityModel<AbstractClientPlayerEntity>) contextModel, player, headYaw, headPitch);
+            // matrices.scale(x, y, z);
             // x: + gauche; - droite
             // y: + bas; - haut
             // z: + derrière; - devant

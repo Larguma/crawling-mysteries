@@ -13,7 +13,7 @@ public class ModItemGroups {
 
   public static final ItemGroup CRAWLING_MYSTERIES_GROUP = Registry.register(Registries.ITEM_GROUP,
       new Identifier(CrawlingMysteries.MOD_ID, "crawling_mysteries_group"),
-      FabricItemGroup.builder().displayName(Text.translatable("general.crawling_mysteries.mod_name"))
+      FabricItemGroup.builder().displayName(Text.translatable("general.crawling-mysteries.mod_name"))
           .icon(() -> new ItemStack(ModItems.CRYPTIC_EYE)).entries((displayContext, entries) -> {
             // Add items to the group  
             entries.add(ModItems.CRYPTIC_EYE);
