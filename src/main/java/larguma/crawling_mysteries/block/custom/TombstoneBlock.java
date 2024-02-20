@@ -1,5 +1,6 @@
 package larguma.crawling_mysteries.block.custom;
 
+import java.util.List;
 import javax.swing.text.html.BlockView;
 
 import larguma.crawling_mysteries.CrawlingMysteries;
@@ -14,12 +15,12 @@ import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.ActionResult;
-import net.minecraft.util.BlockRotation;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.World;
@@ -49,6 +50,8 @@ public class TombstoneBlock extends BlockWithEntity {
   public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand,
       BlockHitResult hit) {
     dropAllGrave(world, pos);
+    TombstoneBlockEntity tombstoneBlockEntity = (TombstoneBlockEntity) world.getBlockEntity(pos);
+    player.addExperience(tombstoneBlockEntity.getXp());
     world.removeBlock(pos, false);
     return ActionResult.SUCCESS;
   }
@@ -79,13 +82,14 @@ public class TombstoneBlock extends BlockWithEntity {
     blockEntity.setItems(DefaultedList.copyOf(ItemStack.EMPTY));
   }
 
-  public static void placeTombstone(World world, BlockPos blockPos, PlayerEntity player) {
-    if (world.isClient)
+  public static void placeTombstone(PlayerEntity player, List<ItemStack> trinketStacks) {
+    World world = player.getWorld();
+    if (world.isClient || !player.isPlayer())
       return;
 
-    if (blockPos.getY() <= world.getDimension().minY()) {
-      blockPos = new BlockPos(blockPos.getX(), world.getDimension().minY(), blockPos.getZ());
-    }
+    BlockPos blockPos = player.getBlockPos().offset(Direction.DOWN, 1);
+    if (blockPos.getY() <= world.getDimension().minY())
+      blockPos.withY(world.getDimension().minY());
 
     BlockState blockState = world.getBlockState(blockPos);
     Block block = blockState.getBlock();
@@ -95,19 +99,18 @@ public class TombstoneBlock extends BlockWithEntity {
     combinedInventory.addAll(player.getInventory().main);
     combinedInventory.addAll(player.getInventory().armor);
     combinedInventory.addAll(player.getInventory().offHand);
+    combinedInventory.addAll(trinketStacks);
 
     boolean placed = false;
-    BlockRotation blockRotation = BlockRotation.NONE;
 
     for (BlockPos pos : BlockPos.iterateOutwards(blockPos.add(new Vec3i(0, 1, 0)), 5, 5, 5)) {
       if (canPlaceTombstone(world, block, pos)) {
-        if (pos.getX() % 2 == 0) blockRotation = BlockRotation.CLOCKWISE_90;
-        BlockState state = ModBlocks.TOMBSTONE.getDefaultState().rotate(blockRotation);
+        BlockState state = ModBlocks.TOMBSTONE.getDefaultState();
 
         placed = world.setBlockState(pos, state);
         TombstoneBlockEntity TombstoneBlockEntity = new TombstoneBlockEntity(pos, state);
         TombstoneBlockEntity.setItems(combinedInventory);
-        TombstoneBlockEntity.setGraveOwner(player.getGameProfile());
+        TombstoneBlockEntity.setTombOwner(player.getGameProfile());
         TombstoneBlockEntity.setXp(player.totalExperience);
         world.addBlockEntity(TombstoneBlockEntity);
 
@@ -120,6 +123,10 @@ public class TombstoneBlock extends BlockWithEntity {
         break;
       }
     }
+
+    player.totalExperience = 0;
+		player.experienceProgress = 0;
+		player.experienceLevel = 0;
 
     if (!placed) {
       player.getInventory().dropAll();

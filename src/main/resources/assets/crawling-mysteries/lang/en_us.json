@@ -8,10 +8,14 @@
   "item.crawling-mysteries.eternal_guardians_band.tooltip.line1": "A mystical ring forged in the heart of ancient enchantments.",
   "item.crawling-mysteries.eternal_guardians_band.tooltip.line2": "When your last breath escapes, the Eternal Guardian's Band swiftly conjures a solemn tombstone, cradling your belongings in its protective embrace.",
   "item.crawling-mysteries.eternal_guardians_band.tooltip.line3": "Your items shall await your triumphant return.",
+  "item.crawling-mysteries.eternal_guardians_band.tooltip.disabled": [{ "text": "This item is disabled in the config", "color": "red" }],  
   
   "advancement.crawling-mysteries.desc": "You awoke with this strange eye watching you, where does it come from ?",
   "advancement.crawling-mysteries.eternal_guardians_band": "Discoverer of Immortality",
   "advancement.crawling-mysteries.eternal_guardians_band.desc": "Unearth the secrets of the ancients and find the Eternal Guardian's Band hidden within the depths of a forsaken dungeon. Secure your destiny as the one who commands the protection of the afterlife.",
 
-  "text.config.crawling-mysteries.section.someSection": "OWO Config"
+  "text.config.crawling-mysteries.title": "Crawling Mysteries",
+  "text.config.crawling-mysteries.section.trinkets": "Trinkets",
+  "text.config.crawling-mysteries.option.enableCrypticEyeRender": "Show the Cryptic Eye",
+  "text.config.crawling-mysteries.option.enableTombstone": "Tombstone generation"
 }
