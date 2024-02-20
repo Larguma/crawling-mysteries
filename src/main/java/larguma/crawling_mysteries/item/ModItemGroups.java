@@ -1,6 +1,7 @@
 package larguma.crawling_mysteries.item;
 
 import larguma.crawling_mysteries.CrawlingMysteries;
+import larguma.crawling_mysteries.block.ModBlocks;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.minecraft.item.ItemGroup;
 import net.minecraft.item.ItemStack;
@@ -17,6 +18,9 @@ public class ModItemGroups {
           .icon(() -> new ItemStack(ModItems.CRYPTIC_EYE)).entries((displayContext, entries) -> {
             // Add items to the group  
             entries.add(ModItems.CRYPTIC_EYE);
+            entries.add(ModItems.ETERNAL_GUARDIANS_BAND);
+
+            entries.add(ModBlocks.TOMBSTONE);
 
           }).build());
 

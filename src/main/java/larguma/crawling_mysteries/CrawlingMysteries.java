@@ -5,8 +5,12 @@ import net.fabricmc.api.ModInitializer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import larguma.crawling_mysteries.block.ModBlocks;
+import larguma.crawling_mysteries.block.entity.ModBlockEntities;
+import larguma.crawling_mysteries.config.CrawlingMysteriesConfig;
 import larguma.crawling_mysteries.item.ModItemGroups;
 import larguma.crawling_mysteries.item.ModItems;
+import larguma.crawling_mysteries.util.ModLootTableModifiers;
 
 public class CrawlingMysteries implements ModInitializer {
 	public static final String MOD_ID = "crawling-mysteries";
@@ -18,7 +22,12 @@ public class CrawlingMysteries implements ModInitializer {
 		LOGGER.info("Let's uncover some mysteries");
 
 		ModItemGroups.registerItemGroups();
+
 		ModItems.registerModItems();
+		ModBlocks.registerModBlocks();
 		
+		ModLootTableModifiers.modifyLootTables();
+
+		ModBlockEntities.registerBlockEntities();
 	}
 }

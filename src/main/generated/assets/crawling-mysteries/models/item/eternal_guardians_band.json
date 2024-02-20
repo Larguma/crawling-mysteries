@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "crawling-mysteries:item/eternal_guardians_band"
+  }
+}
