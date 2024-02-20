@@ -1,4 +1,4 @@
-package larguma.crawling_mysteries;
+package larguma.crawling_mysteries.config;
 
 import blue.endless.jankson.Jankson;
 import io.wispforest.owo.config.ConfigWrapper;
@@ -9,21 +9,21 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Consumer;
 
-public class CrawlingMysteriesConfig extends ConfigWrapper<larguma.crawling_mysteries.CrawlingMysteriesConfigModel> {
+public class CrawlingMysteriesConfig extends ConfigWrapper<larguma.crawling_mysteries.config.CrawlingMysteriesConfigModel> {
 
     public final Keys keys = new Keys();
 
     private final Option<java.lang.String> someLaterOption = this.optionForKey(this.keys.someLaterOption);
     private final Option<java.lang.Integer> anIntOption = this.optionForKey(this.keys.anIntOption);
     private final Option<java.lang.Boolean> aBooleanToggle = this.optionForKey(this.keys.aBooleanToggle);
-    private final Option<larguma.crawling_mysteries.CrawlingMysteriesConfigModel.Choices> anEnumOption = this.optionForKey(this.keys.anEnumOption);
+    private final Option<larguma.crawling_mysteries.config.CrawlingMysteriesConfigModel.Choices> anEnumOption = this.optionForKey(this.keys.anEnumOption);
 
     private CrawlingMysteriesConfig() {
-        super(larguma.crawling_mysteries.CrawlingMysteriesConfigModel.class);
+        super(larguma.crawling_mysteries.config.CrawlingMysteriesConfigModel.class);
     }
 
     private CrawlingMysteriesConfig(Consumer<Jankson.Builder> janksonBuilder) {
-        super(larguma.crawling_mysteries.CrawlingMysteriesConfigModel.class, janksonBuilder);
+        super(larguma.crawling_mysteries.config.CrawlingMysteriesConfigModel.class, janksonBuilder);
     }
 
     public static CrawlingMysteriesConfig createAndLoad() {
@@ -62,11 +62,11 @@ public class CrawlingMysteriesConfig extends ConfigWrapper<larguma.crawling_myst
         aBooleanToggle.set(value);
     }
 
-    public larguma.crawling_mysteries.CrawlingMysteriesConfigModel.Choices anEnumOption() {
+    public larguma.crawling_mysteries.config.CrawlingMysteriesConfigModel.Choices anEnumOption() {
         return anEnumOption.value();
     }
 
-    public void anEnumOption(larguma.crawling_mysteries.CrawlingMysteriesConfigModel.Choices value) {
+    public void anEnumOption(larguma.crawling_mysteries.config.CrawlingMysteriesConfigModel.Choices value) {
         anEnumOption.set(value);
     }
 

@@ -41,12 +41,21 @@ sourceSets {
 					'src/main/generated'
 			]
 		}
+		java {
+      srcDir 'src/main/generated/java'
+    }
 	}
 }
 
-// owo lib
-sourceSets.main.java.srcDirs += [ 'src/main/generatedJava' ]
-compileJava.options.generatedSourceOutputDirectory = file("${projectDir}/src/main/generatedJava/larguma/crawling_mysteries")
+// owo lib 
+// sourceSets.main.java.srcDirs += [ 'src/main/generatedJava' ]
+// compileJava.options.generatedSourceOutputDirectory = file("${projectDir}/src/main/generated/java/larguma/crawling_mysteries/config")
+
+compileJava {
+	options.generatedSourceOutputDirectory = file("${projectDir}/src/main/generated/java/larguma/crawling_mysteries/config")
+}
+
+project.tasks['processResources'].dependsOn('compileJava')
 
 fabricApi {
 	configureDataGeneration()
