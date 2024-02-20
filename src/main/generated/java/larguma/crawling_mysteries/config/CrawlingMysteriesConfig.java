@@ -13,10 +13,8 @@ public class CrawlingMysteriesConfig extends ConfigWrapper<larguma.crawling_myst
 
     public final Keys keys = new Keys();
 
-    private final Option<java.lang.String> someLaterOption = this.optionForKey(this.keys.someLaterOption);
-    private final Option<java.lang.Integer> anIntOption = this.optionForKey(this.keys.anIntOption);
-    private final Option<java.lang.Boolean> aBooleanToggle = this.optionForKey(this.keys.aBooleanToggle);
-    private final Option<larguma.crawling_mysteries.config.CrawlingMysteriesConfigModel.Choices> anEnumOption = this.optionForKey(this.keys.anEnumOption);
+    private final Option<java.lang.Boolean> enableCrypticEyeRender = this.optionForKey(this.keys.enableCrypticEyeRender);
+    private final Option<java.lang.Boolean> enableTombstone = this.optionForKey(this.keys.enableTombstone);
 
     private CrawlingMysteriesConfig() {
         super(larguma.crawling_mysteries.config.CrawlingMysteriesConfigModel.class);
@@ -38,44 +36,26 @@ public class CrawlingMysteriesConfig extends ConfigWrapper<larguma.crawling_myst
         return wrapper;
     }
 
-    public java.lang.String someLaterOption() {
-        return someLaterOption.value();
+    public boolean enableCrypticEyeRender() {
+        return enableCrypticEyeRender.value();
     }
 
-    public void someLaterOption(java.lang.String value) {
-        someLaterOption.set(value);
+    public void enableCrypticEyeRender(boolean value) {
+        enableCrypticEyeRender.set(value);
     }
 
-    public int anIntOption() {
-        return anIntOption.value();
+    public boolean enableTombstone() {
+        return enableTombstone.value();
     }
 
-    public void anIntOption(int value) {
-        anIntOption.set(value);
-    }
-
-    public boolean aBooleanToggle() {
-        return aBooleanToggle.value();
-    }
-
-    public void aBooleanToggle(boolean value) {
-        aBooleanToggle.set(value);
-    }
-
-    public larguma.crawling_mysteries.config.CrawlingMysteriesConfigModel.Choices anEnumOption() {
-        return anEnumOption.value();
-    }
-
-    public void anEnumOption(larguma.crawling_mysteries.config.CrawlingMysteriesConfigModel.Choices value) {
-        anEnumOption.set(value);
+    public void enableTombstone(boolean value) {
+        enableTombstone.set(value);
     }
 
 
     public static class Keys {
-        public final Option.Key someLaterOption = new Option.Key("someLaterOption");
-        public final Option.Key anIntOption = new Option.Key("anIntOption");
-        public final Option.Key aBooleanToggle = new Option.Key("aBooleanToggle");
-        public final Option.Key anEnumOption = new Option.Key("anEnumOption");
+        public final Option.Key enableCrypticEyeRender = new Option.Key("enableCrypticEyeRender");
+        public final Option.Key enableTombstone = new Option.Key("enableTombstone");
     }
 }
 

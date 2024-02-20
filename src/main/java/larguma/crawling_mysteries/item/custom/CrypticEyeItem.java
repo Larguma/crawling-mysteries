@@ -70,7 +70,6 @@ public class CrypticEyeItem extends TrinketItem implements GeoItem {
   // #endregion
 
   // #region Base
-  @Override
   public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
     tooltip.add(Text.translatable("item.crawling-mysteries.cryptic_eye.tooltip.line1"));
     tooltip.add(Text.translatable("item.crawling-mysteries.cryptic_eye.tooltip.line2")

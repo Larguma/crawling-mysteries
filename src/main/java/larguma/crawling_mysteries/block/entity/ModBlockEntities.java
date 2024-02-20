@@ -14,6 +14,6 @@ public class ModBlockEntities {
       FabricBlockEntityTypeBuilder.create(TombstoneBlockEntity::new, ModBlocks.TOMBSTONE).build());
 
   public static void registerBlockEntities() {
-    CrawlingMysteries.LOGGER.info("Registring Block Entities");
+    CrawlingMysteries.LOGGER.debug("Registring Block Entities");
   }
 }

@@ -42,14 +42,16 @@ sourceSets {
 			]
 		}
 		java {
-      srcDir 'src/main/generated/java'
+      srcDirs += [
+				'src/main/generated/java'
+			]
     }
 	}
 }
 
 // owo lib 
 // sourceSets.main.java.srcDirs += [ 'src/main/generatedJava' ]
-// compileJava.options.generatedSourceOutputDirectory = file("${projectDir}/src/main/generated/java/larguma/crawling_mysteries/config")
+// compileJava.options.generatedSourceOutputDirectory = file("${projectDir}/src/main/generatedJava/<your config class package>")
 
 compileJava {
 	options.generatedSourceOutputDirectory = file("${projectDir}/src/main/generated/java/larguma/crawling_mysteries/config")

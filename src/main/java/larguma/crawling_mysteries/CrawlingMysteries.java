@@ -1,7 +1,5 @@
 package larguma.crawling_mysteries;
 
-import net.fabricmc.api.ModInitializer;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -11,6 +9,7 @@ import larguma.crawling_mysteries.config.CrawlingMysteriesConfig;
 import larguma.crawling_mysteries.item.ModItemGroups;
 import larguma.crawling_mysteries.item.ModItems;
 import larguma.crawling_mysteries.util.ModLootTableModifiers;
+import net.fabricmc.api.ModInitializer;
 
 public class CrawlingMysteries implements ModInitializer {
 	public static final String MOD_ID = "crawling-mysteries";

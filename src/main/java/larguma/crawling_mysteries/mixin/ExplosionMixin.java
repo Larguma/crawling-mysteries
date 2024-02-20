@@ -34,7 +34,7 @@ public class ExplosionMixin {
       BlockEntity blockEntity = world.getBlockEntity(lastPos);
 
       if (blockEntity instanceof TombstoneBlockEntity tombstoneBlockEntity) {
-        if (tombstoneBlockEntity.getGraveOwner() != null)
+        if (tombstoneBlockEntity.getTombOwner() != null)
           return Blocks.AIR.getDefaultState();
       }
     }

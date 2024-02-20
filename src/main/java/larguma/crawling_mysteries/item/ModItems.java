@@ -21,6 +21,6 @@ public class ModItems {
   }
 
   public static void registerModItems() {
-    CrawlingMysteries.LOGGER.info("Registering mod items");
+    CrawlingMysteries.LOGGER.debug("Registering mod items");
   }
 }

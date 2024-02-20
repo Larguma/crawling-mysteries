@@ -27,6 +27,6 @@ public class ModBlocks {
   }
 
   public static void registerModBlocks() {
-    CrawlingMysteries.LOGGER.info("Registering ModBlocks");
+    CrawlingMysteries.LOGGER.debug("Registering ModBlocks");
   }
 }

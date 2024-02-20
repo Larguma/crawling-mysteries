@@ -11,14 +11,8 @@ public class CrawlingMysteriesConfigModel {
 
   // https://docs.wispforest.io/owo/config/getting-started/
   
-  @SectionHeader("someSection")
-  public String someLaterOption = "42";
-  public int anIntOption = 16;
-  public boolean aBooleanToggle = false;
+  @SectionHeader("trinkets")
+  public boolean enableCrypticEyeRender = true;
+  public boolean enableTombstone = true;
 
-  public Choices anEnumOption = Choices.ANOTHER_CHOICE;
-
-  public enum Choices {
-    A_CHOICE, ANOTHER_CHOICE;
-  }
 }

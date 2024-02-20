@@ -27,7 +27,7 @@ public class TombstoneBlockEntity extends BlockEntity {
     this.customName = "";
     this.tombOwner = null;
     this.xp = 0;
-    this.items = DefaultedList.ofSize(41, ItemStack.EMPTY);
+    this.items = DefaultedList.of();
   }
 
   public void setItems(DefaultedList<ItemStack> items) {
