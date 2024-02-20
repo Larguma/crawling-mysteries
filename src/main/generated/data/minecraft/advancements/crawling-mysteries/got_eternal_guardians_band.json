@@ -1,12 +1,12 @@
 {
   "parent": "minecraft:crawling-mysteries/root",
   "criteria": {
-    "got_wood": {
+    "got_eternal_guardians_band": {
       "conditions": {
         "items": [
           {
             "items": [
-              "minecraft:oak_log"
+              "crawling-mysteries:eternal_guardians_band"
             ]
           }
         ]
@@ -17,21 +17,21 @@
   "display": {
     "announce_to_chat": true,
     "description": {
-      "text": "Bare fisted"
+      "translate": "advancement.crawling-mysteries.eternal_guardians_band.desc"
     },
     "frame": "task",
     "hidden": false,
     "icon": {
-      "item": "minecraft:oak_log"
+      "item": "crawling-mysteries:eternal_guardians_band"
     },
     "show_toast": true,
     "title": {
-      "text": "Your First Log"
+      "translate": "advancement.crawling-mysteries.eternal_guardians_band"
     }
   },
   "requirements": [
     [
-      "got_wood"
+      "got_eternal_guardians_band"
     ]
   ],
   "rewards": {

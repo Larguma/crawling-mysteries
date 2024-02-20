@@ -1,11 +1,11 @@
 {
   "criteria": {
-    "got_mysterious_amulet": {
+    "got_cryptic_eye": {
       "conditions": {
         "items": [
           {
             "items": [
-              "crawling-mysteries:mysterious_amulet"
+              "crawling-mysteries:cryptic_eye"
             ]
           }
         ]
@@ -22,7 +22,7 @@
     "frame": "task",
     "hidden": false,
     "icon": {
-      "item": "crawling-mysteries:mysterious_amulet"
+      "item": "crawling-mysteries:cryptic_eye"
     },
     "show_toast": false,
     "title": {
@@ -31,7 +31,7 @@
   },
   "requirements": [
     [
-      "got_mysterious_amulet"
+      "got_cryptic_eye"
     ]
   ],
   "sends_telemetry_event": true

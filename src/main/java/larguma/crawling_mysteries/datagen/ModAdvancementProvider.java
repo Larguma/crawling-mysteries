@@ -10,7 +10,6 @@ import net.minecraft.advancement.Advancement;
 import net.minecraft.advancement.AdvancementFrame;
 import net.minecraft.advancement.AdvancementRewards;
 import net.minecraft.advancement.criterion.InventoryChangedCriterion;
-import net.minecraft.item.Items;
 import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 
@@ -39,19 +38,19 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
         .criterion("got_cryptic_eye", InventoryChangedCriterion.Conditions.items(ModItems.CRYPTIC_EYE))
         .build(consumer, CrawlingMysteries.MOD_ID + "/root");
 
-    Advancement gotOakAdvancement = Advancement.Builder.create().parent(rootAdvancement)
+    Advancement gotEternalGuardiansBand = Advancement.Builder.create().parent(rootAdvancement)
         .display(
-            Items.OAK_LOG,
-            Text.literal("Your First Log"),
-            Text.literal("Bare fisted"),
+            ModItems.ETERNAL_GUARDIANS_BAND,
+            Text.translatable("advancement.crawling-mysteries.eternal_guardians_band"), // The title
+            Text.translatable("advancement.crawling-mysteries.eternal_guardians_band.desc"), // The description
             null, // children to parent advancements don't need a background set
             AdvancementFrame.TASK,
             true,
             true,
             false)
         .rewards(AdvancementRewards.Builder.experience(1000))
-        .criterion("got_wood", InventoryChangedCriterion.Conditions.items(Items.OAK_LOG))
-        .build(consumer, CrawlingMysteries.MOD_ID + "/got_wood");
+        .criterion("got_eternal_guardians_band", InventoryChangedCriterion.Conditions.items(ModItems.ETERNAL_GUARDIANS_BAND))
+        .build(consumer, CrawlingMysteries.MOD_ID + "/got_eternal_guardians_band");
   }
 
 }
