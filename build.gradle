@@ -58,6 +58,7 @@ compileJava {
 }
 
 project.tasks['processResources'].dependsOn('compileJava')
+project.tasks['compileJava'].dependsOn('sourcesJar')
 
 fabricApi {
 	configureDataGeneration()
