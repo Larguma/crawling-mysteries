@@ -16,7 +16,7 @@ public class ModItemGroups {
       new Identifier(CrawlingMysteries.MOD_ID, "crawling_mysteries_group"),
       FabricItemGroup.builder().displayName(Text.translatable("general.crawling-mysteries.mod_name"))
           .icon(() -> new ItemStack(ModItems.CRYPTIC_EYE)).entries((displayContext, entries) -> {
-            // Add items to the group  
+            // Add items to the group
             entries.add(ModItems.CRYPTIC_EYE);
             entries.add(ModItems.ETERNAL_GUARDIANS_BAND);
 
@@ -25,7 +25,6 @@ public class ModItemGroups {
           }).build());
 
   public static void registerItemGroups() {
-
-    CrawlingMysteries.LOGGER.info("Registering item groups");
+    CrawlingMysteries.LOGGER.debug("Registering item groups");
   }
 }
