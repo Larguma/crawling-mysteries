@@ -2,6 +2,7 @@ package larguma.crawling_mysteries.block.entity;
 
 import com.mojang.authlib.GameProfile;
 
+import larguma.crawling_mysteries.CrawlingMysteries;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.inventory.Inventories;
@@ -11,10 +12,12 @@ import net.minecraft.nbt.NbtHelper;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
+import net.minecraft.text.Text;
+import net.minecraft.util.Nameable;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 
-public class TombstoneBlockEntity extends BlockEntity {
+public class TombstoneBlockEntity extends BlockEntity implements Nameable {
 
   private DefaultedList<ItemStack> items;
   private int xp;
@@ -24,10 +27,10 @@ public class TombstoneBlockEntity extends BlockEntity {
   public TombstoneBlockEntity(BlockPos pos, BlockState state) {
     super(ModBlockEntities.TOMBSTONE_BLOCK_ENTITY, pos, state);
 
-    this.customName = "";
     this.tombOwner = null;
     this.xp = 0;
     this.items = DefaultedList.of();
+    this.customName = null;
   }
 
   public void setItems(DefaultedList<ItemStack> items) {
@@ -45,16 +48,7 @@ public class TombstoneBlockEntity extends BlockEntity {
   }
 
   public GameProfile getTombOwner() {
-    return tombOwner;
-  }
-
-  public void setCustomName(String text) {
-    this.customName = text;
-    this.markDirty();
-  }
-
-  public String getCustomName() {
-    return customName;
+    return tombOwner != null ? tombOwner : new GameProfile(CrawlingMysteries.ELDRICTH_WEAVER_UUID, CrawlingMysteries.ELDRICTH_WEAVER_NAME);
   }
 
   public int getXp() {
@@ -64,6 +58,15 @@ public class TombstoneBlockEntity extends BlockEntity {
   public void setXp(int xp) {
     this.xp = xp;
     this.markDirty();
+  }
+
+  public void setCustomName(String customName) {
+    this.customName = customName;
+    this.markDirty();
+  }
+
+  public Text getCustomName() {
+    return Text.of(customName);
   }
 
   @Override
@@ -95,6 +98,7 @@ public class TombstoneBlockEntity extends BlockEntity {
 
     if (tombOwner != null)
       tag.put("TombOwner", NbtHelper.writeGameProfile(new NbtCompound(), tombOwner));
+
     if (customName != null && !customName.isEmpty())
       tag.putString("CustomName", customName);
   }
@@ -109,4 +113,18 @@ public class TombstoneBlockEntity extends BlockEntity {
     return createNbt();
   }
 
+  @Override
+  public Text getName() {
+    return this.hasCustomName() ? Text.of(this.customName) : Text.translatable("item.crawling-mysteries.tombstone");
+  }
+
+  @Override
+  public Text getDisplayName() {
+    return this.getName();
+  }
+
+  @Override
+  public boolean hasCustomName() {
+    return this.customName != null;
+  }
 }
