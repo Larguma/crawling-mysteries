@@ -1,6 +1,5 @@
 package larguma.crawling_mysteries.datagen;
 
-import larguma.crawling_mysteries.block.ModBlocks;
 import larguma.crawling_mysteries.item.ModItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
@@ -17,7 +16,6 @@ public class ModModelProvider extends FabricModelProvider {
   @Override
   public void generateBlockStateModels(BlockStateModelGenerator blockStateModelGenerator) {
     //blockStateModelGenerator.registerSimpleCubeAll(ModBlocks.EXAMPLE);
-    blockStateModelGenerator.registerSimpleState(ModBlocks.TOMBSTONE);
   }
 
   @Override

@@ -9,6 +9,7 @@ import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.BlockWithEntity;
+import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.block.Waterloggable;
 import net.minecraft.block.entity.BlockEntity;
@@ -20,6 +21,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleEffect;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
+import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -31,21 +33,28 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
 
 public class TombstoneBlock extends BlockWithEntity implements Waterloggable {
-
+  public static final DirectionProperty FACING = HorizontalFacingBlock.FACING;
   public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
   private final ParticleEffect particle;
-  private static final VoxelShape SHAPE = Block.createCuboidShape(2, 0, 5, 14, 16, 11);
+  private static final VoxelShape NORTH_SOUTH_SHAPE = VoxelShapes.union(Block.createCuboidShape(2, 0, 5, 14, 1, 11),
+      Block.createCuboidShape(3, 1, 5, 13, 2, 11), Block.createCuboidShape(4, 2, 6, 12, 4, 10),
+      Block.createCuboidShape(7, 4, 7, 9, 16, 9), Block.createCuboidShape(3.5, 11, 7, 12.5, 13, 9));
+  private static final VoxelShape EAST_WEST_SHAPE = VoxelShapes.union(Block.createCuboidShape(5, 0, 2, 11, 1, 14),
+      Block.createCuboidShape(5, 1, 3, 11, 2, 13), Block.createCuboidShape(6, 2, 4, 10, 4, 12),
+      Block.createCuboidShape(7, 4, 7, 9, 16, 9), Block.createCuboidShape(7, 11, 3.5, 9, 13, 12.5));
 
   public TombstoneBlock(Settings settings, ParticleEffect particle) {
     super(settings);
     this.particle = particle;
     setDefaultState(getDefaultState()
-        .with(WATERLOGGED, false));
+        .with(WATERLOGGED, false)
+        .with(FACING, Direction.NORTH));
   }
 
   @Override
@@ -55,8 +64,12 @@ public class TombstoneBlock extends BlockWithEntity implements Waterloggable {
 
   @Override
   public BlockState getPlacementState(ItemPlacementContext ctx) {
-    return (BlockState) this.getDefaultState()
-        .with(WATERLOGGED, ctx.getWorld().getFluidState(ctx.getBlockPos()).isOf(Fluids.WATER));
+    BlockPos blockPos = ctx.getBlockPos();
+    FluidState fluidState = ctx.getWorld().getFluidState(blockPos);
+    BlockState blockState = this.getDefaultState()
+        .with(FACING, ctx.getHorizontalPlayerFacing())
+        .with(WATERLOGGED, fluidState.getFluid() == Fluids.WATER);
+    return blockState;
   }
 
   @SuppressWarnings("deprecation")
@@ -78,7 +91,8 @@ public class TombstoneBlock extends BlockWithEntity implements Waterloggable {
 
   @Override
   public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-    return SHAPE;
+    return state.get(FACING).getAxis() == Direction.Axis.X ? EAST_WEST_SHAPE : NORTH_SOUTH_SHAPE;
+
   }
 
   @Override
@@ -152,7 +166,8 @@ public class TombstoneBlock extends BlockWithEntity implements Waterloggable {
 
     for (BlockPos pos : BlockPos.iterateOutwards(blockPos.add(new Vec3i(0, 1, 0)), 5, 5, 5)) {
       if (canPlaceTombstone(world, block, pos)) {
-        BlockState state = ModBlocks.TOMBSTONE.getDefaultState();
+        BlockState state = ModBlocks.TOMBSTONE.getDefaultState()
+            .with(FACING, player.getHorizontalFacing());
 
         placed = world.setBlockState(pos, state);
         TombstoneBlockEntity TombstoneBlockEntity = new TombstoneBlockEntity(pos, state);
