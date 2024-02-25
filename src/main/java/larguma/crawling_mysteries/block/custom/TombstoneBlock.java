@@ -1,7 +1,6 @@
 package larguma.crawling_mysteries.block.custom;
 
 import java.util.List;
-import javax.swing.text.html.BlockView;
 
 import larguma.crawling_mysteries.CrawlingMysteries;
 import larguma.crawling_mysteries.block.ModBlocks;
@@ -11,9 +10,17 @@ import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.BlockWithEntity;
 import net.minecraft.block.ShapeContext;
+import net.minecraft.block.Waterloggable;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.fluid.FluidState;
+import net.minecraft.fluid.Fluids;
+import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
+import net.minecraft.particle.ParticleEffect;
+import net.minecraft.state.StateManager;
+import net.minecraft.state.property.BooleanProperty;
+import net.minecraft.state.property.Properties;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ItemScatterer;
@@ -22,21 +29,59 @@ import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3i;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.util.shape.VoxelShape;
+import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
+import net.minecraft.world.WorldAccess;
 
-public class TombstoneBlock extends BlockWithEntity {
+public class TombstoneBlock extends BlockWithEntity implements Waterloggable {
 
+  public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
+  private final ParticleEffect particle;
   private static final VoxelShape SHAPE = Block.createCuboidShape(2, 0, 5, 14, 16, 11);
 
-  public TombstoneBlock(Settings settings) {
+  public TombstoneBlock(Settings settings, ParticleEffect particle) {
     super(settings);
+    this.particle = particle;
+    setDefaultState(getDefaultState()
+        .with(WATERLOGGED, false));
   }
 
-  public VoxelShape getOutlineShape(BlockView world, BlockPos pos, ShapeContext context) {
+  @Override
+  protected void appendProperties(StateManager.Builder<Block, BlockState> builder) {
+    builder.add(Properties.HORIZONTAL_FACING, WATERLOGGED);
+  }
+
+  @Override
+  public BlockState getPlacementState(ItemPlacementContext ctx) {
+    return (BlockState) this.getDefaultState()
+        .with(WATERLOGGED, ctx.getWorld().getFluidState(ctx.getBlockPos()).isOf(Fluids.WATER));
+  }
+
+  @SuppressWarnings("deprecation")
+  @Override
+  public FluidState getFluidState(BlockState state) {
+    return state.get(WATERLOGGED) ? Fluids.WATER.getStill(false) : super.getFluidState(state);
+  }
+
+  @SuppressWarnings("deprecation")
+  @Override
+  public BlockState getStateForNeighborUpdate(BlockState state, Direction direction, BlockState neighborState,
+      WorldAccess world, BlockPos pos, BlockPos neighborPos) {
+    if (state.get(WATERLOGGED)) {
+      world.scheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
+    }
+
+    return super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
+  }
+
+  @Override
+  public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
     return SHAPE;
   }
 
+  @Override
   public BlockRenderType getRenderType(BlockState state) {
     return BlockRenderType.MODEL;
   }
@@ -49,10 +94,12 @@ public class TombstoneBlock extends BlockWithEntity {
   @Override
   public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand,
       BlockHitResult hit) {
-    dropAllGrave(world, pos);
     TombstoneBlockEntity tombstoneBlockEntity = (TombstoneBlockEntity) world.getBlockEntity(pos);
-    player.addExperience(tombstoneBlockEntity.getXp());
-    world.removeBlock(pos, false);
+    if (tombstoneBlockEntity.getTombOwner() == player.getGameProfile()) {
+      player.addExperience(tombstoneBlockEntity.getXp());
+      onBreak(world, pos, state, player);
+      world.removeBlock(pos, false);
+    }
     return ActionResult.SUCCESS;
   }
 
@@ -125,8 +172,8 @@ public class TombstoneBlock extends BlockWithEntity {
     }
 
     player.totalExperience = 0;
-		player.experienceProgress = 0;
-		player.experienceLevel = 0;
+    player.experienceProgress = 0;
+    player.experienceLevel = 0;
 
     if (!placed) {
       player.getInventory().dropAll();
@@ -143,4 +190,11 @@ public class TombstoneBlock extends BlockWithEntity {
         || blockPos.getY() > world.getDimension().height() - world.getDimension().minY());
   }
 
+  @Override
+  public void randomDisplayTick(BlockState state, World world, BlockPos pos, Random random) {
+    double x = (double) pos.getX() + random.nextDouble();
+    double y = (double) pos.getY() + random.nextDouble() + random.nextDouble();
+    double z = (double) pos.getZ() + random.nextDouble();
+    world.addParticle(this.particle, x, y, z, 0.0, 0.0, 0.0);
+  }
 }

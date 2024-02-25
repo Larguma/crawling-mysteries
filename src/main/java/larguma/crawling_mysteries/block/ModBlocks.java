@@ -8,13 +8,14 @@ import net.minecraft.block.Block;
 import net.minecraft.block.Blocks;
 import net.minecraft.item.BlockItem;
 import net.minecraft.item.Item;
+import net.minecraft.particle.ParticleTypes;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.util.Identifier;
 
 public class ModBlocks {
   public static final Block TOMBSTONE = registerBlock("tombstone",
-      new TombstoneBlock(FabricBlockSettings.copyOf(Blocks.COBBLESTONE).nonOpaque()));
+      new TombstoneBlock(FabricBlockSettings.copyOf(Blocks.ENCHANTING_TABLE).nonOpaque(), ParticleTypes.SOUL));
 
   private static Block registerBlock(String name, Block block) {
     registerBlockItem(name, block);
