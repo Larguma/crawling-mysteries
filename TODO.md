@@ -20,14 +20,13 @@ Mettre des config et de l'UI avec [OwO lib](https://docs.wispforest.io/owo/ui/ge
 - Tombes "Eternal Guardian's Band"
 - New Metal (Mysterium) (for crafting trinkets)
 - Geodes
+- Beers
 
 ### Eternal Guardian's Band
 
 - Modéliser le ring (3d ?)
 - Faire des meilleurs tombes ?
-- Rotates les tombes aléatoirement lors du spawn (ou dans la direction du regard)
 - Spawn l'"Eternal Guardian"
-- Sleep
 
 ## Blocks list
 
@@ -43,3 +42,7 @@ Mettre des config et de l'UI avec [OwO lib](https://docs.wispforest.io/owo/ui/ge
 
 - In sus sand
 - In Geode inside deepstone
+
+### New structures
+
+- Tavern, png (shop), beer
