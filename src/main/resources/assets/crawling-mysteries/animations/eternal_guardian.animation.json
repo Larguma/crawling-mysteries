@@ -43,6 +43,46 @@
 					}
 				}
 			}
+		},
+		"animation.eternal_guardian.melee": {
+			"loop": true,
+			"animation_length": 0.58333,
+			"bones": {
+				"bone": {
+					"relative_to": {
+						"rotation": "entity"
+					},
+					"rotation": [0, 0, 0.01]
+				},
+				"left_hand": {
+					"rotation": {
+						"0.0": {
+							"vector": [0, 0, 0]
+						},
+						"0.1667": {
+							"vector": [-120, 0, 0]
+						},
+						"0.2083": {
+							"vector": [-115, 0, 0]
+						},
+						"0.25": {
+							"vector": [-100, 0, 0]
+						},
+						"0.2917": {
+							"vector": [-37, 0, 0]
+						},
+						"0.3333": {
+							"vector": [-16, 0, 0]
+						},
+						"0.375": {
+							"vector": [-8, 0, 0]
+						},
+						"0.5": {
+							"vector": [0, 0, 0]
+						}
+					}
+				}
+			}
 		}
 	},
 	"geckolib_format_version": 2

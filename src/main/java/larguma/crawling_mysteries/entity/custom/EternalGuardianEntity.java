@@ -24,8 +24,8 @@ import net.minecraft.entity.mob.HostileEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtHelper;
+import net.minecraft.registry.tag.DamageTypeTags;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.world.Difficulty;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
 import net.minecraft.world.World;
@@ -38,6 +38,7 @@ import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.core.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 import software.bernie.geckolib.core.animation.AnimatableManager.ControllerRegistrar;
+import software.bernie.geckolib.core.animation.AnimationController.State;
 import software.bernie.geckolib.core.object.PlayState;
 
 public class EternalGuardianEntity extends HostileEntity implements GeoEntity {
@@ -55,6 +56,7 @@ public class EternalGuardianEntity extends HostileEntity implements GeoEntity {
     this.tombstoneOwner = null;
   }
 
+  // #region Entity Initialization
   @Override
   @Nullable
   public EntityData initialize(ServerWorldAccess world, LocalDifficulty difficulty, SpawnReason spawnReason,
@@ -66,7 +68,7 @@ public class EternalGuardianEntity extends HostileEntity implements GeoEntity {
     return HostileEntity.createMobAttributes()
         .add(EntityAttributes.GENERIC_MAX_HEALTH, 60)
         .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 5)
-        .add(EntityAttributes.GENERIC_ATTACK_SPEED, 4)
+        .add(EntityAttributes.GENERIC_ATTACK_SPEED, 2)
         .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.5)
         .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 1000)
         .add(EntityAttributes.GENERIC_ARMOR, 20)
@@ -90,7 +92,7 @@ public class EternalGuardianEntity extends HostileEntity implements GeoEntity {
     Entity entity;
 
     entity = source.getAttacker();
-    if (entity == null || !(entity instanceof PlayerEntity)) {
+    if (entity == null || !(entity instanceof PlayerEntity) || source.isIn(DamageTypeTags.IS_PROJECTILE)) {
       return false;
     }
     return super.damage(source, amount);
@@ -110,10 +112,6 @@ public class EternalGuardianEntity extends HostileEntity implements GeoEntity {
 
   @Override
   public void checkDespawn() {
-    if (this.getWorld().getDifficulty() == Difficulty.PEACEFUL && this.isDisallowedInPeaceful()) {
-      this.discard();
-      return;
-    }
     this.despawnCounter = 0;
   }
 
@@ -146,6 +144,9 @@ public class EternalGuardianEntity extends HostileEntity implements GeoEntity {
     super.readCustomDataFromNbt(nbt);
   }
 
+  // #endregion
+
+  // #region Tombstone
   @Nullable
   public BlockPos getTombstonePos() {
     return this.tombstonePos;
@@ -172,28 +173,6 @@ public class EternalGuardianEntity extends HostileEntity implements GeoEntity {
     return this.tombstoneOwner != null;
   }
 
-  @Override
-  public void registerControllers(ControllerRegistrar controllers) {
-    controllers.add(new AnimationController<>(this, "controller", 0, this::predicate));
-  }
-
-  private <T extends GeoAnimatable> PlayState predicate(AnimationState<EternalGuardianEntity> tAnimationState) {
-    if (tAnimationState.isMoving()) {
-      // tAnimationState.getController()
-      // .setAnimation(RawAnimation.begin().then("animation.eternal_guardian.walk",
-      // Animation.LoopType.LOOP));
-    } else {
-      tAnimationState.getController()
-          .setAnimation(RawAnimation.begin().then("animation.eternal_guardian.idle", Animation.LoopType.LOOP));
-    }
-    return PlayState.CONTINUE;
-  }
-
-  @Override
-  public AnimatableInstanceCache getAnimatableInstanceCache() {
-    return cache;
-  }
-
   public boolean isTombstone(BlockPos pos) {
     if (pos == null) {
       return false;
@@ -214,4 +193,38 @@ public class EternalGuardianEntity extends HostileEntity implements GeoEntity {
     }
     return pos.isWithinDistance(this.getBlockPos(), (double) distance);
   }
+
+  // #endregion
+
+  // #region Animation
+
+  @Override
+  public void registerControllers(ControllerRegistrar controllers) {
+    controllers.add(new AnimationController<>(this, "controller", 0, this::predicate));
+    controllers.add(new AnimationController<>(this, "attackController", 0, this::attackPredicate));
+  }
+
+  private <T extends GeoAnimatable> PlayState predicate(AnimationState<EternalGuardianEntity> tAnimationState) {
+    tAnimationState.getController()
+        .setAnimation(RawAnimation.begin().then("animation.eternal_guardian.idle", Animation.LoopType.LOOP));
+    return PlayState.CONTINUE;
+  }
+
+  private <T extends GeoAnimatable> PlayState attackPredicate(AnimationState<EternalGuardianEntity> tAnimationState) {
+    if (this.handSwinging && tAnimationState.getController().getAnimationState().equals(State.STOPPED)) {
+      tAnimationState.getController().forceAnimationReset();
+      tAnimationState.getController()
+          .setAnimation(RawAnimation.begin().then("animation.eternal_guardian.melee", Animation.LoopType.PLAY_ONCE));
+      this.handSwinging = false;
+    }
+
+    return PlayState.CONTINUE;
+  }
+
+  @Override
+  public AnimatableInstanceCache getAnimatableInstanceCache() {
+    return cache;
+  }
+
+  // #endregion
 }
