@@ -29,7 +29,7 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
             Text.translatable("advancement.crawling-mysteries.desc"), // The description
             new Identifier("textures/block/end_stone_bricks.png"), // Background image used
             AdvancementFrame.TASK, // Options: TASK, CHALLENGE, GOAL
-            false, // Show toast top right
+            true, // Show toast top right
             false, // Announce to chat
             false // Hidden in the advancement tab
         )

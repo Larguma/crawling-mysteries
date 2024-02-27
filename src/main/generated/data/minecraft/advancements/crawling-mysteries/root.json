@@ -24,7 +24,7 @@
     "icon": {
       "item": "crawling-mysteries:cryptic_eye"
     },
-    "show_toast": false,
+    "show_toast": true,
     "title": {
       "translate": "general.crawling-mysteries.mod_name"
     }
