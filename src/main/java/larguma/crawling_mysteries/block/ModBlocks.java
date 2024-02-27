@@ -15,7 +15,7 @@ import net.minecraft.util.Identifier;
 
 public class ModBlocks {
   public static final Block TOMBSTONE = registerBlock("tombstone",
-      new TombstoneBlock(FabricBlockSettings.copyOf(Blocks.ENCHANTING_TABLE).nonOpaque(), ParticleTypes.SOUL));
+      new TombstoneBlock(FabricBlockSettings.copyOf(Blocks.OBSIDIAN).nonOpaque(), ParticleTypes.SOUL));
 
   private static Block registerBlock(String name, Block block) {
     registerBlockItem(name, block);

@@ -1,5 +1,7 @@
 package larguma.crawling_mysteries.block.entity;
 
+import java.util.UUID;
+
 import com.mojang.authlib.GameProfile;
 
 import larguma.crawling_mysteries.CrawlingMysteries;
@@ -23,6 +25,7 @@ public class TombstoneBlockEntity extends BlockEntity implements Nameable {
   private int xp;
   private GameProfile tombOwner;
   private String customName;
+  private UUID guardianUUID;
 
   public TombstoneBlockEntity(BlockPos pos, BlockState state) {
     super(ModBlockEntities.TOMBSTONE_BLOCK_ENTITY, pos, state);
@@ -31,6 +34,7 @@ public class TombstoneBlockEntity extends BlockEntity implements Nameable {
     this.xp = 0;
     this.items = DefaultedList.of();
     this.customName = null;
+    this.guardianUUID = null;
   }
 
   public void setItems(DefaultedList<ItemStack> items) {
@@ -69,6 +73,16 @@ public class TombstoneBlockEntity extends BlockEntity implements Nameable {
     return Text.of(customName);
   }
 
+
+  public void setGuardianUUID(UUID guardianUUID) {
+    this.guardianUUID = guardianUUID;
+    this.markDirty();
+  }
+
+  public UUID getGuardianUUID() {
+    return guardianUUID;
+  }
+
   @Override
   public void readNbt(NbtCompound tag) {
     super.readNbt(tag);
@@ -84,6 +98,9 @@ public class TombstoneBlockEntity extends BlockEntity implements Nameable {
 
     if (tag.contains("CustomName"))
       this.customName = tag.getString("CustomName");
+
+    if (tag.contains("GuardianUUID"))
+      this.guardianUUID = NbtHelper.toUuid(tag.getCompound("GuardianUUID"));
   }
 
   @Override
@@ -101,6 +118,9 @@ public class TombstoneBlockEntity extends BlockEntity implements Nameable {
 
     if (customName != null && !customName.isEmpty())
       tag.putString("CustomName", customName);
+
+    if (guardianUUID != null)
+      tag.put("GuardianUUID", NbtHelper.fromUuid(guardianUUID));
   }
 
   @Override

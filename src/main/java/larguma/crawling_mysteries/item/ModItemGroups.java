@@ -22,6 +22,8 @@ public class ModItemGroups {
 
             entries.add(ModBlocks.TOMBSTONE);
 
+            entries.add(ModItems.ETERNAL_GUARDIAN_SPAWN_EGG);
+
           }).build());
 
   public static void registerItemGroups() {

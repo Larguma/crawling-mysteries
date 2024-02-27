@@ -9,10 +9,13 @@ import org.slf4j.LoggerFactory;
 import larguma.crawling_mysteries.block.ModBlocks;
 import larguma.crawling_mysteries.block.entity.ModBlockEntities;
 import larguma.crawling_mysteries.config.CrawlingMysteriesConfig;
+import larguma.crawling_mysteries.entity.ModEntities;
+import larguma.crawling_mysteries.entity.custom.EternalGuardianEntity;
 import larguma.crawling_mysteries.item.ModItemGroups;
 import larguma.crawling_mysteries.item.ModItems;
 import larguma.crawling_mysteries.util.ModLootTableModifiers;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 
 public class CrawlingMysteries implements ModInitializer {
 	public static final String MOD_ID = "crawling-mysteries";
@@ -23,7 +26,7 @@ public class CrawlingMysteries implements ModInitializer {
 
 	@Override
 	public void onInitialize() {
-		LOGGER.info("Let's uncover some mysteries");
+		LOGGER.info("Awakening the mystical energies of Crawling Mysteries mod. The shadows whisper as new secrets are ready to be unveiled.");
 
 		ModItemGroups.registerItemGroups();
 
@@ -33,5 +36,7 @@ public class CrawlingMysteries implements ModInitializer {
 		ModLootTableModifiers.modifyLootTables();
 
 		ModBlockEntities.registerBlockEntities();
+
+		FabricDefaultAttributeRegistry.register(ModEntities.ETERNAL_GUARDIAN, EternalGuardianEntity.setAttributes());
 	}
 }

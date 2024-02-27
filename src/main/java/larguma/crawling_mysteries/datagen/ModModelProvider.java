@@ -5,6 +5,7 @@ import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
 import net.minecraft.data.client.BlockStateModelGenerator;
 import net.minecraft.data.client.ItemModelGenerator;
+import net.minecraft.data.client.ModelIds;
 import net.minecraft.data.client.Models;
 
 public class ModModelProvider extends FabricModelProvider {
@@ -15,7 +16,8 @@ public class ModModelProvider extends FabricModelProvider {
 
   @Override
   public void generateBlockStateModels(BlockStateModelGenerator blockStateModelGenerator) {
-    //blockStateModelGenerator.registerSimpleCubeAll(ModBlocks.EXAMPLE);
+    blockStateModelGenerator.registerParentedItemModel(ModItems.ETERNAL_GUARDIAN_SPAWN_EGG,
+        ModelIds.getMinecraftNamespacedItem("template_spawn_egg"));
   }
 
   @Override

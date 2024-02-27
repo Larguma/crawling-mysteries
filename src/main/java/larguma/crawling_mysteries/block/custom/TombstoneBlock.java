@@ -1,10 +1,13 @@
 package larguma.crawling_mysteries.block.custom;
 
 import java.util.List;
+import java.util.UUID;
 
 import larguma.crawling_mysteries.CrawlingMysteries;
 import larguma.crawling_mysteries.block.ModBlocks;
 import larguma.crawling_mysteries.block.entity.TombstoneBlockEntity;
+import larguma.crawling_mysteries.entity.ModEntities;
+import larguma.crawling_mysteries.entity.custom.EternalGuardianEntity;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
@@ -23,6 +26,7 @@ import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.DirectionProperty;
 import net.minecraft.state.property.Properties;
+import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.ItemScatterer;
@@ -92,7 +96,6 @@ public class TombstoneBlock extends BlockWithEntity implements Waterloggable {
   @Override
   public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
     return state.get(FACING).getAxis() == Direction.Axis.X ? EAST_WEST_SHAPE : NORTH_SOUTH_SHAPE;
-
   }
 
   @Override
@@ -113,6 +116,11 @@ public class TombstoneBlock extends BlockWithEntity implements Waterloggable {
       player.addExperience(tombstoneBlockEntity.getXp());
       onBreak(world, pos, state, player);
       world.removeBlock(pos, false);
+
+      if (tombstoneBlockEntity.getGuardianUUID() != null) {
+        // TODO: del the guardian
+        //EternalGuardianEntity guardian = (EternalGuardianEntity) world.getEntityById(EternalGuardianEntity, null, null)
+      }
     }
     return ActionResult.SUCCESS;
   }
@@ -168,19 +176,25 @@ public class TombstoneBlock extends BlockWithEntity implements Waterloggable {
       if (canPlaceTombstone(world, block, pos)) {
         BlockState state = ModBlocks.TOMBSTONE.getDefaultState()
             .with(FACING, player.getHorizontalFacing());
-
+        EternalGuardianEntity guardian = spawnEternalGuardian(world, pos, player.getGameProfile().getId());
         placed = world.setBlockState(pos, state);
         TombstoneBlockEntity TombstoneBlockEntity = new TombstoneBlockEntity(pos, state);
         TombstoneBlockEntity.setItems(combinedInventory);
         TombstoneBlockEntity.setTombOwner(player.getGameProfile());
         TombstoneBlockEntity.setXp(player.totalExperience);
+        TombstoneBlockEntity.setGuardianUUID(guardian.getUuid());
         world.addBlockEntity(TombstoneBlockEntity);
 
         TombstoneBlockEntity.markDirty();
         block.onBreak(world, blockPos, blockState, player);
 
         CrawlingMysteries.LOGGER
-            .info("Tombstone spawned at: " + pos.getX() + ", " + pos.getY() + ", " + pos.getZ());
+            .info("Tombstone for player: " + player.getName()
+                + " spawned at: " + pos.getX() + ", " + pos.getY() + ", " + pos.getZ());
+
+        player.sendMessage(
+            Text.translatable("block.crawling-mysteries.tombstone.death",
+                pos.getX(), pos.getY(), pos.getZ()));
 
         break;
       }
@@ -203,6 +217,17 @@ public class TombstoneBlock extends BlockWithEntity implements Waterloggable {
 
     return !(blockPos.getY() < world.getDimension().minY()
         || blockPos.getY() > world.getDimension().height() - world.getDimension().minY());
+  }
+
+  private static EternalGuardianEntity spawnEternalGuardian(World world, BlockPos pos, UUID owner) {
+    EternalGuardianEntity eternalGuardianEntity = new EternalGuardianEntity(ModEntities.ETERNAL_GUARDIAN, world);
+    eternalGuardianEntity.setTombstonePos(pos);
+    eternalGuardianEntity.setTombstoneOwner(owner);
+    eternalGuardianEntity.refreshPositionAndAngles((double) pos.getX() + 0.5, pos.getY(), (double) pos.getZ() + 0.5,
+        0.0f, 0.0f);
+    world.spawnEntity(eternalGuardianEntity);
+    eternalGuardianEntity.playSpawnEffects();
+    return eternalGuardianEntity;
   }
 
   @Override
