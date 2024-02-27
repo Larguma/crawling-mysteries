@@ -11,10 +11,10 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.SpawnReason;
-import net.minecraft.entity.ai.NoWaterTargeting;
 import net.minecraft.entity.ai.goal.ActiveTargetGoal;
 import net.minecraft.entity.ai.goal.LookAroundGoal;
 import net.minecraft.entity.ai.goal.LookAtEntityGoal;
+import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.ai.goal.RevengeGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
@@ -25,7 +25,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtHelper;
 import net.minecraft.util.math.BlockPos;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.Difficulty;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
@@ -46,6 +45,7 @@ public class EternalGuardianEntity extends HostileEntity implements GeoEntity {
   private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
   public BlockPos tombstonePos;
   private UUID tombstoneOwner;
+  public float speed = 1f;
   public static final String TOMBSTONE_POS_KEY = "TombstonePos";
   public static final String TOMBSTONE_OWNER_KEY = "TombstoneOwner";
 
@@ -67,7 +67,7 @@ public class EternalGuardianEntity extends HostileEntity implements GeoEntity {
         .add(EntityAttributes.GENERIC_MAX_HEALTH, 60)
         .add(EntityAttributes.GENERIC_ATTACK_DAMAGE, 5)
         .add(EntityAttributes.GENERIC_ATTACK_SPEED, 4)
-        .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.8)
+        .add(EntityAttributes.GENERIC_MOVEMENT_SPEED, 0.5)
         .add(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE, 1000)
         .add(EntityAttributes.GENERIC_ARMOR, 20)
         .add(EntityAttributes.GENERIC_ARMOR_TOUGHNESS, 15);
@@ -213,30 +213,5 @@ public class EternalGuardianEntity extends HostileEntity implements GeoEntity {
       return false;
     }
     return pos.isWithinDistance(this.getBlockPos(), (double) distance);
-  }
-
-  public void startMovingTo(BlockPos pos) {
-    Vec3d vec3d2;
-    Vec3d vec3d = Vec3d.ofBottomCenter(pos);
-    int i = 0;
-    BlockPos blockPos = this.getBlockPos();
-    int j = (int) vec3d.y - blockPos.getY();
-    if (j > 2) {
-      i = 4;
-    } else if (j < -2) {
-      i = -4;
-    }
-    int k = 6;
-    int l = 8;
-    int m = blockPos.getManhattanDistance(pos);
-    if (m < 15) {
-      k = m / 2;
-      l = m / 2;
-    }
-    if ((vec3d2 = NoWaterTargeting.find(this, k, l, i, vec3d, 0.3141592741012573)) == null) {
-      return;
-    }
-    this.navigation.setRangeMultiplier(0.5f);
-    this.navigation.startMovingTo(vec3d2.x, vec3d2.y, vec3d2.z, 1.0);
   }
 }

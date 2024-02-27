@@ -14,7 +14,7 @@ import net.minecraft.util.Identifier;
 public class ModEntities {
 
   public static final EntityType<EternalGuardianEntity> ETERNAL_GUARDIAN = registerMob("eternal_guardian",
-      EternalGuardianEntity::new, 1.5f, 1.5f);
+      EternalGuardianEntity::new, 1f, 3f);
 
   public static <T extends MobEntity> EntityType<T> registerMob(String name, EntityType.EntityFactory<T> entity,
       float width, float height) {

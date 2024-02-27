@@ -4,6 +4,7 @@ import java.util.EnumSet;
 
 import larguma.crawling_mysteries.entity.custom.EternalGuardianEntity;
 import net.minecraft.entity.ai.goal.Goal;
+import net.minecraft.util.math.BlockPos;
 
 public class GoToTombstoneGoal extends Goal {
 
@@ -28,14 +29,14 @@ public class GoToTombstoneGoal extends Goal {
   @Override
   public void stop() {
     this.eternalGuardian.getNavigation().stop();
-    this.eternalGuardian.getNavigation().resetRangeMultiplier();
   }
 
   @Override
   public void tick() {
-    if (this.eternalGuardian.getTombstonePos() == null || this.eternalGuardian.getNavigation().isFollowingPath()) {
+    BlockPos pos = this.eternalGuardian.getTombstonePos();
+    if (pos == null || this.eternalGuardian.getNavigation().isFollowingPath()) {
       return;
     }
-    this.eternalGuardian.startMovingTo(this.eternalGuardian.getTombstonePos());
+    this.eternalGuardian.getNavigation().startMovingTo(pos.getX(), pos.getY(), pos.getZ(), this.eternalGuardian.speed);
   }
 }
