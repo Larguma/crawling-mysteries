@@ -3,20 +3,18 @@ package larguma.crawling_mysteries.entity.custom;
 import java.util.UUID;
 
 import org.jetbrains.annotations.Nullable;
-
 import larguma.crawling_mysteries.CrawlingMysteries;
 import larguma.crawling_mysteries.block.ModBlocks;
+import larguma.crawling_mysteries.block.entity.TombstoneBlockEntity;
 import larguma.crawling_mysteries.entity.ai.GoToTombstoneGoal;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.EntityType;
-import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.NoWaterTargeting;
 import net.minecraft.entity.ai.goal.ActiveTargetGoal;
 import net.minecraft.entity.ai.goal.LookAroundGoal;
 import net.minecraft.entity.ai.goal.LookAtEntityGoal;
-import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.ai.goal.RevengeGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
@@ -87,17 +85,27 @@ public class EternalGuardianEntity extends HostileEntity implements GeoEntity {
     this.targetSelector.add(2, new ActiveTargetGoal<>(this, PlayerEntity.class, true));
   }
 
-  // TODO: Immune to projectiles
   @Override
   public boolean damage(DamageSource source, float amount) {
     Entity entity;
 
     entity = source.getAttacker();
-    if (entity != null && !(entity instanceof PlayerEntity) && entity instanceof LivingEntity
-        && ((LivingEntity) entity).getGroup() == this.getGroup()) {
+    if (entity == null || !(entity instanceof PlayerEntity)) {
       return false;
     }
     return super.damage(source, amount);
+  }
+
+  @Override
+  public void onDeath(DamageSource source) {
+    if (this.hasTombstone()) {
+      BlockPos pos = this.getTombstonePos();
+      TombstoneBlockEntity tombstoneBlockEntity = getTombstone(pos);
+      if (tombstoneBlockEntity != null) {
+        tombstoneBlockEntity.setGuardianUUID(null);
+      }
+    }
+    super.onDeath(source);
   }
 
   @Override
@@ -133,7 +141,7 @@ public class EternalGuardianEntity extends HostileEntity implements GeoEntity {
       this.tombstonePos = NbtHelper.toBlockPos(nbt.getCompound(TOMBSTONE_POS_KEY));
     }
     if (nbt.contains(TOMBSTONE_OWNER_KEY)) {
-      this.tombstoneOwner = NbtHelper.toUuid(nbt.getCompound(TOMBSTONE_OWNER_KEY));
+      this.tombstoneOwner = NbtHelper.toUuid(nbt.get(TOMBSTONE_OWNER_KEY));
     }
     super.readCustomDataFromNbt(nbt);
   }
@@ -193,6 +201,13 @@ public class EternalGuardianEntity extends HostileEntity implements GeoEntity {
     return this.getWorld().getBlockState(pos).isOf(ModBlocks.TOMBSTONE);
   }
 
+  public TombstoneBlockEntity getTombstone(BlockPos pos) {
+    if (!isTombstone(pos)) {
+      return null;
+    }
+    return (TombstoneBlockEntity) this.getWorld().getBlockEntity(pos);
+  }
+
   public boolean isWithinDistance(BlockPos pos, int distance) {
     if (pos == null) {
       return false;
@@ -223,10 +238,5 @@ public class EternalGuardianEntity extends HostileEntity implements GeoEntity {
     }
     this.navigation.setRangeMultiplier(0.5f);
     this.navigation.startMovingTo(vec3d2.x, vec3d2.y, vec3d2.z, 1.0);
-  }
-
-  public void markDirty() {
-    // TODO Auto-generated method stub
-    throw new UnsupportedOperationException("Unimplemented method 'markDirty'");
   }
 }

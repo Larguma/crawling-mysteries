@@ -16,12 +16,14 @@ import net.minecraft.block.HorizontalFacingBlock;
 import net.minecraft.block.ShapeContext;
 import net.minecraft.block.Waterloggable;
 import net.minecraft.block.entity.BlockEntity;
+import net.minecraft.entity.Entity.RemovalReason;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemPlacementContext;
 import net.minecraft.item.ItemStack;
 import net.minecraft.particle.ParticleEffect;
+import net.minecraft.predicate.entity.EntityPredicates;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.DirectionProperty;
@@ -33,6 +35,7 @@ import net.minecraft.util.ItemScatterer;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
+import net.minecraft.util.math.Box;
 import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.math.random.Random;
@@ -112,17 +115,34 @@ public class TombstoneBlock extends BlockWithEntity implements Waterloggable {
   public ActionResult onUse(BlockState state, World world, BlockPos pos, PlayerEntity player, Hand hand,
       BlockHitResult hit) {
     TombstoneBlockEntity tombstoneBlockEntity = (TombstoneBlockEntity) world.getBlockEntity(pos);
-    if (tombstoneBlockEntity.getTombOwner() == player.getGameProfile()) {
+    if (tombstoneBlockEntity.getTombstoneOwner() == player.getGameProfile()) {
       player.addExperience(tombstoneBlockEntity.getXp());
       onBreak(world, pos, state, player);
       world.removeBlock(pos, false);
 
       if (tombstoneBlockEntity.getGuardianUUID() != null) {
-        // TODO: del the guardian
-        //EternalGuardianEntity guardian = (EternalGuardianEntity) world.getEntityById(EternalGuardianEntity, null, null)
+        getGuardianEntity(world, player, tombstoneBlockEntity).remove(RemovalReason.DISCARDED);
       }
+    } else if (tombstoneBlockEntity.getGuardianUUID() == null) {
+      onBreak(world, pos, state, player);
+      world.removeBlock(pos, false);
     }
     return ActionResult.SUCCESS;
+  }
+
+  private EternalGuardianEntity getGuardianEntity(World world, PlayerEntity player,
+      TombstoneBlockEntity tombstoneBlockEntity) {
+    final EternalGuardianEntity[] eternalGuardian = { null };
+    List<EternalGuardianEntity> eternalGuardians = world
+        .getEntitiesByClass(EternalGuardianEntity.class, new Box(tombstoneBlockEntity.getPos()).expand(5),
+            EntityPredicates.EXCEPT_SPECTATOR);
+    for (EternalGuardianEntity guardian : eternalGuardians) {
+      if (guardian.getUuid().equals(tombstoneBlockEntity.getGuardianUUID())) {
+        eternalGuardian[0] = guardian;
+        break;
+      }
+    }
+    return eternalGuardian[0];
   }
 
   @Override
@@ -178,14 +198,14 @@ public class TombstoneBlock extends BlockWithEntity implements Waterloggable {
             .with(FACING, player.getHorizontalFacing());
         EternalGuardianEntity guardian = spawnEternalGuardian(world, pos, player.getGameProfile().getId());
         placed = world.setBlockState(pos, state);
-        TombstoneBlockEntity TombstoneBlockEntity = new TombstoneBlockEntity(pos, state);
-        TombstoneBlockEntity.setItems(combinedInventory);
-        TombstoneBlockEntity.setTombOwner(player.getGameProfile());
-        TombstoneBlockEntity.setXp(player.totalExperience);
-        TombstoneBlockEntity.setGuardianUUID(guardian.getUuid());
-        world.addBlockEntity(TombstoneBlockEntity);
+        TombstoneBlockEntity tombstoneBlockEntity = new TombstoneBlockEntity(pos, state);
+        tombstoneBlockEntity.setItems(combinedInventory);
+        tombstoneBlockEntity.setTombstoneOwner(player.getGameProfile());
+        tombstoneBlockEntity.setXp(player.totalExperience);
+        tombstoneBlockEntity.setGuardianUUID(guardian.getUuid());
+        world.addBlockEntity(tombstoneBlockEntity);
 
-        TombstoneBlockEntity.markDirty();
+        tombstoneBlockEntity.markDirty();
         block.onBreak(world, blockPos, blockState, player);
 
         CrawlingMysteries.LOGGER

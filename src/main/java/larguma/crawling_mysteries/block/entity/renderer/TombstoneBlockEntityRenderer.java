@@ -27,7 +27,7 @@ public class TombstoneBlockEntityRenderer implements BlockEntityRenderer<Tombsto
       VertexConsumerProvider vertexConsumers, int light,
       int overlay) {
 
-    String text = entity.getTombOwner().getName();
+    String text = entity.getTombstoneOwner().getName();
     if (text == null) {
       return;
     }

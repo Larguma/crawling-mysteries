@@ -23,14 +23,20 @@ public class TombstoneBlockEntity extends BlockEntity implements Nameable {
 
   private DefaultedList<ItemStack> items;
   private int xp;
-  private GameProfile tombOwner;
+  private GameProfile tombstoneOwner;
   private String customName;
   private UUID guardianUUID;
+  public static final String TOMBSTONE_OWNER_KEY = "TombstoneOwner";
+  public static final String TOMBSTONE_CUSTOM_NAME_KEY = "CustomName";
+  public static final String TOMBSTONE_GUARDIAN_UUID_KEY = "GuardianUUID";
+  public static final String TOMBSTONE_XP_KEY = "XP";
+  public static final String TOMBSTONE_ITEMS_KEY = "Items";
+  public static final String TOMBSTONE_ITEMCOUNT_KEY = "ItemCount";
 
   public TombstoneBlockEntity(BlockPos pos, BlockState state) {
     super(ModBlockEntities.TOMBSTONE_BLOCK_ENTITY, pos, state);
 
-    this.tombOwner = null;
+    this.tombstoneOwner = null;
     this.xp = 0;
     this.items = DefaultedList.of();
     this.customName = null;
@@ -46,13 +52,14 @@ public class TombstoneBlockEntity extends BlockEntity implements Nameable {
     return items;
   }
 
-  public void setTombOwner(GameProfile gameProfile) {
-    this.tombOwner = gameProfile;
+  public void setTombstoneOwner(GameProfile gameProfile) {
+    this.tombstoneOwner = gameProfile;
     this.markDirty();
   }
 
-  public GameProfile getTombOwner() {
-    return tombOwner != null ? tombOwner : new GameProfile(CrawlingMysteries.ELDRICTH_WEAVER_UUID, CrawlingMysteries.ELDRICTH_WEAVER_NAME);
+  public GameProfile getTombstoneOwner() {
+    return tombstoneOwner != null ? tombstoneOwner
+        : new GameProfile(CrawlingMysteries.ELDRICTH_WEAVER_UUID, CrawlingMysteries.ELDRICTH_WEAVER_NAME);
   }
 
   public int getXp() {
@@ -73,7 +80,6 @@ public class TombstoneBlockEntity extends BlockEntity implements Nameable {
     return Text.of(customName);
   }
 
-
   public void setGuardianUUID(UUID guardianUUID) {
     this.guardianUUID = guardianUUID;
     this.markDirty();
@@ -84,43 +90,44 @@ public class TombstoneBlockEntity extends BlockEntity implements Nameable {
   }
 
   @Override
-  public void readNbt(NbtCompound tag) {
-    super.readNbt(tag);
+  public void readNbt(NbtCompound nbt) {
 
-    this.items = DefaultedList.ofSize(tag.getInt("ItemCount"), ItemStack.EMPTY);
+    this.items = DefaultedList.ofSize(nbt.getInt(TOMBSTONE_ITEMCOUNT_KEY), ItemStack.EMPTY);
 
-    Inventories.readNbt(tag.getCompound("Items"), this.items);
+    Inventories.readNbt(nbt.getCompound(TOMBSTONE_ITEMS_KEY), this.items);
 
-    this.xp = tag.getInt("XP");
+    this.xp = nbt.getInt(TOMBSTONE_XP_KEY);
 
-    if (tag.contains("TombOwner"))
-      this.tombOwner = NbtHelper.toGameProfile(tag.getCompound("TombOwner"));
+    if (nbt.contains(TOMBSTONE_OWNER_KEY))
+      this.tombstoneOwner = NbtHelper.toGameProfile(nbt.getCompound(TOMBSTONE_OWNER_KEY));
 
-    if (tag.contains("CustomName"))
-      this.customName = tag.getString("CustomName");
+    if (nbt.contains(TOMBSTONE_CUSTOM_NAME_KEY))
+      this.customName = nbt.getString(TOMBSTONE_CUSTOM_NAME_KEY);
 
-    if (tag.contains("GuardianUUID"))
-      this.guardianUUID = NbtHelper.toUuid(tag.getCompound("GuardianUUID"));
+    if (nbt.contains(TOMBSTONE_GUARDIAN_UUID_KEY))
+      this.guardianUUID = NbtHelper.toUuid(nbt.get(TOMBSTONE_GUARDIAN_UUID_KEY));
+
+    super.readNbt(nbt);
   }
 
   @Override
-  public void writeNbt(NbtCompound tag) {
-    super.writeNbt(tag);
+  public void writeNbt(NbtCompound nbt) {
+    super.writeNbt(nbt);
 
-    tag.putInt("ItemCount", this.items.size());
+    nbt.putInt(TOMBSTONE_ITEMCOUNT_KEY, this.items.size());
 
-    tag.put("Items", Inventories.writeNbt(new NbtCompound(), this.items, true));
+    nbt.put(TOMBSTONE_ITEMS_KEY, Inventories.writeNbt(new NbtCompound(), this.items, true));
 
-    tag.putInt("XP", xp);
+    nbt.putInt(TOMBSTONE_XP_KEY, xp);
 
-    if (tombOwner != null)
-      tag.put("TombOwner", NbtHelper.writeGameProfile(new NbtCompound(), tombOwner));
+    if (tombstoneOwner != null)
+      nbt.put(TOMBSTONE_OWNER_KEY, NbtHelper.writeGameProfile(new NbtCompound(), tombstoneOwner));
 
     if (customName != null && !customName.isEmpty())
-      tag.putString("CustomName", customName);
+      nbt.putString(TOMBSTONE_CUSTOM_NAME_KEY, customName);
 
     if (guardianUUID != null)
-      tag.put("GuardianUUID", NbtHelper.fromUuid(guardianUUID));
+      nbt.put(TOMBSTONE_GUARDIAN_UUID_KEY, NbtHelper.fromUuid(guardianUUID));
   }
 
   @Override
