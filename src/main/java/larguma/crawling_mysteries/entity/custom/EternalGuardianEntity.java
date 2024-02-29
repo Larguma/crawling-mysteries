@@ -54,6 +54,7 @@ public class EternalGuardianEntity extends HostileEntity implements GeoEntity {
     super(entityType, world);
     this.tombstonePos = new BlockPos(0, 0, 0);
     this.tombstoneOwner = null;
+    this.setPersistent();
   }
 
   // #region Entity Initialization
