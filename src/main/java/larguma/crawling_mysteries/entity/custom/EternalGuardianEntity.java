@@ -7,6 +7,7 @@ import larguma.crawling_mysteries.CrawlingMysteries;
 import larguma.crawling_mysteries.block.ModBlocks;
 import larguma.crawling_mysteries.block.entity.TombstoneBlockEntity;
 import larguma.crawling_mysteries.entity.ai.GoToTombstoneGoal;
+import larguma.crawling_mysteries.entity.ai.ProtectTombstoneGoal;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityData;
 import net.minecraft.entity.EntityType;
@@ -14,7 +15,6 @@ import net.minecraft.entity.SpawnReason;
 import net.minecraft.entity.ai.goal.ActiveTargetGoal;
 import net.minecraft.entity.ai.goal.LookAroundGoal;
 import net.minecraft.entity.ai.goal.LookAtEntityGoal;
-import net.minecraft.entity.ai.goal.MeleeAttackGoal;
 import net.minecraft.entity.ai.goal.RevengeGoal;
 import net.minecraft.entity.ai.goal.SwimGoal;
 import net.minecraft.entity.attribute.DefaultAttributeContainer;
@@ -78,7 +78,7 @@ public class EternalGuardianEntity extends HostileEntity implements GeoEntity {
 
   @Override
   protected void initGoals() {
-    this.goalSelector.add(1, new MeleeAttackGoal(this, 1, false));
+    this.goalSelector.add(1, new ProtectTombstoneGoal(this, 1, false));
     this.goalSelector.add(2, new GoToTombstoneGoal(this));
     this.goalSelector.add(3, new SwimGoal(this));
     this.goalSelector.add(4, new LookAtEntityGoal(this, PlayerEntity.class, 8.0F));
