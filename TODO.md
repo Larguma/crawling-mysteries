@@ -8,44 +8,61 @@ Break Geodes on workbench (new block)
 
 Advancements to progress
 
-Intégration avec [Trinkets](https://github.com/emilyploszaj/trinkets/wiki) [Artifacts](https://github.com/ochotonida/artifacts/tree/1.20.x/fabric/src/main/java/artifacts/fabric)
+[Trinkets](https://github.com/emilyploszaj/trinkets/wiki) [Artifacts](https://github.com/ochotonida/artifacts/tree/1.20.x/fabric/src/main/java/artifacts/fabric)
 
 Mana for some trinkets: [tuto](https://ladysnake.org/wiki/cardinal-components-api/landing)
 
-Mettre des config et de l'UI avec [OwO lib](https://docs.wispforest.io/owo/ui/getting-started/)
+Config + UI [OwO lib](https://docs.wispforest.io/owo/ui/getting-started/)
 
 ## Items list
 
--[] Journal "Cryptic Eye", feed it with undying totems
--[x] Tombes "Eternal Guardian's Band"
--[] New Metal (Mysterium) (for crafting trinkets)
--[] Geodes
--[] Beers
+### TODO
 
-### Eternal Guardian's Band
+- [ ] New Metal (Mysterium ?) (for crafting trinkets)
+- [ ] Geodes
+- [ ] Beers
 
--[x] Modéliser le ring (3d ?)
--[] Faire des meilleurs tombes ?
--[x] Spawn l'"Eternal Guardian"
+### TODO-ing
+
+#### Cryptic Eye
+
+- [ ] in-game docu
+- [ ] find another use
+- [ ] feed it undying totem to gain max health (or absorbtion (or regen or resistance, to op ?)) ?
+
+#### Eternal Guardian's Band
+
+- [ ] Better tombstones
+- [ ] Make a recipe, smth like with metal (new metal ?) and soul harvesting (which one) or pact via ritual ? 
+- [x] 3d
+- [x] Spawn '"Eternal Guardian"
 
 ## Blocks list
 
--[] Geode workbench
+### TODO
+
+- [ ] Geode workbench
+
+### TODO-ing
 
 ## Mobs list
 
--[x] Protecteur de tombes "Eternal Guardian"
+### TODO
 
-## Gameplay
+### TODO-ing
+
+- [x] Tombstone Guardian "Eternal Guardian"
+
+## Gameplay ideas
 
 ### Find new items
 
--[] In sus sand
--[] In Geode inside deepstone
+- In sus sand
+- In Geode (inside deepstone ?)
 
 ### New structures
 
--[] Tavern, NPC (shop), beer
+- Tavern, NPC (shop ? for what ?), beer
 
 ## Random Ideas
 
