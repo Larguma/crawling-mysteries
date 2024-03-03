@@ -13,7 +13,7 @@ public class CrawlingMysteriesConfig extends ConfigWrapper<larguma.crawling_myst
 
     public final Keys keys = new Keys();
 
-    private final Option<java.lang.Boolean> enableCrypticEyeRender = this.optionForKey(this.keys.enableCrypticEyeRender);
+    private final Option<java.lang.Boolean> enableTrinketsRender = this.optionForKey(this.keys.enableTrinketsRender);
     private final Option<java.lang.Boolean> enableTombstone = this.optionForKey(this.keys.enableTombstone);
 
     private CrawlingMysteriesConfig() {
@@ -36,12 +36,12 @@ public class CrawlingMysteriesConfig extends ConfigWrapper<larguma.crawling_myst
         return wrapper;
     }
 
-    public boolean enableCrypticEyeRender() {
-        return enableCrypticEyeRender.value();
+    public boolean enableTrinketsRender() {
+        return enableTrinketsRender.value();
     }
 
-    public void enableCrypticEyeRender(boolean value) {
-        enableCrypticEyeRender.set(value);
+    public void enableTrinketsRender(boolean value) {
+        enableTrinketsRender.set(value);
     }
 
     public boolean enableTombstone() {
@@ -54,7 +54,7 @@ public class CrawlingMysteriesConfig extends ConfigWrapper<larguma.crawling_myst
 
 
     public static class Keys {
-        public final Option.Key enableCrypticEyeRender = new Option.Key("enableCrypticEyeRender");
+        public final Option.Key enableTrinketsRender = new Option.Key("enableTrinketsRender");
         public final Option.Key enableTombstone = new Option.Key("enableTombstone");
     }
 }

@@ -16,36 +16,36 @@ Mettre des config et de l'UI avec [OwO lib](https://docs.wispforest.io/owo/ui/ge
 
 ## Items list
 
-- Journal "Cryptic Eye"
-- Tombes "Eternal Guardian's Band"
-- New Metal (Mysterium) (for crafting trinkets)
-- Geodes
-- Beers
+-[] Journal "Cryptic Eye", feed it with undying totems
+-[x] Tombes "Eternal Guardian's Band"
+-[] New Metal (Mysterium) (for crafting trinkets)
+-[] Geodes
+-[] Beers
 
 ### Eternal Guardian's Band
 
-- Modéliser le ring (3d ?)
-- Faire des meilleurs tombes ?
-- Spawn l'"Eternal Guardian"
+-[x] Modéliser le ring (3d ?)
+-[] Faire des meilleurs tombes ?
+-[x] Spawn l'"Eternal Guardian"
 
 ## Blocks list
 
-- Geade workbench
+-[] Geode workbench
 
 ## Mobs list
 
-- Protecteur de tombes "Eternal Guardian"
+-[x] Protecteur de tombes "Eternal Guardian"
 
 ## Gameplay
 
 ### Find new items
 
-- In sus sand
-- In Geode inside deepstone
+-[] In sus sand
+-[] In Geode inside deepstone
 
 ### New structures
 
-- Tavern, png (shop), beer
+-[] Tavern, NPC (shop), beer
 
 ## Random Ideas
 

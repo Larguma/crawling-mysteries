@@ -11,7 +11,7 @@ public class CrawlingMysteriesConfigModel {
   // https://docs.wispforest.io/owo/config/getting-started/
   
   @SectionHeader("trinkets")
-  public boolean enableCrypticEyeRender = true;
+  public boolean enableTrinketsRender = true;
 
   @Sync(Option.SyncMode.OVERRIDE_CLIENT)
   public boolean enableTombstone = true;

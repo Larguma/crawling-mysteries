@@ -26,8 +26,8 @@
   "advancement.crawling-mysteries.eternal_guardians_band.desc": "Unearth the secrets of the ancients and find the Eternal Guardian's Band hidden within the depths of a forsaken dungeon. Secure your destiny as the one who commands the protection of the afterlife.",
   "text.config.crawling-mysteries.title": "Crawling Mysteries",
   "text.config.crawling-mysteries.section.trinkets": "Trinkets",
-  "text.config.crawling-mysteries.option.enableCrypticEyeRender": [
-    "Show the Cryptic Eye\n",
+  "text.config.crawling-mysteries.option.enableTrinketsRender": [
+    "Show the trinkets\n",
     {
       "text": "May require a restart",
       "color": "gray",
