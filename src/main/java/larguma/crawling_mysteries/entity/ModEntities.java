@@ -22,4 +22,8 @@ public class ModEntities {
         new Identifier(CrawlingMysteries.MOD_ID, name), FabricEntityTypeBuilder.create(SpawnGroup.CREATURE, entity)
             .dimensions(EntityDimensions.changing(width, height)).build());
   }
+
+  public static void registerModEntities() {
+    CrawlingMysteries.LOGGER.debug("Registering ModEntities");
+  }
 }

@@ -46,6 +46,7 @@ public class EternalGuardianEntity extends HostileEntity implements GeoEntity {
   private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
   public BlockPos tombstonePos;
   private UUID tombstoneOwner;
+  private final World world;
   public float speed = 1f;
   public static final String TOMBSTONE_POS_KEY = "TombstonePos";
   public static final String TOMBSTONE_OWNER_KEY = "TombstoneOwner";
@@ -54,6 +55,7 @@ public class EternalGuardianEntity extends HostileEntity implements GeoEntity {
     super(entityType, world);
     this.tombstonePos = new BlockPos(0, 0, 0);
     this.tombstoneOwner = null;
+    this.world = world;
     this.setPersistent();
   }
 
@@ -178,14 +180,14 @@ public class EternalGuardianEntity extends HostileEntity implements GeoEntity {
     if (pos == null) {
       return false;
     }
-    return this.getWorld().getBlockState(pos).isOf(ModBlocks.TOMBSTONE);
+    return this.world.getBlockState(pos).isOf(ModBlocks.TOMBSTONE);
   }
 
   public TombstoneBlockEntity getTombstone(BlockPos pos) {
     if (!isTombstone(pos)) {
       return null;
     }
-    return (TombstoneBlockEntity) this.getWorld().getBlockEntity(pos);
+    return (TombstoneBlockEntity) this.world.getBlockEntity(pos);
   }
 
   public boolean isWithinDistance(BlockPos pos, int distance) {

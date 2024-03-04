@@ -7,7 +7,10 @@ import larguma.crawling_mysteries.block.entity.renderer.TombstoneBlockEntityRend
 import larguma.crawling_mysteries.entity.ModEntities;
 import larguma.crawling_mysteries.entity.client.EternalGuardianRenderer;
 import larguma.crawling_mysteries.item.ModItems;
+import larguma.crawling_mysteries.particle.ModParticles;
+import larguma.crawling_mysteries.particle.custom.EternalFireParticle;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
@@ -25,6 +28,9 @@ public class CrawlingMysteriesClient implements ClientModInitializer {
 
     EntityRendererRegistry.register(ModEntities.ETERNAL_GUARDIAN, EternalGuardianRenderer::new);
 
+    ParticleFactoryRegistry.getInstance().register(ModParticles.ETERNAL_FIRE_PARTICLE, EternalFireParticle.Factory::new);
+
+    // Trinkets
     if (CrawlingMysteries.CONFIG.enableTrinketsRender()) {
       // Cryptic Eye
       TrinketRendererRegistry.registerRenderer(ModItems.CRYPTIC_EYE,

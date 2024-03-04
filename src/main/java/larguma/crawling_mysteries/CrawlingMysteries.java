@@ -13,6 +13,7 @@ import larguma.crawling_mysteries.entity.ModEntities;
 import larguma.crawling_mysteries.entity.custom.EternalGuardianEntity;
 import larguma.crawling_mysteries.item.ModItemGroups;
 import larguma.crawling_mysteries.item.ModItems;
+import larguma.crawling_mysteries.particle.ModParticles;
 import larguma.crawling_mysteries.util.ModLootTableModifiers;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
@@ -36,7 +37,9 @@ public class CrawlingMysteries implements ModInitializer {
 		ModLootTableModifiers.modifyLootTables();
 
 		ModBlockEntities.registerBlockEntities();
-
+		ModParticles.registerParticles();
+		
+		ModEntities.registerModEntities();
 		FabricDefaultAttributeRegistry.register(ModEntities.ETERNAL_GUARDIAN, EternalGuardianEntity.setAttributes());
 	}
 }
