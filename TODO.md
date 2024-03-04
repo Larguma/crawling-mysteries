@@ -19,8 +19,36 @@ Config + UI [OwO lib](https://docs.wispforest.io/owo/ui/getting-started/)
 ### TODO
 
 - [ ] New Metal (Mysterium ?) (for crafting trinkets)
-- [ ] Geodes
-- [ ] Beers
+
+#### Geodes
+
+- [ ] gems inside (0.1% drop)
+
+##### Gems Type
+
+- [ ] weapons, armor, shield
+- [ ] find use
+  - spawn lighthning
+  - full protection (1%) chance
+
+####  Eternal Guardian maks
+
+- [ ] two variantes, w/ strap & w/o strap
+- [ ] recipe
+- [ ] can equip (trinkets)
+- [ ] find use
+
+#### Beers
+
+- [ ] find use
+- [ ] 3d model
+- [ ] drinkable
+
+
+#### Ethereal Lantern
+
+- [ ] trinket lantern
+- [ ] illuminate the surronding
 
 ### TODO-ing
 
@@ -29,11 +57,12 @@ Config + UI [OwO lib](https://docs.wispforest.io/owo/ui/getting-started/)
 - [ ] in-game docu
 - [ ] find another use
 - [ ] feed it undying totem to gain max health (or absorbtion (or regen or resistance, to op ?)) ?
+- [ ] new trinket slots (eye)
 
 #### Eternal Guardian's Band
 
-- [ ] Better tombstones
-- [ ] Make a recipe, smth like with metal (new metal ?) and soul harvesting (which one) or pact via ritual ? 
+- [ ] Make a recipe, smth like with metal (new metal ?) and soul harvesting (which one) or pact via ritual ?
+- [x] Better tombstones
 - [x] 3d
 - [x] Spawn '"Eternal Guardian"
 
@@ -41,7 +70,12 @@ Config + UI [OwO lib](https://docs.wispforest.io/owo/ui/getting-started/)
 
 ### TODO
 
-- [ ] Geode workbench
+- [ ] bar
+
+#### Geode workbench
+
+- [ ] crack geode
+- [ ] encase gems inside equipments
 
 ### TODO-ing
 
@@ -49,8 +83,17 @@ Config + UI [OwO lib](https://docs.wispforest.io/owo/ui/getting-started/)
 
 ### TODO
 
+- [ ] barkeeper (Villager)
+
+#### Swampwitch
+
+- [ ] strong witch
+- [ ] find drop use
+
 ### TODO-ing
 
+- [ ] Eternal Guardian sounds
+- [ ] Drop is mask
 - [x] Tombstone Guardian "Eternal Guardian"
 
 ## Gameplay ideas
@@ -59,10 +102,12 @@ Config + UI [OwO lib](https://docs.wispforest.io/owo/ui/getting-started/)
 
 - In sus sand
 - In Geode (inside deepstone ?)
+- [ ] add gemmes to weapons 
 
 ### New structures
 
 - Tavern, NPC (shop ? for what ?), beer
+- Swampwitch hut
 
 ## Random Ideas
 
