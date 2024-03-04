@@ -40,7 +40,6 @@ import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3i;
 import net.minecraft.util.math.random.Random;
 import net.minecraft.util.shape.VoxelShape;
-import net.minecraft.util.shape.VoxelShapes;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
 import net.minecraft.world.WorldAccess;
@@ -49,12 +48,7 @@ public class TombstoneBlock extends BlockWithEntity implements Waterloggable {
   public static final DirectionProperty FACING = HorizontalFacingBlock.FACING;
   public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
   private final ParticleEffect particle;
-  private static final VoxelShape NORTH_SOUTH_SHAPE = VoxelShapes.union(Block.createCuboidShape(2, 0, 5, 14, 1, 11),
-      Block.createCuboidShape(3, 1, 5, 13, 2, 11), Block.createCuboidShape(4, 2, 6, 12, 4, 10),
-      Block.createCuboidShape(7, 4, 7, 9, 16, 9), Block.createCuboidShape(3.5, 11, 7, 12.5, 13, 9));
-  private static final VoxelShape EAST_WEST_SHAPE = VoxelShapes.union(Block.createCuboidShape(5, 0, 2, 11, 1, 14),
-      Block.createCuboidShape(5, 1, 3, 11, 2, 13), Block.createCuboidShape(6, 2, 4, 10, 4, 12),
-      Block.createCuboidShape(7, 4, 7, 9, 16, 9), Block.createCuboidShape(7, 11, 3.5, 9, 13, 12.5));
+  private static final VoxelShape SHAPE = Block.createCuboidShape(4, 0, 4, 12, 14, 12);
 
   public TombstoneBlock(Settings settings, ParticleEffect particle) {
     super(settings);
@@ -98,7 +92,7 @@ public class TombstoneBlock extends BlockWithEntity implements Waterloggable {
 
   @Override
   public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-    return state.get(FACING).getAxis() == Direction.Axis.X ? EAST_WEST_SHAPE : NORTH_SOUTH_SHAPE;
+    return SHAPE;
   }
 
   @Override
