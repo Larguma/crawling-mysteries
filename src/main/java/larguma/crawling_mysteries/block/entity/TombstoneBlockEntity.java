@@ -14,20 +14,16 @@ import net.minecraft.nbt.NbtHelper;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
 import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
-import net.minecraft.text.Text;
-import net.minecraft.util.Nameable;
 import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.util.math.BlockPos;
 
-public class TombstoneBlockEntity extends BlockEntity implements Nameable {
+public class TombstoneBlockEntity extends BlockEntity {
 
   private DefaultedList<ItemStack> items;
   private int xp;
   private GameProfile tombstoneOwner;
-  private String customName;
   private UUID guardianUUID;
   public static final String TOMBSTONE_OWNER_KEY = "TombstoneOwner";
-  public static final String TOMBSTONE_CUSTOM_NAME_KEY = "CustomName";
   public static final String TOMBSTONE_GUARDIAN_UUID_KEY = "GuardianUUID";
   public static final String TOMBSTONE_XP_KEY = "XP";
   public static final String TOMBSTONE_ITEMS_KEY = "Items";
@@ -39,7 +35,6 @@ public class TombstoneBlockEntity extends BlockEntity implements Nameable {
     this.tombstoneOwner = null;
     this.xp = 0;
     this.items = DefaultedList.of();
-    this.customName = null;
     this.guardianUUID = null;
   }
 
@@ -49,7 +44,7 @@ public class TombstoneBlockEntity extends BlockEntity implements Nameable {
   }
 
   public DefaultedList<ItemStack> getItems() {
-    return items;
+    return this.items;
   }
 
   public void setTombstoneOwner(GameProfile gameProfile) {
@@ -58,26 +53,21 @@ public class TombstoneBlockEntity extends BlockEntity implements Nameable {
   }
 
   public GameProfile getTombstoneOwner() {
-    return tombstoneOwner != null ? tombstoneOwner
+    return this.tombstoneOwner != null ? this.tombstoneOwner
         : new GameProfile(CrawlingMysteries.ELDRICTH_WEAVER_UUID, CrawlingMysteries.ELDRICTH_WEAVER_NAME);
   }
 
+  public boolean hasTombstoneOwner() {
+    return this.tombstoneOwner != null;
+  }
+
   public int getXp() {
-    return xp;
+    return this.xp;
   }
 
   public void setXp(int xp) {
     this.xp = xp;
     this.markDirty();
-  }
-
-  public void setCustomName(String customName) {
-    this.customName = customName;
-    this.markDirty();
-  }
-
-  public Text getCustomName() {
-    return Text.of(customName);
   }
 
   public void setGuardianUUID(UUID guardianUUID) {
@@ -86,7 +76,11 @@ public class TombstoneBlockEntity extends BlockEntity implements Nameable {
   }
 
   public UUID getGuardianUUID() {
-    return guardianUUID;
+    return this.guardianUUID;
+  }
+
+  public boolean hasGuardianUUID() {
+    return this.guardianUUID != null;
   }
 
   @Override
@@ -100,9 +94,6 @@ public class TombstoneBlockEntity extends BlockEntity implements Nameable {
 
     if (nbt.contains(TOMBSTONE_OWNER_KEY))
       this.tombstoneOwner = NbtHelper.toGameProfile(nbt.getCompound(TOMBSTONE_OWNER_KEY));
-
-    if (nbt.contains(TOMBSTONE_CUSTOM_NAME_KEY))
-      this.customName = nbt.getString(TOMBSTONE_CUSTOM_NAME_KEY);
 
     if (nbt.contains(TOMBSTONE_GUARDIAN_UUID_KEY))
       this.guardianUUID = NbtHelper.toUuid(nbt.get(TOMBSTONE_GUARDIAN_UUID_KEY));
@@ -118,16 +109,13 @@ public class TombstoneBlockEntity extends BlockEntity implements Nameable {
 
     nbt.put(TOMBSTONE_ITEMS_KEY, Inventories.writeNbt(new NbtCompound(), this.items, true));
 
-    nbt.putInt(TOMBSTONE_XP_KEY, xp);
+    nbt.putInt(TOMBSTONE_XP_KEY, this.xp);
 
-    if (tombstoneOwner != null)
-      nbt.put(TOMBSTONE_OWNER_KEY, NbtHelper.writeGameProfile(new NbtCompound(), tombstoneOwner));
+    if (this.hasTombstoneOwner())
+      nbt.put(TOMBSTONE_OWNER_KEY, NbtHelper.writeGameProfile(new NbtCompound(), this.tombstoneOwner));
 
-    if (customName != null && !customName.isEmpty())
-      nbt.putString(TOMBSTONE_CUSTOM_NAME_KEY, customName);
-
-    if (guardianUUID != null)
-      nbt.put(TOMBSTONE_GUARDIAN_UUID_KEY, NbtHelper.fromUuid(guardianUUID));
+    if (this.hasGuardianUUID())
+      nbt.put(TOMBSTONE_GUARDIAN_UUID_KEY, NbtHelper.fromUuid(this.guardianUUID));
   }
 
   @Override
@@ -138,20 +126,5 @@ public class TombstoneBlockEntity extends BlockEntity implements Nameable {
   @Override
   public NbtCompound toInitialChunkDataNbt() {
     return createNbt();
-  }
-
-  @Override
-  public Text getName() {
-    return this.hasCustomName() ? Text.of(this.customName) : Text.translatable("item.crawling-mysteries.tombstone");
-  }
-
-  @Override
-  public Text getDisplayName() {
-    return this.getName();
-  }
-
-  @Override
-  public boolean hasCustomName() {
-    return this.customName != null;
   }
 }

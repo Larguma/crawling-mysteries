@@ -31,19 +31,11 @@ Config + UI [OwO lib](https://docs.wispforest.io/owo/ui/getting-started/)
   - spawn lighthning
   - full protection (1%) chance
 
-####  Eternal Guardian maks
-
-- [ ] two variantes, w/ strap & w/o strap
-- [ ] recipe
-- [ ] can equip (trinkets)
-- [ ] find use
-
 #### Beers
 
 - [ ] find use
 - [ ] 3d model
 - [ ] drinkable
-
 
 #### Ethereal Lantern
 
@@ -51,6 +43,13 @@ Config + UI [OwO lib](https://docs.wispforest.io/owo/ui/getting-started/)
 - [ ] illuminate the surronding
 
 ### TODO-ing
+
+####  Eternal Guardian head/maks
+
+- [ ] two variantes, w/ strap & w/o strap
+- [ ] recipe
+- [ ] can equip (trinkets mask slot)
+- [ ] find use
 
 #### Cryptic Eye
 

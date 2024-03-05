@@ -25,6 +25,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.nbt.NbtHelper;
 import net.minecraft.registry.tag.DamageTypeTags;
+import net.minecraft.text.Text;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.LocalDifficulty;
 import net.minecraft.world.ServerWorldAccess;
@@ -46,15 +47,18 @@ public class EternalGuardianEntity extends HostileEntity implements GeoEntity {
   private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
   public BlockPos tombstonePos;
   private UUID tombstoneOwner;
+  private String tombstoneOwnerName;
   private final World world;
   public float speed = 1f;
   public static final String TOMBSTONE_POS_KEY = "TombstonePos";
   public static final String TOMBSTONE_OWNER_KEY = "TombstoneOwner";
+  public static final String TOMBSTONE_OWNER_NAME_KEY = "TombstoneOwnerName";
 
   public EternalGuardianEntity(EntityType<? extends HostileEntity> entityType, World world) {
     super(entityType, world);
     this.tombstonePos = new BlockPos(0, 0, 0);
     this.tombstoneOwner = null;
+    this.tombstoneOwnerName = "";
     this.world = world;
     this.setPersistent();
   }
@@ -133,6 +137,9 @@ public class EternalGuardianEntity extends HostileEntity implements GeoEntity {
     if (this.hasTombstoneOwner()) {
       nbt.put(TOMBSTONE_OWNER_KEY, NbtHelper.fromUuid(this.getTombstoneOwner()));
     }
+    if (this.hasTombstoneOwnerName()) {
+      nbt.putString(TOMBSTONE_OWNER_NAME_KEY, this.getTombstoneOwnerName());
+    }
   }
 
   @Override
@@ -143,6 +150,9 @@ public class EternalGuardianEntity extends HostileEntity implements GeoEntity {
     }
     if (nbt.contains(TOMBSTONE_OWNER_KEY)) {
       this.tombstoneOwner = NbtHelper.toUuid(nbt.get(TOMBSTONE_OWNER_KEY));
+    }
+    if (nbt.contains(TOMBSTONE_OWNER_NAME_KEY)) {
+      this.tombstoneOwnerName = nbt.getString(TOMBSTONE_OWNER_NAME_KEY);
     }
     super.readCustomDataFromNbt(nbt);
   }
@@ -174,6 +184,20 @@ public class EternalGuardianEntity extends HostileEntity implements GeoEntity {
 
   public boolean hasTombstoneOwner() {
     return this.tombstoneOwner != null;
+  }
+
+  public void setTombstoneOwnerName(String name) {
+    this.setCustomName(Text.translatable("entity.crawling-mysteries.eternal_guardian.custom_name", name));
+    this.tombstoneOwnerName = name;
+  }
+
+  public String getTombstoneOwnerName() {
+    return this.tombstoneOwnerName != null ? this.tombstoneOwnerName
+        : CrawlingMysteries.ELDRICTH_WEAVER_NAME;
+  }
+
+  public boolean hasTombstoneOwnerName() {
+    return this.tombstoneOwnerName != null;
   }
 
   public boolean isTombstone(BlockPos pos) {

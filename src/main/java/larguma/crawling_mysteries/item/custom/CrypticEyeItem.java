@@ -60,10 +60,6 @@ public class CrypticEyeItem extends TrinketItem implements GeoItem {
     return modifiers;
   }
 
-  public boolean canUnequip(ItemStack stack, SlotReference slot, LivingEntity entity) {
-    return false;
-  }
-
   public TrinketEnums.DropRule getDropRule(ItemStack stack, SlotReference slot, LivingEntity entity) {
     return DropRule.KEEP;
   }
