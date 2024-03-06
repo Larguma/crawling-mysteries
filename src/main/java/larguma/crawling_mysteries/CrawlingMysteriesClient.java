@@ -17,7 +17,9 @@ import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
 import net.minecraft.client.render.entity.model.PlayerEntityModel;
+import net.minecraft.client.render.item.ItemRenderer;
 import net.minecraft.client.render.model.json.ModelTransformationMode;
+import net.minecraft.util.math.RotationAxis;
 
 public class CrawlingMysteriesClient implements ClientModInitializer {
 
@@ -28,29 +30,26 @@ public class CrawlingMysteriesClient implements ClientModInitializer {
 
     EntityRendererRegistry.register(ModEntities.ETERNAL_GUARDIAN, EternalGuardianRenderer::new);
 
-    ParticleFactoryRegistry.getInstance().register(ModParticles.ETERNAL_FIRE_PARTICLE, EternalFireParticle.Factory::new);
+    ParticleFactoryRegistry.getInstance().register(ModParticles.ETERNAL_FIRE_PARTICLE,
+        EternalFireParticle.Factory::new);
 
     // Trinkets
     if (CrawlingMysteries.CONFIG.enableTrinketsRender()) {
-      // Cryptic Eye
       TrinketRendererRegistry.registerRenderer(ModItems.CRYPTIC_EYE,
           (stack, slotReference, contextModel, matrices, vertexConsumers, light, entity, limbAngle, limbDistance,
               tickDelta, animationProgress, headYaw, headPitch) -> {
             if (entity instanceof AbstractClientPlayerEntity player) {
               TrinketRenderer.translateToFace(matrices,
                   (PlayerEntityModel<AbstractClientPlayerEntity>) contextModel, player, headYaw, headPitch);
-              // matrices.scale(x, y, z);
               // x: + gauche; - droite
-              // y: + bas; - haut
+              // y: - bas; + haut
               // z: + derrière; - devant
               matrices.translate(-0.2f, -0.4f, 0.5f);
-              MinecraftClient.getInstance().getItemRenderer()
-                  .renderItem(stack, ModelTransformationMode.HEAD, light, OverlayTexture.DEFAULT_UV, matrices,
-                      vertexConsumers, null, 0);
+              MinecraftClient.getInstance().getItemRenderer().renderItem(stack, ModelTransformationMode.HEAD, light, OverlayTexture.DEFAULT_UV, matrices,
+                  vertexConsumers, null, 0);
             }
           });
 
-      // Eternal Guardian's Band
       TrinketRendererRegistry.registerRenderer(ModItems.ETERNAL_GUARDIANS_BAND,
           (stack, slotReference, contextModel, matrices, vertexConsumers, light, entity, limbAngle, limbDistance,
               tickDelta, animationProgress, headYaw, headPitch) -> {
@@ -58,9 +57,20 @@ public class CrawlingMysteriesClient implements ClientModInitializer {
               TrinketRenderer.translateToRightArm(matrices,
                   (PlayerEntityModel<AbstractClientPlayerEntity>) contextModel, player);
               matrices.translate(0f, -0.75f, 0f);
-              MinecraftClient.getInstance().getItemRenderer()
-                  .renderItem(stack, ModelTransformationMode.HEAD, light, OverlayTexture.DEFAULT_UV, matrices,
-                      vertexConsumers, null, 0);
+              MinecraftClient.getInstance().getItemRenderer().renderItem(stack, ModelTransformationMode.HEAD, light, OverlayTexture.DEFAULT_UV, matrices,
+                  vertexConsumers, null, 0);
+            }
+          });
+
+      TrinketRendererRegistry.registerRenderer(ModItems.ETERNAL_GUARDIAN_MASK,
+          (stack, slotReference, contextModel, matrices, vertexConsumers, light, entity, limbAngle, limbDistance,
+              tickDelta, animationProgress, headYaw, headPitch) -> {
+            if (entity instanceof AbstractClientPlayerEntity player) {
+              TrinketRenderer.translateToFace(matrices,
+                  (PlayerEntityModel<AbstractClientPlayerEntity>) contextModel, player, headYaw, headPitch);
+              matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(180));
+              MinecraftClient.getInstance().getItemRenderer().renderItem(stack, ModelTransformationMode.HEAD, light, OverlayTexture.DEFAULT_UV, matrices,
+                  vertexConsumers, null, 0);
             }
           });
     }

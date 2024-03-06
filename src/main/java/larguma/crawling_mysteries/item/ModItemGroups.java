@@ -19,10 +19,12 @@ public class ModItemGroups {
             // Add items to the group
             entries.add(ModItems.CRYPTIC_EYE);
             entries.add(ModItems.ETERNAL_GUARDIANS_BAND);
+            entries.add(ModItems.ETERNAL_GUARDIAN_HEAD);
+            entries.add(ModItems.ETERNAL_GUARDIAN_MASK);
+            entries.add(ModItems.ETERNAL_GUARDIAN_SPAWN_EGG);
 
             entries.add(ModBlocks.TOMBSTONE);
 
-            entries.add(ModItems.ETERNAL_GUARDIAN_SPAWN_EGG);
 
           }).build());
 
