@@ -3,7 +3,8 @@
     "player"
   ],
   "slots": [
-    "head/face",
+    "head/observer",
+    "head/mask",
     "hand/ring"
   ]
 }
