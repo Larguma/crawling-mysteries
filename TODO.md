@@ -8,7 +8,7 @@ Break Geodes on workbench (new block)
 
 Advancements to progress
 
-[Trinkets](https://github.com/emilyploszaj/trinkets/wiki) [Artifacts](https://github.com/ochotonida/artifacts/tree/1.20.x/fabric/src/main/java/artifacts/fabric)
+[Trinkets](https://github.com/emilyploszaj/trinkets/wiki)
 
 Mana for some trinkets: [tuto](https://ladysnake.org/wiki/cardinal-components-api/landing)
 
@@ -47,8 +47,9 @@ Config + UI [OwO lib](https://docs.wispforest.io/owo/ui/getting-started/)
 
 ####  Eternal Guardian head/maks
 
+- [ ] make the glow different color
+- [ ] glow only wearer
 - [x] make a keybind to enable/disable the glow
-- [ ] make the glow different color (upgrade how ?)
 - [x] two variantes, w/ strap & w/o strap
 - [x] recipe
 - [x] can equip (trinkets mask slot)
@@ -63,7 +64,7 @@ Config + UI [OwO lib](https://docs.wispforest.io/owo/ui/getting-started/)
 
 #### Eternal Guardian's Band
 
-- [ ] Make a recipe, smth like with metal (new metal ?) and soul harvesting (which one) or pact via ritual ?
+- [ ] found broken, need souls, Hostile(100) (fill bar to repair)
 - [x] Better tombstones
 - [x] 3d
 - [x] Spawn '"Eternal Guardian"
@@ -110,3 +111,7 @@ Config + UI [OwO lib](https://docs.wispforest.io/owo/ui/getting-started/)
 
 - Tavern, NPC (shop ? for what ?), beer
 - Swampwitch hut
+
+### Keybinds (replace)
+
+- [ ] replace keybinds by wheel
