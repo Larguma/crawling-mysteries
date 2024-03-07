@@ -6,7 +6,9 @@ import larguma.crawling_mysteries.block.entity.ModBlockEntities;
 import larguma.crawling_mysteries.block.entity.renderer.TombstoneBlockEntityRenderer;
 import larguma.crawling_mysteries.entity.ModEntities;
 import larguma.crawling_mysteries.entity.client.EternalGuardianRenderer;
+import larguma.crawling_mysteries.event.KeyInputHandler;
 import larguma.crawling_mysteries.item.ModItems;
+import larguma.crawling_mysteries.networking.ModMessages;
 import larguma.crawling_mysteries.particle.ModParticles;
 import larguma.crawling_mysteries.particle.custom.EternalFireParticle;
 import net.fabricmc.api.ClientModInitializer;
@@ -27,9 +29,9 @@ public class CrawlingMysteriesClient implements ClientModInitializer {
   @Override
   public void onInitializeClient() {
     BlockEntityRendererFactories.register(ModBlockEntities.TOMBSTONE_BLOCK_ENTITY, TombstoneBlockEntityRenderer::new);
-
     EntityRendererRegistry.register(ModEntities.ETERNAL_GUARDIAN, EternalGuardianRenderer::new);
-
+    KeyInputHandler.register();
+    ModMessages.registerS2CPackets();
     ParticleFactoryRegistry.getInstance().register(ModParticles.ETERNAL_FIRE_PARTICLE,
         EternalFireParticle.Factory::new);
 
@@ -45,8 +47,8 @@ public class CrawlingMysteriesClient implements ClientModInitializer {
               // y: - bas; + haut
               // z: + derrière; - devant
               matrices.translate(-0.2f, -0.4f, 0.5f);
-              MinecraftClient.getInstance().getItemRenderer().renderItem(stack, ModelTransformationMode.HEAD, light, OverlayTexture.DEFAULT_UV, matrices,
-                  vertexConsumers, null, 0);
+              MinecraftClient.getInstance().getItemRenderer().renderItem(stack, ModelTransformationMode.HEAD, light,
+                  OverlayTexture.DEFAULT_UV, matrices, vertexConsumers, null, 0);
             }
           });
 
@@ -57,8 +59,8 @@ public class CrawlingMysteriesClient implements ClientModInitializer {
               TrinketRenderer.translateToRightArm(matrices,
                   (PlayerEntityModel<AbstractClientPlayerEntity>) contextModel, player);
               matrices.translate(0f, -0.75f, 0f);
-              MinecraftClient.getInstance().getItemRenderer().renderItem(stack, ModelTransformationMode.HEAD, light, OverlayTexture.DEFAULT_UV, matrices,
-                  vertexConsumers, null, 0);
+              MinecraftClient.getInstance().getItemRenderer().renderItem(stack, ModelTransformationMode.HEAD, light,
+                  OverlayTexture.DEFAULT_UV, matrices, vertexConsumers, null, 0);
             }
           });
 
@@ -69,8 +71,8 @@ public class CrawlingMysteriesClient implements ClientModInitializer {
               TrinketRenderer.translateToFace(matrices,
                   (PlayerEntityModel<AbstractClientPlayerEntity>) contextModel, player, headYaw, headPitch);
               matrices.multiply(RotationAxis.POSITIVE_Z.rotationDegrees(180));
-              MinecraftClient.getInstance().getItemRenderer().renderItem(stack, ModelTransformationMode.HEAD, light, OverlayTexture.DEFAULT_UV, matrices,
-                  vertexConsumers, null, 0);
+              MinecraftClient.getInstance().getItemRenderer().renderItem(stack, ModelTransformationMode.HEAD, light,
+                  OverlayTexture.DEFAULT_UV, matrices, vertexConsumers, null, 0);
             }
           });
     }

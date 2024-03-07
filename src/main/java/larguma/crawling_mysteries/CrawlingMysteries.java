@@ -1,6 +1,5 @@
 package larguma.crawling_mysteries;
 
-
 import java.util.UUID;
 
 import org.slf4j.Logger;
@@ -14,6 +13,7 @@ import larguma.crawling_mysteries.entity.ModEntities;
 import larguma.crawling_mysteries.entity.custom.EternalGuardianEntity;
 import larguma.crawling_mysteries.item.ModItemGroups;
 import larguma.crawling_mysteries.item.ModItems;
+import larguma.crawling_mysteries.networking.ModMessages;
 import larguma.crawling_mysteries.particle.ModParticles;
 import larguma.crawling_mysteries.util.ModLootTableModifiers;
 import net.fabricmc.api.ModInitializer;
@@ -34,13 +34,14 @@ public class CrawlingMysteries implements ModInitializer {
 
 		ModItems.registerModItems();
 		ModBlocks.registerModBlocks();
-		
+
 		ModLootTableModifiers.modifyLootTables();
 
 		ModBlockEntities.registerBlockEntities();
 		ModParticles.registerParticles();
 		ModEffect.registerModEffects();
-		
+		ModMessages.registerC2SPackets();
+
 		ModEntities.registerModEntities();
 		FabricDefaultAttributeRegistry.register(ModEntities.ETERNAL_GUARDIAN, EternalGuardianEntity.setAttributes());
 	}

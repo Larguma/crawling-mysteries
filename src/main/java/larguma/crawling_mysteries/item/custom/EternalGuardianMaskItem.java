@@ -55,17 +55,32 @@ public class EternalGuardianMaskItem extends TrinketItem implements GeoItem {
 
   @Override
   public void tick(ItemStack stack, SlotReference slot, LivingEntity entity) {
-    if (!entity.getWorld().isClient()) {
+    if (!entity.getWorld().isClient() && this.isEnabled(stack)) {
       entity.addStatusEffect(new StatusEffectInstance(ModEffect.SPECTRAL_GAZE, 60, 0, false, false, true));
     }
     super.tick(stack, slot, entity);
+  }
+
+  public boolean isEnabled(ItemStack stack) {
+    if (!stack.hasNbt()) {
+      stack.getOrCreateNbt().putBoolean("Enabled", false);
+    }
+    return stack.getNbt().getBoolean("Enabled");
+  }
+
+  public void toggle(ItemStack stack) {
+    stack.getOrCreateNbt().putBoolean("Enabled", !this.isEnabled(stack));
   }
   // #endregion
 
   // #region Base
   public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
+    boolean isEnabled = this.isEnabled(stack);
+
     tooltip.add(Text.translatable("item.crawling-mysteries.eternal_guardian_mask.tooltip.line1"));
     tooltip.add(Text.translatable("item.crawling-mysteries.eternal_guardian_mask.tooltip.line2"));
+    tooltip.add(Text.translatable(
+        "general.crawling-mysteries.tooltip" + (isEnabled ? ".enabled" : ".disabled"), "G")); // TODO: Add keybinding
     super.appendTooltip(stack, world, tooltip, context);
   }
   // #endregion
