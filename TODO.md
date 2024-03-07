@@ -47,7 +47,7 @@ Config + UI [OwO lib](https://docs.wispforest.io/owo/ui/getting-started/)
 
 ####  Eternal Guardian head/maks
 
-- [ ] make a keybind to enable/disable the glow
+- [x] make a keybind to enable/disable the glow
 - [ ] make the glow different color (upgrade how ?)
 - [x] two variantes, w/ strap & w/o strap
 - [x] recipe

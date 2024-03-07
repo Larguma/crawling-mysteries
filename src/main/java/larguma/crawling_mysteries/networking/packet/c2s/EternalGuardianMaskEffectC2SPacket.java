@@ -1,4 +1,4 @@
-package larguma.crawling_mysteries.networking.packet;
+package larguma.crawling_mysteries.networking.packet.c2s;
 
 import java.util.Objects;
 

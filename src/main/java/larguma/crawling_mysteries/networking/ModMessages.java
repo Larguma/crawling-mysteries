@@ -1,7 +1,7 @@
 package larguma.crawling_mysteries.networking;
 
 import larguma.crawling_mysteries.CrawlingMysteries;
-import larguma.crawling_mysteries.networking.packet.EternalGuardianMaskEffectC2SPacket;
+import larguma.crawling_mysteries.networking.packet.c2s.EternalGuardianMaskEffectC2SPacket;
 import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
 import net.minecraft.util.Identifier;
 

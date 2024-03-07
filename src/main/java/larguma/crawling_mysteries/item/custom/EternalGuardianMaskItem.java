@@ -11,7 +11,9 @@ import dev.emi.trinkets.api.SlotReference;
 import dev.emi.trinkets.api.TrinketItem;
 import larguma.crawling_mysteries.CrawlingMysteries;
 import larguma.crawling_mysteries.effect.ModEffect;
+import larguma.crawling_mysteries.event.KeyInputHandler;
 import larguma.crawling_mysteries.item.client.EternalGuardianMaskItemRenderer;
+import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.client.render.item.BuiltinModelItemRenderer;
 import net.minecraft.entity.LivingEntity;
@@ -79,8 +81,10 @@ public class EternalGuardianMaskItem extends TrinketItem implements GeoItem {
 
     tooltip.add(Text.translatable("item.crawling-mysteries.eternal_guardian_mask.tooltip.line1"));
     tooltip.add(Text.translatable("item.crawling-mysteries.eternal_guardian_mask.tooltip.line2"));
+    tooltip.add(Text.translatable("general.crawling-mysteries.tooltip.blank"));
     tooltip.add(Text.translatable(
-        "general.crawling-mysteries.tooltip" + (isEnabled ? ".enabled" : ".disabled"), "G")); // TODO: Add keybinding
+        "general.crawling-mysteries.tooltip" + (isEnabled ? ".enabled" : ".disabled"),
+        KeyBindingHelper.getBoundKeyOf(KeyInputHandler.toggleEternalGuardianMaskEffect).getLocalizedText()));
     super.appendTooltip(stack, world, tooltip, context);
   }
   // #endregion

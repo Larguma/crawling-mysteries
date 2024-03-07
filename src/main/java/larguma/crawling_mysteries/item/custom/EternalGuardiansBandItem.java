@@ -37,6 +37,7 @@ public class EternalGuardiansBandItem extends TrinketItem {
   public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
     tooltip.add(Text.translatable("item.crawling-mysteries.eternal_guardians_band.tooltip.line1"));
     tooltip.add(Text.translatable("item.crawling-mysteries.eternal_guardians_band.tooltip.line2"));
+    tooltip.add(Text.translatable("general.crawling-mysteries.tooltip.blank"));
     if (!CrawlingMysteries.CONFIG.enableTombstone())
       tooltip.add(Text.translatable("general.crawling-mysteries.tooltip.config_disabled"));
     super.appendTooltip(stack, world, tooltip, context);
