@@ -41,16 +41,32 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
     Advancement gotEternalGuardiansBand = Advancement.Builder.create().parent(rootAdvancement)
         .display(
             ModItems.ETERNAL_GUARDIANS_BAND,
-            Text.translatable("advancement.crawling-mysteries.eternal_guardians_band"), // The title
-            Text.translatable("advancement.crawling-mysteries.eternal_guardians_band.desc"), // The description
+            Text.translatable("advancement.crawling-mysteries.eternal_guardians_band"),
+            Text.translatable("advancement.crawling-mysteries.eternal_guardians_band.desc"), 
             null, // children to parent advancements don't need a background set
             AdvancementFrame.TASK,
             true,
             true,
             false)
         .rewards(AdvancementRewards.Builder.experience(1000))
-        .criterion("got_eternal_guardians_band", InventoryChangedCriterion.Conditions.items(ModItems.ETERNAL_GUARDIANS_BAND))
+        .criterion("got_eternal_guardians_band",
+            InventoryChangedCriterion.Conditions.items(ModItems.ETERNAL_GUARDIANS_BAND))
         .build(consumer, CrawlingMysteries.MOD_ID + "/got_eternal_guardians_band");
+
+    Advancement gotEternalGuardianMask = Advancement.Builder.create().parent(gotEternalGuardiansBand)
+        .display(
+            ModItems.ETERNAL_GUARDIAN_MASK,
+            Text.translatable("advancement.crawling-mysteries.eternal_guardian_mask"),
+            Text.translatable("advancement.crawling-mysteries.eternal_guardian_mask.desc"),
+            null, 
+            AdvancementFrame.TASK,
+            true,
+            true,
+            true)
+        .rewards(AdvancementRewards.Builder.experience(1000))
+        .criterion("got_eternal_guardian_mask",
+            InventoryChangedCriterion.Conditions.items(ModItems.ETERNAL_GUARDIAN_MASK))
+        .build(consumer, CrawlingMysteries.MOD_ID + "/got_eternal_guardian_mask");
   }
 
 }

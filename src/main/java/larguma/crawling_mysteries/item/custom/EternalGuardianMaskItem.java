@@ -10,6 +10,7 @@ import com.google.common.collect.Multimap;
 import dev.emi.trinkets.api.SlotReference;
 import dev.emi.trinkets.api.TrinketItem;
 import larguma.crawling_mysteries.CrawlingMysteries;
+import larguma.crawling_mysteries.effect.ModEffect;
 import larguma.crawling_mysteries.item.client.EternalGuardianMaskItemRenderer;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.client.render.item.BuiltinModelItemRenderer;
@@ -17,6 +18,7 @@ import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
 import net.minecraft.world.World;
@@ -31,7 +33,7 @@ import software.bernie.geckolib.core.animation.AnimationState;
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.RenderUtils;
 
-public class EternalGuardianMaskItem  extends TrinketItem implements GeoItem {
+public class EternalGuardianMaskItem extends TrinketItem implements GeoItem {
 
   private AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
   private final Supplier<Object> renderProvider = GeoItem.makeRenderer(this);
@@ -45,17 +47,25 @@ public class EternalGuardianMaskItem  extends TrinketItem implements GeoItem {
   public Multimap<EntityAttribute, EntityAttributeModifier> getModifiers(ItemStack stack, SlotReference slot,
       LivingEntity entity, UUID uuid) {
     var modifiers = super.getModifiers(stack, slot, entity, uuid);
-    // +10% movement speed
     modifiers.put(EntityAttributes.GENERIC_ARMOR,
         new EntityAttributeModifier(uuid, CrawlingMysteries.MOD_ID + ":armor", 4,
             EntityAttributeModifier.Operation.ADDITION));
     return modifiers;
+  }
+
+  @Override
+  public void tick(ItemStack stack, SlotReference slot, LivingEntity entity) {
+    if (!entity.getWorld().isClient()) {
+      entity.addStatusEffect(new StatusEffectInstance(ModEffect.SPECTRAL_GAZE, 60, 0, false, false, true));
+    }
+    super.tick(stack, slot, entity);
   }
   // #endregion
 
   // #region Base
   public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
     tooltip.add(Text.translatable("item.crawling-mysteries.eternal_guardian_mask.tooltip.line1"));
+    tooltip.add(Text.translatable("item.crawling-mysteries.eternal_guardian_mask.tooltip.line2"));
     super.appendTooltip(stack, world, tooltip, context);
   }
   // #endregion

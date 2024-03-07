@@ -1,0 +1,41 @@
+{
+  "parent": "minecraft:crawling-mysteries/got_eternal_guardians_band",
+  "criteria": {
+    "got_eternal_guardian_mask": {
+      "conditions": {
+        "items": [
+          {
+            "items": [
+              "crawling-mysteries:eternal_guardian_mask"
+            ]
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "announce_to_chat": true,
+    "description": {
+      "translate": "advancement.crawling-mysteries.eternal_guardian_mask.desc"
+    },
+    "frame": "task",
+    "hidden": true,
+    "icon": {
+      "item": "crawling-mysteries:eternal_guardian_mask"
+    },
+    "show_toast": true,
+    "title": {
+      "translate": "advancement.crawling-mysteries.eternal_guardian_mask"
+    }
+  },
+  "requirements": [
+    [
+      "got_eternal_guardian_mask"
+    ]
+  ],
+  "rewards": {
+    "experience": 1000
+  },
+  "sends_telemetry_event": true
+}
