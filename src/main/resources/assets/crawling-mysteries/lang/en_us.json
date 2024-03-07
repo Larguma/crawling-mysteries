@@ -1,5 +1,67 @@
 {
+  "advancement.crawling-mysteries": "====== Advancement ======",
+  "advancement.crawling-mysteries.desc": "You awoke with this strange eye watching you, where does it come from ?",
+  "advancement.crawling-mysteries.eternal_guardians_band": "Discoverer of Immortality",
+  "advancement.crawling-mysteries.eternal_guardians_band.desc": "Unearth the secrets of the ancients and find the Eternal Guardian's Band hidden within the depths of a forsaken dungeon. Secure your destiny as the one who commands the protection of the afterlife.",
+  "advancement.crawling-mysteries.eternal_guardian_mask": "Ethereal Insight",
+  "advancement.crawling-mysteries.eternal_guardian_mask.desc": "I can see now...",
+  "block.crawling-mysteries": "====== Block ======",
+  "block.crawling-mysteries.tombstone": "Tombstone",
+  "block.crawling-mysteries.tombstone.death": [
+    {
+      "text": "With your final breath, a spectral guardian materializes, standing sentinel over a newly formed tombstone. Yet, beware, for in the shadows, opportunistic pilferers may covet the treasures safeguarded by the sentinel.",
+      "color": "#cba6f7"
+    }
+  ],
+  "effect.crawling-mysteries": "====== Effect ======",
+  "effect.crawling-mysteries.spectral_gaze": "Spectral Gaze",
+  "entity.crawling-mysteries": "====== Entity ======",
+  "entity.crawling-mysteries.eternal_guardian": "Eternal Guardian",
+  "entity.crawling-mysteries.eternal_guardian.custom_name": [
+    {
+      "index": 0
+    },
+    "'s Guardian"
+  ],
+  "general.crawling-mysteries": "====== General ======",
   "general.crawling-mysteries.mod_name": "Crawling Mysteries",
+  "general.crawling-mysteries.tooltip.disabled": [
+    {
+      "text": "",
+      "color": "gray"
+    },
+    {
+      "text": "Disabled",
+      "color": "red"
+    },
+    " (press '",
+    {
+      "index": 0
+    },
+    "' to toggle)"
+  ],
+  "general.crawling-mysteries.tooltip.enabled": [
+    {
+      "text": "",
+      "color": "gray"
+    },
+    {
+      "text": "Enabled",
+      "color": "green"
+    },
+    " (press '",
+    {
+      "index": 0
+    },
+    "' to toggle)"
+  ],
+  "general.crawling-mysteries.tooltip.config_disabled": [
+    {
+      "text": "Disabled in config",
+      "color": "red"
+    }
+  ],
+  "item.crawling-mysteries": "====== Item ======",
   "item.crawling-mysteries.cryptic_eye": "Cryptic Eye",
   "item.crawling-mysteries.cryptic_eye.tooltip.line1": "A cryptic eye that seems to be following you.",
   "item.crawling-mysteries.cryptic_eye.tooltip.line2": "Perhaps it's worth investigating further.",
@@ -7,12 +69,6 @@
   "item.crawling-mysteries.eternal_guardians_band.tooltip.line1": "A mystical ring forged in the heart of ancient enchantments.",
   "item.crawling-mysteries.eternal_guardians_band.tooltip.line2": "When your last breath escapes, the Eternal Guardian's Band swiftly conjures a solemn tombstone, cradling your belongings in its protective embrace.",
   "item.crawling-mysteries.eternal_guardians_band.tooltip.line3": "Your items shall await your triumphant return.",
-  "item.crawling-mysteries.eternal_guardians_band.tooltip.disabled": [
-    {
-      "text": "This item is disabled in the config",
-      "color": "red"
-    }
-  ],
   "item.crawling-mysteries.eternal_guardian_spawn_egg": "Eternal Guardian Spawn Egg",
   "item.crawling-mysteries.eternal_guardian_head": "Eternal Guardian Head",
   "item.crawling-mysteries.eternal_guardian_head.tooltip.line1": "The head of an Eternal Guardian.",
@@ -30,28 +86,13 @@
       "color": "#cba6f7"
     }
   ],
-  "block.crawling-mysteries.tombstone": "Tombstone",
-  "block.crawling-mysteries.tombstone.death": [
-    {
-      "text": "With your final breath, a spectral guardian materializes, standing sentinel over a newly formed tombstone. Yet, beware, for in the shadows, opportunistic pilferers may covet the treasures safeguarded by the sentinel.",
-      "color": "#cba6f7"
-    }
-  ],
-  "entity.crawling-mysteries.eternal_guardian": "Eternal Guardian",
-  "entity.crawling-mysteries.eternal_guardian.custom_name": [
-    {
-      "index": 0
-    },
-    "'s Guardian"
-  ],
-  "advancement.crawling-mysteries.desc": "You awoke with this strange eye watching you, where does it come from ?",
-  "advancement.crawling-mysteries.eternal_guardians_band": "Discoverer of Immortality",
-  "advancement.crawling-mysteries.eternal_guardians_band.desc": "Unearth the secrets of the ancients and find the Eternal Guardian's Band hidden within the depths of a forsaken dungeon. Secure your destiny as the one who commands the protection of the afterlife.",
-  "advancement.crawling-mysteries.eternal_guardian_mask": "Ethereal Insight",
-  "advancement.crawling-mysteries.eternal_guardian_mask.desc": "I can see now...",
-  "trinkets.slot.head.mask": "Mask",
-  "trinkets.slot.head.observer": "Observer",
-  "effect.crawling-mysteries.spectral_gaze": "Spectral Gaze",
+  "key.category": "====== Keybinds ======",
+  "key.category.crawling-mysteries": "Crawling Mysteries",
+  "key.crawling-mysteries.eternal_guardian_mask_effect": "Toggle Eternal Guardian Mask Effect",
+  "message.crawling-mysteries": "====== Messages (network) ======",
+  "message.crawling-mysteries.eternal_guardian_mask_effect_enabled": "Ethereal Insight enabled",
+  "message.crawling-mysteries.eternal_guardian_mask_effect_disabled": "Ethereal Insight disabled",
+  "text.config.crawling-mysteries": "====== Config ======",
   "text.config.crawling-mysteries.title": "Crawling Mysteries",
   "text.config.crawling-mysteries.section.trinkets": "Trinkets",
   "text.config.crawling-mysteries.option.enableTrinketsRender": [
@@ -62,5 +103,8 @@
       "italic": true
     }
   ],
-  "text.config.crawling-mysteries.option.enableTombstone": "Tombstone generation"
+  "text.config.crawling-mysteries.option.enableTombstone": "Tombstone generation",
+  "trinkets": "====== Trinkets ======",
+  "trinkets.slot.head.mask": "Mask",
+  "trinkets.slot.head.observer": "Observer"
 }

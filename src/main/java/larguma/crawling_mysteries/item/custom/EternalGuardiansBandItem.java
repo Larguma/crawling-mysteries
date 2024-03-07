@@ -38,7 +38,7 @@ public class EternalGuardiansBandItem extends TrinketItem {
     tooltip.add(Text.translatable("item.crawling-mysteries.eternal_guardians_band.tooltip.line1"));
     tooltip.add(Text.translatable("item.crawling-mysteries.eternal_guardians_band.tooltip.line2"));
     if (!CrawlingMysteries.CONFIG.enableTombstone())
-      tooltip.add(Text.translatable("item.crawling-mysteries.eternal_guardians_band.tooltip.disabled"));
+      tooltip.add(Text.translatable("general.crawling-mysteries.tooltip.config_disabled"));
     super.appendTooltip(stack, world, tooltip, context);
   }
   // #endregion
