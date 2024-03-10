@@ -1,0 +1,90 @@
+<owo-ui xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/wisp-forest/owo-lib/1.20/owo-ui.xsd">
+  <components>
+    <grid-layout rows="1" columns="3">
+      <children>
+        <flow-layout direction="vertical" row="0" column="0">
+          <children>
+            <label>
+              <text>i'm a tooltip</text>
+            </label>
+          </children>
+
+          <horizontal-alignment>left</horizontal-alignment>
+          <vertical-alignment>center</vertical-alignment>
+
+          <padding>
+            <all>10</all>
+          </padding>
+
+          <surface>
+            <tooltip></tooltip>
+          </surface>
+        </flow-layout>
+
+        <flow-layout direction="vertical" row="0" column="1">
+          <children>
+            <!-- <item id="favorite-spell-one">
+              <stack>crawling-mysteries:cryptic_eye</stack> //TODO: Add a texture for empty slot
+              <tooltip-text>Click to remove</tooltip-text>
+            </item> -->
+            <button id="favorite-spell-one">
+              <text>Favorite Spell One</text>
+              <tooltip-text>Favo 1</tooltip-text>
+            </button>
+            <button id="favorite-spell-two">
+              <text>Favorite Spell Two</text>
+              <tooltip-text>Favo 2</tooltip-text>
+            </button>
+            <button id="favorite-spell-three">
+              <text>Favorite Spell Three</text>
+              <tooltip-text>Favo 3</tooltip-text>
+            </button>
+            <button id="favorite-spell-four">
+              <text>Favorite Spell Four</text>
+              <tooltip-text>Favo 4</tooltip-text>
+            </button>
+          </children>
+
+          <horizontal-alignment>center</horizontal-alignment>
+          <vertical-alignment>center</vertical-alignment>
+
+          <padding>
+            <all>10</all>
+          </padding>
+
+          <surface>
+            <panel dark="true" />
+          </surface>
+        </flow-layout>
+
+        <scroll direction="vertical" row="0" column="2">
+          <label>
+            <text>All the spells</text>
+            <max-width>100</max-width>
+
+            <margins>
+              <all>10</all>
+            </margins>
+          </label>
+
+          <sizing>
+            <vertical method="fixed">180</vertical>
+          </sizing>
+
+          <surface>
+            <panel dark="true" />
+          </surface>
+        </scroll>
+      </children>
+
+      <horizontal-alignment>center</horizontal-alignment>
+      <vertical-alignment>center</vertical-alignment>
+
+      <surface>
+        <vanilla-translucent></vanilla-translucent>
+      </surface>
+    </grid-layout>
+
+  </components>
+</owo-ui>
