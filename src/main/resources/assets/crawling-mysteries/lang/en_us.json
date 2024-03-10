@@ -28,33 +28,35 @@
   "general.crawling-mysteries.tooltip.blank": "",
   "general.crawling-mysteries.tooltip.disabled": [
     {
-      "text": "",
-      "color": "gray"
-    },
-    {
       "text": "Disabled",
       "color": "red"
+    }
+  ],
+  "general.crawling-mysteries.tooltip.enabled": [
+    {
+      "text": "Enabled",
+      "color": "green"
+    }
+  ],
+  "general.crawling-mysteries.tooltip.favorite": [
+    {
+      "text": " (press '",
+      "color": "gray"
     },
-    " (press '",
     {
       "index": 0
     },
     "' to toggle)"
   ],
-  "general.crawling-mysteries.tooltip.enabled": [
+  "general.crawling-mysteries.tooltip.not_favorite": [
     {
-      "text": "",
+      "text": " (you can select your spell by pressing '",
       "color": "gray"
     },
     {
-      "text": "Enabled",
-      "color": "green"
-    },
-    " (press '",
-    {
       "index": 0
     },
-    "' to toggle)"
+    "')"
   ],
   "general.crawling-mysteries.tooltip.config_disabled": [
     {
@@ -97,7 +99,12 @@
   "itemGroup.crawling-mysteries.crawling_mysteries_group.tab.others": "Others",
   "key.category": "====== Keybinds ======",
   "key.category.crawling-mysteries": "Crawling Mysteries",
-  "key.crawling-mysteries.eternal_guardian_mask_effect": "Toggle Eternal Guardian Mask Effect",
+  "key.crawling-mysteries.spell_key_slot_left": "Favorite Spell 1",
+  "key.crawling-mysteries.spell_key_slot_top": "Favorite Spell 2",
+  "key.crawling-mysteries.spell_key_slot_right": "Favorite Spell 3",
+  "key.crawling-mysteries.spell_key_slot_bottom": "Favorite Spell 4",
+  "key.crawling-mysteries.open_spell_select_menu": "Open Spell Select Menu",
+
   "message.crawling-mysteries": "====== Messages (network) ======",
   "message.crawling-mysteries.eternal_guardian_mask_effect_enabled": [
     {

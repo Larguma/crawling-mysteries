@@ -17,6 +17,7 @@ import larguma.crawling_mysteries.item.client.EternalGuardianMaskItemRenderer;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.client.render.item.BuiltinModelItemRenderer;
+import net.minecraft.client.util.InputUtil.Key;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
@@ -24,6 +25,7 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
+import net.minecraft.util.Formatting;
 import net.minecraft.util.Rarity;
 import net.minecraft.world.World;
 import software.bernie.geckolib.animatable.GeoItem;
@@ -80,13 +82,15 @@ public class EternalGuardianMaskItem extends TrinketItem implements GeoItem {
   // #region Base
   public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
     boolean isEnabled = this.isEnabled(stack);
+    boolean isFavorite = false;
+    Key key = KeyBindingHelper.getBoundKeyOf(KeyInputHandler.openSpellSelectMenu); // TODO: can be a favorite
 
     tooltip.add(Text.translatable("item.crawling-mysteries.eternal_guardian_mask.tooltip.line1"));
     tooltip.add(Text.translatable("item.crawling-mysteries.eternal_guardian_mask.tooltip.line2"));
     tooltip.add(Text.translatable("general.crawling-mysteries.tooltip.blank"));
-    tooltip.add(Text.translatable(
-        "general.crawling-mysteries.tooltip" + (isEnabled ? ".enabled" : ".disabled"),
-        KeyBindingHelper.getBoundKeyOf(KeyInputHandler.toggleEternalGuardianMaskEffect).getLocalizedText()));
+    tooltip.add(Text.translatable("general.crawling-mysteries.tooltip" + (isEnabled ? ".enabled" : ".disabled")));
+    tooltip.add(Text.translatable("general.crawling-mysteries.tooltip" + (isFavorite ? ".favorite" : ".not_favorite"),
+        key.getLocalizedText()));
     super.appendTooltip(stack, world, tooltip, context);
   }
   // #endregion

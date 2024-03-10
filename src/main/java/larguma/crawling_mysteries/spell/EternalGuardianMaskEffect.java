@@ -1,4 +1,4 @@
-package larguma.crawling_mysteries.networking.custom;
+package larguma.crawling_mysteries.spell;
 
 import java.util.Objects;
 
@@ -22,7 +22,7 @@ public class EternalGuardianMaskEffect {
       if (!stack.isEmpty() && Objects.equals(stack.getItem(), ModItems.ETERNAL_GUARDIAN_MASK)) {
         EternalGuardianMaskItem mask = (EternalGuardianMaskItem) stack.getItem();
         mask.toggle(stack);
-        player.playSound(SoundEvents.BLOCK_LEVER_CLICK, SoundCategory.PLAYERS, 1.0F, 1.0F);
+        player.playSound(SoundEvents.BLOCK_AMETHYST_BLOCK_CHIME, SoundCategory.PLAYERS, 1.0F, 1.0F);
         if (mask.isEnabled(stack)) {
           player.sendMessage(Text.translatable(MESSAGE_ETERNAL_GUARDIAN_MASK_EFFECT_ENABLED), true);
         } else {
