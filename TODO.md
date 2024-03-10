@@ -47,8 +47,8 @@ Config + UI [OwO lib](https://docs.wispforest.io/owo/ui/getting-started/)
 
 ####  Eternal Guardian head/maks
 
-- [ ] make the glow different color
-- [ ] glow only wearer
+- [x] make the glow different color
+- [ ] glow only wearer (network ?)
 - [x] make a keybind to enable/disable the glow
 - [x] two variantes, w/ strap & w/o strap
 - [x] recipe
@@ -95,6 +95,8 @@ Config + UI [OwO lib](https://docs.wispforest.io/owo/ui/getting-started/)
 
 ### TODO-ing
 
+#### Eternal Guardian
+
 - [ ] Eternal Guardian sounds
 - [x] Drop mask
 - [x] Tombstone Guardian "Eternal Guardian"
@@ -105,7 +107,7 @@ Config + UI [OwO lib](https://docs.wispforest.io/owo/ui/getting-started/)
 
 - In sus sand
 - In Geode (inside deepstone ?)
-- [ ] add gemmes to weapons 
+- add gemmes to weapons 
 
 ### New structures
 
