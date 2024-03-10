@@ -12,6 +12,7 @@ import dev.emi.trinkets.api.SlotReference;
 import dev.emi.trinkets.api.TrinketEnums;
 import dev.emi.trinkets.api.TrinketEnums.DropRule;
 import dev.emi.trinkets.api.TrinketItem;
+import io.wispforest.owo.itemgroup.OwoItemSettings;
 import larguma.crawling_mysteries.CrawlingMysteries;
 import larguma.crawling_mysteries.item.client.CrypticEyeItemRenderer;
 import net.minecraft.client.item.TooltipContext;
@@ -22,7 +23,6 @@ import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
 import net.minecraft.world.World;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.client.RenderProvider;
@@ -42,8 +42,8 @@ public class CrypticEyeItem extends TrinketItem implements GeoItem {
   private AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
   private final Supplier<Object> renderProvider = GeoItem.makeRenderer(this);
 
-  public CrypticEyeItem(Settings settings) {
-    super(settings);
+  public CrypticEyeItem() {
+    super(new OwoItemSettings().group(CrawlingMysteries.CRAWLING_MYSTERIES_GROUP).tab(0).maxCount(1));
   }
 
   // #region Trinkets

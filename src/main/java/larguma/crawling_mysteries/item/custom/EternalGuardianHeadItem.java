@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+import io.wispforest.owo.itemgroup.OwoItemSettings;
+import larguma.crawling_mysteries.CrawlingMysteries;
 import larguma.crawling_mysteries.item.client.EternalGuardianHeadItemRenderer;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.client.render.item.BuiltinModelItemRenderer;
@@ -27,8 +29,8 @@ public class EternalGuardianHeadItem extends Item implements GeoItem {
   private AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
   private final Supplier<Object> renderProvider = GeoItem.makeRenderer(this);
 
-  public EternalGuardianHeadItem(Settings settings) {
-    super(settings);
+  public EternalGuardianHeadItem() {
+    super(new OwoItemSettings().group(CrawlingMysteries.CRAWLING_MYSTERIES_GROUP).tab(1));
   }
 
   // #region Base

@@ -9,6 +9,7 @@ import com.google.common.collect.Multimap;
 
 import dev.emi.trinkets.api.SlotReference;
 import dev.emi.trinkets.api.TrinketItem;
+import io.wispforest.owo.itemgroup.OwoItemSettings;
 import larguma.crawling_mysteries.CrawlingMysteries;
 import larguma.crawling_mysteries.effect.ModEffect;
 import larguma.crawling_mysteries.event.KeyInputHandler;
@@ -23,6 +24,7 @@ import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
+import net.minecraft.util.Rarity;
 import net.minecraft.world.World;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.client.RenderProvider;
@@ -40,8 +42,8 @@ public class EternalGuardianMaskItem extends TrinketItem implements GeoItem {
   private AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
   private final Supplier<Object> renderProvider = GeoItem.makeRenderer(this);
 
-  public EternalGuardianMaskItem(Settings settings) {
-    super(settings);
+  public EternalGuardianMaskItem() {
+    super(new OwoItemSettings().group(CrawlingMysteries.CRAWLING_MYSTERIES_GROUP).tab(0).rarity(Rarity.UNCOMMON));
   }
 
   // #region Trinkets

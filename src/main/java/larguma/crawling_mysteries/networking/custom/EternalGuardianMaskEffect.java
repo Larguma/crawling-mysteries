@@ -1,26 +1,21 @@
-package larguma.crawling_mysteries.networking.packet.c2s;
+package larguma.crawling_mysteries.networking.custom;
 
 import java.util.Objects;
 
 import dev.emi.trinkets.api.TrinketsApi;
 import larguma.crawling_mysteries.item.ModItems;
 import larguma.crawling_mysteries.item.custom.EternalGuardianMaskItem;
-import net.fabricmc.fabric.api.networking.v1.PacketSender;
-import net.minecraft.network.PacketByteBuf;
-import net.minecraft.server.MinecraftServer;
-import net.minecraft.server.network.ServerPlayNetworkHandler;
 import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 
-public class EternalGuardianMaskEffectC2SPacket {
+public class EternalGuardianMaskEffect {
 
   private static final String MESSAGE_ETERNAL_GUARDIAN_MASK_EFFECT_ENABLED = "message.crawling-mysteries.eternal_guardian_mask_effect_enabled";
   private static final String MESSAGE_ETERNAL_GUARDIAN_MASK_EFFECT_DISABLED = "message.crawling-mysteries.eternal_guardian_mask_effect_disabled";
 
-  public static void receive(MinecraftServer server, ServerPlayerEntity player, ServerPlayNetworkHandler handler,
-      PacketByteBuf buf, PacketSender responseSender) {
+  public static void receive(ServerPlayerEntity player) {
 
     TrinketsApi.getTrinketComponent(player).ifPresent(trinkets -> trinkets.forEach((ref, stack) -> {
 

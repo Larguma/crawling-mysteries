@@ -31,7 +31,7 @@ public class CrawlingMysteriesClient implements ClientModInitializer {
     BlockEntityRendererFactories.register(ModBlockEntities.TOMBSTONE_BLOCK_ENTITY, TombstoneBlockEntityRenderer::new);
     EntityRendererRegistry.register(ModEntities.ETERNAL_GUARDIAN, EternalGuardianRenderer::new);
     KeyInputHandler.register();
-    ModMessages.registerS2CPackets();
+    ModMessages.Client.init();
     ParticleFactoryRegistry.getInstance().register(ModParticles.ETERNAL_FIRE_PARTICLE,
         EternalFireParticle.Factory::new);
 

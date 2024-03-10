@@ -11,6 +11,7 @@ import dev.emi.trinkets.api.SlotReference;
 import dev.emi.trinkets.api.TrinketEnums;
 import dev.emi.trinkets.api.TrinketEnums.DropRule;
 import dev.emi.trinkets.api.TrinketItem;
+import io.wispforest.owo.itemgroup.OwoItemSettings;
 import larguma.crawling_mysteries.CrawlingMysteries;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.entity.LivingEntity;
@@ -19,12 +20,13 @@ import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
+import net.minecraft.util.Rarity;
 import net.minecraft.world.World;
 
 public class EternalGuardiansBandItem extends TrinketItem {
 
-  public EternalGuardiansBandItem(Settings settings) {
-    super(settings);
+  public EternalGuardiansBandItem() {
+    super(new OwoItemSettings().group(CrawlingMysteries.CRAWLING_MYSTERIES_GROUP).tab(0).rarity(Rarity.RARE));
   }
 
   // #region Trinkets

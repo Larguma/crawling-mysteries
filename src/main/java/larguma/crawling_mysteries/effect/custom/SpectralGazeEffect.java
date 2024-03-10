@@ -1,4 +1,4 @@
-package larguma.crawling_mysteries.effect;
+package larguma.crawling_mysteries.effect.custom;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ public class SpectralGazeEffect extends StatusEffect {
 
   private static final int EFFECT_RADIUS = 40;
 
-  protected SpectralGazeEffect(StatusEffectCategory category, int color) {
+  public SpectralGazeEffect(StatusEffectCategory category, int color) {
     super(category, color);
   }
 

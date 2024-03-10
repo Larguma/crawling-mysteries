@@ -92,6 +92,9 @@
       "color": "light_purple"
     }
   ],
+  "itemGroup.crawling-mysteries.crawling_mysteries_group": "Crawling Mysteries",
+  "itemGroup.crawling-mysteries.crawling_mysteries_group.tab.trinkets": "Trinkets",
+  "itemGroup.crawling-mysteries.crawling_mysteries_group.tab.others": "Others",
   "key.category": "====== Keybinds ======",
   "key.category.crawling-mysteries": "Crawling Mysteries",
   "key.crawling-mysteries.eternal_guardian_mask_effect": "Toggle Eternal Guardian Mask Effect",
