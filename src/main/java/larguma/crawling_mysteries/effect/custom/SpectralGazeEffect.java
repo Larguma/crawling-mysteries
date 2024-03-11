@@ -10,8 +10,8 @@ import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.effect.StatusEffects;
 import net.minecraft.entity.mob.Angerable;
 import net.minecraft.entity.mob.Monster;
+import net.minecraft.entity.mob.WaterCreatureEntity;
 import net.minecraft.entity.passive.AnimalEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.scoreboard.Scoreboard;
 import net.minecraft.scoreboard.Team;
 import net.minecraft.util.Formatting;
@@ -22,14 +22,15 @@ public class SpectralGazeEffect extends StatusEffect {
 
   private static final int EFFECT_RADIUS = 40;
 
-  public SpectralGazeEffect(StatusEffectCategory category, int color) {
-    super(category, color);
+  public SpectralGazeEffect() {
+    super(StatusEffectCategory.BENEFICIAL, 0x7b33d7);
   }
 
   @Override
   public void applyUpdateEffect(LivingEntity entity, int amplifier) {
     World world = entity.getWorld();
     if (!world.isClient) {
+      int duration = entity.getStatusEffect(this).getDuration();
       double x = entity.getX();
       double y = entity.getY();
       double z = entity.getZ();
@@ -48,19 +49,32 @@ public class SpectralGazeEffect extends StatusEffect {
       StatusEffectInstance statusEffectInstance = new StatusEffectInstance(StatusEffects.GLOWING, 5, 0, true, false,
           false);
       for (LivingEntity livingEntity : entities) {
-        if (livingEntity instanceof Angerable && teamNeutral != null) {
-          scoreboard.addPlayerToTeam(livingEntity.getEntityName(), teamNeutral);
-        } else if (livingEntity instanceof AnimalEntity && teamPassive != null) {
-          scoreboard.addPlayerToTeam(livingEntity.getEntityName(), teamPassive);
-        } else if (livingEntity instanceof Monster && teamHostile != null) {
-          scoreboard.addPlayerToTeam(livingEntity.getEntityName(), teamHostile);
-        } else if (!(livingEntity instanceof PlayerEntity) && teamWater != null) {
-          scoreboard.addPlayerToTeam(livingEntity.getEntityName(), teamWater);
+        if (duration > 1) {
+          if (livingEntity instanceof Angerable) {
+            scoreboard.addPlayerToTeam(livingEntity.getEntityName(), teamNeutral);
+          } else if (livingEntity instanceof AnimalEntity) {
+            scoreboard.addPlayerToTeam(livingEntity.getEntityName(), teamPassive);
+          } else if (livingEntity instanceof Monster) {
+            scoreboard.addPlayerToTeam(livingEntity.getEntityName(), teamHostile);
+          } else if (livingEntity instanceof WaterCreatureEntity) {
+            scoreboard.addPlayerToTeam(livingEntity.getEntityName(), teamWater);
+          }
+        } else if (livingEntity.getScoreboardTeam() != null) {
+          if (livingEntity instanceof Angerable) {
+            scoreboard.removePlayerFromTeam(livingEntity.getEntityName(), teamNeutral);
+          } else if (livingEntity instanceof AnimalEntity) {
+            scoreboard.removePlayerFromTeam(livingEntity.getEntityName(), teamPassive);
+          } else if (livingEntity instanceof Monster) {
+            scoreboard.removePlayerFromTeam(livingEntity.getEntityName(), teamHostile);
+          } else if (livingEntity instanceof WaterCreatureEntity) {
+            scoreboard.removePlayerFromTeam(livingEntity.getEntityName(), teamWater);
+          }
         }
         livingEntity.addStatusEffect(statusEffectInstance);
       }
     }
     super.applyUpdateEffect(entity, amplifier);
+
   }
 
   @Override
