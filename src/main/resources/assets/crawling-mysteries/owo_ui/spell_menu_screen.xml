@@ -1,90 +1,166 @@
 <owo-ui xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:noNamespaceSchemaLocation="https://raw.githubusercontent.com/wisp-forest/owo-lib/1.20/owo-ui.xsd">
   <components>
-    <grid-layout rows="1" columns="3">
+    <flow-layout direction="vertical">
       <children>
-        <flow-layout direction="vertical" row="0" column="0">
+
+        <flow-layout direction="vertical">
+
           <children>
-            <label>
+            <label id="tooltip">
               <text>i'm a tooltip</text>
             </label>
           </children>
 
-          <horizontal-alignment>left</horizontal-alignment>
-          <vertical-alignment>center</vertical-alignment>
-
           <padding>
-            <all>10</all>
+            <all>5</all>
           </padding>
 
           <surface>
             <tooltip></tooltip>
           </surface>
+
+          <positioning type="relative">10,50</positioning>
+
         </flow-layout>
 
-        <flow-layout direction="vertical" row="0" column="1">
+        <texture texture="crawling-mysteries:textures/gui/screen/spell_menu_screen.png"
+          region-width="61" region-height="59" id="favorite">
+        </texture>
+
+        <collapsible expanded="false" id="list">
           <children>
-            <!-- <item id="favorite-spell-one">
-              <stack>crawling-mysteries:cryptic_eye</stack> //TODO: Add a texture for empty slot
-              <tooltip-text>Click to remove</tooltip-text>
-            </item> -->
-            <button id="favorite-spell-one">
-              <text>Favorite Spell One</text>
-              <tooltip-text>Favo 1</tooltip-text>
-            </button>
-            <button id="favorite-spell-two">
-              <text>Favorite Spell Two</text>
-              <tooltip-text>Favo 2</tooltip-text>
-            </button>
-            <button id="favorite-spell-three">
-              <text>Favorite Spell Three</text>
-              <tooltip-text>Favo 3</tooltip-text>
-            </button>
-            <button id="favorite-spell-four">
-              <text>Favorite Spell Four</text>
-              <tooltip-text>Favo 4</tooltip-text>
-            </button>
+            <grid-layout rows="4" columns="4">
+              <children>
+                <!-- ROW ONE -->
+                <texture texture="crawling-mysteries:textures/gui/screen/spell_menu_screen.png"
+                  u="61" v="0" region-width="21" region-height="23" row="0" column="0"
+                  id="spell_0_0">
+                  <cursor-style>hand</cursor-style>
+                </texture>
+
+                <texture texture="crawling-mysteries:textures/gui/screen/spell_menu_screen.png"
+                  u="82" v="0" region-width="21" region-height="23" row="0" column="1"
+                  id="spell_0_1">
+                  <cursor-style>hand</cursor-style>
+                </texture>
+
+                <texture texture="crawling-mysteries:textures/gui/screen/spell_menu_screen.png"
+                  u="103" v="0" region-width="21" region-height="23" row="0" column="2"
+                  id="spell_0_2">
+                  <cursor-style>hand</cursor-style>
+                </texture>
+
+                <texture texture="crawling-mysteries:textures/gui/screen/spell_menu_screen.png"
+                  u="124" v="0" region-width="21" region-height="23" row="0" column="3"
+                  id="spell_0_3">
+                  <cursor-style>hand</cursor-style>
+                </texture>
+
+                <!-- ROW TWO -->
+
+                <texture texture="crawling-mysteries:textures/gui/screen/spell_menu_screen.png"
+                  u="61" v="23" region-width="21" region-height="23" row="1" column="0"
+                  id="spell_1_0">
+                  <cursor-style>hand</cursor-style>
+                </texture>
+
+                <texture texture="crawling-mysteries:textures/gui/screen/spell_menu_screen.png"
+                  u="82" v="23" region-width="21" region-height="23" row="1" column="1"
+                  id="spell_1_1">
+                  <cursor-style>hand</cursor-style>
+                </texture>
+
+                <texture texture="crawling-mysteries:textures/gui/screen/spell_menu_screen.png"
+                  u="103" v="23" region-width="21" region-height="23" row="1" column="2"
+                  id="spell_1_2">
+                  <cursor-style>hand</cursor-style>
+                </texture>
+
+                <texture texture="crawling-mysteries:textures/gui/screen/spell_menu_screen.png"
+                  u="124" v="23" region-width="21" region-height="23" row="1" column="3"
+                  id="spell_1_3">
+                  <cursor-style>hand</cursor-style>
+                </texture>
+
+                <!-- ROW THREE -->
+
+                <texture texture="crawling-mysteries:textures/gui/screen/spell_menu_screen.png"
+                  u="61" v="46" region-width="21" region-height="23" row="2" column="0"
+                  id="spell_2_0">
+                  <cursor-style>hand</cursor-style>
+                </texture>
+
+                <texture texture="crawling-mysteries:textures/gui/screen/spell_menu_screen.png"
+                  u="82" v="46" region-width="21" region-height="23" row="2" column="1"
+                  id="spell_2_1">
+                  <cursor-style>hand</cursor-style>
+                </texture>
+
+                <texture texture="crawling-mysteries:textures/gui/screen/spell_menu_screen.png"
+                  u="103" v="46" region-width="21" region-height="23" row="2" column="2"
+                  id="spell_2_2">
+                  <cursor-style>hand</cursor-style>
+                </texture>
+
+                <texture texture="crawling-mysteries:textures/gui/screen/spell_menu_screen.png"
+                  u="124" v="46" region-width="21" region-height="23" row="2" column="3"
+                  id="spell_2_3">
+                  <cursor-style>hand</cursor-style>
+                </texture>
+
+                <!-- ROW FOUR -->
+
+                <texture texture="crawling-mysteries:textures/gui/screen/spell_menu_screen.png"
+                  u="61" v="69" region-width="21" region-height="23" row="3" column="0"
+                  id="spell_3_0">
+                  <cursor-style>hand</cursor-style>
+                </texture>
+
+                <texture texture="crawling-mysteries:textures/gui/screen/spell_menu_screen.png"
+                  u="82" v="69" region-width="21" region-height="23" row="3" column="1"
+                  id="spell_3_1">
+                  <cursor-style>hand</cursor-style>
+                </texture>
+
+                <texture texture="crawling-mysteries:textures/gui/screen/spell_menu_screen.png"
+                  u="103" v="69" region-width="21" region-height="23" row="3" column="2"
+                  id="spell_3_2">
+                  <cursor-style>hand</cursor-style>
+                </texture>
+
+                <texture texture="crawling-mysteries:textures/gui/screen/spell_menu_screen.png"
+                  u="124" v="69" region-width="21" region-height="23" row="3" column="3"
+                  id="spell_3_3">
+                  <cursor-style>hand</cursor-style>
+                </texture>
+
+              </children>
+              <margins>
+                <right>10</right>
+                <bottom>10</bottom>
+              </margins>
+            </grid-layout>
           </children>
 
-          <horizontal-alignment>center</horizontal-alignment>
-          <vertical-alignment>center</vertical-alignment>
-
-          <padding>
-            <all>10</all>
-          </padding>
 
           <surface>
-            <panel dark="true" />
+            <vanilla-translucent></vanilla-translucent>
           </surface>
-        </flow-layout>
+          <positioning type="relative">100,50</positioning>
 
-        <scroll direction="vertical" row="0" column="2">
-          <label>
-            <text>All the spells</text>
-            <max-width>100</max-width>
+        </collapsible>
 
-            <margins>
-              <all>10</all>
-            </margins>
-          </label>
-
-          <sizing>
-            <vertical method="fixed">180</vertical>
-          </sizing>
-
-          <surface>
-            <panel dark="true" />
-          </surface>
-        </scroll>
       </children>
 
       <horizontal-alignment>center</horizontal-alignment>
       <vertical-alignment>center</vertical-alignment>
 
       <surface>
-        <vanilla-translucent></vanilla-translucent>
+        <outline>dark-purple</outline>
       </surface>
-    </grid-layout>
+
+    </flow-layout>
 
   </components>
 </owo-ui>
