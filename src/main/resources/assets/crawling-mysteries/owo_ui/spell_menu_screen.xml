@@ -24,9 +24,40 @@
 
         </flow-layout>
 
-        <texture texture="crawling-mysteries:textures/gui/screen/spell_menu_screen.png"
-          region-width="61" region-height="59" id="favorite">
-        </texture>
+        <flow-layout direction="vertical">
+          <children>
+
+            <texture texture="crawling-mysteries:textures/gui/screen/spell_menu_screen.png"
+              region-width="61" region-height="59" id="favorite">
+            </texture>
+
+            <!-- Favorites -->
+            <texture texture="crawling-mysteries:textures/gui/screen/spell_menu_screen.png"
+              u="61" v="0" region-width="21" region-height="23" id="spell_favorite_1">
+              <cursor-style>hand</cursor-style>
+              <positioning type="absolute">20,4</positioning>
+            </texture>
+
+            <texture texture="crawling-mysteries:textures/gui/screen/spell_menu_screen.png"
+              u="60" v="0" region-width="21" region-height="23" id="spell_favorite_2">
+              <cursor-style>hand</cursor-style>
+              <positioning type="absolute">4,18</positioning>
+            </texture>
+
+            <texture texture="crawling-mysteries:textures/gui/screen/spell_menu_screen.png"
+              u="61" v="0" region-width="21" region-height="23" id="spell_favorite_3">
+              <cursor-style>hand</cursor-style>
+              <positioning type="absolute">35,18</positioning>
+            </texture>
+
+            <texture texture="crawling-mysteries:textures/gui/screen/spell_menu_screen.png"
+              u="61" v="0" region-width="21" region-height="23" id="spell_favorite_4">
+              <cursor-style>hand</cursor-style>
+              <positioning type="absolute">20,32</positioning>
+            </texture>
+
+          </children>
+        </flow-layout>
 
         <collapsible expanded="false" id="list">
           <children>
@@ -58,7 +89,6 @@
                 </texture>
 
                 <!-- ROW TWO -->
-
                 <texture texture="crawling-mysteries:textures/gui/screen/spell_menu_screen.png"
                   u="61" v="23" region-width="21" region-height="23" row="1" column="0"
                   id="spell_1_0">
@@ -84,7 +114,6 @@
                 </texture>
 
                 <!-- ROW THREE -->
-
                 <texture texture="crawling-mysteries:textures/gui/screen/spell_menu_screen.png"
                   u="61" v="46" region-width="21" region-height="23" row="2" column="0"
                   id="spell_2_0">
@@ -110,7 +139,6 @@
                 </texture>
 
                 <!-- ROW FOUR -->
-
                 <texture texture="crawling-mysteries:textures/gui/screen/spell_menu_screen.png"
                   u="61" v="69" region-width="21" region-height="23" row="3" column="0"
                   id="spell_3_0">
