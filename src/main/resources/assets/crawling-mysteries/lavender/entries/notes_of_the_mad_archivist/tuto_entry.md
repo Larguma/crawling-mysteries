@@ -13,6 +13,8 @@
 ```
 
 The syntax is here [markdown syntax](https://docs.wispforest.io/lavender/markdown-syntax/)
+
+Other mod to see how it's done [Affinity](https://github.com/wisp-forest/affinity/tree/main/src/main/resources/assets/affinity/lavender)
 The advancements are found here : <src/main/generated/data/minecraft/advancements/crawling-mysteries/got_eternal_guardian_mask.json>
 
 In here, we put some **markdown-formatted** content for our entry. Lavender 
@@ -21,7 +23,7 @@ supports most of the *standard* Markdown formatting syntax with some
 
 ;;;;;
 
-WHAOU this is a keybind: <keybind;"key.crawling-mysteries.spell_key_slot_left"> and is found under <src/main/resources/assets/crawling-mysteries/lang/en_us.json>
+WHAOU this is a keybind: <keybind;key.crawling-mysteries.spell_key_slot_left> and is found under <src/main/resources/assets/crawling-mysteries/lang/en_us.json>
 
 
 This above page-break syntax (;;;;;) starts the next page.

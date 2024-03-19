@@ -1,6 +1,6 @@
 ```json
 {
-  "title": "A Category",
+  "title": "A better Category",
   "icon": "minecraft:dirt"
 }
 ```
