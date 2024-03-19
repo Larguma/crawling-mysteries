@@ -19,12 +19,9 @@
     "description": {
       "translate": "advancement.crawling-mysteries.desc"
     },
-    "frame": "task",
-    "hidden": false,
     "icon": {
       "item": "crawling-mysteries:cryptic_eye"
     },
-    "show_toast": true,
     "title": {
       "translate": "general.crawling-mysteries.mod_name"
     }

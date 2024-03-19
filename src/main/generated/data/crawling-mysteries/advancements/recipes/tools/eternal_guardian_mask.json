@@ -34,15 +34,14 @@
   },
   "requirements": [
     [
+      "has_the_recipe",
       "has_leather",
-      "has_eternal_guardian_head",
-      "has_the_recipe"
+      "has_eternal_guardian_head"
     ]
   ],
   "rewards": {
     "recipes": [
       "crawling-mysteries:eternal_guardian_mask"
     ]
-  },
-  "sends_telemetry_event": false
+  }
 }

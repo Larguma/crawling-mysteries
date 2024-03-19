@@ -7,6 +7,7 @@ import larguma.crawling_mysteries.item.ModItems;
 import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
 import net.fabricmc.fabric.api.datagen.v1.provider.FabricAdvancementProvider;
 import net.minecraft.advancement.Advancement;
+import net.minecraft.advancement.AdvancementEntry;
 import net.minecraft.advancement.AdvancementFrame;
 import net.minecraft.advancement.AdvancementRewards;
 import net.minecraft.advancement.criterion.InventoryChangedCriterion;
@@ -21,8 +22,8 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
 
   @SuppressWarnings("unused")
   @Override
-  public void generateAdvancement(Consumer<Advancement> consumer) {
-    Advancement rootAdvancement = Advancement.Builder.create()
+  public void generateAdvancement(Consumer<AdvancementEntry> consumer) {
+    AdvancementEntry rootAdvancement = Advancement.Builder.create()
         .display(
             ModItems.CRYPTIC_EYE, // The display icon
             Text.translatable("general.crawling-mysteries.mod_name"), // The title
@@ -38,7 +39,7 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
         .criterion("got_cryptic_eye", InventoryChangedCriterion.Conditions.items(ModItems.CRYPTIC_EYE))
         .build(consumer, CrawlingMysteries.MOD_ID + "/root");
 
-    Advancement gotEternalGuardiansBand = Advancement.Builder.create().parent(rootAdvancement)
+        AdvancementEntry gotEternalGuardiansBand = Advancement.Builder.create().parent(rootAdvancement)
         .display(
             ModItems.ETERNAL_GUARDIANS_BAND,
             Text.translatable("advancement.crawling-mysteries.eternal_guardians_band"),
@@ -53,7 +54,7 @@ public class ModAdvancementProvider extends FabricAdvancementProvider {
             InventoryChangedCriterion.Conditions.items(ModItems.ETERNAL_GUARDIANS_BAND))
         .build(consumer, CrawlingMysteries.MOD_ID + "/got_eternal_guardians_band");
 
-    Advancement gotEternalGuardianMask = Advancement.Builder.create().parent(gotEternalGuardiansBand)
+        AdvancementEntry gotEternalGuardianMask = Advancement.Builder.create().parent(gotEternalGuardiansBand)
         .display(
             ModItems.ETERNAL_GUARDIAN_MASK,
             Text.translatable("advancement.crawling-mysteries.eternal_guardian_mask"),

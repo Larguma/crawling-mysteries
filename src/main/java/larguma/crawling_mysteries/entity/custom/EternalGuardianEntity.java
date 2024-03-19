@@ -121,12 +121,7 @@ public class EternalGuardianEntity extends HostileEntity implements GeoEntity {
   public void checkDespawn() {
     this.despawnCounter = 0;
   }
-
-  @Override
-  public boolean canBreatheInWater() {
-    return true;
-  }
-
+  
   @Override
   public void writeCustomDataToNbt(NbtCompound nbt) {
     super.writeCustomDataToNbt(nbt);

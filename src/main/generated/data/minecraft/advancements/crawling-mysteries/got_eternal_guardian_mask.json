@@ -15,16 +15,13 @@
     }
   },
   "display": {
-    "announce_to_chat": true,
     "description": {
       "translate": "advancement.crawling-mysteries.eternal_guardian_mask.desc"
     },
-    "frame": "task",
     "hidden": true,
     "icon": {
       "item": "crawling-mysteries:eternal_guardian_mask"
     },
-    "show_toast": true,
     "title": {
       "translate": "advancement.crawling-mysteries.eternal_guardian_mask"
     }

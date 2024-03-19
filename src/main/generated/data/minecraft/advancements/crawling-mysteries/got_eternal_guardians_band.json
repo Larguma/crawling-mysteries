@@ -15,16 +15,12 @@
     }
   },
   "display": {
-    "announce_to_chat": true,
     "description": {
       "translate": "advancement.crawling-mysteries.eternal_guardians_band.desc"
     },
-    "frame": "task",
-    "hidden": false,
     "icon": {
       "item": "crawling-mysteries:eternal_guardians_band"
     },
-    "show_toast": true,
     "title": {
       "translate": "advancement.crawling-mysteries.eternal_guardians_band"
     }

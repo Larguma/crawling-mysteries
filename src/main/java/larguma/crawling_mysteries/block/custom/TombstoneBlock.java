@@ -3,12 +3,14 @@ package larguma.crawling_mysteries.block.custom;
 import java.util.List;
 
 import com.mojang.authlib.GameProfile;
+import com.mojang.serialization.MapCodec;
 
 import larguma.crawling_mysteries.CrawlingMysteries;
 import larguma.crawling_mysteries.block.ModBlocks;
 import larguma.crawling_mysteries.block.entity.TombstoneBlockEntity;
 import larguma.crawling_mysteries.entity.ModEntities;
 import larguma.crawling_mysteries.entity.custom.EternalGuardianEntity;
+import net.minecraft.block.AbstractBlock;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockRenderType;
 import net.minecraft.block.BlockState;
@@ -50,6 +52,17 @@ public class TombstoneBlock extends BlockWithEntity implements Waterloggable {
   public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
   private final ParticleEffect particle;
   private static final VoxelShape SHAPE = Block.createCuboidShape(4, 0, 4, 12, 14, 12);
+
+  public static final MapCodec<TombstoneBlock> CODEC = createCodec(TombstoneBlock::new);
+
+  public MapCodec<TombstoneBlock> getCodec() {
+    return CODEC;
+  }
+
+  public TombstoneBlock(AbstractBlock.Settings settings) {
+    super(settings);
+    this.particle = null;
+  }
 
   public TombstoneBlock(Settings settings, ParticleEffect particle) {
     super(settings);
@@ -141,9 +154,9 @@ public class TombstoneBlock extends BlockWithEntity implements Waterloggable {
   }
 
   @Override
-  public void onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
+  public BlockState onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
     dropAllGrave(world, pos);
-    super.onBreak(world, pos, state, player);
+    return super.onBreak(world, pos, state, player);
   }
 
   public void dropAllGrave(World world, BlockPos pos) {

@@ -51,23 +51,23 @@ public class SpectralGazeEffect extends StatusEffect {
       for (LivingEntity livingEntity : entities) {
         if (duration > 1) {
           if (livingEntity instanceof Angerable) {
-            scoreboard.addPlayerToTeam(livingEntity.getEntityName(), teamNeutral);
+            scoreboard.addScoreHolderToTeam(livingEntity.getNameForScoreboard(), teamNeutral);
           } else if (livingEntity instanceof AnimalEntity) {
-            scoreboard.addPlayerToTeam(livingEntity.getEntityName(), teamPassive);
+            scoreboard.addScoreHolderToTeam(livingEntity.getNameForScoreboard(), teamPassive);
           } else if (livingEntity instanceof Monster) {
-            scoreboard.addPlayerToTeam(livingEntity.getEntityName(), teamHostile);
+            scoreboard.addScoreHolderToTeam(livingEntity.getNameForScoreboard(), teamHostile);
           } else if (livingEntity instanceof WaterCreatureEntity) {
-            scoreboard.addPlayerToTeam(livingEntity.getEntityName(), teamWater);
+            scoreboard.addScoreHolderToTeam(livingEntity.getNameForScoreboard(), teamWater);
           }
         } else if (livingEntity.getScoreboardTeam() != null) {
           if (livingEntity instanceof Angerable) {
-            scoreboard.removePlayerFromTeam(livingEntity.getEntityName(), teamNeutral);
+            scoreboard.removeScoreHolderFromTeam(livingEntity.getNameForScoreboard(), teamNeutral);
           } else if (livingEntity instanceof AnimalEntity) {
-            scoreboard.removePlayerFromTeam(livingEntity.getEntityName(), teamPassive);
+            scoreboard.removeScoreHolderFromTeam(livingEntity.getNameForScoreboard(), teamPassive);
           } else if (livingEntity instanceof Monster) {
-            scoreboard.removePlayerFromTeam(livingEntity.getEntityName(), teamHostile);
+            scoreboard.removeScoreHolderFromTeam(livingEntity.getNameForScoreboard(), teamHostile);
           } else if (livingEntity instanceof WaterCreatureEntity) {
-            scoreboard.removePlayerFromTeam(livingEntity.getEntityName(), teamWater);
+            scoreboard.removeScoreHolderFromTeam(livingEntity.getNameForScoreboard(), teamWater);
           }
         }
         livingEntity.addStatusEffect(statusEffectInstance);

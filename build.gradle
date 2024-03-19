@@ -72,7 +72,7 @@ dependencies {
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
 	modImplementation "dev.emi:trinkets:${project.trinkets_version}"
-	modImplementation "software.bernie.geckolib:geckolib-fabric-1.20.1:${project.geckolib_version}"
+	modImplementation "software.bernie.geckolib:geckolib-fabric-1.20.4:${project.geckolib_version}"
 	annotationProcessor modImplementation("io.wispforest:owo-lib:${project.owo_version}")
 	modImplementation "io.wispforest:lavender:${project.lavender_version}"
 	include "io.wispforest:owo-sentinel:${project.owo_version}"
@@ -134,9 +134,8 @@ modrinth {
     dependencies {
 			required.project "fabric-api"
 			required.version "trinkets", "${project.trinkets_version}"
-			required.version "geckolib", "1.20.1-${project.geckolib_version}"
+			required.version "geckolib", "1.20.4-${project.geckolib_version}"
 			required.version "owo-lib", "${project.owo_version}"
-			embedded.project "cardinal-components-api"
 
 			// The scope can be `required`, `optional`, `incompatible`, or `embedded`
 			// The type can either be `project` or `version`
