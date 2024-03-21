@@ -49,10 +49,6 @@ sourceSets {
 	}
 }
 
-// owo lib 
-// sourceSets.main.java.srcDirs += [ 'src/main/generatedJava' ]
-// compileJava.options.generatedSourceOutputDirectory = file("${projectDir}/src/main/generatedJava/<your config class package>")
-
 compileJava {
 	options.generatedSourceOutputDirectory = file("${projectDir}/src/main/generated/java/larguma/crawling_mysteries/config")
 }
@@ -123,23 +119,22 @@ publishing {
 	}
 }
 
+import com.modrinth.minotaur.dependencies.ModDependency
+ 
 modrinth {
-    token = System.getenv("MODRINTH_TOKEN")
-    projectId = "${mod_id}"
-    versionNumber = "${mod_version}"
-    versionType = "${mod_version_type}"
-    uploadFile = jar
-    gameVersions = ["${minecraft_version}"]
-    loaders = ["fabric"]
-    dependencies {
-			required.project "fabric-api"
-			required.version "trinkets", "${project.trinkets_version}"
-			required.version "geckolib", "1.20.4-${project.geckolib_version}"
-			required.version "owo-lib", "${project.owo_version}"
-
-			// The scope can be `required`, `optional`, `incompatible`, or `embedded`
-			// The type can either be `project` or `version`
-			// required.project "fabric-api" // Creates a new required dependency on Fabric API
-			// optional.version "sodium", "mc1.19.3-0.4.8" // Creates a new optional dependency on this specific version of Sodium
-    }
+	token = System.getenv("MODRINTH_TOKEN")
+	projectId = "${modrinth_id}" // The ID of your Modrinth project. Slugs will not work.
+	versionNumber = "${mod_version}" // The (preferably SemVer) version of the mod. If not specified, it'll use the `version` declaration
+	versionType = "${mod_version_type}"
+	versionName = "Crawling Mysteries ${mod_version}" // The version title. If not specified, it'll use the version number
+	uploadFile = remapJar // Tells Minotaur to use the remapped jar
+	gameVersions = ["${minecraft_version}"] // An array of game versions the version supports
+	loaders = ['fabric'] // Self-explanatory.
+	dependencies = [
+		new ModDependency('P7dR8mSH', 'required'), // fabric-api
+		new ModDependency('5aaWibi9', 'required'), // trinkets
+		new ModDependency('8BmcQJ2H', 'required'), // geckolib
+		new ModDependency('ccKDOlHs', 'required'), // owo-lib
+		new ModDependency('D5h9NKNI', 'required') // lavender
+	]
 }
