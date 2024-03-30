@@ -29,9 +29,6 @@ public class ModMessages {
 
             if (message.key().equals(KeyInputHandler.KEY_SPELL_KEY_SLOT_BOTTOM))
                 EternalGuardianMaskEffect.receive(access.player());
-
-            if (message.key().equals(KeyInputHandler.KEY_OPEN_SPELL_SELECT_MENU))
-                access.player().openHandledScreen(null);
         });
     }
 

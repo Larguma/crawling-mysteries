@@ -82,7 +82,7 @@ public class EternalGuardianMaskItem extends TrinketItem implements GeoItem {
   public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
     boolean isEnabled = this.isEnabled(stack);
     boolean isFavorite = false;
-    Key key = KeyBindingHelper.getBoundKeyOf(KeyInputHandler.openSpellSelectMenu); // TODO: can be a favorite
+    Key key = KeyBindingHelper.getBoundKeyOf(KeyInputHandler.spellKeySlotBotton); // TODO: can be a favorite
 
     tooltip.add(Text.translatable("item.crawling-mysteries.eternal_guardian_mask.tooltip.line1"));
     tooltip.add(Text.translatable("item.crawling-mysteries.eternal_guardian_mask.tooltip.line2"));

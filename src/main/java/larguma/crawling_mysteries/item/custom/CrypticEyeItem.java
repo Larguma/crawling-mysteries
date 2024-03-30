@@ -15,14 +15,23 @@ import dev.emi.trinkets.api.TrinketItem;
 import io.wispforest.owo.itemgroup.OwoItemSettings;
 import larguma.crawling_mysteries.CrawlingMysteries;
 import larguma.crawling_mysteries.item.client.CrypticEyeItemRenderer;
+import larguma.crawling_mysteries.screen.client.SpellSelectMenuScreen;
+import larguma.crawling_mysteries.screen.custom.SpellSelectMenuScreenHandler;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.item.TooltipContext;
 import net.minecraft.client.render.item.BuiltinModelItemRenderer;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttribute;
 import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.player.PlayerEntity;
+import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.Text;
+import net.minecraft.util.Hand;
+import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.client.RenderProvider;
@@ -66,6 +75,23 @@ public class CrypticEyeItem extends TrinketItem implements GeoItem {
   // #endregion
 
   // #region Base
+  @Override
+  public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+
+    if (world.isClient) {
+      openSpellSelectMenuScreenScreen(new SpellSelectMenuScreenHandler(0, user.getInventory()), user.getInventory(),
+          Text.of("Select a spell"));
+    }
+    return super.use(world, user, hand);
+
+  }
+
+  @Environment(EnvType.CLIENT)
+  private static void openSpellSelectMenuScreenScreen(SpellSelectMenuScreenHandler handler, PlayerInventory inventory,
+      Text title) {
+    MinecraftClient.getInstance().setScreen(new SpellSelectMenuScreen(handler, inventory, title));
+  }
+
   public void appendTooltip(ItemStack stack, World world, List<Text> tooltip, TooltipContext context) {
     tooltip.add(Text.translatable("item.crawling-mysteries.cryptic_eye.tooltip.line1"));
     tooltip.add(Text.translatable("item.crawling-mysteries.cryptic_eye.tooltip.line2"));

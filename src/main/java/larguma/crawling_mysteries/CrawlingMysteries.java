@@ -18,10 +18,12 @@ import larguma.crawling_mysteries.entity.custom.EternalGuardianEntity;
 import larguma.crawling_mysteries.item.ModItems;
 import larguma.crawling_mysteries.networking.ModMessages;
 import larguma.crawling_mysteries.particle.ModParticles;
+import larguma.crawling_mysteries.screen.ModScreenHandler;
 import larguma.crawling_mysteries.util.ModLootTableModifiers;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.object.builder.v1.entity.FabricDefaultAttributeRegistry;
 import net.minecraft.util.Identifier;
+import software.bernie.geckolib.GeckoLib;
 
 public class CrawlingMysteries implements ModInitializer {
 	public static final String MOD_ID = "crawling-mysteries";
@@ -51,10 +53,13 @@ public class CrawlingMysteries implements ModInitializer {
 		FieldRegistrationHandler.register(ModEntities.class, MOD_ID, false);
 		FieldRegistrationHandler.register(ModParticles.class, MOD_ID, false);
 		FieldRegistrationHandler.register(ModEffect.class, MOD_ID, false);
+		FieldRegistrationHandler.register(ModScreenHandler.class, MOD_ID, false);
 
 		CRAWLING_MYSTERIES_GROUP.initialize();
 		ModLootTableModifiers.modifyLootTables();
 
 		ModMessages.init();
+
+		GeckoLib.initialize();
 	}
 }

@@ -4,7 +4,6 @@ import org.lwjgl.glfw.GLFW;
 
 import larguma.crawling_mysteries.networking.ModMessages;
 import larguma.crawling_mysteries.networking.packet.KeycodePacket;
-import larguma.crawling_mysteries.screen.SpellSelectMenuScreen;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.fabricmc.fabric.api.client.keybinding.v1.KeyBindingHelper;
 import net.minecraft.client.option.KeyBinding;
@@ -16,13 +15,11 @@ public class KeyInputHandler {
   public static final String KEY_SPELL_KEY_SLOT_TOP = "key.crawling-mysteries.spell_key_slot_top";
   public static final String KEY_SPELL_KEY_SLOT_RIGHT = "key.crawling-mysteries.spell_key_slot_right";
   public static final String KEY_SPELL_KEY_SLOT_BOTTOM = "key.crawling-mysteries.spell_key_slot_bottom";
-  public static final String KEY_OPEN_SPELL_SELECT_MENU = "key.crawling-mysteries.open_spell_select_menu";
 
   public static KeyBinding spellKeySlotLeft; // top left
   public static KeyBinding spellKeySlotTop; // top right
   public static KeyBinding spellKeySlotRight; // bottom left
   public static KeyBinding spellKeySlotBotton; // bottom right
-  public static KeyBinding openSpellSelectMenu;
 
   public static void registerKeyInputs() {
     ClientTickEvents.END_CLIENT_TICK.register(client -> {
@@ -41,10 +38,6 @@ public class KeyInputHandler {
       while (spellKeySlotBotton.wasPressed())
         if (client.player != null)
           ModMessages.CHANNEL.clientHandle().send(new KeycodePacket(KEY_SPELL_KEY_SLOT_BOTTOM));
-
-      while (openSpellSelectMenu.wasPressed())
-        if (client.player != null)
-          client.setScreen(new SpellSelectMenuScreen());
     });
   }
 
@@ -71,12 +64,6 @@ public class KeyInputHandler {
         KEY_SPELL_KEY_SLOT_BOTTOM,
         InputUtil.Type.KEYSYM,
         GLFW.GLFW_KEY_KP_6,
-        KEY_CATEGORY_CRAWLING_MYSTERIES));
-
-    openSpellSelectMenu = KeyBindingHelper.registerKeyBinding(new KeyBinding(
-        KEY_OPEN_SPELL_SELECT_MENU,
-        InputUtil.Type.KEYSYM,
-        GLFW.GLFW_KEY_G,
         KEY_CATEGORY_CRAWLING_MYSTERIES));
 
     registerKeyInputs();
