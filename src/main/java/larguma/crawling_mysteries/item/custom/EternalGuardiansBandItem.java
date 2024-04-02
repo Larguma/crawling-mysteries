@@ -26,7 +26,8 @@ import net.minecraft.world.World;
 public class EternalGuardiansBandItem extends TrinketItem {
 
   public EternalGuardiansBandItem() {
-    super(new OwoItemSettings().group(CrawlingMysteries.CRAWLING_MYSTERIES_GROUP).tab(0).rarity(Rarity.RARE));
+    super(
+        new OwoItemSettings().group(CrawlingMysteries.CRAWLING_MYSTERIES_GROUP).tab(0).rarity(Rarity.RARE).maxCount(1));
   }
 
   // #region Trinkets

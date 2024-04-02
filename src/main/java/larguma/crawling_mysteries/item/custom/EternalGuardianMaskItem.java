@@ -44,7 +44,8 @@ public class EternalGuardianMaskItem extends TrinketItem implements GeoItem {
   private final Supplier<Object> renderProvider = GeoItem.makeRenderer(this);
 
   public EternalGuardianMaskItem() {
-    super(new OwoItemSettings().group(CrawlingMysteries.CRAWLING_MYSTERIES_GROUP).tab(0).rarity(Rarity.UNCOMMON));
+    super(new OwoItemSettings().group(CrawlingMysteries.CRAWLING_MYSTERIES_GROUP).tab(0).rarity(Rarity.UNCOMMON)
+        .maxCount(1));
   }
 
   // #region Trinkets
