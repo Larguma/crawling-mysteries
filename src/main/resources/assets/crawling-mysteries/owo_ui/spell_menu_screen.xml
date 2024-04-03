@@ -5,7 +5,7 @@
       <children>
 
         <texture texture="crawling-mysteries:textures/gui/screen/spell_menu_screen.png"
-          region-width="61" region-height="59" id="favorites">
+          region-width="175" region-height="152" id="favorites">
         </texture>
         
       </children>

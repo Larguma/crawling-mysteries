@@ -9,7 +9,7 @@ import net.minecraft.screen.ScreenHandlerType;
 
 public class ModScreenHandler implements AutoRegistryContainer<ScreenHandlerType<?>> {
 
-  public static final ScreenHandlerType<SpellSelectMenuScreenHandler> SPELL_SELECT_MENU = new ScreenHandlerType<>(
+  public static final ScreenHandlerType<SpellSelectMenuScreenHandler> SPELL_SELECT_MENU_HANDLER_TYPE = new ScreenHandlerType<>(
       SpellSelectMenuScreenHandler::new, FeatureFlags.DEFAULT_ENABLED_FEATURES);
 
   @Override

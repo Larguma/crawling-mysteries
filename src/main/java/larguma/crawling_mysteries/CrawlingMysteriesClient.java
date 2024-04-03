@@ -11,10 +11,15 @@ import larguma.crawling_mysteries.item.ModItems;
 import larguma.crawling_mysteries.networking.ModMessages;
 import larguma.crawling_mysteries.particle.ModParticles;
 import larguma.crawling_mysteries.particle.custom.EternalFireParticle;
+import larguma.crawling_mysteries.screen.ModScreenHandler;
+import larguma.crawling_mysteries.screen.client.SpellSelectMenuScreen;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.api.EnvType;
+import net.fabricmc.api.Environment;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.client.gui.screen.ingame.HandledScreens;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.OverlayTexture;
 import net.minecraft.client.render.block.entity.BlockEntityRendererFactories;
@@ -22,6 +27,7 @@ import net.minecraft.client.render.entity.model.PlayerEntityModel;
 import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.util.math.RotationAxis;
 
+@Environment(EnvType.CLIENT)
 public class CrawlingMysteriesClient implements ClientModInitializer {
 
   @SuppressWarnings("unchecked")
@@ -33,6 +39,7 @@ public class CrawlingMysteriesClient implements ClientModInitializer {
     ModMessages.Client.init();
     ParticleFactoryRegistry.getInstance().register(ModParticles.ETERNAL_FIRE_PARTICLE,
         EternalFireParticle.Factory::new);
+    HandledScreens.register(ModScreenHandler.SPELL_SELECT_MENU_HANDLER_TYPE, SpellSelectMenuScreen::new);
 
     // Trinkets
     if (CrawlingMysteries.CONFIG.enableTrinketsRender()) {

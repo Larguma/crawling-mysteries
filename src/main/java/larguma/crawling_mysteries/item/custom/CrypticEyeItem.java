@@ -5,6 +5,8 @@ import java.util.UUID;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 
+import org.jetbrains.annotations.Nullable;
+
 import com.google.common.collect.Multimap;
 
 import dev.emi.trinkets.api.SlotAttributes;
@@ -13,6 +15,7 @@ import dev.emi.trinkets.api.TrinketEnums;
 import dev.emi.trinkets.api.TrinketEnums.DropRule;
 import dev.emi.trinkets.api.TrinketItem;
 import io.wispforest.owo.itemgroup.OwoItemSettings;
+import io.wispforest.owo.util.ImplementedInventory;
 import larguma.crawling_mysteries.CrawlingMysteries;
 import larguma.crawling_mysteries.item.client.CrypticEyeItemRenderer;
 import larguma.crawling_mysteries.screen.client.SpellSelectMenuScreen;
@@ -28,10 +31,15 @@ import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
+import net.minecraft.inventory.Inventories;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.screen.NamedScreenHandlerFactory;
+import net.minecraft.screen.ScreenHandler;
 import net.minecraft.text.Text;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.collection.DefaultedList;
 import net.minecraft.world.World;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.client.RenderProvider;
@@ -46,10 +54,12 @@ import software.bernie.geckolib.core.animation.AnimatableManager.ControllerRegis
 import software.bernie.geckolib.core.object.PlayState;
 import software.bernie.geckolib.util.RenderUtils;
 
-public class CrypticEyeItem extends TrinketItem implements GeoItem {
+public class CrypticEyeItem extends TrinketItem implements GeoItem, ImplementedInventory, NamedScreenHandlerFactory {
 
   private AnimatableInstanceCache cache = new SingletonAnimatableInstanceCache(this);
   private final Supplier<Object> renderProvider = GeoItem.makeRenderer(this);
+  public static final int INVENTORY_SIZE = 4;
+  private final DefaultedList<ItemStack> items = DefaultedList.ofSize(INVENTORY_SIZE, ItemStack.EMPTY);
 
   public CrypticEyeItem() {
     super(new OwoItemSettings().group(CrawlingMysteries.CRAWLING_MYSTERIES_GROUP).tab(0).maxCount(1));
@@ -76,14 +86,20 @@ public class CrypticEyeItem extends TrinketItem implements GeoItem {
 
   // #region Base
   @Override
-  public TypedActionResult<ItemStack> use(World world, PlayerEntity user, Hand hand) {
+  public TypedActionResult<ItemStack> use(World world, PlayerEntity player, Hand hand) {
+    player.openHandledScreen(this);
+    return TypedActionResult.pass(player.getStackInHand(hand));
+  }
 
-    if (world.isClient) {
-      openSpellSelectMenuScreenScreen(new SpellSelectMenuScreenHandler(0, user.getInventory()), user.getInventory(),
-          Text.of("Select a spell"));
-    }
-    return super.use(world, user, hand);
+  @Override
+  public Text getDisplayName() {
+    return Text.of(this.getName());
+  }
 
+  @Nullable
+  @Override
+  public ScreenHandler createMenu(int syncId, PlayerInventory inv, PlayerEntity player) {
+    return new SpellSelectMenuScreenHandler(syncId, inv, this);
   }
 
   @Environment(EnvType.CLIENT)
@@ -97,6 +113,28 @@ public class CrypticEyeItem extends TrinketItem implements GeoItem {
     tooltip.add(Text.translatable("item.crawling-mysteries.cryptic_eye.tooltip.line2"));
     tooltip.add(Text.translatable("general.crawling-mysteries.tooltip.blank"));
     super.appendTooltip(stack, world, tooltip, context);
+  }
+  // #endregion
+
+  // #region Inventory
+  @Override
+  public DefaultedList<ItemStack> getItems() {
+    return items;
+  }
+
+  public void readNbt(NbtCompound nbt) {
+    Inventories.readNbt(nbt, items);
+  }
+
+  public void writeNbt(NbtCompound nbt) {
+    Inventories.writeNbt(nbt, items);
+  }
+
+  @Override
+  public void setStack(int slot, ItemStack stack) {
+    ImplementedInventory.super.setStack(slot, stack);
+
+    markDirty();
   }
   // #endregion
 

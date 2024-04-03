@@ -18,6 +18,8 @@ public class SpellSelectMenuScreen extends BaseUIModelHandledScreen<FlowLayout, 
 
   @Override
   protected void build(FlowLayout layout) {
+    this.titleY = 1000;
+    this.playerInventoryTitleY = 1000;
   }
 
   @Override
