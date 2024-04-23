@@ -1,6 +1,6 @@
 # Crawling Mysteries
 
-**This is an alpha**, Crawling Mysteries is under active development! You can read all the planned features on Github. Follow us to ensure you don't miss any of the latest updates.
+**This is an alpha**, Crawling Mysteries is under development! You can read all the planned features on Github. Follow us to ensure you don't miss any of the latest updates.
 
 ---
 

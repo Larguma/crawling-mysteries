@@ -4,13 +4,17 @@ import io.wispforest.owo.client.screens.SlotGenerator;
 import larguma.crawling_mysteries.CrawlingMysteries;
 import larguma.crawling_mysteries.datagen.ModItemTagProvider;
 import larguma.crawling_mysteries.screen.ModScreenHandler;
+import larguma.crawling_mysteries.spell.EternalGuardianMaskEffect;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
 import net.minecraft.inventory.SimpleInventory;
 import net.minecraft.item.ItemStack;
+import net.minecraft.nbt.NbtCompound;
+import net.minecraft.nbt.NbtElement;
 import net.minecraft.screen.ScreenHandler;
 import net.minecraft.screen.slot.Slot;
+import net.minecraft.screen.slot.SlotActionType;
 
 public class SpellSelectMenuScreenHandler extends ScreenHandler {
 
@@ -58,30 +62,42 @@ public class SpellSelectMenuScreenHandler extends ScreenHandler {
 
   @Override
   public ItemStack quickMove(PlayerEntity player, int invSlot) {
+    return ItemStack.EMPTY;
+  }
 
-    // TODO: copy (not move) item to fav
+  @Override
+  public void onSlotClick(int slotIndex, int button, SlotActionType actionType, PlayerEntity player) {
+    boolean isHandEmpty = this.getCursorStack().isEmpty();
 
-    ItemStack newStack = ItemStack.EMPTY;
-    Slot slot = this.slots.get(invSlot);
-    if (slot != null && slot.hasStack()) {
-      ItemStack originalStack = slot.getStack();
-      newStack = originalStack.copy();
-      if (invSlot < this.inventory.size()) {
-        if (!this.insertItem(originalStack, this.inventory.size(), this.slots.size(), true)) {
-          return ItemStack.EMPTY;
-        }
-      } else if (!this.insertItem(originalStack, 0, this.inventory.size(), false)) {
-        return ItemStack.EMPTY;
+    // Handle favourite slots
+    if (slotIndex < FAVOURITE_SLOTS && slotIndex >= 0) {
+      boolean isFavouriteSlotEmpty = this.inventory.getStack(slotIndex).isEmpty();
+      if (isHandEmpty && !isFavouriteSlotEmpty) {
+        this.inventory.removeStack(slotIndex);
+      } else if (!isHandEmpty && isFavouriteSlotEmpty && this.getCursorStack().isIn(ModItemTagProvider.SPELL_ITEMS)) {
+        this.inventory.setStack(slotIndex, this.getCursorStack());
+        this.setCursorStack(ItemStack.EMPTY);
+        // save to player data
+        NbtCompound nbt = new NbtCompound();
+        NbtElement spell = this.inventory.getStack(slotIndex).writeNbt(new NbtCompound());
+        nbt.put("spell_key_slot", spell);
+        player.saveNbt(nbt);
       }
-
-      if (originalStack.isEmpty()) {
-        slot.setStack(ItemStack.EMPTY);
-      } else {
-        slot.markDirty();
-      }
+      this.inventory.markDirty();
+      return;
     }
 
-    return newStack;
+    // If hand is a spell item, clear the cursor on click
+    if (!isHandEmpty && this.getCursorStack().isIn(ModItemTagProvider.SPELL_ITEMS)) {
+      this.setCursorStack(ItemStack.EMPTY);
+    }
+
+    // If slot is a spell item, allow cloning
+    if (slotIndex >= 0 && getSlot(slotIndex).getStack().isIn(ModItemTagProvider.SPELL_ITEMS)) {
+      this.setCursorStack(getSlot(slotIndex).getStack().copy());
+    } else {
+      super.onSlotClick(slotIndex, button, actionType, player);
+    }
   }
 
   @Override
