@@ -10,12 +10,12 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.text.Text;
 
-public class EternalGuardianMaskEffect {
+public class EternalGuardianMaskSpellEffect implements ISpellEffect {
 
   private static final String MESSAGE_ETERNAL_GUARDIAN_MASK_EFFECT_ENABLED = "message.crawling-mysteries.eternal_guardian_mask_effect_enabled";
   private static final String MESSAGE_ETERNAL_GUARDIAN_MASK_EFFECT_DISABLED = "message.crawling-mysteries.eternal_guardian_mask_effect_disabled";
 
-  public static void receive(ServerPlayerEntity player) {
+  public void receive(ServerPlayerEntity player) {
 
     TrinketsApi.getTrinketComponent(player).ifPresent(trinkets -> trinkets.forEach((ref, stack) -> {
 
@@ -30,5 +30,6 @@ public class EternalGuardianMaskEffect {
         }
       }
     }));
+
   }
 }

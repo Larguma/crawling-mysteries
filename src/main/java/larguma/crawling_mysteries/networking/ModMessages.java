@@ -2,9 +2,9 @@ package larguma.crawling_mysteries.networking;
 
 import io.wispforest.owo.network.OwoNetChannel;
 import larguma.crawling_mysteries.CrawlingMysteries;
-import larguma.crawling_mysteries.event.KeyInputHandler;
 import larguma.crawling_mysteries.networking.packet.KeycodePacket;
-import larguma.crawling_mysteries.spell.EternalGuardianMaskEffect;
+import larguma.crawling_mysteries.spell.SpellEffect;
+import larguma.crawling_mysteries.util.SpellUtils;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.util.Identifier;
@@ -18,17 +18,9 @@ public class ModMessages {
 
     public static void init() {
         CHANNEL.registerServerbound(KeycodePacket.class, (message, access) -> {
-            if (message.key().equals(KeyInputHandler.KEY_SPELL_KEY_SLOT_LEFT)) // TODO: must be changable
-                EternalGuardianMaskEffect.receive(access.player());
-
-            if (message.key().equals(KeyInputHandler.KEY_SPELL_KEY_SLOT_TOP))
-                EternalGuardianMaskEffect.receive(access.player());
-
-            if (message.key().equals(KeyInputHandler.KEY_SPELL_KEY_SLOT_RIGHT))
-                EternalGuardianMaskEffect.receive(access.player());
-
-            if (message.key().equals(KeyInputHandler.KEY_SPELL_KEY_SLOT_BOTTOM))
-                EternalGuardianMaskEffect.receive(access.player());
+            access.player().NBT
+            SpellEffect spellEffect = SpellUtils.getSpellEffectFromInt(message.key());
+            spellEffect.receive(access.player());
         });
     }
 

@@ -1,10 +1,11 @@
 package larguma.crawling_mysteries.screen.custom;
 
 import io.wispforest.owo.client.screens.SlotGenerator;
-import larguma.crawling_mysteries.CrawlingMysteries;
 import larguma.crawling_mysteries.datagen.ModItemTagProvider;
 import larguma.crawling_mysteries.screen.ModScreenHandler;
-import larguma.crawling_mysteries.spell.EternalGuardianMaskEffect;
+import larguma.crawling_mysteries.util.EquipedSpellData;
+import larguma.crawling_mysteries.util.IEntityDataSaver;
+import larguma.crawling_mysteries.util.SpellUtils;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.inventory.Inventory;
@@ -76,12 +77,8 @@ public class SpellSelectMenuScreenHandler extends ScreenHandler {
         this.inventory.removeStack(slotIndex);
       } else if (!isHandEmpty && isFavouriteSlotEmpty && this.getCursorStack().isIn(ModItemTagProvider.SPELL_ITEMS)) {
         this.inventory.setStack(slotIndex, this.getCursorStack());
+        EquipedSpellData.addSpell((IEntityDataSaver) this.player(), slotIndex, SpellUtils.getSpellId(this.getCursorStack()));
         this.setCursorStack(ItemStack.EMPTY);
-        // save to player data
-        NbtCompound nbt = new NbtCompound();
-        NbtElement spell = this.inventory.getStack(slotIndex).writeNbt(new NbtCompound());
-        nbt.put("spell_key_slot", spell);
-        player.saveNbt(nbt);
       }
       this.inventory.markDirty();
       return;

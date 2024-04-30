@@ -16,10 +16,10 @@ public class KeyInputHandler {
   public static final String KEY_SPELL_KEY_SLOT_RIGHT = "key.crawling-mysteries.spell_key_slot_right";
   public static final String KEY_SPELL_KEY_SLOT_BOTTOM = "key.crawling-mysteries.spell_key_slot_bottom";
 
-  public static KeyBinding spellKeySlotLeft; // top left
-  public static KeyBinding spellKeySlotTop; // top right
-  public static KeyBinding spellKeySlotRight; // bottom left
-  public static KeyBinding spellKeySlotBotton; // bottom right
+  public static KeyBinding spellKeySlotLeft;
+  public static KeyBinding spellKeySlotTop;
+  public static KeyBinding spellKeySlotRight;
+  public static KeyBinding spellKeySlotBotton;
 
   public static void registerKeyInputs() {
     ClientTickEvents.END_CLIENT_TICK.register(client -> {
@@ -45,25 +45,25 @@ public class KeyInputHandler {
     spellKeySlotLeft = KeyBindingHelper.registerKeyBinding(new KeyBinding(
         KEY_SPELL_KEY_SLOT_LEFT,
         InputUtil.Type.KEYSYM,
-        GLFW.GLFW_KEY_KP_8,
+        GLFW.GLFW_KEY_KP_4,
         KEY_CATEGORY_CRAWLING_MYSTERIES));
 
     spellKeySlotTop = KeyBindingHelper.registerKeyBinding(new KeyBinding(
         KEY_SPELL_KEY_SLOT_TOP,
         InputUtil.Type.KEYSYM,
-        GLFW.GLFW_KEY_KP_9,
+        GLFW.GLFW_KEY_KP_8,
         KEY_CATEGORY_CRAWLING_MYSTERIES));
 
     spellKeySlotRight = KeyBindingHelper.registerKeyBinding(new KeyBinding(
         KEY_SPELL_KEY_SLOT_RIGHT,
         InputUtil.Type.KEYSYM,
-        GLFW.GLFW_KEY_KP_5,
+        GLFW.GLFW_KEY_KP_6,
         KEY_CATEGORY_CRAWLING_MYSTERIES));
 
     spellKeySlotBotton = KeyBindingHelper.registerKeyBinding(new KeyBinding(
         KEY_SPELL_KEY_SLOT_BOTTOM,
         InputUtil.Type.KEYSYM,
-        GLFW.GLFW_KEY_KP_6,
+        GLFW.GLFW_KEY_KP_5,
         KEY_CATEGORY_CRAWLING_MYSTERIES));
 
     registerKeyInputs();
