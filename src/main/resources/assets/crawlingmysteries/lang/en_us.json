@@ -1,0 +1,19 @@
+{
+  "advancement.crawlingmysteries": "====== Advancement ======",
+  "block.crawlingmysteries": "====== Block ======",
+  "creative_mode_tab.crawlingmysteries": "====== Creative Mode Tab ======",
+  "creative_mode_tab.crawlingmysteries.tab_all": "Crawling Mysteries",
+  "curios": "====== Curios ======",
+  "curios.identifier.observer": "Observer",
+  "curios.modifiers.observer": "When equipped in the Observer slot:",
+  "effect.crawlingmysteries": "====== Effect ======",
+  "entity.crawlingmysteries": "====== Entity ======",
+  "general.crawlingmysteries": "====== General ======",
+  "general.crawlingmysteries.mod_name": "Crawling Mysteries",
+  "general.crawlingmysteries.tooltip.blank": "",
+  "item.crawlingmysteries": "====== Item ======",
+  "item.crawlingmysteries.cryptic_eye.tooltip.line1": "A mysterious eye that seems to watch over you.",
+  "item.crawlingmysteries.cryptic_eye.tooltip.line2": "§dPerhaps it's worth investigating further.§r",
+  "item.crawlingmysteries.cryptic_eye": "Cryptic Eye",
+  "message.crawlingmysteries": "====== Messages (network) ======"
+}
