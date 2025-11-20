@@ -1,11 +1,13 @@
 package dev.larguma.crawlingmysteries;
 
+import java.util.UUID;
+
 import org.slf4j.Logger;
 
 import com.mojang.logging.LogUtils;
 
 import dev.larguma.crawlingmysteries.block.ModBlocks;
-import dev.larguma.crawlingmysteries.client.curio.CurioRenderers;
+import dev.larguma.crawlingmysteries.block.entity.ModBlockEntities;
 import dev.larguma.crawlingmysteries.item.ModCreativeModeTabs;
 import dev.larguma.crawlingmysteries.item.ModItems;
 import net.neoforged.bus.api.IEventBus;
@@ -16,15 +18,13 @@ import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
-import top.theillusivec4.curios.api.client.CuriosRendererRegistry;
 
-// The value here should match an entry in the META-INF/neoforge.mods.toml file
 @Mod(CrawlingMysteries.MODID)
 public class CrawlingMysteries {
-    // Define mod id in a common place for everything to reference
     public static final String MODID = "crawlingmysteries";
-    // Directly reference a slf4j logger
     public static final Logger LOGGER = LogUtils.getLogger();
+    public static final UUID ELDRICTH_WEAVER_UUID = UUID.fromString("4a14921f-ea91-4d12-8583-4bba50f6de8b");
+    public static final String ELDRICTH_WEAVER_NAME = "Larguma";
 
     // The constructor for the mod class is the first code that is run when your mod
     // is loaded.
@@ -45,6 +45,7 @@ public class CrawlingMysteries {
 
         ModItems.register(modEventBus);
         ModBlocks.register(modEventBus);
+        ModBlockEntities.register(modEventBus);
 
         // Register our mod's ModConfigSpec so that FML can create and load the config
         // file for us
@@ -52,7 +53,7 @@ public class CrawlingMysteries {
     }
 
     private void commonSetup(FMLCommonSetupEvent event) {
-        
+
     }
 
     // You can use SubscribeEvent and let the Event Bus discover methods to call

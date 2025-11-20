@@ -3,6 +3,7 @@ package dev.larguma.crawlingmysteries.item;
 import java.util.function.Supplier;
 
 import dev.larguma.crawlingmysteries.CrawlingMysteries;
+import dev.larguma.crawlingmysteries.block.ModBlocks;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.CreativeModeTab;
@@ -17,8 +18,9 @@ public class ModCreativeModeTabs {
       () -> CreativeModeTab.builder()
           .icon(() -> ModItems.CRYPTIC_EYE.get().getDefaultInstance())
           .title(Component.translatable("general.crawlingmysteries.mod_name"))
-          .displayItems((itemDisplayParameters, output) -> {;
+          .displayItems((itemDisplayParameters, output) -> {
             output.accept(ModItems.CRYPTIC_EYE.get());
+            output.accept(ModBlocks.TOMBSTONE.get());
           })
           .build());
 

@@ -1,13 +1,14 @@
 package dev.larguma.crawlingmysteries;
 
-import dev.larguma.crawlingmysteries.client.curio.CurioRenderers;
-import net.minecraft.client.Minecraft;
+import dev.larguma.crawlingmysteries.block.entity.client.ModBlockRenderers;
+import dev.larguma.crawlingmysteries.item.client.curio.CurioRenderers;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
+import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
 
@@ -27,11 +28,12 @@ public class CrawlingMysteriesClient {
     }
 
     @SubscribeEvent
-    static void onClientSetup(FMLClientSetupEvent event) {
-        // Some client setup code
-        CrawlingMysteries.LOGGER.info("HELLO FROM CLIENT SETUP");
-        CrawlingMysteries.LOGGER.info("MINECRAFT NAME >> {}", Minecraft.getInstance().getUser().getName());
+    public static void registerRenderers(final EntityRenderersEvent.RegisterRenderers event) {
+        ModBlockRenderers.register(event);
+    }
 
+    @SubscribeEvent
+    static void onClientSetup(FMLClientSetupEvent event) {
         CurioRenderers.register();
     }
 }

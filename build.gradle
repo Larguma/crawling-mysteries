@@ -55,6 +55,7 @@ neoForge {
     runs {
         client {
             client()
+            //devLogin = true
 
             // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
             systemProperty 'neoforge.enabledGameTestNamespaces', project.mod_id
@@ -145,6 +146,7 @@ dependencies {
     // http://www.gradle.org/docs/current/userguide/dependency_management.html
 
     implementation "software.bernie.geckolib:geckolib-neoforge-${minecraft_version}:${geckolib_version}"
+    compileOnly "top.theillusivec4.curios:curios-neoforge:${curios_version}:api"
     runtimeOnly "top.theillusivec4.curios:curios-neoforge:${curios_version}"
 
 }
@@ -200,3 +202,11 @@ idea {
         downloadJavadoc = true
     }
 }
+
+// Ensure data-generated resources are available when launching the client from VS Code/Gradle
+// This makes the Gradle task `runClient` execute `runData` first so that
+// resources in `src/generated/resources` are up-to-date and on the classpath.
+// Keeps the change scoped to dev runs and avoids forcing data gen on every build.
+// tasks.matching { it.name == 'runClient' }.configureEach {
+//     dependsOn tasks.named('runData')
+// }

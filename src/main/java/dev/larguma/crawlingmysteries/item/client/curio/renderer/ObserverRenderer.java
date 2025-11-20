@@ -1,9 +1,10 @@
-package dev.larguma.crawlingmysteries.client.curio.renderer;
+package dev.larguma.crawlingmysteries.item.client.curio.renderer;
 
 import org.joml.Quaternionf;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 
+import dev.larguma.crawlingmysteries.Config;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.player.AbstractClientPlayer;
@@ -22,7 +23,7 @@ public class ObserverRenderer implements ICurioRenderer {
   public <T extends LivingEntity, M extends EntityModel<T>> void render(ItemStack stack, SlotContext slotContext,
       PoseStack poseStack, RenderLayerParent<T, M> renderLayerParent, MultiBufferSource renderTypeBuffer, int light,
       float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
-    if (slotContext.entity() instanceof AbstractClientPlayer player) {
+    if (slotContext.entity() instanceof AbstractClientPlayer player && Config.RENDER_TRINKETS.get()) {
       if (player.isInvisible()) {
         return;
       }

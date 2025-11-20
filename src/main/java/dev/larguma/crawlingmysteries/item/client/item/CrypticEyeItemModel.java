@@ -1,4 +1,4 @@
-package dev.larguma.crawlingmysteries.client.item;
+package dev.larguma.crawlingmysteries.item.client.item;
 
 import dev.larguma.crawlingmysteries.CrawlingMysteries;
 import dev.larguma.crawlingmysteries.item.custom.CrypticEyeItem;

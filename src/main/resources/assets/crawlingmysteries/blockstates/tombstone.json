@@ -1,0 +1,19 @@
+{
+  "variants": {
+    "facing=north": {
+      "model": "crawlingmysteries:block/tombstone"
+    },
+    "facing=east": {
+      "model": "crawlingmysteries:block/tombstone",
+      "y": 90
+    },
+    "facing=south": {
+      "model": "crawlingmysteries:block/tombstone",
+      "y": 180
+    },
+    "facing=west": {
+      "model": "crawlingmysteries:block/tombstone",
+      "y": 270
+    }
+  }
+}

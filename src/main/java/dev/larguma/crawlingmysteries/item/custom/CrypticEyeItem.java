@@ -6,7 +6,7 @@ import java.util.function.Consumer;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
 
-import dev.larguma.crawlingmysteries.client.item.CrypticEyeItemRenderer;
+import dev.larguma.crawlingmysteries.item.client.item.CrypticEyeItemRenderer;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
@@ -56,7 +56,7 @@ public class CrypticEyeItem extends Item implements GeoItem, ICurioItem {
   public Multimap<Holder<Attribute>, AttributeModifier> getAttributeModifiers(SlotContext slotContext,
       ResourceLocation id, ItemStack stack) {
     Multimap<Holder<Attribute>, AttributeModifier> map = LinkedHashMultimap.create();
-    CuriosApi.addSlotModifier(map, "ring", id, 2, AttributeModifier.Operation.ADD_VALUE);
+    CuriosApi.addSlotModifier(map, "ring", id, 1, AttributeModifier.Operation.ADD_VALUE);
     return map;
   }
 

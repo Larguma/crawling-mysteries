@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import dev.larguma.crawlingmysteries.CrawlingMysteries;
+import dev.larguma.crawlingmysteries.block.custom.TombstoneBlock;
 import dev.larguma.crawlingmysteries.item.ModItems;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.BlockItem;
@@ -17,6 +18,8 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class ModBlocks {
   public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(CrawlingMysteries.MODID);
+
+  public static final DeferredBlock<Block> TOMBSTONE = registerBlock("tombstone", () -> new TombstoneBlock());
 
   private static <T extends Block> DeferredBlock<T> registerBlock(String name, Supplier<T> block) {
     DeferredBlock<T> toReturn = BLOCKS.register(name, block);
