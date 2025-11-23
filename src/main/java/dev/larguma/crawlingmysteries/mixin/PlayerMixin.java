@@ -43,7 +43,7 @@ public abstract class PlayerMixin extends LivingEntity {
       List<ItemStack> trinketStacks = new ArrayList<>();
 
       CuriosApi.getCuriosInventory(player).ifPresent(curiosInventory -> {
-        hasEternalGuardiansBand = curiosInventory.isEquipped(ModItems.CRYPTIC_EYE.get()); // TODO
+        hasEternalGuardiansBand = curiosInventory.isEquipped(ModItems.ETERNAL_GUARDIANS_BAND.get());
         curiosInventory.getCurios().forEach((ref, stacksHandler) -> { // stacksHandler = all head or all rings
           var dropRule = stacksHandler.getDropRule();
           var activeStacks = stacksHandler.getStacks();

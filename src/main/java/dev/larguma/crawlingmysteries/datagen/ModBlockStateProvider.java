@@ -9,7 +9,7 @@ import net.neoforged.neoforge.registries.DeferredBlock;
 public class ModBlockStateProvider extends BlockStateProvider {
 
   public ModBlockStateProvider(PackOutput output, ExistingFileHelper exFileHelper) {
-    super(output, CrawlingMysteries.MODID, exFileHelper);
+    super(output, CrawlingMysteries.MOD_ID, exFileHelper);
   }
 
   @Override

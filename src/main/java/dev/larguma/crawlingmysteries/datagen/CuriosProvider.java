@@ -19,10 +19,10 @@ public class CuriosProvider extends CuriosDataProvider {
 
   @Override
   public void generate(Provider registries, ExistingFileHelper fileHelper) {
-    this.createSlot("observer").size(1).dropRule(ICurio.DropRule.ALWAYS_KEEP).icon(ResourceLocation.fromNamespaceAndPath(CrawlingMysteries.MODID, "slot/observer"));
+    this.createSlot("observer").size(1).dropRule(ICurio.DropRule.ALWAYS_KEEP)
+        .icon(ResourceLocation.fromNamespaceAndPath(CrawlingMysteries.MOD_ID, "slot/observer"));
 
-
-    this.createEntities("entities").addPlayer().addSlots("observer");
+    this.createEntities("entities").addPlayer().addSlots("observer", "ring");
   }
 
 }

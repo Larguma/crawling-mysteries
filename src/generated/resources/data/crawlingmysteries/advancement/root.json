@@ -1,0 +1,37 @@
+{
+  "criteria": {
+    "got_cryptic_eye": {
+      "conditions": {
+        "items": [
+          {
+            "items": "crawlingmysteries:cryptic_eye"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    }
+  },
+  "display": {
+    "background": "minecraft:textures/block/end_stone_bricks.png",
+    "description": {
+      "translate": "advancement.crawlingmysteries.desc"
+    },
+    "frame": "goal",
+    "icon": {
+      "count": 1,
+      "id": "crawlingmysteries:cryptic_eye"
+    },
+    "title": {
+      "translate": "general.crawlingmysteries.mod_name"
+    }
+  },
+  "requirements": [
+    [
+      "got_cryptic_eye"
+    ]
+  ],
+  "rewards": {
+    "experience": 100
+  },
+  "sends_telemetry_event": true
+}

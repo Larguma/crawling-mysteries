@@ -23,6 +23,8 @@ public class CuriosItemTagProvider extends ItemTagsProvider {
   protected void addTags(Provider provider) {
     tag(CuriosTags.Items.OBSERVER)
         .add(ModItems.CRYPTIC_EYE.get());
+    tag(top.theillusivec4.curios.api.CuriosTags.RING)
+        .add(ModItems.ETERNAL_GUARDIANS_BAND.get());
   }
 
 }

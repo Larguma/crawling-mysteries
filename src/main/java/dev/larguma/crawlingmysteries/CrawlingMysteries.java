@@ -8,6 +8,8 @@ import com.mojang.logging.LogUtils;
 
 import dev.larguma.crawlingmysteries.block.ModBlocks;
 import dev.larguma.crawlingmysteries.block.entity.ModBlockEntities;
+import dev.larguma.crawlingmysteries.data.ModDataAttachments;
+import dev.larguma.crawlingmysteries.handlers.ModEventHandler;
 import dev.larguma.crawlingmysteries.item.ModCreativeModeTabs;
 import dev.larguma.crawlingmysteries.item.ModItems;
 import net.neoforged.bus.api.IEventBus;
@@ -19,9 +21,9 @@ import net.neoforged.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
 
-@Mod(CrawlingMysteries.MODID)
+@Mod(CrawlingMysteries.MOD_ID)
 public class CrawlingMysteries {
-    public static final String MODID = "crawlingmysteries";
+    public static final String MOD_ID = "crawlingmysteries";
     public static final Logger LOGGER = LogUtils.getLogger();
     public static final UUID ELDRICTH_WEAVER_UUID = UUID.fromString("4a14921f-ea91-4d12-8583-4bba50f6de8b");
     public static final String ELDRICTH_WEAVER_NAME = "Larguma";
@@ -46,6 +48,9 @@ public class CrawlingMysteries {
         ModItems.register(modEventBus);
         ModBlocks.register(modEventBus);
         ModBlockEntities.register(modEventBus);
+        ModDataAttachments.register(modEventBus);
+
+        NeoForge.EVENT_BUS.register(new ModEventHandler());
 
         // Register our mod's ModConfigSpec so that FML can create and load the config
         // file for us

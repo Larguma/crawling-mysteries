@@ -14,7 +14,7 @@ public class ModBlockTagProvider extends BlockTagsProvider {
 
   public ModBlockTagProvider(PackOutput output, CompletableFuture<Provider> lookupProvider,
       @Nullable ExistingFileHelper existingFileHelper) {
-    super(output, lookupProvider, CrawlingMysteries.MODID, existingFileHelper);
+    super(output, lookupProvider, CrawlingMysteries.MOD_ID, existingFileHelper);
   }
 
   @Override

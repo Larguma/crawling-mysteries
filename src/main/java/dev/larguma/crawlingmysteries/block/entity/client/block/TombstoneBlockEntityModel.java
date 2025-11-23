@@ -7,6 +7,6 @@ import software.bernie.geckolib.model.DefaultedBlockGeoModel;
 
 public class TombstoneBlockEntityModel extends DefaultedBlockGeoModel<TombstoneBlockEntity> {
   public TombstoneBlockEntityModel() {
-    super(ResourceLocation.fromNamespaceAndPath(CrawlingMysteries.MODID, "tombstone"));
+    super(ResourceLocation.fromNamespaceAndPath(CrawlingMysteries.MOD_ID, "tombstone"));
   }
 }

@@ -17,7 +17,7 @@ import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class ModBlocks {
-  public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(CrawlingMysteries.MODID);
+  public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(CrawlingMysteries.MOD_ID);
 
   public static final DeferredBlock<Block> TOMBSTONE = registerBlock("tombstone", () -> new TombstoneBlock());
 

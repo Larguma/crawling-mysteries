@@ -7,6 +7,6 @@ import software.bernie.geckolib.model.DefaultedItemGeoModel;
 
 public class CrypticEyeItemModel extends DefaultedItemGeoModel<CrypticEyeItem> {
   public CrypticEyeItemModel() {
-    super(ResourceLocation.fromNamespaceAndPath(CrawlingMysteries.MODID, "cryptic_eye"));
+    super(ResourceLocation.fromNamespaceAndPath(CrawlingMysteries.MOD_ID, "cryptic_eye"));
   }
 }

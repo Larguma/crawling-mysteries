@@ -1,8 +1,11 @@
 {
   "advancement.crawlingmysteries": "====== Advancement ======",
+  "advancement.crawlingmysteries.desc": "You awoke with this strange eye watching you, where does it come from ?",
+  "advancement.crawlingmysteries.eternal_guardians_band": "Discoverer of Immortality",
+  "advancement.crawlingmysteries.eternal_guardians_band.desc": "Wearing the Eternal Guardian's Band, you feel another presence watching over you.",
   "block.crawlingmysteries": "====== Block ======",
   "block.crawlingmysteries.tombstone": "Tombstone",
-  "block.crawlingmysteries.tombstone.tooltip": "§4How did you get this?",
+  "block.crawlingmysteries.tombstone.tooltip": "A nice tombstone with no name on it... §cyet.§r",
   "block.crawlingmysteries.tombstone.death": "Tombstone created at %s, %s, %s",
   "creative_mode_tab.crawlingmysteries": "====== Creative Mode Tab ======",
   "creative_mode_tab.crawlingmysteries.tab_all": "Crawling Mysteries",
@@ -17,9 +20,13 @@
   "general.crawlingmysteries": "====== General ======",
   "general.crawlingmysteries.mod_name": "Crawling Mysteries",
   "general.crawlingmysteries.tooltip.blank": "",
+  "general.crawlingmysteries.tooltip.config_disabled": "§cDisabled in config",
   "item.crawlingmysteries": "====== Item ======",
+  "item.crawlingmysteries.cryptic_eye": "Cryptic Eye",
   "item.crawlingmysteries.cryptic_eye.tooltip.line1": "A mysterious eye that seems to watch over you.",
   "item.crawlingmysteries.cryptic_eye.tooltip.line2": "§dPerhaps it's worth investigating further.§r",
-  "item.crawlingmysteries.cryptic_eye": "Cryptic Eye",
+  "item.crawlingmysteries.eternal_guardians_band": "Eternal Guardian's Band",
+  "item.crawlingmysteries.eternal_guardians_band.tooltip.line1": "An ancient ring said to grant its wearer protection.",
+  "item.crawlingmysteries.eternal_guardians_band.tooltip.line2": "§dWorn by those who seek immortality.§r",
   "message.crawlingmysteries": "====== Messages (network) ======"
 }

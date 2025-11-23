@@ -15,7 +15,7 @@ public class ModTags {
     public static final TagKey<Item> OBSERVER = createTagKey("observer");
 
     private static TagKey<Item> createTagKey(String name) {
-      return ItemTags.create(ResourceLocation.fromNamespaceAndPath(CrawlingMysteries.MODID, name));
+      return ItemTags.create(ResourceLocation.fromNamespaceAndPath(CrawlingMysteries.MOD_ID, name));
     }
   }
 }

@@ -11,7 +11,7 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 
 public class ModBlockEntities {
   public static final DeferredRegister<BlockEntityType<?>> BLOCK_ENTITIES = DeferredRegister
-      .create(BuiltInRegistries.BLOCK_ENTITY_TYPE, CrawlingMysteries.MODID);
+      .create(BuiltInRegistries.BLOCK_ENTITY_TYPE, CrawlingMysteries.MOD_ID);
 
   public static final Supplier<BlockEntityType<TombstoneBlockEntity>> TOMBSTONE_BE = BLOCK_ENTITIES
       .register("tombstone_be", () -> BlockEntityType.Builder.of(

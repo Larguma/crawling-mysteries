@@ -16,7 +16,7 @@ import net.neoforged.neoforge.common.data.BlockTagsProvider;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import net.neoforged.neoforge.data.event.GatherDataEvent;
 
-@EventBusSubscriber(modid = CrawlingMysteries.MODID)
+@EventBusSubscriber(modid = CrawlingMysteries.MOD_ID)
 public class DataGenerators {
   @SubscribeEvent
   public static void gatherData(GatherDataEvent event) {
@@ -43,7 +43,8 @@ public class DataGenerators {
     generator.addProvider(event.includeClient(), new ModBlockStateProvider(packOutput, existingFileHelper));
 
     generator.addProvider(event.includeServer(),
-        new CuriosProvider(CrawlingMysteries.MODID, packOutput, existingFileHelper, lookupProvider));
+        new CuriosProvider(CrawlingMysteries.MOD_ID, packOutput, existingFileHelper, lookupProvider));
+    generator.addProvider(event.includeServer(), new ModAdvancementProvider(packOutput, lookupProvider, existingFileHelper));
 
   }
 }
