@@ -3,10 +3,14 @@ package dev.larguma.crawlingmysteries.block.entity;
 import java.util.UUID;
 
 import com.mojang.authlib.GameProfile;
-
-import dev.larguma.crawlingmysteries.CrawlingMysteries;
+import dev.larguma.crawlingmysteries.util.NbtHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.NonNullList;
+import net.minecraft.core.HolderLookup.Provider;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.network.protocol.Packet;
+import net.minecraft.network.protocol.game.ClientGamePacketListener;
+import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
 import net.minecraft.world.Container;
 import net.minecraft.world.ContainerHelper;
 import net.minecraft.world.entity.player.Player;
@@ -29,13 +33,60 @@ public class TombstoneBlockEntity extends BlockEntity implements GeoBlockEntity,
   private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
   private NonNullList<ItemStack> items = NonNullList.withSize(getContainerSize(), ItemStack.EMPTY);
   private GameProfile tombstoneOwner;
-  private int xp;
   private UUID guardianUUID;
+  private int xp;
+  public static final String TOMBSTONE_OWNER_KEY = "tombstone_owner";
+  public static final String TOMBSTONE_GUARDIAN_UUID_KEY = "guardian_uuid";
+  public static final String TOMBSTONE_XP_KEY = "xp";
 
   public TombstoneBlockEntity(BlockPos pos, BlockState blockState) {
     super(ModBlockEntities.TOMBSTONE_BE.get(), pos, blockState);
   }
 
+  // #region NBT
+  @Override
+  protected void loadAdditional(CompoundTag tag, Provider registries) {
+    super.loadAdditional(tag, registries);
+    clearContent();
+    ContainerHelper.loadAllItems(tag, this.items, registries);
+
+    this.xp = tag.getInt(TOMBSTONE_XP_KEY);
+
+    if (tag.contains(TOMBSTONE_OWNER_KEY))
+      this.tombstoneOwner = NbtHelper.toGameProfile(tag.getCompound(TOMBSTONE_OWNER_KEY));
+
+    if (tag.contains(TOMBSTONE_GUARDIAN_UUID_KEY))
+      this.guardianUUID = tag.getUUID(TOMBSTONE_GUARDIAN_UUID_KEY);
+
+  }
+
+  @Override
+  protected void saveAdditional(CompoundTag tag, Provider registries) {
+    super.saveAdditional(tag, registries);
+
+    ContainerHelper.saveAllItems(tag, this.items, registries);
+
+    tag.putInt(TOMBSTONE_XP_KEY, this.xp);
+
+    if (this.hasTombstoneOwner())
+      tag.put(TOMBSTONE_OWNER_KEY, NbtHelper.writeGameProfile(new CompoundTag(), this.tombstoneOwner));
+
+    if (this.hasGuardianUUID())
+      tag.putUUID(TOMBSTONE_GUARDIAN_UUID_KEY, this.guardianUUID);
+  }
+
+  @Override
+  public Packet<ClientGamePacketListener> getUpdatePacket() {
+    return ClientboundBlockEntityDataPacket.create(this);
+  }
+
+  @Override
+  public CompoundTag getUpdateTag(Provider registries) {
+    return saveWithoutMetadata(registries);
+  }
+  // #endregion NBT
+
+  //#region Gecko
   @Override
   public void registerControllers(ControllerRegistrar controllers) {
     controllers.add(new AnimationController<>(this, this::deployAnimController));
@@ -55,10 +106,11 @@ public class TombstoneBlockEntity extends BlockEntity implements GeoBlockEntity,
   public double getTick(Object blockEntity) {
     return RenderUtil.getCurrentTick();
   }
+  //#endregion Gecko
 
   @Override
   public void clearContent() {
-    items.clear();
+    this.items.clear();
     this.setChanged();
   }
 
@@ -79,7 +131,7 @@ public class TombstoneBlockEntity extends BlockEntity implements GeoBlockEntity,
 
   public NonNullList<ItemStack> getItems() {
     return this.items;
-  } 
+  }
 
   @Override
   public ItemStack removeItem(int slot, int amount) {
@@ -113,8 +165,7 @@ public class TombstoneBlockEntity extends BlockEntity implements GeoBlockEntity,
   }
 
   public GameProfile getTombstoneOwner() {
-    return this.tombstoneOwner != null ? this.tombstoneOwner
-        : new GameProfile(CrawlingMysteries.ELDRICTH_WEAVER_UUID, CrawlingMysteries.ELDRICTH_WEAVER_NAME);
+    return this.tombstoneOwner;
   }
 
   public boolean hasTombstoneOwner() {
@@ -128,6 +179,7 @@ public class TombstoneBlockEntity extends BlockEntity implements GeoBlockEntity,
   public void setXp(int xp) {
     this.xp = xp;
     this.setChanged();
+    ;
   }
 
   public void setGuardianUUID(UUID guardianUUID) {
@@ -149,7 +201,7 @@ public class TombstoneBlockEntity extends BlockEntity implements GeoBlockEntity,
 
   @Override
   public boolean stillValid(Player player) {
-    return true;
+    return Container.stillValidBlockEntity(this, player);
   }
 
 }

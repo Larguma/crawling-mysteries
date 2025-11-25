@@ -7,7 +7,7 @@ import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 
-public class Helper {
+public class ItemHelper {
 
   public static void scatterItems(Level level, BlockPos pos, NonNullList<ItemStack> stacks) {
     stacks.forEach((stack) -> {

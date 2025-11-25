@@ -7,14 +7,15 @@ import com.mojang.serialization.MapCodec;
 import dev.larguma.crawlingmysteries.CrawlingMysteries;
 import dev.larguma.crawlingmysteries.block.ModBlocks;
 import dev.larguma.crawlingmysteries.block.entity.TombstoneBlockEntity;
-import dev.larguma.crawlingmysteries.util.Helper;
+import dev.larguma.crawlingmysteries.util.ItemHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerLevel;
+import net.minecraft.sounds.SoundEvents;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
@@ -49,7 +50,7 @@ public class TombstoneBlock extends BaseEntityBlock implements SimpleWaterlogged
 
   public TombstoneBlock() {
     super(BlockBehaviour.Properties.ofFullCopy(Blocks.ENCHANTING_TABLE)
-        .strength(-1.0f, 3600000.0f).noOcclusion().noLootTable());
+        .strength(-1.0f, 3600000.0f).noOcclusion().noLootTable().randomTicks());
     this.particle = ParticleTypes.SOUL_FIRE_FLAME;
     this.registerDefaultState(
         this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(WATERLOGGED, Boolean.valueOf(false)));
@@ -57,7 +58,7 @@ public class TombstoneBlock extends BaseEntityBlock implements SimpleWaterlogged
 
   protected TombstoneBlock(Properties properties) {
     super(properties);
-    this.particle = null;
+    this.particle = ParticleTypes.SOUL_FIRE_FLAME;
   }
 
   @Override
@@ -98,18 +99,26 @@ public class TombstoneBlock extends BaseEntityBlock implements SimpleWaterlogged
   }
 
   @Override
-  protected void randomTick(BlockState state, ServerLevel level, BlockPos pos, RandomSource random) {
+  public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
+    super.animateTick(state, level, pos, random);
     double x = (double) pos.getX() + random.nextDouble();
     double y = (double) pos.getY() + random.nextDouble() + random.nextDouble();
     double z = (double) pos.getZ() + random.nextDouble();
-    level.addParticle(this.particle, x, y, z, 0.0, 0.0, 0.0);
+    level.addParticle(this.particle, x, y, z, 0, 0, 0);
+
+    double d0 = (double) pos.getX() + 0.5;
+    double d1 = (double) pos.getY();
+    double d2 = (double) pos.getZ() + 0.5;
+    if (random.nextDouble() < 0.1) {
+      level.playLocalSound(d0, d1, d2, SoundEvents.SOUL_ESCAPE.value(), SoundSource.BLOCKS, 1.0F, 1.0F, false);
+    }
   }
 
   @Override
   protected InteractionResult useWithoutItem(BlockState state, Level level, BlockPos pos, Player player,
       BlockHitResult hitResult) {
     if (level.getBlockEntity(pos) instanceof TombstoneBlockEntity tombstoneBlockEntity) {
-      if (tombstoneBlockEntity.getTombstoneOwner() == player.getGameProfile()) {
+      if (tombstoneBlockEntity.getTombstoneOwner().equals(player.getGameProfile())) {
         player.giveExperiencePoints(tombstoneBlockEntity.getXp());
         playerWillDestroy(level, pos, state, player);
         level.removeBlock(pos, false);
@@ -121,7 +130,7 @@ public class TombstoneBlock extends BaseEntityBlock implements SimpleWaterlogged
       } else if (tombstoneBlockEntity.getGuardianUUID() == null) {
         playerWillDestroy(level, pos, state, player);
         level.removeBlock(pos, false);
-      }  
+      }
     }
     return InteractionResult.SUCCESS;
   }
@@ -162,7 +171,7 @@ public class TombstoneBlock extends BaseEntityBlock implements SimpleWaterlogged
     if (blockEntity.getItems() == null)
       return;
 
-    Helper.scatterItems(level, pos, blockEntity.getItems());
+    ItemHelper.scatterItems(level, pos, blockEntity.getItems());
 
     blockEntity.setItems(NonNullList.of(ItemStack.EMPTY));
   }

@@ -27,11 +27,19 @@ public class TombstoneBlockEntityRenderer extends GeoBlockRenderer<TombstoneBloc
   @Override
   public void render(TombstoneBlockEntity entity, float tickDelta, PoseStack poseStack,
       MultiBufferSource bufferSource, int packedLight, int packedOverlay) {
+
+    renderNameTag(entity, poseStack, bufferSource, packedLight);
+
+  }
+
+  private void renderNameTag(final TombstoneBlockEntity entity, final PoseStack poseStack,
+      final MultiBufferSource bufferSource, int packedLight) {
+    if (!entity.hasTombstoneOwner())
+      return;
     String text = entity.getTombstoneOwner().getName();
     if (text == null) {
       return;
     }
-
 
     Minecraft minecraftClient = Minecraft.getInstance();
     Vec3 playerPos = minecraftClient.player.position();
@@ -64,6 +72,5 @@ public class TombstoneBlockEntityRenderer extends GeoBlockRenderer<TombstoneBloc
     float h = -font.width(text) / 2;
     font.drawInBatch(text, h, 0f, 0xFFFFFFFF, false, matrix4f, bufferSource, Font.DisplayMode.NORMAL, j, packedLight);
     poseStack.popPose();
-
   }
 }
