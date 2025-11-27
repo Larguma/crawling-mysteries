@@ -1,12 +1,16 @@
 package dev.larguma.crawlingmysteries.block.custom;
 
 import java.util.List;
+import java.util.UUID;
 
+import com.mojang.authlib.GameProfile;
 import com.mojang.serialization.MapCodec;
 
 import dev.larguma.crawlingmysteries.CrawlingMysteries;
 import dev.larguma.crawlingmysteries.block.ModBlocks;
 import dev.larguma.crawlingmysteries.block.entity.TombstoneBlockEntity;
+import dev.larguma.crawlingmysteries.entity.ModEntities;
+import dev.larguma.crawlingmysteries.entity.custom.EternalGuardianEntity;
 import dev.larguma.crawlingmysteries.util.ItemHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
@@ -14,10 +18,13 @@ import net.minecraft.core.NonNullList;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionResult;
+import net.minecraft.world.entity.Entity.RemovalReason;
+import net.minecraft.world.entity.MobSpawnType;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -37,6 +44,7 @@ import net.minecraft.world.level.block.state.properties.BooleanProperty;
 import net.minecraft.world.level.block.state.properties.DirectionProperty;
 import net.minecraft.world.level.material.FluidState;
 import net.minecraft.world.level.material.Fluids;
+import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
@@ -124,8 +132,9 @@ public class TombstoneBlock extends BaseEntityBlock implements SimpleWaterlogged
         level.removeBlock(pos, false);
 
         if (tombstoneBlockEntity.getGuardianUUID() != null) {
-          // getGuardianEntity(level, player,
-          // tombstoneBlockEntity).remove(RemovalCause.EXPIRED);
+          EternalGuardianEntity guardian = getGuardianEntity(level, player, tombstoneBlockEntity);
+          if (guardian != null)
+            guardian.remove(RemovalReason.DISCARDED);
         }
       } else if (tombstoneBlockEntity.getGuardianUUID() == null) {
         playerWillDestroy(level, pos, state, player);
@@ -135,20 +144,19 @@ public class TombstoneBlock extends BaseEntityBlock implements SimpleWaterlogged
     return InteractionResult.SUCCESS;
   }
 
-  // private EternalGuardianEntity getGuardianEntity(World world, PlayerEntity player,
-  //     TombstoneBlockEntity tombstoneBlockEntity) {
-  //   final EternalGuardianEntity[] eternalGuardian = { null };
-  //   List<EternalGuardianEntity> eternalGuardians = world
-  //       .getEntitiesByClass(EternalGuardianEntity.class, new Box(tombstoneBlockEntity.getPos()).expand(5),
-  //           EntityPredicates.EXCEPT_SPECTATOR);
-  //   for (EternalGuardianEntity guardian : eternalGuardians) {
-  //     if (guardian.getUuid().equals(tombstoneBlockEntity.getGuardianUUID())) {
-  //       eternalGuardian[0] = guardian;
-  //       break;
-  //     }
-  //   }
-  //   return eternalGuardian[0];
-  // }
+  private EternalGuardianEntity getGuardianEntity(Level level, Player player,
+      TombstoneBlockEntity tombstoneBlockEntity) {
+    final EternalGuardianEntity[] eternalGuardian = { null };
+    List<EternalGuardianEntity> eternalGuardians = level.getEntitiesOfClass(EternalGuardianEntity.class,
+        new AABB(tombstoneBlockEntity.getBlockPos()).inflate(128));
+    for (EternalGuardianEntity guardian : eternalGuardians) {
+      if (guardian.getUUID().equals(tombstoneBlockEntity.getGuardianUUID())) {
+        eternalGuardian[0] = guardian;
+        break;
+      }
+    }
+    return eternalGuardian[0];
+  }
 
   @Override
   public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
@@ -202,15 +210,17 @@ public class TombstoneBlock extends BaseEntityBlock implements SimpleWaterlogged
     for (BlockPos pos : BlockPos.withinManhattan(blockPos.above(1), 5, 5, 5)) {
       if (canPlaceTombstone(level, pos)) {
         BlockState state = ModBlocks.TOMBSTONE.get().defaultBlockState().setValue(FACING, player.getDirection());
-        // EternalGuardianEntity guardian = spawnEternalGuardian(level, pos,
-        // player.getGameProfile());
+        UUID guardianUuid = spawnEternalGuardian(level, pos, player.getGameProfile());
         placed = level.setBlockAndUpdate(pos, state);
         TombstoneBlockEntity tombstoneBlockEntity = new TombstoneBlockEntity(pos, state);
         tombstoneBlockEntity.setItems(combinedInventory);
         tombstoneBlockEntity.setTombstoneOwner(player.getGameProfile());
         tombstoneBlockEntity.setXp(player.totalExperience);
-        // tombstoneBlockEntity.setGuardianUUID(guardian.UUID);
+        tombstoneBlockEntity.setGuardianUUID(guardianUuid);
         level.setBlockEntity(tombstoneBlockEntity);
+
+        if (level.getBlockState(blockPos).isAir())
+          level.setBlockAndUpdate(blockPos, Blocks.GRASS_BLOCK.defaultBlockState());
 
         tombstoneBlockEntity.setChanged();
         block.playerWillDestroy(level, blockPos, blockState, player);
@@ -233,13 +243,24 @@ public class TombstoneBlock extends BaseEntityBlock implements SimpleWaterlogged
     }
   }
 
+  private static UUID spawnEternalGuardian(Level level, BlockPos pos, GameProfile gameProfile) {
+    EternalGuardianEntity eternalGuardianEntity = ModEntities.ETERNAL_GUARDIAN.get().spawn((ServerLevel) level, pos,
+        MobSpawnType.EVENT);
+    eternalGuardianEntity.setTombstonePos(pos);
+    eternalGuardianEntity.setTombstoneOwner(gameProfile.getId());
+    eternalGuardianEntity.setTombstoneOwnerName(gameProfile.getName());
+    eternalGuardianEntity.moveTo((double) pos.getX() + 0.5, pos.getY(), (double) pos.getZ() + 0.5, 0.0f, 0.0f);
+    eternalGuardianEntity.spawnAnim();
+    return eternalGuardianEntity.getUUID();
+  }
+
   private static boolean canPlaceTombstone(Level level, BlockPos pos) {
-    BlockEntity blockEntity = level.getBlockEntity(pos.above(1));
+    BlockEntity blockEntity = level.getBlockEntity(pos);
 
     if (blockEntity != null)
       return false;
 
-    return !(pos.getY() < level.getMinBuildHeight()
-        || pos.getY() > level.getHeight() - level.getMinBuildHeight());
+    return !level.getBlockState(pos).is(Blocks.BEDROCK)
+        && !(pos.getY() < level.getMinBuildHeight() || pos.getY() > level.getHeight() - level.getMinBuildHeight());
   }
 }

@@ -9,6 +9,7 @@ import com.mojang.authlib.GameProfile;
 import com.mojang.authlib.properties.Property;
 
 import net.minecraft.Util;
+import net.minecraft.core.BlockPos;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 
@@ -83,5 +84,17 @@ public class NbtHelper {
     }
 
     return nbt;
+  }
+
+  public static CompoundTag fromBlockPos(BlockPos pos) {
+    CompoundTag tag = new CompoundTag();
+    tag.putInt("X", pos.getX());
+    tag.putInt("Y", pos.getY());
+    tag.putInt("Z", pos.getZ());
+    return tag;
+  }
+
+  public static BlockPos toBlockPos(CompoundTag tag) {
+    return new BlockPos(tag.getInt("X"), tag.getInt("Y"), tag.getInt("Z"));
   }
 }

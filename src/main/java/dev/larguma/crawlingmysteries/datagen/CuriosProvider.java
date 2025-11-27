@@ -12,9 +12,9 @@ import top.theillusivec4.curios.api.type.capability.ICurio;
 
 public class CuriosProvider extends CuriosDataProvider {
 
-  public CuriosProvider(String modId, PackOutput output, ExistingFileHelper fileHelper,
+  public CuriosProvider(PackOutput output, ExistingFileHelper fileHelper,
       CompletableFuture<Provider> registries) {
-    super(modId, output, fileHelper, registries);
+    super(CrawlingMysteries.MOD_ID, output, fileHelper, registries);
   }
 
   @Override

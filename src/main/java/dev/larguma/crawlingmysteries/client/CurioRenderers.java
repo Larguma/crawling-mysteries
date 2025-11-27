@@ -1,11 +1,11 @@
-package dev.larguma.crawlingmysteries.item.client.curio;
+package dev.larguma.crawlingmysteries.client;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 
+import dev.larguma.crawlingmysteries.client.curio.CrypticEyeRenderer;
+import dev.larguma.crawlingmysteries.client.curio.EternalGuardiansBandRenderer;
 import dev.larguma.crawlingmysteries.item.ModItems;
-import dev.larguma.crawlingmysteries.item.client.curio.renderer.CrypticEyeRenderer;
-import dev.larguma.crawlingmysteries.item.client.curio.renderer.EternalGuardiansBandRenderer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
 import net.minecraft.client.model.HumanoidModel;

@@ -6,7 +6,7 @@ import java.util.function.Consumer;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
 
-import dev.larguma.crawlingmysteries.item.client.item.CrypticEyeItemRenderer;
+import dev.larguma.crawlingmysteries.client.item.CrypticEyeItemRenderer;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
@@ -24,7 +24,6 @@ import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.animation.AnimationController;
 import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
-import software.bernie.geckolib.util.RenderUtil;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.type.capability.ICurioItem;
@@ -32,7 +31,7 @@ import top.theillusivec4.curios.api.type.capability.ICurioItem;
 public class CrypticEyeItem extends Item implements GeoItem, ICurioItem {
 
   private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-  private static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenPlay("idle");
+  private static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenLoop("idle");
 
   public CrypticEyeItem() {
     super(new Item.Properties().stacksTo(1));
@@ -47,6 +46,7 @@ public class CrypticEyeItem extends Item implements GeoItem, ICurioItem {
     super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
   }
 
+  // #region Curio
   @Override
   public void curioTick(SlotContext slotContext, ItemStack stack) {
     ICurioItem.super.curioTick(slotContext, stack);
@@ -59,7 +59,9 @@ public class CrypticEyeItem extends Item implements GeoItem, ICurioItem {
     CuriosApi.addSlotModifier(map, "ring", id, 1, AttributeModifier.Operation.ADD_VALUE);
     return map;
   }
+  // #endregion Curio
 
+  // #region Gecko
   @Override
   public void createGeoRenderer(Consumer<GeoRenderProvider> consumer) {
     consumer.accept(new GeoRenderProvider() {
@@ -87,8 +89,5 @@ public class CrypticEyeItem extends Item implements GeoItem, ICurioItem {
     return this.cache;
   }
 
-  @Override
-  public double getTick(Object itemStack) {
-    return RenderUtil.getCurrentTick();
-  }
+  // #endregion Gecko
 }

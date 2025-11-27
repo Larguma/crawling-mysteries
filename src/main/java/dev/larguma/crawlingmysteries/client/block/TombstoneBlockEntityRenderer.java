@@ -1,4 +1,4 @@
-package dev.larguma.crawlingmysteries.block.entity.client.renderer;
+package dev.larguma.crawlingmysteries.client.block;
 
 import org.joml.Matrix4f;
 import org.joml.Quaternionf;
@@ -6,7 +6,6 @@ import org.joml.Quaternionf;
 import com.mojang.blaze3d.vertex.PoseStack;
 
 import dev.larguma.crawlingmysteries.block.entity.TombstoneBlockEntity;
-import dev.larguma.crawlingmysteries.block.entity.client.block.TombstoneBlockEntityModel;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.player.LocalPlayer;

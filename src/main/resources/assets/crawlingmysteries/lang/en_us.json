@@ -17,6 +17,8 @@
   "curios.modifiers.observer": "When equipped in the Observer slot:",
   "effect.crawlingmysteries": "====== Effect ======",
   "entity.crawlingmysteries": "====== Entity ======",
+  "entity.crawlingmysteries.eternal_guardian": "Eternal Guardian",
+  "entity.crawlingmysteries.eternal_guardian.custom_name": "%s's Guardian",
   "general.crawlingmysteries": "====== General ======",
   "general.crawlingmysteries.mod_name": "Crawling Mysteries",
   "general.crawlingmysteries.tooltip.blank": "",

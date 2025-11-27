@@ -1,7 +1,7 @@
-package dev.larguma.crawlingmysteries.block.entity.client;
+package dev.larguma.crawlingmysteries.client;
 
 import dev.larguma.crawlingmysteries.block.entity.ModBlockEntities;
-import dev.larguma.crawlingmysteries.block.entity.client.renderer.TombstoneBlockEntityRenderer;
+import dev.larguma.crawlingmysteries.client.block.TombstoneBlockEntityRenderer;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent.RegisterRenderers;
 
 public class ModBlockRenderers {

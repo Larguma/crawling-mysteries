@@ -1,4 +1,4 @@
-package dev.larguma.crawlingmysteries.block.entity.client.block;
+package dev.larguma.crawlingmysteries.client.block;
 
 import dev.larguma.crawlingmysteries.CrawlingMysteries;
 import dev.larguma.crawlingmysteries.block.entity.TombstoneBlockEntity;
