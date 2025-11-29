@@ -14,15 +14,19 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 public class ModItems {
   public static final DeferredRegister.Items ITEMS = DeferredRegister.createItems(CrawlingMysteries.MOD_ID);
 
+  // #region Custom
   public static final DeferredItem<Item> CRYPTIC_EYE = ITEMS.register("cryptic_eye", CrypticEyeItem::new);
   public static final DeferredItem<Item> ETERNAL_GUARDIANS_BAND = ITEMS.register("eternal_guardians_band",
       EternalGuardiansBandItem::new);
   public static final DeferredItem<Item> ETERNAL_GUARDIAN_HEAD = ITEMS.register("eternal_guardian_head",
       EternalGuardianHeadItem::new);
+  // #endregion Custom
 
+  // #region Egg
   public static final DeferredItem<Item> ETERNAL_GUARDIAN_SPAWN_EGG = ITEMS.register(
       "eternal_guardian_spawn_egg",
       () -> new DeferredSpawnEggItem(ModEntities.ETERNAL_GUARDIAN, 0x7b33d7, 0x7d90fd, new Item.Properties()));
+  // #endregion Egg
 
   public static void register(IEventBus eventBus) {
     ITEMS.register(eventBus);

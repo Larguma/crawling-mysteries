@@ -9,6 +9,7 @@ import com.mojang.logging.LogUtils;
 import dev.larguma.crawlingmysteries.block.ModBlocks;
 import dev.larguma.crawlingmysteries.block.entity.ModBlockEntities;
 import dev.larguma.crawlingmysteries.data.ModDataAttachments;
+import dev.larguma.crawlingmysteries.effect.ModMobEffects;
 import dev.larguma.crawlingmysteries.entity.ModEntities;
 import dev.larguma.crawlingmysteries.item.ModCreativeModeTabs;
 import dev.larguma.crawlingmysteries.item.ModItems;
@@ -39,9 +40,11 @@ public class CrawlingMysteries {
     ModDataAttachments.register(modEventBus);
     ModEntities.register(modEventBus);
     ModItems.register(modEventBus);
+    ModMobEffects.register(modEventBus);
 
+    modContainer.registerConfig(ModConfig.Type.COMMON, Config.COMMON);
+    modContainer.registerConfig(ModConfig.Type.SERVER, Config.SERVER);
     modEventBus.addListener(this::addCreative);
-    modContainer.registerConfig(ModConfig.Type.COMMON, Config.SPEC);
   }
 
   private void addCreative(BuildCreativeModeTabContentsEvent event) {

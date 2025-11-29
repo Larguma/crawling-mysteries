@@ -22,7 +22,7 @@ public class EternalGuardiansBandItem extends Item implements ICurioItem {
       TooltipFlag tooltipFlag) {
     tooltipComponents.add(Component.translatable("item.crawlingmysteries.eternal_guardians_band.tooltip.line1"));
     tooltipComponents.add(Component.translatable("item.crawlingmysteries.eternal_guardians_band.tooltip.line2"));
-    if (!Config.ENABLE_TOMBSTONE.getAsBoolean()) {
+    if (!Config.ENABLE_TOMBSTONE.get()) {
       tooltipComponents.add(Component.translatable("general.crawlingmysteries.tooltip.blank"));
       tooltipComponents.add(Component.translatable("general.crawlingmysteries.tooltip.config_disabled"));
     }
