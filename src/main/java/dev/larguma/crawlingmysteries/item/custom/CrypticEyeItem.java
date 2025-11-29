@@ -71,7 +71,6 @@ public class CrypticEyeItem extends Item implements GeoItem, ICurioItem {
       public BlockEntityWithoutLevelRenderer getGeoItemRenderer() {
         if (this.renderer == null)
           this.renderer = new CrypticEyeItemRenderer();
-
         return this.renderer;
       }
     });

@@ -14,6 +14,7 @@ public class ModCreativeModeTabs {
   public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister
       .create(Registries.CREATIVE_MODE_TAB, CrawlingMysteries.MOD_ID);
 
+  // TODO: Create sub-tab
   public static final Supplier<CreativeModeTab> TAB_ALL = CREATIVE_MODE_TABS.register("tab_all",
       () -> CreativeModeTab.builder()
           .icon(() -> ModItems.CRYPTIC_EYE.get().getDefaultInstance())
@@ -21,6 +22,8 @@ public class ModCreativeModeTabs {
           .displayItems((itemDisplayParameters, output) -> {
             output.accept(ModItems.CRYPTIC_EYE.get());
             output.accept(ModItems.ETERNAL_GUARDIANS_BAND.get());
+            output.accept(ModItems.ETERNAL_GUARDIAN_HEAD.get());
+            output.accept(ModItems.ETERNAL_GUARDIAN_SPAWN_EGG.get());
             output.accept(ModBlocks.TOMBSTONE.get());
           })
           .build());

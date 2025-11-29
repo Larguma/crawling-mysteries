@@ -22,7 +22,9 @@
   "general.crawlingmysteries": "====== General ======",
   "general.crawlingmysteries.mod_name": "Crawling Mysteries",
   "general.crawlingmysteries.tooltip.blank": "",
-  "general.crawlingmysteries.tooltip.config_disabled": "§cDisabled in config",
+  "general.crawlingmysteries.tooltip.config_disabled": "§cDisabled in config§r",
+  "general.crawlingmysteries.tooltip.disabled": "§cDisabled§r",
+  "general.crawlingmysteries.tooltip.enabled": "§aEnabled§r",
   "item.crawlingmysteries": "====== Item ======",
   "item.crawlingmysteries.cryptic_eye": "Cryptic Eye",
   "item.crawlingmysteries.cryptic_eye.tooltip.line1": "A mysterious eye that seems to watch over you.",
@@ -30,5 +32,9 @@
   "item.crawlingmysteries.eternal_guardians_band": "Eternal Guardian's Band",
   "item.crawlingmysteries.eternal_guardians_band.tooltip.line1": "An ancient ring said to grant its wearer protection.",
   "item.crawlingmysteries.eternal_guardians_band.tooltip.line2": "§dWorn by those who seek immortality.§r",
+  "item.crawlingmysteries.eternal_guardian_head": "Eternal Guardian Head",
+  "item.crawlingmysteries.eternal_guardian_head.tooltip.line1": "The head of an Eternal Guardian.",
+  "item.crawlingmysteries.eternal_guardian_head.tooltip.line2": "§dIt's said that the guardian's gaze can pierce through the veil of the reality.§r",
+  "item.crawlingmysteries.eternal_guardian_spawn_egg": "Eternal Guardian Spawn Egg",
   "message.crawlingmysteries": "====== Messages (network) ======"
 }

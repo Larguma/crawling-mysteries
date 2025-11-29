@@ -179,7 +179,6 @@ public class TombstoneBlockEntity extends BlockEntity implements GeoBlockEntity,
   public void setXp(int xp) {
     this.xp = xp;
     this.setChanged();
-    ;
   }
 
   public void setGuardianUUID(UUID guardianUUID) {
