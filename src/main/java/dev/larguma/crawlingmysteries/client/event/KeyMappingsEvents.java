@@ -1,10 +1,11 @@
-package dev.larguma.crawlingmysteries.event;
+package dev.larguma.crawlingmysteries.client.event;
 
 import org.lwjgl.glfw.GLFW;
 
 import com.mojang.blaze3d.platform.InputConstants;
 
 import dev.larguma.crawlingmysteries.CrawlingMysteries;
+import dev.larguma.crawlingmysteries.networking.packet.KeycodePacket;
 import net.minecraft.client.KeyMapping;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -12,9 +13,10 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.common.util.Lazy;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 @EventBusSubscriber(modid = CrawlingMysteries.MOD_ID, value = Dist.CLIENT)
-public class KeyInputHandler {
+public class KeyMappingsEvents {
   public static final String KEY_CATEGORY_CRAWLING_MYSTERIES = "key.category.crawlingmysteries";
 
   public static final Lazy<KeyMapping> OPEN_SPELL_MENU = Lazy.of(() -> new KeyMapping(
@@ -26,7 +28,7 @@ public class KeyInputHandler {
   @SubscribeEvent
   public static void onClientTick(ClientTickEvent.Post event) {
     while (OPEN_SPELL_MENU.get().consumeClick()) {
-      // TODO: Open the spell menu GUI
+      PacketDistributor.sendToServer(new KeycodePacket(OPEN_SPELL_MENU.get().getName()));
     }
   }
 

@@ -50,5 +50,8 @@
   "item.crawlingmysteries.eternal_guardian_mask.tooltip.line1": "A mask that allows you to see the world through the eyes of the Eternal Guardian.",
   "item.crawlingmysteries.eternal_guardian_mask.tooltip.line2": "§dGrants the wearer spectral gaze.§r",
   "item.crawlingmysteries.eternal_guardian_spawn_egg": "Eternal Guardian Spawn Egg",
+  "key.category": "====== Keybinds ======",
+  "key.category.crawlingmysteries": "Crawling Mysteries",
+  "key.crawlingmysteries.open_spell__menu": "Open Spell Menu",
   "message.crawlingmysteries": "====== Messages (network) ======"
 }

@@ -1,6 +1,6 @@
 {
   "type": "crawlingmysteries:add_item",
-  "chance": 0.5,
+  "chance": 0.1,
   "conditions": [
     {
       "condition": "neoforge:loot_table_id",
