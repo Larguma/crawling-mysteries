@@ -4,6 +4,7 @@ import dev.larguma.crawlingmysteries.CrawlingMysteries;
 import dev.larguma.crawlingmysteries.entity.ModEntities;
 import dev.larguma.crawlingmysteries.item.custom.CrypticEyeItem;
 import dev.larguma.crawlingmysteries.item.custom.EternalGuardianHeadItem;
+import dev.larguma.crawlingmysteries.item.custom.EternalGuardianMaskItem;
 import dev.larguma.crawlingmysteries.item.custom.EternalGuardiansBandItem;
 import net.minecraft.world.item.Item;
 import net.neoforged.bus.api.IEventBus;
@@ -20,6 +21,8 @@ public class ModItems {
       EternalGuardiansBandItem::new);
   public static final DeferredItem<Item> ETERNAL_GUARDIAN_HEAD = ITEMS.register("eternal_guardian_head",
       EternalGuardianHeadItem::new);
+  public static final DeferredItem<Item> ETERNAL_GUARDIAN_MASK = ITEMS.register("eternal_guardian_mask",
+      EternalGuardianMaskItem::new);
   // #endregion Custom
 
   // #region Egg

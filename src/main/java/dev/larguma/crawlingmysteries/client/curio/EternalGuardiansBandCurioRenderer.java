@@ -16,7 +16,7 @@ import net.minecraft.world.item.ItemStack;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.client.ICurioRenderer;
 
-public class EternalGuardiansBandRenderer implements ICurioRenderer {
+public class EternalGuardiansBandCurioRenderer implements ICurioRenderer {
 
   @Override
   public <T extends LivingEntity, M extends EntityModel<T>> void render(ItemStack stack, SlotContext slotContext,

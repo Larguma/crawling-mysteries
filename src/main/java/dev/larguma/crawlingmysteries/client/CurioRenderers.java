@@ -3,8 +3,9 @@ package dev.larguma.crawlingmysteries.client;
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Axis;
 
-import dev.larguma.crawlingmysteries.client.curio.CrypticEyeRenderer;
-import dev.larguma.crawlingmysteries.client.curio.EternalGuardiansBandRenderer;
+import dev.larguma.crawlingmysteries.client.curio.CrypticEyeCurioRenderer;
+import dev.larguma.crawlingmysteries.client.curio.EternalGuardianMaskCurioRenderer;
+import dev.larguma.crawlingmysteries.client.curio.EternalGuardiansBandCurioRenderer;
 import dev.larguma.crawlingmysteries.item.ModItems;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
@@ -18,9 +19,11 @@ import top.theillusivec4.curios.api.client.CuriosRendererRegistry;
 public class CurioRenderers {
 
   public static void register() {
-    CuriosRendererRegistry.register(ModItems.CRYPTIC_EYE.get(), () -> new CrypticEyeRenderer());
+    CuriosRendererRegistry.register(ModItems.CRYPTIC_EYE.get(), () -> new CrypticEyeCurioRenderer());
     CuriosRendererRegistry.register(ModItems.ETERNAL_GUARDIANS_BAND.get(),
-        () -> new EternalGuardiansBandRenderer());
+        () -> new EternalGuardiansBandCurioRenderer());
+    CuriosRendererRegistry.register(ModItems.ETERNAL_GUARDIAN_MASK.get(),
+        () -> new EternalGuardianMaskCurioRenderer());
   }
 
   // pitch = xRot, yaw = yRot, roll = zRot

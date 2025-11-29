@@ -1,0 +1,11 @@
+{
+  "type": "crawlingmysteries:add_item",
+  "chance": 0.5,
+  "conditions": [
+    {
+      "condition": "neoforge:loot_table_id",
+      "loot_table_id": "minecraft:chests/ancient_city"
+    }
+  ],
+  "item": "crawlingmysteries:eternal_guardians_band"
+}

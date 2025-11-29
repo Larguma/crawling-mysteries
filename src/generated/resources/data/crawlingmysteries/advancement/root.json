@@ -30,8 +30,5 @@
       "got_cryptic_eye"
     ]
   ],
-  "rewards": {
-    "experience": 100
-  },
   "sends_telemetry_event": true
 }

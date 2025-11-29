@@ -48,7 +48,6 @@ public class ModAdvancementProvider extends AdvancementProvider {
               true,
               // Whether the advancement should be hidden or not.
               false)
-          .rewards(AdvancementRewards.Builder.experience(100))
           .addCriterion("got_cryptic_eye", InventoryChangeTrigger.TriggerInstance.hasItems(ModItems.CRYPTIC_EYE))
           .requirements(AdvancementRequirements.allOf(List.of("got_cryptic_eye")))
           .save(saver, ResourceLocation.fromNamespaceAndPath(CrawlingMysteries.MOD_ID, "root"), existingFileHelper);
@@ -64,11 +63,29 @@ public class ModAdvancementProvider extends AdvancementProvider {
               true,
               false)
           .parent(root)
-          .rewards(AdvancementRewards.Builder.experience(1000))
+          .rewards(AdvancementRewards.Builder.experience(100))
           .addCriterion("got_eternal_guardians_band",
               InventoryChangeTrigger.TriggerInstance.hasItems(ModItems.ETERNAL_GUARDIANS_BAND))
           .requirements(AdvancementRequirements.allOf(List.of("got_eternal_guardians_band")))
           .save(saver, ResourceLocation.fromNamespaceAndPath(CrawlingMysteries.MOD_ID, "got_eternal_guardians_band"),
+              existingFileHelper);
+
+      AdvancementHolder gotEternalGuardianMask = Advancement.Builder.advancement()
+          .display(
+              ModItems.ETERNAL_GUARDIAN_MASK,
+              Component.translatable("advancement.crawlingmysteries.eternal_guardian_mask"),
+              Component.translatable("advancement.crawlingmysteries.eternal_guardian_mask.desc"),
+              null, // children to parent advancements don't need a background set
+              AdvancementType.TASK,
+              true,
+              true,
+              false)
+          .parent(gotEternalGuardiansBand)
+          .rewards(AdvancementRewards.Builder.experience(1000))
+          .addCriterion("got_eternal_guardian_mask",
+              InventoryChangeTrigger.TriggerInstance.hasItems(ModItems.ETERNAL_GUARDIAN_MASK))
+          .requirements(AdvancementRequirements.allOf(List.of("got_eternal_guardian_mask")))
+          .save(saver, ResourceLocation.fromNamespaceAndPath(CrawlingMysteries.MOD_ID, "got_eternal_guardian_mask"),
               existingFileHelper);
     }
 

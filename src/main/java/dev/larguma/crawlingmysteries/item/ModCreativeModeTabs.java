@@ -23,6 +23,7 @@ public class ModCreativeModeTabs {
             output.accept(ModItems.CRYPTIC_EYE.get());
             output.accept(ModItems.ETERNAL_GUARDIANS_BAND.get());
             output.accept(ModItems.ETERNAL_GUARDIAN_HEAD.get());
+            output.accept(ModItems.ETERNAL_GUARDIAN_MASK.get());
             output.accept(ModItems.ETERNAL_GUARDIAN_SPAWN_EGG.get());
             output.accept(ModBlocks.TOMBSTONE.get());
           })

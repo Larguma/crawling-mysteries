@@ -21,8 +21,11 @@ public class CuriosProvider extends CuriosDataProvider {
   public void generate(Provider registries, ExistingFileHelper fileHelper) {
     this.createSlot("observer").size(1).dropRule(ICurio.DropRule.ALWAYS_KEEP)
         .icon(ResourceLocation.fromNamespaceAndPath(CrawlingMysteries.MOD_ID, "slot/observer"));
+    this.createSlot("mask").size(1)
+        .icon(ResourceLocation.fromNamespaceAndPath(CrawlingMysteries.MOD_ID, "slot/mask"));
 
-    this.createEntities("entities").addPlayer().addSlots("observer", "ring");
+    this.createEntities("entities").addPlayer()
+        .addSlots("observer", "mask", "ring");
   }
 
 }

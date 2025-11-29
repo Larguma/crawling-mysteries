@@ -1,6 +1,7 @@
 package dev.larguma.crawlingmysteries.client.curio;
 
 import com.mojang.blaze3d.vertex.PoseStack;
+import com.mojang.math.Axis;
 
 import dev.larguma.crawlingmysteries.Config;
 import dev.larguma.crawlingmysteries.client.CurioRenderers;
@@ -16,7 +17,7 @@ import net.minecraft.world.item.ItemStack;
 import top.theillusivec4.curios.api.SlotContext;
 import top.theillusivec4.curios.api.client.ICurioRenderer;
 
-public class CrypticEyeRenderer implements ICurioRenderer {
+public class EternalGuardianMaskCurioRenderer implements ICurioRenderer {
 
   @Override
   public <T extends LivingEntity, M extends EntityModel<T>> void render(ItemStack stack, SlotContext slotContext,
@@ -30,14 +31,12 @@ public class CrypticEyeRenderer implements ICurioRenderer {
 
       matrixStack.pushPose();
       CurioRenderers.translateToFace(matrixStack, player, netHeadYaw, headPitch);
-      // x: + is left, - is right
-      // y: + is down, - is up
-      // z: + is back, - is forward
-      matrixStack.translate(-0.2f, -0.4f, 0.5f);
+      matrixStack.mulPose(Axis.ZP.rotationDegrees(180));
       Minecraft.getInstance().getItemRenderer()
           .renderStatic(stack, ItemDisplayContext.HEAD, light, OverlayTexture.NO_OVERLAY,
               matrixStack, renderTypeBuffer, slotContext.entity().level(), 0);
       matrixStack.popPose();
     }
   }
+
 }

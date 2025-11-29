@@ -4,6 +4,7 @@
   ],
   "slots": [
     "observer",
+    "mask",
     "ring"
   ]
 }

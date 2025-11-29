@@ -4,8 +4,8 @@ import java.util.concurrent.CompletableFuture;
 
 import org.jetbrains.annotations.Nullable;
 
-import dev.larguma.crawlingmysteries.util.CuriosTags;
 import dev.larguma.crawlingmysteries.item.ModItems;
+import dev.larguma.crawlingmysteries.tag.CuriosTags;
 import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
@@ -23,8 +23,11 @@ public class CuriosItemTagProvider extends ItemTagsProvider {
   protected void addTags(Provider provider) {
     tag(CuriosTags.Items.OBSERVER)
         .add(ModItems.CRYPTIC_EYE.get());
+    tag(CuriosTags.Items.MASK)
+        .add(ModItems.ETERNAL_GUARDIAN_MASK.get());
     tag(top.theillusivec4.curios.api.CuriosTags.RING)
         .add(ModItems.ETERNAL_GUARDIANS_BAND.get());
+
   }
 
 }

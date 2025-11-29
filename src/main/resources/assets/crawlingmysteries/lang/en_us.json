@@ -3,6 +3,8 @@
   "advancement.crawlingmysteries.desc": "You awoke with this strange eye watching you, where does it come from ?",
   "advancement.crawlingmysteries.eternal_guardians_band": "Discoverer of Immortality",
   "advancement.crawlingmysteries.eternal_guardians_band.desc": "Wearing the Eternal Guardian's Band, you feel another presence watching over you.",
+  "advancement.crawlingmysteries.eternal_guardian_mask": "Ethereal Insight",
+  "advancement.crawlingmysteries.eternal_guardian_mask.desc": "I can see now...",
   "block.crawlingmysteries": "====== Block ======",
   "block.crawlingmysteries.tombstone": "Tombstone",
   "block.crawlingmysteries.tombstone.tooltip": "A nice tombstone with no name on it... §cyet.§r",
@@ -19,6 +21,8 @@
   "config.crawlingmysteries.enable_tombstone": "Tombstone generation",
   "config.crawlingmysteries.enable_tombstone.tooltip": "Enable or disable the generation of tombstones upon player death.",
   "curios": "====== Curios ======",
+  "curios.identifier.mask": "Mask",
+  "curios.modifiers.mask": "When equipped in the Mask slot:",
   "curios.identifier.observer": "Observer",
   "curios.modifiers.observer": "When equipped in the Observer slot:",
   "effect.crawlingmysteries": "====== Effect ======",
@@ -42,6 +46,9 @@
   "item.crawlingmysteries.eternal_guardian_head": "Eternal Guardian Head",
   "item.crawlingmysteries.eternal_guardian_head.tooltip.line1": "The head of an Eternal Guardian.",
   "item.crawlingmysteries.eternal_guardian_head.tooltip.line2": "§dIt's said that the guardian's gaze can pierce through the veil of the reality.§r",
+  "item.crawlingmysteries.eternal_guardian_mask": "Eternal Guardian Mask",
+  "item.crawlingmysteries.eternal_guardian_mask.tooltip.line1": "A mask that allows you to see the world through the eyes of the Eternal Guardian.",
+  "item.crawlingmysteries.eternal_guardian_mask.tooltip.line2": "§dGrants the wearer spectral gaze.§r",
   "item.crawlingmysteries.eternal_guardian_spawn_egg": "Eternal Guardian Spawn Egg",
   "message.crawlingmysteries": "====== Messages (network) ======"
 }

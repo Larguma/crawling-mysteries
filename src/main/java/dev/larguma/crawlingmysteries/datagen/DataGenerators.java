@@ -51,6 +51,8 @@ public class DataGenerators {
     generator.addProvider(event.includeServer(),
         new ModEntityTypeTagProvider(packOutput, lookupProvider, existingFileHelper));
 
+    generator.addProvider(event.includeServer(), new ModGlobalLootModifierProvider(packOutput, lookupProvider));
+
     generator.addProvider(event.includeServer(),
         new ModItemTagProvider(packOutput, lookupProvider, blockTagsProvider.contentsGetter(),
             existingFileHelper));

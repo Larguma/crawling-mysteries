@@ -9,10 +9,12 @@ import com.mojang.logging.LogUtils;
 import dev.larguma.crawlingmysteries.block.ModBlocks;
 import dev.larguma.crawlingmysteries.block.entity.ModBlockEntities;
 import dev.larguma.crawlingmysteries.data.ModDataAttachments;
+import dev.larguma.crawlingmysteries.data.ModDataComponents;
 import dev.larguma.crawlingmysteries.effect.ModMobEffects;
 import dev.larguma.crawlingmysteries.entity.ModEntities;
 import dev.larguma.crawlingmysteries.item.ModCreativeModeTabs;
 import dev.larguma.crawlingmysteries.item.ModItems;
+import dev.larguma.crawlingmysteries.loot.ModLootModifiers;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -38,8 +40,10 @@ public class CrawlingMysteries {
     ModBlocks.register(modEventBus);
     ModCreativeModeTabs.register(modEventBus);
     ModDataAttachments.register(modEventBus);
+    ModDataComponents.register(modEventBus);
     ModEntities.register(modEventBus);
     ModItems.register(modEventBus);
+    ModLootModifiers.register(modEventBus);
     ModMobEffects.register(modEventBus);
 
     modContainer.registerConfig(ModConfig.Type.COMMON, Config.COMMON);
