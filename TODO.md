@@ -18,6 +18,10 @@ Advancements to progress
 
 - [ ] gems inside (0.1% drop)
 
+### Trinkets
+
+- [ ] lucky horseshoe, 50% fall damage, upgrade
+
 #### Gems Type
 
 - [ ] weapons, armor, shield
@@ -39,27 +43,27 @@ Advancements to progress
 
 ### Eternal Guardian head/maks
 
-- [ ] make the glow different color
+- [x] make the glow different color
 - [ ] glow only wearer (network ?)
-- [ ] make a keybind to enable/disable the glow
-- [ ] two variantes, w/ strap & w/o strap
-- [ ] recipe
-- [ ] can equip (trinkets mask slot)
-- [ ] find use (make mob glow)
+- [x] make a keybind to enable/disable the glow
+- [x] two variantes, w/ strap & w/o strap
+- [x] recipe
+- [x] can equip (trinkets mask slot)
+- [x] find use (make mob glow)
 
 ### Cryptic Eye
 
 - [ ] in-game docu
 - [ ] find another use
 - [ ] feed it undying totem to gain max health (or absorbtion (or regen or resistance, to op ?)) ?
-- [ ] new trinket slots (eye)
+- [x] new trinket slots (eye)
 
 ### Eternal Guardian's Band
 
 - [ ] found broken, need souls, Hostile(100) (fill bar to repair)
 - [ ] Better tombstones
-- [ ] 3d
-- [ ] Spawn '"Eternal Guardian"
+- [x] 3d
+- [x] Spawn '"Eternal Guardian"
 
 ## Blocks list
 
@@ -82,8 +86,8 @@ Advancements to progress
 ### Eternal Guardian
 
 - [ ] Eternal Guardian sounds
-- [ ] Drop mask
-- [ ] Tombstone Guardian "Eternal Guardian"
+- [x] Drop mask
+- [x] Tombstone Guardian "Eternal Guardian"
 
 ## Gameplay ideas
 
@@ -100,4 +104,4 @@ Advancements to progress
 
 ### Keybinds (replace)
 
-- [ ] replace keybinds by wheel
+- [x] replace keybinds by wheel

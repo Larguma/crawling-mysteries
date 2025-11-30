@@ -2,7 +2,7 @@ package dev.larguma.crawlingmysteries.networking;
 
 import dev.larguma.crawlingmysteries.CrawlingMysteries;
 import dev.larguma.crawlingmysteries.networking.handler.ServerPayloadHandler;
-import dev.larguma.crawlingmysteries.networking.packet.KeycodePacket;
+import dev.larguma.crawlingmysteries.networking.packet.SpellSelectPacket;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.network.event.RegisterPayloadHandlersEvent;
@@ -14,8 +14,8 @@ public class PayloadHandlersEvents {
   public static void register(final RegisterPayloadHandlersEvent event) {
     final PayloadRegistrar registrar = event.registrar("1");
     registrar.playToServer(
-        KeycodePacket.TYPE,
-        KeycodePacket.STREAM_CODEC,
-        ServerPayloadHandler::handleDataOnMain);
+        SpellSelectPacket.TYPE,
+        SpellSelectPacket.STREAM_CODEC,
+        ServerPayloadHandler::handleSpellSelect);
   }
 }

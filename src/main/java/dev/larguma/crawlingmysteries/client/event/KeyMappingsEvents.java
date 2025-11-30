@@ -5,15 +5,15 @@ import org.lwjgl.glfw.GLFW;
 import com.mojang.blaze3d.platform.InputConstants;
 
 import dev.larguma.crawlingmysteries.CrawlingMysteries;
-import dev.larguma.crawlingmysteries.networking.packet.KeycodePacket;
+import dev.larguma.crawlingmysteries.client.screen.SpellSelectMenuScreen;
 import net.minecraft.client.KeyMapping;
+import net.minecraft.client.Minecraft;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.common.util.Lazy;
-import net.neoforged.neoforge.network.PacketDistributor;
 
 @EventBusSubscriber(modid = CrawlingMysteries.MOD_ID, value = Dist.CLIENT)
 public class KeyMappingsEvents {
@@ -27,8 +27,11 @@ public class KeyMappingsEvents {
 
   @SubscribeEvent
   public static void onClientTick(ClientTickEvent.Post event) {
+    Minecraft minecraft = Minecraft.getInstance();
     while (OPEN_SPELL_MENU.get().consumeClick()) {
-      PacketDistributor.sendToServer(new KeycodePacket(OPEN_SPELL_MENU.get().getName()));
+      if (minecraft.player != null && minecraft.screen == null) {
+        minecraft.setScreen(new SpellSelectMenuScreen());
+      }
     }
   }
 

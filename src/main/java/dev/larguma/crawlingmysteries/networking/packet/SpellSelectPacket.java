@@ -7,15 +7,15 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 
-public record KeycodePacket(String keycode) implements CustomPacketPayload {
+public record SpellSelectPacket(String spellId) implements CustomPacketPayload {
 
-  public static final CustomPacketPayload.Type<KeycodePacket> TYPE = new CustomPacketPayload.Type<>(
-      ResourceLocation.fromNamespaceAndPath(CrawlingMysteries.MOD_ID, "keycode"));
+  public static final CustomPacketPayload.Type<SpellSelectPacket> TYPE = new CustomPacketPayload.Type<>(
+      ResourceLocation.fromNamespaceAndPath(CrawlingMysteries.MOD_ID, "spell_select"));
 
-  public static final StreamCodec<ByteBuf, KeycodePacket> STREAM_CODEC = StreamCodec.composite(
+  public static final StreamCodec<ByteBuf, SpellSelectPacket> STREAM_CODEC = StreamCodec.composite(
       ByteBufCodecs.STRING_UTF8,
-      KeycodePacket::keycode,
-      KeycodePacket::new);
+      SpellSelectPacket::spellId,
+      SpellSelectPacket::new);
 
   @Override
   public Type<? extends CustomPacketPayload> type() {

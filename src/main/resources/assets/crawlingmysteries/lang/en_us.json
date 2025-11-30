@@ -52,6 +52,16 @@
   "item.crawlingmysteries.eternal_guardian_spawn_egg": "Eternal Guardian Spawn Egg",
   "key.category": "====== Keybinds ======",
   "key.category.crawlingmysteries": "Crawling Mysteries",
-  "key.crawlingmysteries.open_spell__menu": "Open Spell Menu",
-  "message.crawlingmysteries": "====== Messages (network) ======"
+  "key.crawlingmysteries.open_spell_menu": "Open Spell Menu",
+  "message.crawlingmysteries": "====== Messages (network) ======",
+  "message.crawlingmysteries.no_mask_equipped": "No Eternal Guardian Mask equipped!",
+  "message.crawlingmysteries.spectral_gaze_enabled": "§aSpectral Gaze enabled§r",
+  "message.crawlingmysteries.spectral_gaze_disabled": "§cSpectral Gaze disabled§r",
+  "screen.crawlingmysteries": "====== Screens ======",
+  "screen.crawlingmysteries.spell_select": "Spell Selection",
+  "screen.crawlingmysteries.spell_select.hint": "Click to toggle",
+  "screen.crawlingmysteries.spell_select.no_spells": "No spells available - equip a magical item!",
+  "spell.crawlingmysteries": "====== Spells ======",
+  "spell.crawlingmysteries.spectral_gaze": "Spectral Gaze",
+  "spell.crawlingmysteries.spectral_gaze.description": "See through walls and reveal hidden entities"
 }

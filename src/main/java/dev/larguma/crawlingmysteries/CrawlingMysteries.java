@@ -15,6 +15,7 @@ import dev.larguma.crawlingmysteries.entity.ModEntities;
 import dev.larguma.crawlingmysteries.item.ModCreativeModeTabs;
 import dev.larguma.crawlingmysteries.item.ModItems;
 import dev.larguma.crawlingmysteries.loot.ModLootModifiers;
+import dev.larguma.crawlingmysteries.spell.ModSpells;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -45,6 +46,7 @@ public class CrawlingMysteries {
     ModItems.register(modEventBus);
     ModLootModifiers.register(modEventBus);
     ModMobEffects.register(modEventBus);
+    ModSpells.init();
 
     modContainer.registerConfig(ModConfig.Type.COMMON, Config.COMMON);
     modContainer.registerConfig(ModConfig.Type.SERVER, Config.SERVER);
