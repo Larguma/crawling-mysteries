@@ -13,11 +13,8 @@ import dev.larguma.crawlingmysteries.spell.Spell;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.GameRenderer;
-import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
-import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 public class SpellSelectMenuScreen extends Screen {
@@ -42,7 +39,7 @@ public class SpellSelectMenuScreen extends Screen {
   private Spell hoveredSpell = null;
 
   public SpellSelectMenuScreen() {
-    super(Component.translatable("screen." + CrawlingMysteries.MOD_ID + ".spell_select"));
+    super(Component.translatable("screen.crawlingmysteries.spell_select"));
   }
 
   @Override
@@ -140,16 +137,8 @@ public class SpellSelectMenuScreen extends Screen {
   }
 
   private void renderSpellIcon(GuiGraphics guiGraphics, Spell spell, int x, int y, boolean selected) {
-    var itemRegistry = BuiltInRegistries.ITEM;
-    var item = itemRegistry.get(spell.sourceItem());
-
-    if (item != null && item != Items.AIR) {
-      int itemX = x + (SLOT_SIZE - 16) / 2;
-      int itemY = y + (SLOT_SIZE - 16) / 2;
-      guiGraphics.renderItem(new ItemStack(item), itemX, itemY);
-    } else {
-      guiGraphics.fill(x + 4, y + 4, x + SLOT_SIZE - 4, y + SLOT_SIZE - 4, 0xFFFF00FF);
-    }
+    RenderSystem.setShaderTexture(0, spell.icon());
+    guiGraphics.blit(spell.icon(), x, y, 0, 0, SLOT_SIZE, SLOT_SIZE, SLOT_SIZE, SLOT_SIZE);
 
     if (selected) {
       RenderSystem.enableBlend();
@@ -182,7 +171,7 @@ public class SpellSelectMenuScreen extends Screen {
         0xAAAAAA,
         true);
 
-    Component hint = Component.translatable("screen." + CrawlingMysteries.MOD_ID + ".spell_select.hint");
+    Component hint = Component.translatable("screen.crawlingmysteries.spell_select.hint");
     int hintWidth = this.font.width(hint);
     guiGraphics.drawString(
         this.font,
@@ -194,7 +183,7 @@ public class SpellSelectMenuScreen extends Screen {
   }
 
   private void renderNoSpellsMessage(GuiGraphics guiGraphics, int centerX, int centerY) {
-    Component message = Component.translatable("screen." + CrawlingMysteries.MOD_ID + ".spell_select.no_spells");
+    Component message = Component.translatable("screen.crawlingmysteries.spell_select.no_spells");
     int messageWidth = this.font.width(message);
     guiGraphics.drawString(
         this.font,

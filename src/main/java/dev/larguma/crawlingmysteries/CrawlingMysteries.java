@@ -48,8 +48,8 @@ public class CrawlingMysteries {
     ModMobEffects.register(modEventBus);
     ModSpells.init();
 
-    modContainer.registerConfig(ModConfig.Type.COMMON, Config.COMMON);
-    modContainer.registerConfig(ModConfig.Type.SERVER, Config.SERVER);
+    modContainer.registerConfig(ModConfig.Type.COMMON, Config.COMMON_SPEC);
+    modContainer.registerConfig(ModConfig.Type.SERVER, Config.SERVER_SPEC);
     modEventBus.addListener(this::addCreative);
   }
 

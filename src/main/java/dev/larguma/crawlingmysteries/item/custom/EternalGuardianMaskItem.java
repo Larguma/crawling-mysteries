@@ -6,8 +6,10 @@ import java.util.function.Consumer;
 import com.google.common.collect.Multimap;
 
 import dev.larguma.crawlingmysteries.client.item.EternalGuardianMaskItemRenderer;
-import dev.larguma.crawlingmysteries.data.ModDataComponents;
 import dev.larguma.crawlingmysteries.effect.ModMobEffects;
+import dev.larguma.crawlingmysteries.item.helper.ItemDataHelper;
+import dev.larguma.crawlingmysteries.item.helper.ItemHelper;
+import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
@@ -34,39 +36,57 @@ import top.theillusivec4.curios.api.type.capability.ICurioItem;
 public class EternalGuardianMaskItem extends Item implements GeoItem, ICurioItem {
 
   private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+  private static final int ATTUNEMENT_MINUTES = 360;
 
   public EternalGuardianMaskItem() {
     super(new Item.Properties().rarity(Rarity.UNCOMMON).stacksTo(1));
     SingletonGeoAnimatable.registerSyncedAnimatable(this);
   }
 
-  public boolean isEnabled(ItemStack stack) {
-    if (!stack.has(ModDataComponents.ENABLED))
-      stack.set(ModDataComponents.ENABLED, false);
-    return stack.get(ModDataComponents.ENABLED);
-  }
-
-  public void toggle(ItemStack stack) {
-    stack.set(ModDataComponents.ENABLED, !this.isEnabled(stack));
-  }
-
   @Override
   public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents,
       TooltipFlag tooltipFlag) {
-    boolean isEnabled = this.isEnabled(stack);
     tooltipComponents.add(Component.translatable("item.crawlingmysteries.eternal_guardian_mask.tooltip.line1"));
     tooltipComponents.add(Component.translatable("item.crawlingmysteries.eternal_guardian_mask.tooltip.line2"));
-    tooltipComponents.add(Component.translatable("general.crawlingmysteries.tooltip.blank"));
-    tooltipComponents
-        .add(Component.translatable("general.crawlingmysteries.tooltip" + (isEnabled ? ".enabled" : ".disabled")));
+
+    tooltipComponents.add(Component.translatable("tooltip.crawlingmysteries.blank"));
+    if (Screen.hasShiftDown()) {
+      if (ItemDataHelper.getAttunement(stack) >= 1.0f) {
+        tooltipComponents.add(Component.translatable("tooltip.crawlingmysteries.attuned"));
+      } else {
+        tooltipComponents.add(Component.translatable("tooltip.crawlingmysteries.attunement"));
+        tooltipComponents.add(ItemHelper.buildTooltipBar(ItemDataHelper.getAttunement(stack)));
+      }
+
+      tooltipComponents.add(Component.translatable("tooltip.crawlingmysteries.blank"));
+      tooltipComponents
+          .add(Component.translatable(
+              "tooltip.crawlingmysteries" + (ItemDataHelper.isEnabled(stack) ? ".active" : ".inactive")));
+    } else {
+      tooltipComponents.add(Component.translatable("tolltip.crawlingmysteries.press_shift"));
+    }
+
     super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
   }
 
   // #region Curio
   @Override
   public void curioTick(SlotContext slotContext, ItemStack stack) {
-    if (!slotContext.entity().level().isClientSide && this.isEnabled(stack)) {
-      slotContext.entity().addEffect(new MobEffectInstance(ModMobEffects.SPECTRAL_GAZE, 60, 0, false, false, true));
+    float attunementPerTick = 1.0f / (ATTUNEMENT_MINUTES * 60 * 20);
+    float attunement = ItemDataHelper.setAttunement(stack, ItemDataHelper.getAttunement(stack) + attunementPerTick);
+    int amplifier = 0;
+
+    if (attunement >= 1.0f) {
+      amplifier = 3;
+    } else if (attunement >= 0.75f) {
+      amplifier = 2;
+    } else if (attunement >= 0.5f) {
+      amplifier = 1;
+    }
+
+    if (!slotContext.entity().level().isClientSide && ItemDataHelper.isEnabled(stack)) {
+      slotContext.entity()
+          .addEffect(new MobEffectInstance(ModMobEffects.SPECTRAL_GAZE, 60, amplifier, false, false, true));
     }
 
     ICurioItem.super.curioTick(slotContext, stack);

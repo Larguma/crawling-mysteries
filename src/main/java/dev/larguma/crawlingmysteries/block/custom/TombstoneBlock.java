@@ -11,7 +11,7 @@ import dev.larguma.crawlingmysteries.block.ModBlocks;
 import dev.larguma.crawlingmysteries.block.entity.TombstoneBlockEntity;
 import dev.larguma.crawlingmysteries.entity.ModEntities;
 import dev.larguma.crawlingmysteries.entity.custom.EternalGuardianEntity;
-import dev.larguma.crawlingmysteries.util.ItemHelper;
+import dev.larguma.crawlingmysteries.item.helper.ItemHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;

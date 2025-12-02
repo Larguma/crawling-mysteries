@@ -7,14 +7,14 @@ import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.network.protocol.common.custom.CustomPacketPayload;
 import net.minecraft.resources.ResourceLocation;
 
-public record SpellSelectPacket(String spellId) implements CustomPacketPayload {
+public record SpellSelectPacket(String id) implements CustomPacketPayload {
 
   public static final CustomPacketPayload.Type<SpellSelectPacket> TYPE = new CustomPacketPayload.Type<>(
       ResourceLocation.fromNamespaceAndPath(CrawlingMysteries.MOD_ID, "spell_select"));
 
   public static final StreamCodec<ByteBuf, SpellSelectPacket> STREAM_CODEC = StreamCodec.composite(
       ByteBufCodecs.STRING_UTF8,
-      SpellSelectPacket::spellId,
+      SpellSelectPacket::id,
       SpellSelectPacket::new);
 
   @Override

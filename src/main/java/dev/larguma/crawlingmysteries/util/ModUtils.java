@@ -6,6 +6,9 @@ import net.minecraft.world.scores.PlayerTeam;
 import net.minecraft.world.scores.Scoreboard;
 
 public class ModUtils {
+  /**
+   * Gets an existing team by name or creates a new one with the given color.
+   */
   public static PlayerTeam getOrCreateTeam(Scoreboard scoreboard, String teanName, ChatFormatting color) {
     if (scoreboard.getTeamNames().contains(teanName)) {
       return scoreboard.getPlayerTeam(teanName);
@@ -17,6 +20,9 @@ public class ModUtils {
     }
   }
 
+  /**
+   * Removes a team by name if it exists.
+   */
   public static void removeTeam(Scoreboard scoreboard, String teamName) {
     if (scoreboard.getTeamNames().contains(teamName)) {
       PlayerTeam team = scoreboard.getPlayerTeam(teamName);

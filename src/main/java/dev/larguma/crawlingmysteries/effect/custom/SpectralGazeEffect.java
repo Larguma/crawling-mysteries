@@ -20,7 +20,7 @@ import net.minecraft.world.scores.Scoreboard;
 
 public class SpectralGazeEffect extends MobEffect {
 
-  private static final int EFFECT_RADIUS = 40;
+  private static final int EFFECT_RADIUS = 16;
   private static final String TEAM_NEUTRAL = "crawlingmysteries.spectral_gaze.neutral";
   private static final String TEAM_PASSIVE = "crawlingmysteries.spectral_gaze.passive";
   private static final String TEAM_HOSTILE = "crawlingmysteries.spectral_gaze.hostile";
@@ -32,6 +32,10 @@ public class SpectralGazeEffect extends MobEffect {
 
   @Override
   public boolean applyEffectTick(LivingEntity entity, int amplifier) {
+    // amplifier 0 = only white glow and self
+    // amplifier 1 = no more self
+    // amplifier 3 = adds coloring
+    // amplifier 4+ = only increases radius
     if (entity.level().isClientSide) {
       return super.applyEffectTick(entity, amplifier);
     }
@@ -58,13 +62,15 @@ public class SpectralGazeEffect extends MobEffect {
 
     List<LivingEntity> entities = entity.level().getEntitiesOfClass(
         LivingEntity.class,
-        entity.getBoundingBox().inflate(EFFECT_RADIUS),
-        livingEntity -> livingEntity != entity);
+        entity.getBoundingBox().inflate(EFFECT_RADIUS * (1 + amplifier)),
+        livingEntity -> amplifier == 0 || livingEntity != entity);
 
     for (LivingEntity livingEntity : entities) {
-      PlayerTeam team = getTeamForEntity(livingEntity, teamWater, teamHostile, teamNeutral, teamPassive);
-      if (team != null) {
-        scoreboard.addPlayerToTeam(livingEntity.getScoreboardName(), team);
+      if (amplifier >= 3) {
+        PlayerTeam team = getTeamForEntity(livingEntity, teamWater, teamHostile, teamNeutral, teamPassive);
+        if (team != null) {
+          scoreboard.addPlayerToTeam(livingEntity.getScoreboardName(), team);
+        }
       }
       livingEntity.addEffect(glowingEffect);
     }

@@ -11,6 +11,8 @@ import dev.larguma.crawlingmysteries.item.ModItems;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import top.theillusivec4.curios.api.CuriosApi;
+import top.theillusivec4.curios.api.SlotResult;
+import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 
 public class ModSpells {
   private static final Map<ResourceLocation, Spell> SPELLS = new HashMap<>();
@@ -21,7 +23,7 @@ public class ModSpells {
       "eternal_guardian_mask",
       0));
 
-  private static Spell register(Spell spell) {
+  public static Spell register(Spell spell) {
     ResourceLocation id = spell.getRegistryId();
     if (SPELLS.containsKey(id)) {
       CrawlingMysteries.LOGGER.warn("Duplicate spell registration: {}", id);
@@ -52,11 +54,11 @@ public class ModSpells {
   public static List<Spell> getAvailableSpells(Player player) {
     List<Spell> available = new ArrayList<>();
 
-    var curiosHandler = CuriosApi.getCuriosInventory(player);
+    Optional<ICuriosItemHandler> curiosHandler = CuriosApi.getCuriosInventory(player);
     if (curiosHandler.isPresent()) {
-      var inventory = curiosHandler.get();
+      ICuriosItemHandler inventory = curiosHandler.get();
 
-      var maskSlot = inventory.findFirstCurio(ModItems.ETERNAL_GUARDIAN_MASK.get());
+      Optional<SlotResult> maskSlot = inventory.findFirstCurio(ModItems.ETERNAL_GUARDIAN_MASK.get());
       if (maskSlot.isPresent()) {
         available.addAll(getSpellsFromSource(
             ResourceLocation.fromNamespaceAndPath(CrawlingMysteries.MOD_ID, "eternal_guardian_mask")));

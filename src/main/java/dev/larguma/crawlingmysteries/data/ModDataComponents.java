@@ -19,6 +19,10 @@ public class ModDataComponents {
       "enabled",
       builder -> builder.persistent(Codec.BOOL));
 
+  public static final DeferredHolder<DataComponentType<?>, DataComponentType<Float>> ATTUNEMENT = register(
+      "attunement",
+      builder -> builder.persistent(Codec.FLOAT));
+
   private static <T> DeferredHolder<DataComponentType<?>, DataComponentType<T>> register(String name,
       UnaryOperator<DataComponentType.Builder<T>> builderOperator) {
     return DATA_COMPONENT_TYPES.register(name, () -> builderOperator.apply(DataComponentType.builder()).build());

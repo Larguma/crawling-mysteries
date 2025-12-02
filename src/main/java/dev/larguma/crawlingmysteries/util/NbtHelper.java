@@ -14,6 +14,9 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.nbt.ListTag;
 
 public class NbtHelper {
+  /**
+   * Reads a GameProfile from NBT.
+   */
   @Nullable
   public static GameProfile toGameProfile(CompoundTag nbt) {
     UUID uUID = nbt.hasUUID("Id") ? nbt.getUUID("Id") : Util.NIL_UUID;
@@ -86,6 +89,9 @@ public class NbtHelper {
     return nbt;
   }
 
+  /**
+   * Converts a BlockPos to a CompoundTag
+   */
   public static CompoundTag fromBlockPos(BlockPos pos) {
     CompoundTag tag = new CompoundTag();
     tag.putInt("X", pos.getX());
@@ -94,6 +100,9 @@ public class NbtHelper {
     return tag;
   }
 
+  /**
+   * Converts a CompoundTag to a BlockPos
+   */
   public static BlockPos toBlockPos(CompoundTag tag) {
     return new BlockPos(tag.getInt("X"), tag.getInt("Y"), tag.getInt("Z"));
   }

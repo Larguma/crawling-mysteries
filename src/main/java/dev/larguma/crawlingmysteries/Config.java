@@ -11,7 +11,7 @@ public class Config {
       .translation("config.crawlingmysteries.render_trinkets")
       .define("render_trinkets", true);
 
-  static final ModConfigSpec COMMON = BUILDER_COMMON.build();
+  static final ModConfigSpec COMMON_SPEC = BUILDER_COMMON.build();
   // #endregion Common
 
   // #region Server
@@ -19,6 +19,6 @@ public class Config {
       .translation("config.crawlingmysteries.enable_tombstone")
       .define("enable_tombstone", true);
 
-  static final ModConfigSpec SERVER = BUILDER_SERVER.build();
+  static final ModConfigSpec SERVER_SPEC = BUILDER_SERVER.build();
   // #endregion Server
 }
