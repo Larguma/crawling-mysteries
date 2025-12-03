@@ -63,7 +63,6 @@
   "message.crawlingmysteries.spectral_gaze_disabled": "§cSpectral Gaze disabled§r",
   "screen.crawlingmysteries": "====== Screens ======",
   "screen.crawlingmysteries.spell_select": "Spell Selection",
-  "screen.crawlingmysteries.spell_select.hint": "Click to toggle",
   "screen.crawlingmysteries.spell_select.no_spells": "No spells available",
   "spell.crawlingmysteries": "====== Spells ======",
   "spell.crawlingmysteries.unknown": "Unknown Spell: %s",
