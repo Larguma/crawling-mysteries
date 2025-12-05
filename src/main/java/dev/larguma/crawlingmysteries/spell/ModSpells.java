@@ -1,13 +1,12 @@
 package dev.larguma.crawlingmysteries.spell;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 import dev.larguma.crawlingmysteries.CrawlingMysteries;
-import dev.larguma.crawlingmysteries.item.ModItems;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.player.Player;
 import top.theillusivec4.curios.api.CuriosApi;
@@ -15,13 +14,15 @@ import top.theillusivec4.curios.api.SlotResult;
 import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 
 public class ModSpells {
-  private static final Map<ResourceLocation, Spell> SPELLS = new HashMap<>();
-  private static final List<Spell> SPELL_LIST = new ArrayList<>();
+  private static final Map<ResourceLocation, Spell> SPELLS = new LinkedHashMap<>();
 
-  public static final Spell SPECTRAL_GAZE = register(Spell.create(
-      "spectral_gaze",
-      "eternal_guardian_mask",
-      0));
+  // Eternal Guardian Mask
+  public static final Spell SPECTRAL_GAZE = register(
+      Spell.create("spectral_gaze", "eternal_guardian_mask", 0, Spell.SPECTRAL_COLORS));
+
+  // Cryptic Eye
+  public static final Spell FEED_TOTEM = register(
+      Spell.create("feed_totem", "cryptic_eye", 200, Spell.VOID_COLORS));
 
   public static Spell register(Spell spell) {
     ResourceLocation id = spell.getRegistryId();
@@ -29,7 +30,6 @@ public class ModSpells {
       CrawlingMysteries.LOGGER.warn("Duplicate spell registration: {}", id);
     }
     SPELLS.put(id, spell);
-    SPELL_LIST.add(spell);
     return spell;
   }
 
@@ -42,13 +42,11 @@ public class ModSpells {
   }
 
   public static List<Spell> getAllSpells() {
-    return List.copyOf(SPELL_LIST);
+    return List.copyOf(SPELLS.values());
   }
 
   public static List<Spell> getSpellsFromSource(ResourceLocation sourceItemId) {
-    return SPELL_LIST.stream()
-        .filter(spell -> spell.sourceItem().equals(sourceItemId))
-        .toList();
+    return SPELLS.values().stream().filter(spell -> spell.sourceItem().equals(sourceItemId)).toList();
   }
 
   public static List<Spell> getAvailableSpells(Player player) {
@@ -58,10 +56,9 @@ public class ModSpells {
     if (curiosHandler.isPresent()) {
       ICuriosItemHandler inventory = curiosHandler.get();
 
-      Optional<SlotResult> maskSlot = inventory.findFirstCurio(ModItems.ETERNAL_GUARDIAN_MASK.get());
-      if (maskSlot.isPresent()) {
-        available.addAll(getSpellsFromSource(
-            ResourceLocation.fromNamespaceAndPath(CrawlingMysteries.MOD_ID, "eternal_guardian_mask")));
+      for (SlotResult slotResult : inventory.findCurios(stack -> !stack.isEmpty())) {
+        ResourceLocation itemId = slotResult.stack().getItemHolder().getKey().location();
+        available.addAll(getSpellsFromSource(itemId));
       }
     }
 
@@ -69,6 +66,6 @@ public class ModSpells {
   }
 
   public static void init() {
-    CrawlingMysteries.LOGGER.info("Registered {} spells", SPELL_LIST.size());
+    CrawlingMysteries.LOGGER.info("Registered {} spells", SPELLS.size());
   }
 }

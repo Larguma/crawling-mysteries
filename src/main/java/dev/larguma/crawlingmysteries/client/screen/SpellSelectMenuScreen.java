@@ -326,7 +326,7 @@ public class SpellSelectMenuScreen extends Screen {
       boolean isSelected = (i == selectedIndex);
 
       if (isSelected) {
-        int glowColor = SpellParticle.getPrimaryColorForSpell(spell);
+        int glowColor = spell.getPrimaryColor();
         renderPulsingGlow(guiGraphics, slotCenterX, slotCenterY, glowColor);
         SpellParticle.renderParticles(guiGraphics, spellParticles, slotCenterX, slotCenterY, animationTick);
       }
@@ -358,7 +358,7 @@ public class SpellSelectMenuScreen extends Screen {
     }
     float pulse = (float) (0.4f + 0.4f * Math.sin(animationTick * pulseSpeed));
     alpha = (int) (pulse * 200);
-    color = SpellParticle.getPrimaryColorForSpell(spell);
+    color = spell.getPrimaryColor();
     lineWidth = 3;
 
     int r = (color >> 16) & 0xFF;

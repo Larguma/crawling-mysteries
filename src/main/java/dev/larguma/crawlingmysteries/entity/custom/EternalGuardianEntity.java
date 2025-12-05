@@ -98,7 +98,8 @@ public class EternalGuardianEntity extends Monster implements GeoEntity {
   @Override
   public boolean hurt(DamageSource source, float amount) {
     Entity entity = source.getEntity();
-    if (entity == null || !(entity instanceof Player) || source.is(DamageTypeTags.IS_PROJECTILE)) {
+    if ((entity == null || !(entity instanceof Player) || source.is(DamageTypeTags.IS_PROJECTILE))
+        && !source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
       return false;
     }
     return super.hurt(source, amount);

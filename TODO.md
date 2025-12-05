@@ -54,8 +54,10 @@ Advancements to progress
 ### Cryptic Eye
 
 - [ ] in-game docu
-- [ ] find another use
-- [ ] feed it undying totem to gain max health (or absorbtion (or regen or resistance, to op ?)) ?
+- [x] find another use
+- [x] feed it undying totem to gain max health (or absorbtion (or regen or resistance, to op ?)) ?
+- [ ] when feed x (50),change spell & act as a totem every x (5) minutes
+- [x] spells textures
 - [x] new trinket slots (eye)
 
 ### Eternal Guardian's Band
@@ -106,3 +108,7 @@ Advancements to progress
 ### Keybinds (replace)
 
 - [x] replace keybinds by wheel
+
+### displayClientMessage
+
+- [ ] add a custom ui to make it pretty
