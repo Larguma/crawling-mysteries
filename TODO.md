@@ -88,6 +88,7 @@ Advancements to progress
 - [ ] Eternal Guardian sounds
 - [x] Drop mask
 - [x] Tombstone Guardian "Eternal Guardian"
+- [ ] better animations
 
 ## Gameplay ideas
 

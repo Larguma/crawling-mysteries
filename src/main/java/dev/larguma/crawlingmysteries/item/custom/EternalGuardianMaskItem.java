@@ -59,9 +59,9 @@ public class EternalGuardianMaskItem extends Item implements GeoItem, ICurioItem
       }
 
       tooltipComponents.add(Component.translatable("tooltip.crawlingmysteries.blank"));
-      tooltipComponents
-          .add(Component.translatable(
-              "tooltip.crawlingmysteries" + (ItemDataHelper.isEnabled(stack) ? ".active" : ".inactive")));
+      tooltipComponents.add(Component.translatable("item.crawlingmysteries.eternal_guardian_mask.tooltip.spell")
+          .append(Component.translatable(
+              "tooltip.crawlingmysteries" + (ItemDataHelper.isEnabled(stack) ? ".active" : ".inactive"))));
     } else {
       tooltipComponents.add(Component.translatable("tolltip.crawlingmysteries.press_shift"));
     }
