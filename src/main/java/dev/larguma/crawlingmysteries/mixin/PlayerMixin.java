@@ -2,9 +2,10 @@ package dev.larguma.crawlingmysteries.mixin;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.spongepowered.asm.mixin.Final;
+import java.util.Optional;
+
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -12,80 +13,78 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import dev.larguma.crawlingmysteries.Config;
 import dev.larguma.crawlingmysteries.block.custom.TombstoneBlock;
 import dev.larguma.crawlingmysteries.item.ModItems;
-import net.minecraft.world.entity.EntityType;
-import net.minecraft.world.entity.LivingEntity;
-import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentEffectComponents;
 import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.GameRules;
-import net.minecraft.world.level.Level;
+import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.type.capability.ICurio.DropRule;
+import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 
 @Mixin(Player.class)
-public abstract class PlayerMixin extends LivingEntity {
-  @Shadow
-  @Final
-  private Inventory inventory;
-  private boolean hasEternalGuardiansBand = false;
+public abstract class PlayerMixin {
 
-  protected PlayerMixin(EntityType<? extends LivingEntity> entityType, Level level) {
-    super(entityType, level);
+  @Inject(at = @At("HEAD"), method = "dropEquipment")
+  private void dropEquipment(CallbackInfo info) {
+    if (!Config.ENABLE_TOMBSTONE.get()) {
+      return;
+    }
+
+    Player player = (Player) (Object) this;
+    boolean keepInventory = player.level().getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY);
+    List<ItemStack> trinketStacks = new ArrayList<>();
+
+    Optional<ICuriosItemHandler> curiosInventory = CuriosApi.getCuriosInventory(player);
+    boolean hasEternalGuardiansBand = curiosInventory.map(inv -> inv.isEquipped(ModItems.ETERNAL_GUARDIANS_BAND.get()))
+        .orElse(false);
+    curiosInventory.ifPresent(inv -> collectTrinkets(inv, trinketStacks, keepInventory));
+
+    if (hasEternalGuardiansBand) {
+      TombstoneBlock.placeTombstone(player, trinketStacks);
+      player.getInventory().clearContent();
+    } else {
+      for (ItemStack stack : trinketStacks) {
+        player.drop(stack, true, false);
+      }
+      player.getInventory().dropAll();
+    }
   }
 
-  @Inject(at = @At("HEAD"), method = "dropEquipment", cancellable = true)
-  private void dropEquipment(CallbackInfo info) {
-    if (Config.ENABLE_TOMBSTONE.get()) {
-      Player player = (Player) (Object) this;
-      boolean keepInv = player.level().getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY);
-      List<ItemStack> trinketStacks = new ArrayList<>();
+  @Unique
+  private void collectTrinkets(ICuriosItemHandler curiosInventory, List<ItemStack> trinketStacks,
+      boolean keepInventory) {
+    curiosInventory.getCurios().forEach((slotId, stacksHandler) -> {
+      DropRule dropRule = stacksHandler.getDropRule();
+      collectFromHandler(stacksHandler.getStacks(), trinketStacks, dropRule, keepInventory);
+      collectFromHandler(stacksHandler.getCosmeticStacks(), trinketStacks, dropRule, keepInventory);
+    });
+  }
 
-      CuriosApi.getCuriosInventory(player).ifPresent(curiosInventory -> {
-        hasEternalGuardiansBand = curiosInventory.isEquipped(ModItems.ETERNAL_GUARDIANS_BAND.get());
-        curiosInventory.getCurios().forEach((ref, stacksHandler) -> { // stacksHandler = all head or all rings
-          var dropRule = stacksHandler.getDropRule();
-          var activeStacks = stacksHandler.getStacks();
-          var cosmeticStacks = stacksHandler.getCosmeticStacks();
+  @Unique
+  private void collectFromHandler(IItemHandlerModifiable handler, List<ItemStack> trinketStacks,
+      DropRule dropRule, boolean keepInventory) {
+    for (int i = 0; i < handler.getSlots(); i++) {
+      ItemStack stack = handler.getStackInSlot(i);
+      if (stack.isEmpty()) {
+        continue;
+      }
 
-          for (int i = 0; i < activeStacks.getSlots(); i++) {
-            ItemStack stack = activeStacks.getStackInSlot(i);
-
-            if (!stack.isEmpty()) {
-              if (!EnchantmentHelper.has(stack, EnchantmentEffectComponents.PREVENT_EQUIPMENT_DROP)
-                  && dropRule != DropRule.DESTROY && dropRule != DropRule.ALWAYS_KEEP && !keepInv) {
-                trinketStacks.add(stack);
-                activeStacks.setStackInSlot(i, ItemStack.EMPTY);
-              }
-              if (dropRule == DropRule.DESTROY) {
-                activeStacks.setStackInSlot(i, ItemStack.EMPTY);
-              }
-            }
+      switch (dropRule) {
+        case ALWAYS_DROP -> {
+          trinketStacks.add(stack);
+          handler.setStackInSlot(i, ItemStack.EMPTY);
+        }
+        case DESTROY -> handler.setStackInSlot(i, ItemStack.EMPTY);
+        case ALWAYS_KEEP -> {
+          /* do nothing */ }
+        default -> {
+          if (!keepInventory && !EnchantmentHelper.has(stack, EnchantmentEffectComponents.PREVENT_EQUIPMENT_DROP)) {
+            trinketStacks.add(stack);
+            handler.setStackInSlot(i, ItemStack.EMPTY);
           }
-
-          for (int i = 0; i < cosmeticStacks.getSlots(); i++) {
-            ItemStack stack = cosmeticStacks.getStackInSlot(i);
-
-            if (!stack.isEmpty()) {
-              if (!EnchantmentHelper.has(stack, EnchantmentEffectComponents.PREVENT_EQUIPMENT_DROP)
-                  && dropRule != DropRule.DESTROY && dropRule != DropRule.ALWAYS_KEEP && !keepInv) {
-                trinketStacks.add(stack);
-                cosmeticStacks.setStackInSlot(i, ItemStack.EMPTY);
-              }
-              if (dropRule == DropRule.DESTROY) {
-                cosmeticStacks.setStackInSlot(i, ItemStack.EMPTY);
-              }
-            }
-          }
-        });
-      });
-
-      if (hasEternalGuardiansBand) {
-        TombstoneBlock.placeTombstone(player, trinketStacks);
-        player.getInventory().clearContent();
-      } else {
-        this.inventory.dropAll();
+        }
       }
     }
   }

@@ -1,0 +1,38 @@
+package dev.larguma.crawlingmysteries.mixin;
+
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+
+import dev.larguma.crawlingmysteries.item.ModItems;
+import dev.larguma.crawlingmysteries.item.custom.CrypticEyeItem;
+import dev.larguma.crawlingmysteries.item.helper.ItemDataHelper;
+import dev.larguma.crawlingmysteries.spell.SpellHandlerHelper;
+import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.damagesource.DamageSource;
+import net.minecraft.world.entity.LivingEntity;
+import net.minecraft.world.item.ItemStack;
+
+@Mixin(LivingEntity.class)
+public abstract class LivingEntityMixin {
+
+  @Inject(at = @At("HEAD"), method = "checkTotemDeathProtection", cancellable = true)
+  private boolean checkTotemDeathProtection(DamageSource source, CallbackInfoReturnable<Boolean> info) {
+    ServerPlayer player = (ServerPlayer) (Object) this;
+    ItemStack stack = SpellHandlerHelper.getCurioEquipped(player, ModItems.CRYPTIC_EYE.get());
+
+    if (!stack.isEmpty()) {
+
+      Boolean enabled = ItemDataHelper.isEnabled(stack);
+
+      if (enabled && stack.getItem() instanceof CrypticEyeItem item) {
+        item.beTotem(player);
+        info.setReturnValue(true);
+        info.cancel();
+        return true;
+      }
+    }
+    return info.getReturnValueZ();
+  }
+}

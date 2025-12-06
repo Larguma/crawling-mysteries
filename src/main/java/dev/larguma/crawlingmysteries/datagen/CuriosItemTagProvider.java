@@ -5,12 +5,13 @@ import java.util.concurrent.CompletableFuture;
 import org.jetbrains.annotations.Nullable;
 
 import dev.larguma.crawlingmysteries.item.ModItems;
-import dev.larguma.crawlingmysteries.tag.CuriosTags;
+import dev.larguma.crawlingmysteries.tag.ModCuriosTags;
 import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
 import net.minecraft.world.level.block.Block;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
+import top.theillusivec4.curios.api.CuriosTags;
 
 public class CuriosItemTagProvider extends ItemTagsProvider {
 
@@ -21,11 +22,11 @@ public class CuriosItemTagProvider extends ItemTagsProvider {
 
   @Override
   protected void addTags(Provider provider) {
-    tag(CuriosTags.Items.OBSERVER)
+    tag(ModCuriosTags.Items.OBSERVER)
         .add(ModItems.CRYPTIC_EYE.get());
-    tag(CuriosTags.Items.MASK)
+    tag(ModCuriosTags.Items.MASK)
         .add(ModItems.ETERNAL_GUARDIAN_MASK.get());
-    tag(top.theillusivec4.curios.api.CuriosTags.RING)
+    tag(CuriosTags.RING)
         .add(ModItems.ETERNAL_GUARDIANS_BAND.get());
 
   }

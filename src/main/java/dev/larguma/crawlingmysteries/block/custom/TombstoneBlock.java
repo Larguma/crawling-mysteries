@@ -11,7 +11,6 @@ import dev.larguma.crawlingmysteries.block.ModBlocks;
 import dev.larguma.crawlingmysteries.block.entity.TombstoneBlockEntity;
 import dev.larguma.crawlingmysteries.entity.ModEntities;
 import dev.larguma.crawlingmysteries.entity.custom.EternalGuardianEntity;
-import dev.larguma.crawlingmysteries.item.helper.ItemHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.NonNullList;
@@ -160,11 +159,11 @@ public class TombstoneBlock extends BaseEntityBlock implements SimpleWaterlogged
 
   @Override
   public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
-    dropAllGrave(level, pos);
+    dropAllGrave(level, pos, player);
     return super.playerWillDestroy(level, pos, state, player);
   }
 
-  public void dropAllGrave(Level level, BlockPos pos) {
+  public void dropAllGrave(Level level, BlockPos pos, Player player) {
     if (level.isClientSide())
       return;
 
@@ -179,7 +178,9 @@ public class TombstoneBlock extends BaseEntityBlock implements SimpleWaterlogged
     if (blockEntity.getItems() == null)
       return;
 
-    ItemHelper.scatterItems(level, pos, blockEntity.getItems());
+    for (ItemStack stack : blockEntity.getItems()) {
+      player.drop(stack, true, false);
+    }
 
     blockEntity.setItems(NonNullList.of(ItemStack.EMPTY));
   }

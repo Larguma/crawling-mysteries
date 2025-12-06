@@ -22,7 +22,9 @@ public class ModSpells {
 
   // Cryptic Eye
   public static final Spell FEED_TOTEM = register(
-      Spell.create("feed_totem", "cryptic_eye", 200, Spell.VOID_COLORS));
+      Spell.create("feed_totem", "cryptic_eye", 1, Spell.GOLDEN_COLORS));
+  public static final Spell BE_TOTEM = register(
+      Spell.create("be_totem", "cryptic_eye", 200, Spell.GOLDEN_COLORS, false));
 
   public static Spell register(Spell spell) {
     ResourceLocation id = spell.getRegistryId();
@@ -45,11 +47,16 @@ public class ModSpells {
     return List.copyOf(SPELLS.values());
   }
 
-  public static List<Spell> getSpellsFromSource(ResourceLocation sourceItemId) {
-    return SPELLS.values().stream().filter(spell -> spell.sourceItem().equals(sourceItemId)).toList();
+  public static List<Spell> getSpellsFromSource(ResourceLocation sourceItemId, boolean onlyShown) {
+    return SPELLS.values().stream()
+        .filter(spell -> spell.sourceItem().equals(sourceItemId) && (!onlyShown || spell.showOnWheel())).toList();
   }
 
   public static List<Spell> getAvailableSpells(Player player) {
+    return getAvailableSpells(player, true);
+  }
+
+  public static List<Spell> getAvailableSpells(Player player, boolean onlyShown) {
     List<Spell> available = new ArrayList<>();
 
     Optional<ICuriosItemHandler> curiosHandler = CuriosApi.getCuriosInventory(player);
@@ -58,7 +65,7 @@ public class ModSpells {
 
       for (SlotResult slotResult : inventory.findCurios(stack -> !stack.isEmpty())) {
         ResourceLocation itemId = slotResult.stack().getItemHolder().getKey().location();
-        available.addAll(getSpellsFromSource(itemId));
+        available.addAll(getSpellsFromSource(itemId, onlyShown));
       }
     }
 

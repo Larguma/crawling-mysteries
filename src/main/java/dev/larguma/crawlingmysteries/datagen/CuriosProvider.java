@@ -8,7 +8,7 @@ import net.minecraft.data.PackOutput;
 import net.minecraft.resources.ResourceLocation;
 import net.neoforged.neoforge.common.data.ExistingFileHelper;
 import top.theillusivec4.curios.api.CuriosDataProvider;
-import top.theillusivec4.curios.api.type.capability.ICurio;
+import top.theillusivec4.curios.api.type.capability.ICurio.DropRule;
 
 public class CuriosProvider extends CuriosDataProvider {
 
@@ -19,7 +19,7 @@ public class CuriosProvider extends CuriosDataProvider {
 
   @Override
   public void generate(Provider registries, ExistingFileHelper fileHelper) {
-    this.createSlot("observer").size(1).dropRule(ICurio.DropRule.ALWAYS_KEEP)
+    this.createSlot("observer").size(1).dropRule(DropRule.ALWAYS_KEEP)
         .icon(ResourceLocation.fromNamespaceAndPath(CrawlingMysteries.MOD_ID, "slot/observer"));
     this.createSlot("mask").size(1)
         .icon(ResourceLocation.fromNamespaceAndPath(CrawlingMysteries.MOD_ID, "slot/mask"));

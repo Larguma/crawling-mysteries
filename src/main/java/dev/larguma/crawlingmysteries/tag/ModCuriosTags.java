@@ -5,7 +5,7 @@ import net.minecraft.tags.ItemTags;
 import net.minecraft.tags.TagKey;
 import net.minecraft.world.item.Item;
 
-public class CuriosTags {
+public class ModCuriosTags {
   public static class Items {
     public static final TagKey<Item> OBSERVER = createTagKey("observer");
     public static final TagKey<Item> MASK = createTagKey("mask");

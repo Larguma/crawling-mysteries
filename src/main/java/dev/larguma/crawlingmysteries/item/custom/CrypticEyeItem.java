@@ -8,6 +8,7 @@ import com.google.common.collect.Multimap;
 
 import dev.larguma.crawlingmysteries.client.item.CrypticEyeItemRenderer;
 import dev.larguma.crawlingmysteries.data.ModDataComponents;
+import dev.larguma.crawlingmysteries.item.helper.ItemDataHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.client.gui.screens.Screen;
@@ -60,7 +61,7 @@ public class CrypticEyeItem extends Item implements GeoItem, ICurioItem {
     int consumed = getTotemsConsumed(stack);
 
     tooltipComponents.add(Component.translatable("item.crawlingmysteries.cryptic_eye.tooltip.line1"));
-    
+
     if (consumed < MAX_BONUS_TOTEMS)
       tooltipComponents.add(Component.translatable("item.crawlingmysteries.cryptic_eye.tooltip.hungry"));
     else
@@ -83,10 +84,6 @@ public class CrypticEyeItem extends Item implements GeoItem, ICurioItem {
   }
 
   public boolean consumeTotem(ServerPlayer player, ItemStack stack) {
-    if (!stack.has(ModDataComponents.TOTEMS_CONSUMED))
-      stack.set(ModDataComponents.TOTEMS_CONSUMED, 0);
-    stack.set(ModDataComponents.TOTEMS_CONSUMED, stack.get(ModDataComponents.TOTEMS_CONSUMED) + 1);
-
     Level level = player.level();
 
     if (!level.isClientSide) {
@@ -118,6 +115,15 @@ public class CrypticEyeItem extends Item implements GeoItem, ICurioItem {
         player.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 800, 0));
         // TODO: add custom animation
         player.level().broadcastEntityEvent(player, (byte) 35);
+
+        if (!stack.has(ModDataComponents.TOTEMS_CONSUMED))
+          stack.set(ModDataComponents.TOTEMS_CONSUMED, 0);
+        int consumed = stack.get(ModDataComponents.TOTEMS_CONSUMED) + 1;
+        stack.set(ModDataComponents.TOTEMS_CONSUMED, consumed);
+
+        if (consumed >= MAX_BONUS_TOTEMS)
+          ItemDataHelper.setEnabled(stack, true);
+
         return true;
       } else {
         player.displayClientMessage(Component.translatable(
@@ -127,6 +133,16 @@ public class CrypticEyeItem extends Item implements GeoItem, ICurioItem {
 
     }
     return false;
+  }
+
+  public void beTotem(ServerPlayer player) {
+    player.setHealth(1.0F);
+    player.removeEffectsCuredBy(net.neoforged.neoforge.common.EffectCures.PROTECTED_BY_TOTEM);
+    player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 900, 1));
+    player.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 100, 1));
+    player.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 800, 0));
+    // TODO: own animation
+    // player.level().broadcastEntityEvent(player, (byte) 35);
   }
 
   private int getTotemsConsumed(ItemStack stack) {

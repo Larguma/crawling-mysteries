@@ -3,7 +3,8 @@
   "package": "dev.larguma.crawlingmysteries.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
-    "PlayerMixin"
+    "PlayerMixin",
+    "LivingEntityMixin"
   ],
   "injectors": {
     "defaultRequire": 1
