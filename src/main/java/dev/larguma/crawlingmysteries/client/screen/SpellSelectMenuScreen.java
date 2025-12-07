@@ -8,6 +8,7 @@ import org.lwjgl.glfw.GLFW;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import dev.larguma.crawlingmysteries.CrawlingMysteries;
+import dev.larguma.crawlingmysteries.client.spell.ClientSpellCooldownManager;
 import dev.larguma.crawlingmysteries.networking.packet.SpellSelectPacket;
 import dev.larguma.crawlingmysteries.spell.ModSpells;
 import dev.larguma.crawlingmysteries.spell.Spell;
@@ -342,7 +343,13 @@ public class SpellSelectMenuScreen extends Screen {
 
       int iconX = slotX + (SLOT_TEXTURE_SIZE - SLOT_SIZE) / 2;
       int iconY = slotY + (SLOT_TEXTURE_SIZE - SLOT_SIZE) / 2 + bobOffset;
-      renderSpellIcon(guiGraphics, spell, iconX, iconY);
+      
+      boolean onCooldown = ClientSpellCooldownManager.isOnCooldown(spell);
+      renderSpellIcon(guiGraphics, spell, iconX, iconY, onCooldown);
+      
+      if (onCooldown) {
+        renderCooldownOverlay(guiGraphics, spell, slotCenterX, slotCenterY);
+      }
     }
 
     RenderSystem.disableBlend();
@@ -433,9 +440,50 @@ public class SpellSelectMenuScreen extends Screen {
     }
   }
 
-  private void renderSpellIcon(GuiGraphics guiGraphics, Spell spell, int x, int y) {
+  private void renderSpellIcon(GuiGraphics guiGraphics, Spell spell, int x, int y, boolean onCooldown) {
     RenderSystem.setShaderTexture(0, spell.icon());
+    
+    if (onCooldown) {
+      RenderSystem.setShaderColor(0.4f, 0.4f, 0.4f, 1.0f);
+    }
+    
     guiGraphics.blit(spell.icon(), x, y, 0, 0, SLOT_SIZE, SLOT_SIZE, SLOT_SIZE, SLOT_SIZE);
+    
+    if (onCooldown) {
+      RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+    }
+  }
+
+  private void renderCooldownOverlay(GuiGraphics guiGraphics, Spell spell, int centerX, int centerY) {
+    float progress = ClientSpellCooldownManager.getCooldownProgress(spell);
+    int remainingSeconds = ClientSpellCooldownManager.getRemainingCooldownSeconds(spell);
+    String formattedCooldown = ClientSpellCooldownManager.getRemainingCooldownFormatted(spell);
+
+    
+    int radius = SLOT_SIZE / 2 + 2;
+    int segments = 32;
+    int filledSegments = (int) (segments * progress);
+    
+    for (int i = 0; i < filledSegments; i++) {
+      double angle = -Math.PI / 2 + (2 * Math.PI * i / segments);
+      
+      int x1 = centerX + (int) (Math.cos(angle) * radius);
+      int y1 = centerY + (int) (Math.sin(angle) * radius);
+      
+      int overlayColor = 0x40000000;
+      drawLine(guiGraphics, centerX, centerY, x1, y1, 3, overlayColor);
+    }
+    
+    if (remainingSeconds > 0) {
+      int textWidth = this.font.width(formattedCooldown);
+      guiGraphics.drawString(
+          this.font,
+          formattedCooldown,
+          centerX - textWidth / 2,
+          centerY - this.font.lineHeight / 2,
+          0xFFFFFFFF,
+          true);
+    }
   }
 
   private void renderSpellInfo(GuiGraphics guiGraphics, int mouseX, int mouseY) {
@@ -444,13 +492,21 @@ public class SpellSelectMenuScreen extends Screen {
 
     Component spellName = hoveredSpell.name();
     Component description = hoveredSpell.description();
+    
+    boolean onCooldown = ClientSpellCooldownManager.isOnCooldown(hoveredSpell);
+    Component cooldownText = null;
+    if (onCooldown) {
+      String formattedCooldown = ClientSpellCooldownManager.getRemainingCooldownFormatted(hoveredSpell);
+      cooldownText = Component.translatable("screen.crawlingmysteries.spell_select.cooldown", formattedCooldown);
+    }
 
     int nameWidth = this.font.width(spellName);
     int descWidth = this.font.width(description);
+    int cooldownWidth = cooldownText != null ? this.font.width(cooldownText) : 0;
 
-    int maxTextWidth = Math.max(nameWidth, descWidth);
+    int maxTextWidth = Math.max(nameWidth, Math.max(descWidth, cooldownWidth));
     int panelWidth = maxTextWidth + 10;
-    int panelHeight = 33;
+    int panelHeight = onCooldown ? 47 : 33;
 
     int offsetX = 12;
     int offsetY = -12;
@@ -476,7 +532,7 @@ public class SpellSelectMenuScreen extends Screen {
         spellName,
         textCenterX - nameWidth / 2,
         panelY + 5,
-        0xFFFFFF,
+        onCooldown ? 0x888888 : 0xFFFFFF,
         true);
 
     guiGraphics.drawString(
@@ -486,6 +542,16 @@ public class SpellSelectMenuScreen extends Screen {
         panelY + 19,
         0xAAAAAA,
         true);
+    
+    if (cooldownText != null) {
+      guiGraphics.drawString(
+          this.font,
+          cooldownText,
+          textCenterX - cooldownWidth / 2,
+          panelY + 33,
+          0xFF5555,
+          true);
+    }
   }
 
   private void renderTooltipPanel(GuiGraphics guiGraphics, int x, int y, int width, int height) {
@@ -534,6 +600,11 @@ public class SpellSelectMenuScreen extends Screen {
   @Override
   public boolean mouseClicked(double mouseX, double mouseY, int button) {
     if (button == 0 && hoveredSpell != null && selectedIndex >= 0) {
+      if (ClientSpellCooldownManager.isOnCooldown(hoveredSpell)) {
+        playCooldownSound();
+        return true;
+      }
+      
       playSelectSound();
       
       PacketDistributor.sendToServer(new SpellSelectPacket(hoveredSpell.id()));
@@ -541,6 +612,13 @@ public class SpellSelectMenuScreen extends Screen {
       return true;
     }
     return super.mouseClicked(mouseX, mouseY, button);
+  }
+  
+  private void playCooldownSound() {
+    if (this.minecraft != null) {
+      this.minecraft.getSoundManager().play(
+          SimpleSoundInstance.forUI(SoundEvents.NOTE_BLOCK_BASS.value(), 0.5f, 0.5f));
+    }
   }
 
   @Override

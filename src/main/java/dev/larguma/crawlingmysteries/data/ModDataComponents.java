@@ -23,6 +23,10 @@ public class ModDataComponents {
   public static final DeferredHolder<DataComponentType<?>, DataComponentType<Float>> ATTUNEMENT = register(
       "attunement",
       builder -> builder.persistent(Codec.FLOAT));
+
+  public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> SPELL_STAGE = register(
+      "spell_stage",
+      builder -> builder.persistent(Codec.INT));
   // #endregion Common
 
   // Cryptic Eye

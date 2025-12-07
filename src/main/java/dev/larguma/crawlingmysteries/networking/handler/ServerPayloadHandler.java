@@ -26,9 +26,9 @@ public class ServerPayloadHandler {
     Spell spellData = spell.get();
 
     if (SpellCooldownManager.isOnCooldown(player, spellData)) {
-      int remainingSeconds = SpellCooldownManager.getRemainingCooldownSeconds(player, spellData);
+      String formattedCooldown = SpellCooldownManager.getRemainingCooldownFormatted(player, spellData);
       player.displayClientMessage(
-          Component.translatable("message.crawlingmysteries.spell.on_cooldown", spellData.name(), remainingSeconds),
+          Component.translatable("message.crawlingmysteries.spell.on_cooldown", spellData.name(), formattedCooldown),
           true);
       return;
     }

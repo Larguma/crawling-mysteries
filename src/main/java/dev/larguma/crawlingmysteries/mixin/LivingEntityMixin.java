@@ -8,6 +8,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import dev.larguma.crawlingmysteries.item.ModItems;
 import dev.larguma.crawlingmysteries.item.custom.CrypticEyeItem;
 import dev.larguma.crawlingmysteries.item.helper.ItemDataHelper;
+import dev.larguma.crawlingmysteries.spell.ModSpells;
+import dev.larguma.crawlingmysteries.spell.SpellCooldownManager;
 import dev.larguma.crawlingmysteries.spell.SpellHandlerHelper;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.damagesource.DamageSource;
@@ -24,10 +26,12 @@ public abstract class LivingEntityMixin {
 
     if (!stack.isEmpty()) {
 
-      Boolean enabled = ItemDataHelper.isEnabled(stack);
+      boolean enabled = ItemDataHelper.getSpellStage(stack) >= 2;
+      boolean onCooldown = SpellCooldownManager.isOnCooldown(player, ModSpells.BE_TOTEM);
 
-      if (enabled && stack.getItem() instanceof CrypticEyeItem item) {
+      if (enabled && !onCooldown && stack.getItem() instanceof CrypticEyeItem item) {
         item.beTotem(player);
+        SpellCooldownManager.setCooldown(player, ModSpells.BE_TOTEM);
         info.setReturnValue(true);
         info.cancel();
         return true;

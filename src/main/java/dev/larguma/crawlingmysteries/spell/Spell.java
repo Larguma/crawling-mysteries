@@ -5,7 +5,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
 public record Spell(String id, ResourceLocation icon, Component name, Component description,
-    ResourceLocation sourceItem, int cooldownTicks, int[] colors, boolean showOnWheel) {
+    ResourceLocation sourceItem, int cooldownTicks, int[] colors, boolean showOnWheel, int stage) {
 
   // Default colors - purple tones
   public static final int[] DEFAULT_COLORS = { 0x6B33D7, 0x9B59B6, 0x7D90FD };
@@ -26,7 +26,7 @@ public record Spell(String id, ResourceLocation icon, Component name, Component 
   // Void/arcane spells - dark blue/purple
   public static final int[] VOID_COLORS = { 0x191970, 0x483D8B, 0x6A5ACD, 0x7B68EE };
 
-  public static Spell create(String id, String sourceItemId, int cooldownTicks, int[] colors, boolean showOnWheel) {
+  public static Spell create(String id, String sourceItemId, int cooldownTicks, int[] colors, boolean showOnWheel, int stage) {
     return new Spell(
         id,
         ResourceLocation.fromNamespaceAndPath(CrawlingMysteries.MOD_ID, "textures/spell/" + id + ".png"),
@@ -35,19 +35,28 @@ public record Spell(String id, ResourceLocation icon, Component name, Component 
         ResourceLocation.fromNamespaceAndPath(CrawlingMysteries.MOD_ID, sourceItemId),
         cooldownTicks,
         colors,
-        showOnWheel);
+        showOnWheel,
+        stage);
+  }
+
+  public static Spell create(String id, String sourceItemId, int cooldownTicks, int[] colors, boolean showOnWheel) {
+    return create(id, sourceItemId, cooldownTicks, colors, showOnWheel, 0);
   }
 
   public static Spell create(String id, String sourceItemId, int cooldownTicks) {
-    return create(id, sourceItemId, cooldownTicks, DEFAULT_COLORS, true);
+    return create(id, sourceItemId, cooldownTicks, DEFAULT_COLORS, true, 0);
   }
 
   public static Spell create(String id, String sourceItemId, int cooldownTicks, int[] colors) {
-    return create(id, sourceItemId, cooldownTicks, colors, true);
+    return create(id, sourceItemId, cooldownTicks, colors, true, 0);
   }
 
   public static Spell create(String id, String sourceItemId, int cooldownTicks, boolean showOnWheel) {
-    return create(id, sourceItemId, cooldownTicks, DEFAULT_COLORS, showOnWheel);
+    return create(id, sourceItemId, cooldownTicks, DEFAULT_COLORS, showOnWheel, 0);
+  }
+
+  public static Spell create(String id, String sourceItemId, int cooldownTicks, int[] colors, int stage) {
+    return create(id, sourceItemId, cooldownTicks, colors, true, stage);
   }
 
   public int getPrimaryColor() {

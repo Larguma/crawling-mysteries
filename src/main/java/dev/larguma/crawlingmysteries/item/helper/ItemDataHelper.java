@@ -32,6 +32,37 @@ public final class ItemDataHelper {
 
   // #endregion Enabled State
 
+  // #region Spell Stage
+
+  /**
+   * Gets the spell stage.
+   * 
+   * @return The spell stage, defaults to 0 if not set.
+   */
+  public static int getSpellStage(ItemStack stack) {
+    if (!stack.has(ModDataComponents.SPELL_STAGE))
+      stack.set(ModDataComponents.SPELL_STAGE, 0);
+    return stack.get(ModDataComponents.SPELL_STAGE);
+  }
+
+  /**
+   * Sets the spell stage, minimum 0.
+   */
+  public static int setSpellStage(ItemStack stack, int value) {
+    if (value < 0)
+      value = 0;
+    return stack.set(ModDataComponents.SPELL_STAGE, value);
+  }
+
+  /**
+   * Increases the spell stage by 1.
+   */
+  public static int nextSpellStage(ItemStack stack) {
+    return setSpellStage(stack, getSpellStage(stack) + 1);
+  }
+
+  // #endregion Spell Stage
+
   // #region Attunement
 
   /**

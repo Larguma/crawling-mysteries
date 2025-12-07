@@ -7,14 +7,19 @@ import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
 
 import dev.larguma.crawlingmysteries.client.item.CrypticEyeItemRenderer;
+import dev.larguma.crawlingmysteries.client.spell.ClientSpellCooldownManager;
 import dev.larguma.crawlingmysteries.data.ModDataComponents;
+import dev.larguma.crawlingmysteries.item.ModItems;
 import dev.larguma.crawlingmysteries.item.helper.ItemDataHelper;
+import dev.larguma.crawlingmysteries.spell.ModSpells;
+import dev.larguma.crawlingmysteries.spell.Spell;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
@@ -51,7 +56,7 @@ public class CrypticEyeItem extends Item implements GeoItem, ICurioItem {
   private static final int MAX_HEALTH_BONUS = MAX_BONUS_TOTEMS / TOTEMS_FOR_BONUS;
 
   public CrypticEyeItem() {
-    super(new Item.Properties().stacksTo(1));
+    super(new Item.Properties().stacksTo(1).component(ModDataComponents.SPELL_STAGE.get(), 1));
     SingletonGeoAnimatable.registerSyncedAnimatable(this);
   }
 
@@ -59,6 +64,9 @@ public class CrypticEyeItem extends Item implements GeoItem, ICurioItem {
   public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents,
       TooltipFlag tooltipFlag) {
     int consumed = getTotemsConsumed(stack);
+    int spellStage = ItemDataHelper.getSpellStage(stack);
+    Spell spell = ModSpells.getSpellFromStage(ModItems.CRYPTIC_EYE.getId().getPath(), spellStage);
+    boolean isOnCooldown = ClientSpellCooldownManager.isOnCooldown(spell);
 
     tooltipComponents.add(Component.translatable("item.crawlingmysteries.cryptic_eye.tooltip.line1"));
 
@@ -75,6 +83,19 @@ public class CrypticEyeItem extends Item implements GeoItem, ICurioItem {
         tooltipComponents.add(Component.translatable("item.crawlingmysteries.cryptic_eye.tooltip.bonus",
             getBonus(stack)).withStyle(ChatFormatting.GOLD));
       }
+
+      tooltipComponents.add(Component.translatable("tooltip.crawlingmysteries.blank"));
+      MutableComponent spellTooltip = Component.translatable("tooltip.crawlingmysteries.spell_stage", spellStage)
+          .withStyle(ChatFormatting.GOLD)
+          .append(Component.literal(" "))
+          .append(Component.translatable("spell.crawlingmysteries." + spell.id()));
+      if (isOnCooldown) {
+        String formattedCooldown = ClientSpellCooldownManager.getRemainingCooldownFormatted(spell);
+        spellTooltip.append(Component.literal(" "))
+            .append(Component.translatable("tooltip.crawlingmysteries.spell_cooldown", formattedCooldown)
+                .withStyle(ChatFormatting.DARK_GRAY));
+      }
+      tooltipComponents.add(spellTooltip);
 
     } else {
       tooltipComponents.add(Component.translatable("tolltip.crawlingmysteries.press_shift"));
@@ -121,8 +142,8 @@ public class CrypticEyeItem extends Item implements GeoItem, ICurioItem {
         int consumed = stack.get(ModDataComponents.TOTEMS_CONSUMED) + 1;
         stack.set(ModDataComponents.TOTEMS_CONSUMED, consumed);
 
-        if (consumed >= MAX_BONUS_TOTEMS)
-          ItemDataHelper.setEnabled(stack, true);
+        if (consumed == MAX_BONUS_TOTEMS)
+          ItemDataHelper.nextSpellStage(stack);
 
         return true;
       } else {

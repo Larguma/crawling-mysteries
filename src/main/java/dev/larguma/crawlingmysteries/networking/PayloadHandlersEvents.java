@@ -1,7 +1,9 @@
 package dev.larguma.crawlingmysteries.networking;
 
 import dev.larguma.crawlingmysteries.CrawlingMysteries;
+import dev.larguma.crawlingmysteries.networking.handler.ClientPayloadHandler;
 import dev.larguma.crawlingmysteries.networking.handler.ServerPayloadHandler;
+import dev.larguma.crawlingmysteries.networking.packet.SpellCooldownSyncPacket;
 import dev.larguma.crawlingmysteries.networking.packet.SpellSelectPacket;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -17,5 +19,9 @@ public class PayloadHandlersEvents {
         SpellSelectPacket.TYPE,
         SpellSelectPacket.STREAM_CODEC,
         ServerPayloadHandler::handleSpellSelect);
+    registrar.playToClient(
+        SpellCooldownSyncPacket.TYPE,
+        SpellCooldownSyncPacket.STREAM_CODEC,
+        ClientPayloadHandler::handleSpellCooldownSync);
   }
 }
