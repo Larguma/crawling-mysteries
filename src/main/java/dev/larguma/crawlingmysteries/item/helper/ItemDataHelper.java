@@ -3,6 +3,9 @@ package dev.larguma.crawlingmysteries.item.helper;
 import dev.larguma.crawlingmysteries.data.ModDataComponents;
 import net.minecraft.world.item.ItemStack;
 
+/**
+ * Helper methods for managing item data components.
+ */
 public final class ItemDataHelper {
 
   // #region Enabled State

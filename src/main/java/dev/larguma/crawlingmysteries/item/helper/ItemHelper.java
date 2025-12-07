@@ -3,6 +3,9 @@ package dev.larguma.crawlingmysteries.item.helper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 
+/**
+ * Helper methods for item-related functionalities.
+ */
 public class ItemHelper {
 
   /**

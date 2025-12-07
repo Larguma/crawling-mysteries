@@ -1,4 +1,4 @@
-package dev.larguma.crawlingmysteries.client.screen;
+package dev.larguma.crawlingmysteries.client.particle;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,21 +6,34 @@ import java.util.Random;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 
+import dev.larguma.crawlingmysteries.client.render.RenderUtils;
 import net.minecraft.client.gui.GuiGraphics;
 
+/**
+ * Floating background particles
+ */
 public class BackgroundParticle {
   private static final int MAX_PARTICLES = 50;
   private static final Random RANDOM = new Random();
+
+  private static final int[] PARTICLE_COLORS = {
+      0x6B33D7, // Purple
+      0x7D90FD, // Light blue
+      0x9B59B6, // Amethyst
+      0x8E44AD, // Dark purple
+      0x5DADE2, // Sky blue
+      0xAF7AC5 // Light purple
+  };
 
   private float x, y;
   private float prevX, prevY;
   private final float vx, vy;
   private int age;
   private final int maxAge;
-  final int color;
-  final float size;
+  private final int color;
+  private final float size;
 
-  BackgroundParticle(float x, float y, float vx, float vy, int age, int maxAge, int color, float size) {
+  private BackgroundParticle(float x, float y, float vx, float vy, int age, int maxAge, int color, float size) {
     this.x = x;
     this.y = y;
     this.prevX = x;
@@ -33,7 +46,7 @@ public class BackgroundParticle {
     this.size = size;
   }
 
-  void tick() {
+  private void tick() {
     prevX = x;
     prevY = y;
     x += vx;
@@ -41,21 +54,21 @@ public class BackgroundParticle {
     age++;
   }
 
-  boolean isDead() {
+  private boolean isDead() {
     return age >= maxAge;
   }
 
-  float getAlpha() {
+  private float getAlpha() {
     float fadeIn = Math.min(1.0f, age / 20.0f);
     float fadeOut = Math.min(1.0f, (maxAge - age) / 20.0f);
     return fadeIn * fadeOut * 0.6f;
   }
 
-  float getX(float partialTick) {
+  private float getX(float partialTick) {
     return prevX + (x - prevX) * partialTick;
   }
 
-  float getY(float partialTick) {
+  private float getY(float partialTick) {
     return prevY + (y - prevY) * partialTick;
   }
 
@@ -84,12 +97,7 @@ public class BackgroundParticle {
 
     for (BackgroundParticle particle : particles) {
       float alpha = particle.getAlpha();
-      int color = particle.color;
-      int r = (color >> 16) & 0xFF;
-      int g = (color >> 8) & 0xFF;
-      int b = color & 0xFF;
-      int a = (int) (alpha * 255);
-      int argb = (a << 24) | (r << 16) | (g << 8) | b;
+      int argb = RenderUtils.withAlpha(particle.color, alpha);
 
       float x = particle.getX(partialTick);
       float y = particle.getY(partialTick);
@@ -113,21 +121,9 @@ public class BackgroundParticle {
     float vy = -RANDOM.nextFloat() * 0.8f - 0.2f;
     int maxAge = 60 + RANDOM.nextInt(120);
     int age = randomAge ? RANDOM.nextInt(maxAge) : 0;
-    int color = getRandomColor();
+    int color = PARTICLE_COLORS[RANDOM.nextInt(PARTICLE_COLORS.length)];
     float size = 1.5f + RANDOM.nextFloat() * 2.5f;
 
     return new BackgroundParticle(x, y, vx, vy, age, maxAge, color, size);
-  }
-
-  private static int getRandomColor() {
-    int[] colors = {
-        0x6B33D7, // Purple
-        0x7D90FD, // Light blue
-        0x9B59B6, // Amethyst
-        0x8E44AD, // Dark purple
-        0x5DADE2, // Sky blue
-        0xAF7AC5  // Light purple
-    };
-    return colors[RANDOM.nextInt(colors.length)];
   }
 }

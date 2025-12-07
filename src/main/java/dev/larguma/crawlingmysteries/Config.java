@@ -3,16 +3,20 @@ package dev.larguma.crawlingmysteries;
 import net.neoforged.neoforge.common.ModConfigSpec;
 
 public class Config {
-  private static final ModConfigSpec.Builder BUILDER_COMMON = new ModConfigSpec.Builder();
+  private static final ModConfigSpec.Builder BUILDER_CLIENT = new ModConfigSpec.Builder();
   private static final ModConfigSpec.Builder BUILDER_SERVER = new ModConfigSpec.Builder();
 
-  // #region Common
-  public static final ModConfigSpec.BooleanValue RENDER_TRINKETS = BUILDER_COMMON
+  // #region Client
+  public static final ModConfigSpec.BooleanValue RENDER_TRINKETS = BUILDER_CLIENT
       .translation("config.crawlingmysteries.render_trinkets")
       .define("render_trinkets", true);
 
-  static final ModConfigSpec COMMON_SPEC = BUILDER_COMMON.build();
-  // #endregion Common
+  public static final ModConfigSpec.BooleanValue RENDER_PASSIVE_SPELL_HUD = BUILDER_CLIENT
+      .translation("config.crawlingmysteries.render_passive_spell_hud")
+      .define("render_passive_spell_hud", true);
+
+  static final ModConfigSpec CLIENT_SPEC = BUILDER_CLIENT.build();
+  // #endregion Client
 
   // #region Server
   public static final ModConfigSpec.BooleanValue ENABLE_TOMBSTONE = BUILDER_SERVER

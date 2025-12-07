@@ -1,4 +1,4 @@
-package dev.larguma.crawlingmysteries.client.screen;
+package dev.larguma.crawlingmysteries.client.particle;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,8 +6,12 @@ import java.util.Random;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 
+import dev.larguma.crawlingmysteries.client.render.RenderUtils;
 import net.minecraft.client.gui.GuiGraphics;
 
+/**
+ * Floating rune symbols for background
+ */
 public class FloatingRune {
   private static final int MAX_RUNES = 15;
   private static final Random RANDOM = new Random();
@@ -34,18 +38,18 @@ public class FloatingRune {
 
   private float x, y;
   private float prevX, prevY;
-  private float vx, vy;
-  private int runePattern;
-  private int color;
-  private float scale;
+  private final float vx, vy;
+  private final int runePattern;
+  private final int color;
+  private final float scale;
   private float alpha;
-  private float alphaTarget;
-  private float alphaSpeed;
+  private final float alphaTarget;
+  private final float alphaSpeed;
   private int age;
-  private int maxAge;
-  private float wobbleOffset;
+  private final int maxAge;
+  private final float wobbleOffset;
 
-  FloatingRune(float x, float y, float vx, float vy, int runePattern, int color, float scale, int maxAge) {
+  private FloatingRune(float x, float y, float vx, float vy, int runePattern, int color, float scale, int maxAge) {
     this.x = x;
     this.y = y;
     this.prevX = x;
@@ -63,7 +67,7 @@ public class FloatingRune {
     this.wobbleOffset = RANDOM.nextFloat() * (float) Math.PI * 2;
   }
 
-  void tick(float animationTick) {
+  private void tick(float animationTick) {
     prevX = x;
     prevY = y;
 
@@ -89,15 +93,15 @@ public class FloatingRune {
     }
   }
 
-  boolean isDead() {
+  private boolean isDead() {
     return age >= maxAge;
   }
 
-  float getX(float partialTick) {
+  private float getX(float partialTick) {
     return prevX + (x - prevX) * partialTick;
   }
 
-  float getY(float partialTick) {
+  private float getY(float partialTick) {
     return prevY + (y - prevY) * partialTick;
   }
 
@@ -149,20 +153,17 @@ public class FloatingRune {
     RenderSystem.defaultBlendFunc();
 
     for (FloatingRune rune : runes) {
-      if (rune.alpha <= 0)
+      if (rune.alpha <= 0) {
         continue;
+      }
 
       float x = rune.getX(partialTick);
       float y = rune.getY(partialTick);
 
-      int r = (rune.color >> 16) & 0xFF;
-      int g = (rune.color >> 8) & 0xFF;
-      int b = rune.color & 0xFF;
-      int a = (int) (rune.alpha * 255);
-      int argb = (a << 24) | (r << 16) | (g << 8) | b;
+      int argb = RenderUtils.withAlpha(rune.color, rune.alpha);
+      int glowArgb = RenderUtils.withAlpha(rune.color, rune.alpha * 0.04f);
 
-      int glowAlpha = (int) (rune.alpha * 10);
-      int glowArgb = (glowAlpha << 24) | (r << 16) | (g << 8) | b;
+      // Render glow
       int glowSize = (int) (12 * rune.scale);
       guiGraphics.fill(
           (int) (x - glowSize / 2),
@@ -171,6 +172,7 @@ public class FloatingRune {
           (int) (y + glowSize / 2),
           glowArgb);
 
+      // Render rune pattern
       drawRunePattern(guiGraphics, (int) x, (int) y, rune.runePattern, rune.scale, argb);
     }
 

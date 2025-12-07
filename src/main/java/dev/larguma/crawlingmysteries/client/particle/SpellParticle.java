@@ -1,4 +1,4 @@
-package dev.larguma.crawlingmysteries.client.screen;
+package dev.larguma.crawlingmysteries.client.particle;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -6,24 +6,28 @@ import java.util.Random;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 
+import dev.larguma.crawlingmysteries.client.render.RenderUtils;
 import dev.larguma.crawlingmysteries.spell.Spell;
 import net.minecraft.client.gui.GuiGraphics;
 
+/**
+ * Particles that orbit around a selected spell slot
+ */
 public class SpellParticle {
   private static final int MAX_PARTICLES_PER_SPELL = 8;
   private static final Random RANDOM = new Random();
 
   private float angle;
-  private float orbitRadius;
-  private float orbitSpeed;
-  private float size;
-  private int color;
+  private final float orbitRadius;
+  private final float orbitSpeed;
+  private final float size;
+  private final int color;
   private float alpha;
-  private float alphaSpeed;
+  private final float alphaSpeed;
   private boolean fadingIn;
-  private float verticalOffset;
+  private final float verticalOffset;
 
-  SpellParticle(float angle, float orbitRadius, float orbitSpeed, float size, int color) {
+  private SpellParticle(float angle, float orbitRadius, float orbitSpeed, float size, int color) {
     this.angle = angle;
     this.orbitRadius = orbitRadius;
     this.orbitSpeed = orbitSpeed;
@@ -35,7 +39,7 @@ public class SpellParticle {
     this.verticalOffset = RANDOM.nextFloat() * (float) Math.PI * 2;
   }
 
-  void tick(float animationTick) {
+  private void tick(float animationTick) {
     angle += orbitSpeed;
     if (angle > Math.PI * 2) {
       angle -= (float) Math.PI * 2;
@@ -56,11 +60,11 @@ public class SpellParticle {
     }
   }
 
-  float getX(int centerX, float animationTick) {
+  private float getX(int centerX, float animationTick) {
     return centerX + (float) Math.cos(angle) * orbitRadius;
   }
 
-  float getY(int centerY, float animationTick) {
+  private float getY(int centerY, float animationTick) {
     float bobbing = (float) Math.sin(animationTick * 0.05f + verticalOffset) * 2;
     return centerY + (float) Math.sin(angle) * orbitRadius + bobbing;
   }
@@ -100,16 +104,12 @@ public class SpellParticle {
       float x = particle.getX(slotCenterX, animationTick);
       float y = particle.getY(slotCenterY, animationTick);
 
-      int r = (particle.color >> 16) & 0xFF;
-      int g = (particle.color >> 8) & 0xFF;
-      int b = particle.color & 0xFF;
-      int a = (int) (particle.alpha * 255);
-      int argb = (a << 24) | (r << 16) | (g << 8) | b;
+      int argb = RenderUtils.withAlpha(particle.color, particle.alpha);
+      int glowArgb = RenderUtils.withAlpha(particle.color, particle.alpha * 0.4f);
 
       float size = particle.size;
 
-      int glowAlpha = (int) (particle.alpha * 100);
-      int glowArgb = (glowAlpha << 24) | (r << 16) | (g << 8) | b;
+      // Render glow
       guiGraphics.fill(
           (int) (x - size - 1),
           (int) (y - size - 1),
@@ -117,6 +117,7 @@ public class SpellParticle {
           (int) (y + size + 1),
           glowArgb);
 
+      // Render particle core
       guiGraphics.fill(
           (int) (x - size / 2),
           (int) (y - size / 2),

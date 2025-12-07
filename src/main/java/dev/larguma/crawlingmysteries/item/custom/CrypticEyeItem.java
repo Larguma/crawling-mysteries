@@ -163,6 +163,8 @@ public class CrypticEyeItem extends Item implements GeoItem, ICurioItem {
     player.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 100, 1));
     player.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 800, 0));
     // TODO: own animation
+    player.displayClientMessage(
+        Component.translatable("message.crawlingmysteries.cryptic_eye.be_totem_effect"), true);
     // player.level().broadcastEntityEvent(player, (byte) 35);
   }
 
