@@ -1,0 +1,24 @@
+{
+  "sources": [
+    {
+      "type": "minecraft:single",
+      "resource": "crawlingmysteries:gui/spell_slot"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "crawlingmysteries:gui/spell_slot_selected"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "crawlingmysteries:spell/spectral_gaze"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "crawlingmysteries:spell/feed_totem"
+    },
+    {
+      "type": "minecraft:single",
+      "resource": "crawlingmysteries:spell/be_totem"
+    }
+  ]
+}

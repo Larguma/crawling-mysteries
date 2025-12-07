@@ -14,7 +14,6 @@ public class ModCreativeModeTabs {
   public static final DeferredRegister<CreativeModeTab> CREATIVE_MODE_TABS = DeferredRegister
       .create(Registries.CREATIVE_MODE_TAB, CrawlingMysteries.MOD_ID);
 
-  // TODO: Create sub-tab
   public static final Supplier<CreativeModeTab> TAB_ALL = CREATIVE_MODE_TABS.register("tab_all",
       () -> CreativeModeTab.builder()
           .icon(() -> ModItems.CRYPTIC_EYE.get().getDefaultInstance())

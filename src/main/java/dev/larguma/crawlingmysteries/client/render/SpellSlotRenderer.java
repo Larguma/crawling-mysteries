@@ -8,7 +8,9 @@ import dev.larguma.crawlingmysteries.spell.Spell;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.renderer.texture.TextureAtlasSprite;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.inventory.InventoryMenu;
 
 /**
  * Helper class for rendering spell-related UI elements consistently.
@@ -16,9 +18,9 @@ import net.minecraft.resources.ResourceLocation;
 public final class SpellSlotRenderer {
 
   public static final ResourceLocation SLOT_TEXTURE = ResourceLocation.fromNamespaceAndPath(
-      CrawlingMysteries.MOD_ID, "textures/gui/spell_slot.png");
+      CrawlingMysteries.MOD_ID, "gui/spell_slot");
   public static final ResourceLocation SLOT_SELECTED_TEXTURE = ResourceLocation.fromNamespaceAndPath(
-      CrawlingMysteries.MOD_ID, "textures/gui/spell_slot_selected.png");
+      CrawlingMysteries.MOD_ID, "gui/spell_slot_selected");
 
   public static final float PULSE_SPEED = 0.05f;
   public static final float BOB_SPEED_NORMAL = 0.06f;
@@ -65,7 +67,7 @@ public final class SpellSlotRenderer {
   }
 
   /**
-   * Renders the slot background texture.
+   * Renders the slot background texture with animation support.
    * 
    * @param guiGraphics The graphics context
    * @param x           Top-left X position
@@ -75,11 +77,15 @@ public final class SpellSlotRenderer {
    */
   public static void renderSlotBackground(GuiGraphics guiGraphics, int x, int y, int size, boolean selected) {
     ResourceLocation texture = selected ? SLOT_SELECTED_TEXTURE : SLOT_TEXTURE;
-    guiGraphics.blit(texture, x, y, 0, 0, size, size, size, size);
+    Minecraft minecraft = Minecraft.getInstance();
+
+    TextureAtlasSprite sprite = minecraft.getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(texture);
+
+    guiGraphics.blit(x, y, 0, size, size, sprite);
   }
 
   /**
-   * Renders a spell icon with optional cooldown darkening.
+   * Renders a spell icon with animation support with optional cooldown darkening.
    * 
    * @param guiGraphics The graphics context
    * @param spell       The spell to render
@@ -90,19 +96,15 @@ public final class SpellSlotRenderer {
    */
   public static void renderSpellIcon(GuiGraphics guiGraphics, Spell spell, int x, int y, int iconSize,
       boolean onCooldown) {
-    RenderSystem.setShaderTexture(0, spell.icon());
+    Minecraft minecraft = Minecraft.getInstance();
+    TextureAtlasSprite sprite = minecraft.getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(spell.icon());
 
-    if (onCooldown) {
-      RenderSystem.setShaderColor(0.4f, 0.4f, 0.4f, 1.0f);
-    } else {
-      RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
-    }
+    float tint = onCooldown ? 0.4f : 1.0f;
+    RenderSystem.setShaderColor(tint, tint, tint, 1.0f);
 
-    guiGraphics.blit(spell.icon(), x, y, 0, 0, iconSize, iconSize, iconSize, iconSize);
+    guiGraphics.blit(x, y, 0, iconSize, iconSize, sprite);
 
-    if (onCooldown) {
-      RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
-    }
+    RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
   }
 
   /**

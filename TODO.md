@@ -56,7 +56,7 @@ Advancements to progress
 - [ ] in-game docu
 - [x] find another use
 - [x] feed it undying totem to gain max health (or absorbtion (or regen or resistance, to op ?)) ?
-- [ ] when feed x (50),change spell & act as a totem every x (5) minutes
+- [x] when feed x (50),change spell & act as a totem every x (5) minutes
 - [x] spells textures
 - [x] new trinket slots (eye)
 

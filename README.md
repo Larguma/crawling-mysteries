@@ -2,7 +2,7 @@
 
 **This is an alpha**, Crawling Mysteries is under very slow development! You can read all the planned features on Github. Follow us to ensure you don't miss any of the latest updates.
 
-Neoforge 21.1.215, Minecraft 1.21.1
+Neoforge 21.1.216, Minecraft 1.21.1
 
 ---
 

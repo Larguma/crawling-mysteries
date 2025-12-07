@@ -29,7 +29,7 @@ public record Spell(String id, ResourceLocation icon, Component name, Component 
   public static Spell create(String id, String sourceItemId, int cooldownTicks, int[] colors, boolean showOnWheel, int stage) {
     return new Spell(
         id,
-        ResourceLocation.fromNamespaceAndPath(CrawlingMysteries.MOD_ID, "textures/spell/" + id + ".png"),
+        ResourceLocation.fromNamespaceAndPath(CrawlingMysteries.MOD_ID, "spell/" + id),
         Component.translatable("spell.crawlingmysteries." + id),
         Component.translatable("spell.crawlingmysteries." + id + ".description"),
         ResourceLocation.fromNamespaceAndPath(CrawlingMysteries.MOD_ID, sourceItemId),

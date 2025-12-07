@@ -130,10 +130,7 @@ public class CrypticEyeItem extends Item implements GeoItem, ICurioItem {
           player.gameEvent(GameEvent.ITEM_INTERACT_FINISH);
         }
 
-        player.removeEffectsCuredBy(EffectCures.PROTECTED_BY_TOTEM);
-        player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 900, 1));
-        player.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 100, 1));
-        player.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 800, 0));
+        totemEffects(player);
         // TODO: add custom animation
         player.level().broadcastEntityEvent(player, (byte) 35);
 
@@ -156,12 +153,16 @@ public class CrypticEyeItem extends Item implements GeoItem, ICurioItem {
     return false;
   }
 
-  public void beTotem(ServerPlayer player) {
-    player.setHealth(1.0F);
-    player.removeEffectsCuredBy(net.neoforged.neoforge.common.EffectCures.PROTECTED_BY_TOTEM);
+  private void totemEffects(ServerPlayer player) {
+    player.removeEffectsCuredBy(EffectCures.PROTECTED_BY_TOTEM);
     player.addEffect(new MobEffectInstance(MobEffects.REGENERATION, 900, 1));
     player.addEffect(new MobEffectInstance(MobEffects.ABSORPTION, 100, 1));
     player.addEffect(new MobEffectInstance(MobEffects.FIRE_RESISTANCE, 800, 0));
+  }
+
+  public void beTotem(ServerPlayer player) {
+    player.setHealth(1.0F);
+    totemEffects(player);
     // TODO: own animation
     player.displayClientMessage(
         Component.translatable("message.crawlingmysteries.cryptic_eye.be_totem_effect"), true);
