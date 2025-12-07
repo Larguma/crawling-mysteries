@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "crawlingmysteries:item/eternal_guardian_head_2d"
+  }
+}

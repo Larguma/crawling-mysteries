@@ -1,106 +1,15 @@
 {
-  "credit": "Made with Blockbench",
-  "parent": "builtin/entity",
-  "texture_size": [
-    32,
-    32
-  ],
-  "display": {
-    "thirdperson_righthand": {
-      "translation": [
-        0,
-        -2.5,
-        0
-      ],
-      "scale": [
-        0.3,
-        0.3,
-        0.3
-      ]
-    },
-    "thirdperson_lefthand": {
-      "translation": [
-        0,
-        -2.5,
-        0
-      ],
-      "scale": [
-        0.3,
-        0.3,
-        0.3
-      ]
-    },
-    "firstperson_righthand": {
-      "translation": [
-        0,
-        -2.5,
-        0
-      ],
-      "scale": [
-        0.3,
-        0.3,
-        0.3
-      ]
-    },
-    "firstperson_lefthand": {
-      "translation": [
-        0,
-        -2.5,
-        0
-      ],
-      "scale": [
-        0.3,
-        0.3,
-        0.3
-      ]
-    },
-    "ground": {
-      "translation": [
-        0,
-        -2.5,
-        0
-      ],
-      "scale": [
-        0.3,
-        0.3,
-        0.3
-      ]
-    },
+  "parent": "minecraft:item/handheld",
+  "loader": "neoforge:separate_transforms",
+  "base": {
+    "parent": "crawlingmysteries:item/cryptic_eye_3d"
+  },
+  "perspectives": {
     "gui": {
-      "translation": [
-        0,
-        -12,
-        0
-      ]
-    },
-    "head": {
-      "rotation": [
-        0,
-        180,
-        0
-      ],
-      "translation": [
-        12.5,
-        0,
-        -1
-      ],
-      "scale": [
-        0.3,
-        0.3,
-        0.3
-      ]
+      "parent": "crawlingmysteries:item/cryptic_eye_2d"
     },
     "fixed": {
-      "rotation": [
-        0,
-        180,
-        0
-      ],
-      "translation": [
-        0,
-        -12,
-        0
-      ]
+      "parent": "crawlingmysteries:item/cryptic_eye_2d"
     }
   }
 }
