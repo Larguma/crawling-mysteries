@@ -1,28 +1,35 @@
 package dev.larguma.crawlingmysteries;
 
+import org.apache.commons.lang3.tuple.Pair;
+
 import net.neoforged.neoforge.common.ModConfigSpec;
 
 public class Config {
-  private static final ModConfigSpec.Builder BUILDER_CLIENT = new ModConfigSpec.Builder();
-  private static final ModConfigSpec.Builder BUILDER_SERVER = new ModConfigSpec.Builder();
 
-  // #region Client
-  public static final ModConfigSpec.BooleanValue RENDER_TRINKETS = BUILDER_CLIENT
-      .translation("config.crawlingmysteries.render_trinkets")
-      .define("render_trinkets", true);
+  public static final ModConfigSpec SERVER_SPEC;
+  public static final Server SERVER;
+  private static final String CONFIG_PREFIX = "config." + CrawlingMysteries.MOD_ID;
 
-  public static final ModConfigSpec.BooleanValue RENDER_PASSIVE_SPELL_HUD = BUILDER_CLIENT
-      .translation("config.crawlingmysteries.render_passive_spell_hud")
-      .define("render_passive_spell_hud", true);
+  static {
+    final Pair<Server, ModConfigSpec> SERVER_PAIR = new ModConfigSpec.Builder().configure(Server::new);
+    SERVER_SPEC = SERVER_PAIR.getRight();
+    SERVER = SERVER_PAIR.getLeft();
+  }
 
-  static final ModConfigSpec CLIENT_SPEC = BUILDER_CLIENT.build();
-  // #endregion Client
+  public static class Server {
 
-  // #region Server
-  public static final ModConfigSpec.BooleanValue ENABLE_TOMBSTONE = BUILDER_SERVER
-      .translation("config.crawlingmysteries.enable_tombstone")
-      .define("enable_tombstone", true);
+    public final ModConfigSpec.BooleanValue enableTombstone;
 
-  static final ModConfigSpec SERVER_SPEC = BUILDER_SERVER.build();
-  // #endregion Server
+    public Server(ModConfigSpec.Builder builder) {
+
+      builder.comment(" SERVER ONLY SETTINGS, MOSTLY GAMEPLAY");
+      builder.comment(" [Server]");
+      // builder.push("server"); to make subcategories
+
+      enableTombstone = builder
+          .comment(" Whether tombstones should be created on player death when keeping inventory is disabled")
+          .translation(CONFIG_PREFIX + ".enable_tombstone")
+          .define("enable_tombstone", true);
+    }
+  }
 }

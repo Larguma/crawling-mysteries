@@ -6,7 +6,7 @@ import java.util.Map;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 
-import dev.larguma.crawlingmysteries.Config;
+import dev.larguma.crawlingmysteries.ConfigClient;
 import dev.larguma.crawlingmysteries.CrawlingMysteries;
 import dev.larguma.crawlingmysteries.client.render.SpellSlotRenderer;
 import dev.larguma.crawlingmysteries.client.spell.ClientSpellCooldownManager;
@@ -39,7 +39,7 @@ public class PassiveSpellHudOverlay implements LayeredDraw.Layer {
   public void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
     Minecraft minecraft = Minecraft.getInstance();
 
-    if (minecraft.player == null || minecraft.options.hideGui || !Config.RENDER_PASSIVE_SPELL_HUD.get()) {
+    if (minecraft.player == null || minecraft.options.hideGui || !ConfigClient.CLIENT.renderPassiveSpellHud.get()) {
       return;
     }
 

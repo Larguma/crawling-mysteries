@@ -28,7 +28,7 @@ public abstract class PlayerMixin {
 
   @Inject(at = @At("HEAD"), method = "dropEquipment")
   private void dropEquipment(CallbackInfo info) {
-    if (!Config.ENABLE_TOMBSTONE.get()) {
+    if (!Config.SERVER.enableTombstone.get()) {
       return;
     }
 

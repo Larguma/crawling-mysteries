@@ -2,7 +2,7 @@ package dev.larguma.crawlingmysteries.client.curio;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 
-import dev.larguma.crawlingmysteries.Config;
+import dev.larguma.crawlingmysteries.ConfigClient;
 import dev.larguma.crawlingmysteries.client.CurioRenderers;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.model.EntityModel;
@@ -23,7 +23,7 @@ public class CrypticEyeCurioRenderer implements ICurioRenderer {
       PoseStack matrixStack, RenderLayerParent<T, M> renderLayerParent, MultiBufferSource renderTypeBuffer, int light,
       float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
 
-    if (slotContext.entity() instanceof AbstractClientPlayer player && Config.RENDER_TRINKETS.get()) {
+    if (slotContext.entity() instanceof AbstractClientPlayer player && ConfigClient.CLIENT.renderTrinkets.get()) {
       if (player.isInvisible()) {
         return;
       }

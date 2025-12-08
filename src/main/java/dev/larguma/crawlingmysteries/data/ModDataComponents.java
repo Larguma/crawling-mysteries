@@ -72,6 +72,7 @@ public class ModDataComponents {
     return info != null ? info.type : null;
   }
 
+  @SuppressWarnings("unchecked")
   public static boolean setComponentValue(ItemStack stack, String componentName, String valueStr) {
     ComponentInfo<?> info = COMPONENT_REGISTRY.get(componentName);
     if (info == null) {
@@ -92,6 +93,7 @@ public class ModDataComponents {
     }
   }
 
+  @SuppressWarnings("unchecked")
   public static <T> T getComponentValue(ItemStack stack, String componentName) {
     ComponentInfo<?> info = COMPONENT_REGISTRY.get(componentName);
     if (info == null) {
