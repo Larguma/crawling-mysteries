@@ -20,6 +20,9 @@ import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 public class ModSpells {
   private static final Map<ResourceLocation, Spell> SPELLS = new LinkedHashMap<>();
 
+  // For errors
+  public static final Spell NONE = Spell.create("none", "none", 0, Spell.DEFAULT_COLORS);
+
   // Eternal Guardian Mask
   public static final Spell SPECTRAL_GAZE = register(
       Spell.create("spectral_gaze", "eternal_guardian_mask", 0, Spell.SPECTRAL_COLORS));
@@ -68,7 +71,7 @@ public class ModSpells {
         return spell;
       }
     }
-    return null;
+    return NONE;
   }
 
   /**

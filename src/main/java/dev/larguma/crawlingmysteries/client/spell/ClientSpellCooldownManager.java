@@ -21,6 +21,9 @@ public class ClientSpellCooldownManager {
   }
 
   public static boolean isOnCooldown(Spell spell) {
+    if (spell == null) {
+      return false;
+    }
     return isOnCooldown(spell.id());
   }
 
@@ -33,6 +36,9 @@ public class ClientSpellCooldownManager {
   }
 
   public static long getRemainingCooldownTicks(Spell spell) {
+    if (spell == null) {
+      return 0;
+    }
     return getRemainingCooldownTicks(spell.id());
   }
 

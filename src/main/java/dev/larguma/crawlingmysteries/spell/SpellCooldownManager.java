@@ -98,9 +98,7 @@ public class SpellCooldownManager {
 
   public static void syncAllCooldownsToClient(ServerPlayer player) {
     for (Spell spell : ModSpells.getAllSpells()) {
-      if (isOnCooldown(player, spell)) {
-        syncCooldownToClient(player, spell);
-      }
+      syncCooldownToClient(player, spell);
     }
   }
 }

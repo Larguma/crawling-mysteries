@@ -66,7 +66,6 @@ public class CrypticEyeItem extends Item implements GeoItem, ICurioItem {
     int consumed = getTotemsConsumed(stack);
     int spellStage = ItemDataHelper.getSpellStage(stack);
     Spell spell = ModSpells.getSpellFromStage(ModItems.CRYPTIC_EYE.getId().getPath(), spellStage);
-    boolean isOnCooldown = ClientSpellCooldownManager.isOnCooldown(spell);
 
     tooltipComponents.add(Component.translatable("item.crawlingmysteries.cryptic_eye.tooltip.line1"));
 
@@ -89,7 +88,7 @@ public class CrypticEyeItem extends Item implements GeoItem, ICurioItem {
           .withStyle(ChatFormatting.GOLD)
           .append(Component.literal(" "))
           .append(Component.translatable("spell.crawlingmysteries." + spell.id()));
-      if (isOnCooldown) {
+      if (ClientSpellCooldownManager.isOnCooldown(spell)) {
         String formattedCooldown = ClientSpellCooldownManager.getRemainingCooldownFormatted(spell);
         spellTooltip.append(Component.literal(" "))
             .append(Component.translatable("tooltip.crawlingmysteries.spell_cooldown", formattedCooldown)
