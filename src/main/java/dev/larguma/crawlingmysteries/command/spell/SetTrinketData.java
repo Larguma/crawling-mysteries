@@ -6,9 +6,10 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+
+import dev.larguma.crawlingmysteries.command.helper.CommandHelper;
 import dev.larguma.crawlingmysteries.data.ModDataComponents;
 import dev.larguma.crawlingmysteries.data.ModDataComponents.ComponentType;
-import dev.larguma.crawlingmysteries.item.helper.CommandHelper;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;
 import net.minecraft.commands.arguments.EntityArgument;

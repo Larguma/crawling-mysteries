@@ -4,7 +4,7 @@ import com.mojang.brigadier.CommandDispatcher;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
 
-import dev.larguma.crawlingmysteries.item.helper.CommandHelper;
+import dev.larguma.crawlingmysteries.command.helper.CommandHelper;
 import dev.larguma.crawlingmysteries.spell.SpellCooldownManager;
 import net.minecraft.commands.CommandSourceStack;
 import net.minecraft.commands.Commands;

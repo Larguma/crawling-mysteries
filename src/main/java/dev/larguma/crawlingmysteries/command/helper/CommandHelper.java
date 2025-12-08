@@ -1,4 +1,4 @@
-package dev.larguma.crawlingmysteries.item.helper;
+package dev.larguma.crawlingmysteries.command.helper;
 
 import java.util.List;
 import java.util.Optional;
@@ -9,6 +9,7 @@ import com.mojang.brigadier.suggestion.SuggestionProvider;
 
 import dev.larguma.crawlingmysteries.CrawlingMysteries;
 import dev.larguma.crawlingmysteries.data.ModDataComponents;
+import dev.larguma.crawlingmysteries.item.helper.ItemHelper;
 import dev.larguma.crawlingmysteries.spell.ModSpells;
 import dev.larguma.crawlingmysteries.spell.Spell;
 import net.minecraft.commands.CommandSourceStack;
