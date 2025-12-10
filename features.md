@@ -1,11 +1,10 @@
 # Features
 
-## Implemented
+## Cryptic eye
 
-- You can find in the ancient city chest a ring to control a Guardian
-- When you die (with the ring), a tombstone keeping all your item spawn along with a Guardian
-- Everyone can open the tombstone if they kill the Guardian first, you don't need to kill your own Guardian
+Spawn with you in the world, can be feed totem of undying to boost your max health, when it has eaten enough totem, it can act as one
 
-## In progress
+## Eternal Guardian
 
-- When you kill a guardian, it's head drop, you can use it to create a mask to highlight all creatures around you
+A ring spawn in the ancient city, when you die with it equipped, a tombstone is created with all your items and xp and a mob spawn guarding it. Other player can loot your tombstone if they kill the guardian first.  
+When you kill a guardian, you drop it's head, you can make a mask out of it which give you a spell you can use to apply the glowing effect to surrounding entity. The more you wear the mask the more powerfull the spell become.

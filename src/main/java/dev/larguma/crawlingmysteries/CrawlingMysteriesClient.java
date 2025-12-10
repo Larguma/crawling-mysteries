@@ -3,6 +3,7 @@ package dev.larguma.crawlingmysteries;
 import dev.larguma.crawlingmysteries.client.CurioRenderers;
 import dev.larguma.crawlingmysteries.client.ModBlockRenderers;
 import dev.larguma.crawlingmysteries.client.ModEntityRenderers;
+import dev.larguma.crawlingmysteries.client.gui.BetterToastOverlay;
 import dev.larguma.crawlingmysteries.client.gui.PassiveSpellHudOverlay;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -32,6 +33,7 @@ public class CrawlingMysteriesClient {
   @SubscribeEvent
   public static void registerGuiLayers(RegisterGuiLayersEvent event) {
     event.registerAbove(VanillaGuiLayers.HOTBAR, PassiveSpellHudOverlay.ID, new PassiveSpellHudOverlay());
+    event.registerAbove(VanillaGuiLayers.TITLE, BetterToastOverlay.ID, new BetterToastOverlay());
   }
 
   @SubscribeEvent

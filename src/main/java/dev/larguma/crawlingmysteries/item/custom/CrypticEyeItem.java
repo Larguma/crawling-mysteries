@@ -11,6 +11,7 @@ import dev.larguma.crawlingmysteries.client.spell.ClientSpellCooldownManager;
 import dev.larguma.crawlingmysteries.data.ModDataComponents;
 import dev.larguma.crawlingmysteries.item.ModItems;
 import dev.larguma.crawlingmysteries.item.helper.ItemDataHelper;
+import dev.larguma.crawlingmysteries.networking.packet.BetterToastPacket;
 import dev.larguma.crawlingmysteries.spell.ModSpells;
 import dev.larguma.crawlingmysteries.spell.Spell;
 import net.minecraft.ChatFormatting;
@@ -35,6 +36,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
 import net.neoforged.neoforge.common.EffectCures;
+import net.neoforged.neoforge.network.PacketDistributor;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.animatable.SingletonGeoAnimatable;
 import software.bernie.geckolib.animatable.client.GeoRenderProvider;
@@ -138,13 +140,17 @@ public class CrypticEyeItem extends Item implements GeoItem, ICurioItem {
         int consumed = stack.get(ModDataComponents.TOTEMS_CONSUMED) + 1;
         stack.set(ModDataComponents.TOTEMS_CONSUMED, consumed);
 
-        if (consumed == MAX_BONUS_TOTEMS)
+        if (consumed == MAX_BONUS_TOTEMS) {
           ItemDataHelper.nextSpellStage(stack);
-
+          PacketDistributor.sendToPlayer(player,
+              new BetterToastPacket(Component.translatable("message.crawlingmysteries.cryptic_eye.consume_totem_max"),
+                  BetterToastPacket.TYPE_INFO, this));
+        }
         return true;
       } else {
-        player.displayClientMessage(Component.translatable(
-            "message.crawlingmysteries.cryptic_eye.no_totem_found_" + level.getRandom().nextInt(5)), true);
+        PacketDistributor.sendToPlayer(player, new BetterToastPacket(Component.translatable(
+            "message.crawlingmysteries.cryptic_eye.no_totem_found_" + level.getRandom().nextInt(5)),
+            BetterToastPacket.TYPE_WARNING, this));
         return false;
       }
 
@@ -163,8 +169,9 @@ public class CrypticEyeItem extends Item implements GeoItem, ICurioItem {
     player.setHealth(1.0F);
     totemEffects(player);
     // TODO: own animation
-    player.displayClientMessage(
-        Component.translatable("message.crawlingmysteries.cryptic_eye.be_totem_effect"), true);
+    PacketDistributor.sendToPlayer(player, new BetterToastPacket(
+        Component.translatable("message.crawlingmysteries.cryptic_eye.be_totem_effect"),
+        BetterToastPacket.TYPE_INFO, this));
     // player.level().broadcastEntityEvent(player, (byte) 35);
   }
 

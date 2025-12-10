@@ -3,6 +3,7 @@ package dev.larguma.crawlingmysteries.networking;
 import dev.larguma.crawlingmysteries.CrawlingMysteries;
 import dev.larguma.crawlingmysteries.networking.handler.ClientPayloadHandler;
 import dev.larguma.crawlingmysteries.networking.handler.ServerPayloadHandler;
+import dev.larguma.crawlingmysteries.networking.packet.BetterToastPacket;
 import dev.larguma.crawlingmysteries.networking.packet.SpellCooldownSyncPacket;
 import dev.larguma.crawlingmysteries.networking.packet.SpellSelectPacket;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -23,5 +24,9 @@ public class PayloadHandlersEvents {
         SpellCooldownSyncPacket.TYPE,
         SpellCooldownSyncPacket.STREAM_CODEC,
         ClientPayloadHandler::handleSpellCooldownSync);
+    registrar.playToClient(
+        BetterToastPacket.TYPE,
+        BetterToastPacket.STREAM_CODEC,
+        ClientPayloadHandler::handleBetterToast);
   }
 }

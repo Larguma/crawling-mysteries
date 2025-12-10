@@ -91,6 +91,7 @@ Advancements to progress
 - [x] Drop mask
 - [x] Tombstone Guardian "Eternal Guardian"
 - [ ] better animations
+- [ ] ranged attacks
 
 ## Gameplay ideas
 
@@ -111,4 +112,4 @@ Advancements to progress
 
 ### displayClientMessage
 
-- [ ] add a custom ui to make it pretty
+- [x] add a custom ui to make it pretty
