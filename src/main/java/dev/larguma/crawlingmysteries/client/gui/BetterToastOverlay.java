@@ -8,6 +8,7 @@ import java.util.Optional;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import dev.larguma.crawlingmysteries.CrawlingMysteries;
+import dev.larguma.crawlingmysteries.client.particle.FloatingEmberParticle;
 import dev.larguma.crawlingmysteries.client.render.RenderUtils;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
@@ -43,6 +44,8 @@ public class BetterToastOverlay implements LayeredDraw.Layer {
   private static final int ICON_SIZE = 16;
   private static final int ICON_PADDING = 4;
 
+  private static float globalAnimationTick = 0;
+
   private static final List<BetterToast> activeToasts = new ArrayList<>();
 
   @Override
@@ -58,6 +61,7 @@ public class BetterToastOverlay implements LayeredDraw.Layer {
     }
 
     float deltaTicks = deltaTracker.getRealtimeDeltaTicks();
+    globalAnimationTick += deltaTicks;
 
     RenderSystem.setShader(GameRenderer::getPositionTexShader);
     RenderSystem.enableBlend();
@@ -75,14 +79,14 @@ public class BetterToastOverlay implements LayeredDraw.Layer {
         continue;
       }
 
-      int toastHeight = renderToast(guiGraphics, minecraft, toast, currentY);
+      int toastHeight = renderToast(guiGraphics, minecraft, toast, currentY, deltaTicks);
       currentY += toastHeight + TOAST_SPACING;
     }
 
     RenderSystem.disableBlend();
   }
 
-  private int renderToast(GuiGraphics guiGraphics, Minecraft minecraft, BetterToast toast, int y) {
+  private int renderToast(GuiGraphics guiGraphics, Minecraft minecraft, BetterToast toast, int y, float deltaTicks) {
     Font font = minecraft.font;
     String text = toast.getMessage().getString();
     int textWidth = font.width(text);
@@ -107,6 +111,11 @@ public class BetterToastOverlay implements LayeredDraw.Layer {
 
     int accentColor = toast.getColor();
 
+    renderEtherealGlow(guiGraphics, x, currentYPos, toastWidth, toastHeight, accentColor, fadeAlpha);
+
+    renderFloatingEmber(guiGraphics, x, currentYPos, toastWidth, toastHeight, accentColor, fadeAlpha, toast,
+        deltaTicks);
+
     renderToastPanel(guiGraphics, x, currentYPos, toastWidth, toastHeight, accentColor, fadeAlpha);
 
     int contentX = x + PADDING_X / 2;
@@ -128,19 +137,49 @@ public class BetterToastOverlay implements LayeredDraw.Layer {
       contentX += ICON_SIZE + ICON_PADDING;
     }
 
+    int glowColor = RenderUtils.withAlpha(accentColor, fadeAlpha * 0.3f);
+    guiGraphics.drawString(font, text, contentX + 1, textY + 1, glowColor, false);
+    guiGraphics.drawString(font, text, contentX - 1, textY, glowColor, false);
+
     int textColor = RenderUtils.withAlpha(0xFFFFFF, fadeAlpha);
     guiGraphics.drawString(font, text, contentX, textY, textColor, true);
 
     return toastHeight;
   }
 
+  private void renderEtherealGlow(GuiGraphics guiGraphics, int x, int y, int width, int height, int accentColor,
+      float alpha) {
+    float pulseIntensity = 0.5f + 0.2f * (float) Math.sin(globalAnimationTick * 0.1f);
+
+    for (int i = 3; i >= 1; i--) {
+      float glowAlpha = alpha * 0.08f * pulseIntensity * (4 - i) / 3f;
+      int glowColor = RenderUtils.withAlpha(accentColor, glowAlpha);
+      int offset = i * 2;
+      guiGraphics.fill(x - offset, y - offset, x + width + offset, y + height + offset, glowColor);
+    }
+  }
+
+  private void renderFloatingEmber(GuiGraphics guiGraphics, int x, int y, int width, int height, int accentColor,
+      float alpha, BetterToast toast, float deltaTicks) {
+    boolean shouldSpawn = toast.getLifetime() > SLIDE_IN_DURATION
+        && toast.getLifetime() < SLIDE_IN_DURATION + DISPLAY_DURATION;
+
+    FloatingEmberParticle.updateAndRenderInArea(guiGraphics, toast.getParticles(), x, y, width, height, accentColor,
+        deltaTicks, 12, 0.15f, shouldSpawn);
+  }
+
   private void renderToastPanel(GuiGraphics guiGraphics, int x, int y, int width, int height, int accentColor,
       float alpha) {
-    int bgColor = RenderUtils.withAlpha(0x101020, alpha * 0.9f);
+    float pulse = 0.85f + 0.1f * (float) Math.sin(globalAnimationTick * 0.08f);
+    int bgColor = RenderUtils.withAlpha(0x0a0a18, alpha * pulse * 0.85f);
     guiGraphics.fill(x, y, x + width, y + height, bgColor);
 
-    int borderColor1 = RenderUtils.withAlpha(accentColor, alpha * 0.8f);
-    int borderColor2 = RenderUtils.withAlpha(accentColor, alpha * 0.5f);
+    int innerGlow = RenderUtils.withAlpha(accentColor, alpha * 0.08f);
+    guiGraphics.fill(x + 2, y + 2, x + width - 2, y + height - 2, innerGlow);
+
+    float borderPulse = 0.6f + 0.4f * (float) Math.sin(globalAnimationTick * 0.12f);
+    int borderColor1 = RenderUtils.withAlpha(accentColor, alpha * 0.7f * borderPulse);
+    int borderColor2 = RenderUtils.withAlpha(accentColor, alpha * 0.4f * borderPulse);
 
     // top
     guiGraphics.fill(x, y, x + width, y + 1, borderColor1);
@@ -151,22 +190,35 @@ public class BetterToastOverlay implements LayeredDraw.Layer {
     // right
     guiGraphics.fill(x + width - 1, y, x + width, y + height, borderColor2);
 
-    int cornerColor = RenderUtils.withAlpha(accentColor, alpha);
-    // top-left
-    guiGraphics.fill(x, y, x + 4, y + 1, cornerColor);
-    guiGraphics.fill(x, y, x + 1, y + 4, cornerColor);
-    // top-right
-    guiGraphics.fill(x + width - 4, y, x + width, y + 1, cornerColor);
-    guiGraphics.fill(x + width - 1, y, x + width, y + 4, cornerColor);
-    // bottom-left
-    guiGraphics.fill(x, y + height - 1, x + 4, y + height, cornerColor);
-    guiGraphics.fill(x, y + height - 4, x + 1, y + height, cornerColor);
-    // bottom-right
-    guiGraphics.fill(x + width - 4, y + height - 1, x + width, y + height, cornerColor);
-    guiGraphics.fill(x + width - 1, y + height - 4, x + width, y + height, cornerColor);
+    float cornerPulse = 0.7f + 0.3f * (float) Math.sin(globalAnimationTick * 0.15f + 0.5f);
+    int cornerColor = RenderUtils.withAlpha(accentColor, alpha * cornerPulse);
+    int cornerGlow = RenderUtils.withAlpha(0xFFFFFF, alpha * 0.5f * cornerPulse);
 
-    int glowColor = RenderUtils.withAlpha(accentColor, alpha * 0.15f);
-    guiGraphics.fill(x + 2, y + 2, x + width - 2, y + 4, glowColor);
+    // top-left
+    guiGraphics.fill(x, y, x + 5, y + 1, cornerColor);
+    guiGraphics.fill(x, y, x + 1, y + 5, cornerColor);
+    guiGraphics.fill(x + 1, y + 1, x + 2, y + 2, cornerGlow);
+
+    // top-right
+    guiGraphics.fill(x + width - 5, y, x + width, y + 1, cornerColor);
+    guiGraphics.fill(x + width - 1, y, x + width, y + 5, cornerColor);
+    guiGraphics.fill(x + width - 2, y + 1, x + width - 1, y + 2, cornerGlow);
+
+    // bottom-left
+    guiGraphics.fill(x, y + height - 1, x + 5, y + height, cornerColor);
+    guiGraphics.fill(x, y + height - 5, x + 1, y + height, cornerColor);
+    guiGraphics.fill(x + 1, y + height - 2, x + 2, y + height - 1, cornerGlow);
+
+    // bottom-right
+    guiGraphics.fill(x + width - 5, y + height - 1, x + width, y + height, cornerColor);
+    guiGraphics.fill(x + width - 1, y + height - 5, x + width, y + height, cornerColor);
+    guiGraphics.fill(x + width - 2, y + height - 2, x + width - 1, y + height - 1, cornerGlow);
+
+    int glowColor = RenderUtils.withAlpha(accentColor, alpha * 0.2f);
+    guiGraphics.fill(x + 2, y + 2, x + width - 2, y + 3, glowColor);
+
+    int accentLine = RenderUtils.withAlpha(accentColor, alpha * 0.25f);
+    guiGraphics.fill(x + 3, y + height - 2, x + width - 3, y + height - 1, accentLine);
   }
 
   public static void showMessage(Component message) {
@@ -220,6 +272,7 @@ public class BetterToastOverlay implements LayeredDraw.Layer {
     private final Optional<ItemStack> iconItem;
     private final Optional<ResourceLocation> iconTexture;
     private float lifetime;
+    private final List<FloatingEmberParticle> particles;
 
     public BetterToast(Component message, ToastType type, Optional<ItemStack> iconItem,
         Optional<ResourceLocation> iconTexture) {
@@ -228,10 +281,19 @@ public class BetterToastOverlay implements LayeredDraw.Layer {
       this.iconItem = iconItem;
       this.iconTexture = iconTexture;
       this.lifetime = 0;
+      this.particles = FloatingEmberParticle.createList();
     }
 
     public void tick(float deltaTicks) {
       lifetime += deltaTicks;
+    }
+
+    public List<FloatingEmberParticle> getParticles() {
+      return particles;
+    }
+
+    public float getLifetime() {
+      return lifetime;
     }
 
     public boolean isExpired() {

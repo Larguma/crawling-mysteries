@@ -8,7 +8,7 @@ import org.lwjgl.glfw.GLFW;
 import com.mojang.blaze3d.systems.RenderSystem;
 
 import dev.larguma.crawlingmysteries.client.particle.BackgroundParticle;
-import dev.larguma.crawlingmysteries.client.particle.FloatingRune;
+import dev.larguma.crawlingmysteries.client.particle.FloatingRuneParticle;
 import dev.larguma.crawlingmysteries.client.particle.SpellParticle;
 import dev.larguma.crawlingmysteries.client.render.RenderUtils;
 import dev.larguma.crawlingmysteries.client.render.SpellSlotRenderer;
@@ -38,7 +38,7 @@ public class SpellSelectMenuScreen extends Screen {
 
   private List<BackgroundParticle> particles = new ArrayList<>();
   private List<SpellParticle> spellParticles = new ArrayList<>();
-  private List<FloatingRune> floatingRunes = new ArrayList<>();
+  private List<FloatingRuneParticle> floatingRunes = new ArrayList<>();
   private List<Spell> availableSpells;
   private int selectedIndex = -1;
   private int previousSelectedIndex = -1;
@@ -58,7 +58,7 @@ public class SpellSelectMenuScreen extends Screen {
     }
 
     particles = BackgroundParticle.init(this.width, this.height);
-    floatingRunes = FloatingRune.init(this.width, this.height);
+    floatingRunes = FloatingRuneParticle.init(this.width, this.height);
   }
 
   @Override
@@ -66,7 +66,7 @@ public class SpellSelectMenuScreen extends Screen {
     super.tick();
     BackgroundParticle.update(particles, this.width, this.height);
     SpellParticle.updateParticles(spellParticles, animationTick);
-    FloatingRune.update(floatingRunes, this.width, this.height, animationTick);
+    FloatingRuneParticle.update(floatingRunes, this.width, this.height, animationTick);
   }
 
   @Override
@@ -75,7 +75,7 @@ public class SpellSelectMenuScreen extends Screen {
 
     renderTransparentBackground(guiGraphics);
     BackgroundParticle.render(guiGraphics, particles, partialTick);
-    FloatingRune.render(guiGraphics, floatingRunes, partialTick);
+    FloatingRuneParticle.render(guiGraphics, floatingRunes, partialTick);
 
     super.render(guiGraphics, mouseX, mouseY, partialTick);
 

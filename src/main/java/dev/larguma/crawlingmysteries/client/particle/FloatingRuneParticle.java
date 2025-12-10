@@ -12,7 +12,7 @@ import net.minecraft.client.gui.GuiGraphics;
 /**
  * Floating rune symbols for background
  */
-public class FloatingRune {
+public class FloatingRuneParticle {
   private static final int MAX_RUNES = 15;
   private static final Random RANDOM = new Random();
 
@@ -49,7 +49,7 @@ public class FloatingRune {
   private final int maxAge;
   private final float wobbleOffset;
 
-  private FloatingRune(float x, float y, float vx, float vy, int runePattern, int color, float scale, int maxAge) {
+  private FloatingRuneParticle(float x, float y, float vx, float vy, int runePattern, int color, float scale, int maxAge) {
     this.x = x;
     this.y = y;
     this.prevX = x;
@@ -105,15 +105,15 @@ public class FloatingRune {
     return prevY + (y - prevY) * partialTick;
   }
 
-  public static List<FloatingRune> init(int screenWidth, int screenHeight) {
-    List<FloatingRune> runes = new ArrayList<>();
+  public static List<FloatingRuneParticle> init(int screenWidth, int screenHeight) {
+    List<FloatingRuneParticle> runes = new ArrayList<>();
     for (int i = 0; i < MAX_RUNES; i++) {
       runes.add(createRune(screenWidth, screenHeight, true));
     }
     return runes;
   }
 
-  private static FloatingRune createRune(int screenWidth, int screenHeight, boolean randomAge) {
+  private static FloatingRuneParticle createRune(int screenWidth, int screenHeight, boolean randomAge) {
     float x = RANDOM.nextFloat() * screenWidth;
     float y = RANDOM.nextFloat() * screenHeight;
 
@@ -125,7 +125,7 @@ public class FloatingRune {
     float scale = 0.8f + RANDOM.nextFloat() * 0.8f;
     int maxAge = 300 + RANDOM.nextInt(200);
 
-    FloatingRune rune = new FloatingRune(x, y, vx, vy, runePattern, color, scale, maxAge);
+    FloatingRuneParticle rune = new FloatingRuneParticle(x, y, vx, vy, runePattern, color, scale, maxAge);
 
     if (randomAge) {
       rune.age = RANDOM.nextInt(maxAge - 50);
@@ -137,9 +137,9 @@ public class FloatingRune {
     return rune;
   }
 
-  public static void update(List<FloatingRune> runes, int screenWidth, int screenHeight, float animationTick) {
+  public static void update(List<FloatingRuneParticle> runes, int screenWidth, int screenHeight, float animationTick) {
     for (int i = runes.size() - 1; i >= 0; i--) {
-      FloatingRune rune = runes.get(i);
+      FloatingRuneParticle rune = runes.get(i);
       rune.tick(animationTick);
 
       if (rune.isDead() || rune.x < -50 || rune.x > screenWidth + 50 || rune.y < -50 || rune.y > screenHeight + 50) {
@@ -148,11 +148,11 @@ public class FloatingRune {
     }
   }
 
-  public static void render(GuiGraphics guiGraphics, List<FloatingRune> runes, float partialTick) {
+  public static void render(GuiGraphics guiGraphics, List<FloatingRuneParticle> runes, float partialTick) {
     RenderSystem.enableBlend();
     RenderSystem.defaultBlendFunc();
 
-    for (FloatingRune rune : runes) {
+    for (FloatingRuneParticle rune : runes) {
       if (rune.alpha <= 0) {
         continue;
       }

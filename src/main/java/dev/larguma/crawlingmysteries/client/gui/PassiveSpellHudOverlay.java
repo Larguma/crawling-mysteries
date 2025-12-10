@@ -8,6 +8,8 @@ import com.mojang.blaze3d.systems.RenderSystem;
 
 import dev.larguma.crawlingmysteries.ConfigClient;
 import dev.larguma.crawlingmysteries.CrawlingMysteries;
+import dev.larguma.crawlingmysteries.client.particle.FloatingEmberParticle;
+import dev.larguma.crawlingmysteries.client.particle.OrbitingStarParticle;
 import dev.larguma.crawlingmysteries.client.render.SpellSlotRenderer;
 import dev.larguma.crawlingmysteries.client.spell.ClientSpellCooldownManager;
 import dev.larguma.crawlingmysteries.spell.ModSpells;
@@ -30,10 +32,14 @@ public class PassiveSpellHudOverlay implements LayeredDraw.Layer {
   private static final int MARGIN_RIGHT = 10;
   private static final int MARGIN_BOTTOM = 40;
 
+  private static final int MAX_PARTICLES_PER_SPELL = 8;
+  private static final float PARTICLE_SPAWN_RATE = 0.15f;
+
   private float animationTick = 0;
 
   private final Map<String, Boolean> previousCooldownStates = new HashMap<>();
   private final Map<String, Float> burstAnimationTimers = new HashMap<>();
+  private final Map<String, List<FloatingEmberParticle>> spellParticles = new HashMap<>();
 
   @Override
   public void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
@@ -69,7 +75,7 @@ public class PassiveSpellHudOverlay implements LayeredDraw.Layer {
       int slotX = startX;
       int slotY = startY - (i * (SLOT_TEXTURE_SIZE + ICON_SPACING));
 
-      renderPassiveSpellSlot(guiGraphics, minecraft, spell, slotX, slotY);
+      renderPassiveSpellSlot(guiGraphics, minecraft, spell, slotX, slotY, deltaTicks);
     }
 
     RenderSystem.disableBlend();
@@ -99,21 +105,22 @@ public class PassiveSpellHudOverlay implements LayeredDraw.Layer {
     }
   }
 
-  private void renderPassiveSpellSlot(GuiGraphics guiGraphics, Minecraft minecraft, Spell spell, int slotX, int slotY) {
+  private void renderPassiveSpellSlot(GuiGraphics guiGraphics, Minecraft minecraft, Spell spell, int slotX, int slotY,
+      float deltaTicks) {
     boolean onCooldown = ClientSpellCooldownManager.isOnCooldown(spell);
 
     int slotCenterX = slotX + SLOT_TEXTURE_SIZE / 2;
     int slotCenterY = slotY + SLOT_TEXTURE_SIZE / 2;
+    int glowColor = spell.getPrimaryColor();
 
     Float burstTimer = burstAnimationTimers.get(spell.id());
     if (burstTimer != null) {
       float burstProgress = SpellSlotRenderer.calculateBurstProgress(burstTimer);
-      SpellSlotRenderer.renderCooldownCompleteBurst(
-          guiGraphics, slotCenterX, slotCenterY, spell.getPrimaryColor(), burstProgress, SLOT_TEXTURE_SIZE);
+      SpellSlotRenderer.renderCooldownCompleteBurst(guiGraphics, slotCenterX, slotCenterY, glowColor, burstProgress,
+          SLOT_TEXTURE_SIZE);
     }
 
     if (!onCooldown) {
-      int glowColor = spell.getPrimaryColor();
       SpellSlotRenderer.renderPulsingGlow(guiGraphics, slotCenterX, slotCenterY, glowColor, animationTick, false);
     }
 
@@ -130,6 +137,14 @@ public class PassiveSpellHudOverlay implements LayeredDraw.Layer {
 
     if (onCooldown) {
       SpellSlotRenderer.renderRadialCooldownOverlay(guiGraphics, spell, slotCenterX, slotCenterY, ICON_SIZE);
+    } else {
+      OrbitingStarParticle.renderOrbitingStars(guiGraphics, slotCenterX, slotCenterY, glowColor, animationTick,
+          SLOT_TEXTURE_SIZE);
+
+      List<FloatingEmberParticle> particles = spellParticles.computeIfAbsent(spell.id(),
+          k -> FloatingEmberParticle.createList());
+      FloatingEmberParticle.updateAndRender(guiGraphics, particles, slotCenterX, slotCenterY, glowColor, deltaTicks,
+          MAX_PARTICLES_PER_SPELL, PARTICLE_SPAWN_RATE, true);
     }
   }
 
