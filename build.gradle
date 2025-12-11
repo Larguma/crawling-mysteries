@@ -2,6 +2,7 @@ plugins {
     id 'java-library'
     id 'maven-publish'
     id 'net.neoforged.moddev' version '2.0.119'
+    id 'com.modrinth.minotaur' version '2.+'
     id 'idea'
 }
 
@@ -212,3 +213,20 @@ idea {
 // tasks.matching { it.name == 'runClient' }.configureEach {
 //     dependsOn tasks.named('runData')
 // }
+
+// Modrinth Publishing
+modrinth {
+    token = providers.environmentVariable("MODRINTH_TOKEN").orElse("")
+    projectId = "dHXyGNnW"
+    versionNumber = mod_version
+    versionType = "alpha" // release/beta/alpha
+    versionName = "${mod_name} ${mod_version}"
+    uploadFile = jar
+    gameVersions = [minecraft_version]
+    loaders = ["neoforge"]
+    dependencies {
+        required.project "geckolib"
+        required.project "curios"
+    }
+    changelog = providers.environmentVariable("CHANGELOG").orElse("No changelog provided.")
+}
