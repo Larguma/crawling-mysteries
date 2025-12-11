@@ -22,7 +22,7 @@ public class KeyMappingsEvents {
   public static final Lazy<KeyMapping> OPEN_SPELL_MENU = Lazy.of(() -> new KeyMapping(
       "key.crawlingmysteries.open_spell_menu",
       InputConstants.Type.KEYSYM,
-      GLFW.GLFW_KEY_G,
+      GLFW.GLFW_KEY_V,
       KEY_CATEGORY_CRAWLING_MYSTERIES));
 
   @SubscribeEvent
