@@ -10,6 +10,8 @@ Advancements to progress
 
 [Curios API](https://docs.illusivesoulworks.com/category/curios)
 
+Deep lore
+
 ## Items list
 
 - [ ] New Metal (Mysterium ?) (for crafting trinkets)
@@ -62,10 +64,13 @@ Advancements to progress
 
 ### Eternal Guardian's Band
 
-- [ ] found broken, need souls, Hostile(100) (fill bar to repair)
+- [x] found broken, need souls, Hostile(100) (attunement)
+  - [x] animation to suck the soul inside you
+  - [ ] make custom soul_suckle particles
 - [ ] Better tombstones
 - [x] 3d
 - [x] Spawn '"Eternal Guardian"
+- [ ] put the item back in inv when retrieving the tombstone
 
 ## Blocks list
 
@@ -106,9 +111,17 @@ Advancements to progress
 - Tavern, NPC (shop ? for what ?), beer
 - Swampwitch hut
 
+### Waypoints
+
+- because why not ?
+  - might be really useless
+- or maybe waystones or smth like it
+- with nice ui and lore explanaition
+
 ### Keybinds (replace)
 
 - [x] replace keybinds by wheel
+- [ ] keybind last used
 
 ### displayClientMessage
 

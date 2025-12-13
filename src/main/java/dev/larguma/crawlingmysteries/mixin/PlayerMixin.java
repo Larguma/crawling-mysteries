@@ -13,6 +13,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import dev.larguma.crawlingmysteries.Config;
 import dev.larguma.crawlingmysteries.block.custom.TombstoneBlock;
 import dev.larguma.crawlingmysteries.item.ModItems;
+import dev.larguma.crawlingmysteries.item.helper.ItemDataHelper;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentEffectComponents;
@@ -20,6 +21,7 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.GameRules;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import top.theillusivec4.curios.api.CuriosApi;
+import top.theillusivec4.curios.api.SlotResult;
 import top.theillusivec4.curios.api.type.capability.ICurio.DropRule;
 import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 
@@ -37,8 +39,11 @@ public abstract class PlayerMixin {
     List<ItemStack> trinketStacks = new ArrayList<>();
 
     Optional<ICuriosItemHandler> curiosInventory = CuriosApi.getCuriosInventory(player);
-    boolean hasEternalGuardiansBand = curiosInventory.map(inv -> inv.isEquipped(ModItems.ETERNAL_GUARDIANS_BAND.get()))
-        .orElse(false);
+    List<SlotResult> eternalGuardiansBand = curiosInventory
+        .map(inv -> inv.findCurios(ModItems.ETERNAL_GUARDIANS_BAND.get())).orElse(List.of());
+    boolean hasEternalGuardiansBand = eternalGuardiansBand.stream().anyMatch(slot -> {
+      return ItemDataHelper.getAttunement(slot.stack()) >= 1.0f;
+    });
     curiosInventory.ifPresent(inv -> collectTrinkets(inv, trinketStacks, keepInventory));
 
     if (hasEternalGuardiansBand) {

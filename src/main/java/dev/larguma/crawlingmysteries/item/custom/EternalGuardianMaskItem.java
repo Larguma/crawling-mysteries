@@ -36,6 +36,7 @@ import top.theillusivec4.curios.api.type.capability.ICurioItem;
 public class EternalGuardianMaskItem extends Item implements GeoItem, ICurioItem {
 
   private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+  // Wait x minutes to attune
   private static final int ATTUNEMENT_MINUTES = 360;
 
   public EternalGuardianMaskItem() {
