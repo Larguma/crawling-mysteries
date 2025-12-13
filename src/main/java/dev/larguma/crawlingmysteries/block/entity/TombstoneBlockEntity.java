@@ -1,20 +1,20 @@
 package dev.larguma.crawlingmysteries.block.entity;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 import com.mojang.authlib.GameProfile;
 import dev.larguma.crawlingmysteries.util.NbtHelper;
+import dev.larguma.crawlingmysteries.util.SlottedItemStack;
 import net.minecraft.core.BlockPos;
-import net.minecraft.core.NonNullList;
 import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.ListTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
-import net.minecraft.world.Container;
-import net.minecraft.world.ContainerHelper;
-import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
@@ -27,17 +27,18 @@ import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 import software.bernie.geckolib.util.RenderUtil;
 
-public class TombstoneBlockEntity extends BlockEntity implements GeoBlockEntity, Container {
+public class TombstoneBlockEntity extends BlockEntity implements GeoBlockEntity {
 
   protected static final RawAnimation DEPLOY_ANIM = RawAnimation.begin();
   private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
-  private NonNullList<ItemStack> items = NonNullList.withSize(getContainerSize(), ItemStack.EMPTY);
+  private List<SlottedItemStack> slottedItems = new ArrayList<>();
   private GameProfile tombstoneOwner;
   private UUID guardianUUID;
   private int xp;
   public static final String TOMBSTONE_OWNER_KEY = "tombstone_owner";
   public static final String TOMBSTONE_GUARDIAN_UUID_KEY = "guardian_uuid";
   public static final String TOMBSTONE_XP_KEY = "xp";
+  public static final String SLOTTED_ITEMS_KEY = "slotted_items";
 
   public TombstoneBlockEntity(BlockPos pos, BlockState blockState) {
     super(ModBlockEntities.TOMBSTONE_BE.get(), pos, blockState);
@@ -46,10 +47,20 @@ public class TombstoneBlockEntity extends BlockEntity implements GeoBlockEntity,
   // #region NBT
   @Override
   protected void loadAdditional(CompoundTag tag, Provider registries) {
+    
+    this.slottedItems.clear();
+    if (tag.contains(SLOTTED_ITEMS_KEY)) {
+      ListTag slottedItemsTag = tag.getList(SLOTTED_ITEMS_KEY, Tag.TAG_COMPOUND);
+      for (int i = 0; i < slottedItemsTag.size(); i++) {
+        CompoundTag itemTag = slottedItemsTag.getCompound(i);
+        SlottedItemStack slottedItem = SlottedItemStack.load(itemTag, registries);
+        if (!slottedItem.stack().isEmpty()) {
+          this.slottedItems.add(slottedItem);
+        }
+      }
+    }
+    
     super.loadAdditional(tag, registries);
-    clearContent();
-    ContainerHelper.loadAllItems(tag, this.items, registries);
-
     this.xp = tag.getInt(TOMBSTONE_XP_KEY);
 
     if (tag.contains(TOMBSTONE_OWNER_KEY))
@@ -62,10 +73,16 @@ public class TombstoneBlockEntity extends BlockEntity implements GeoBlockEntity,
 
   @Override
   protected void saveAdditional(CompoundTag tag, Provider registries) {
+    
+    ListTag slottedItemsTag = new ListTag();
+    for (SlottedItemStack slottedItem : this.slottedItems) {
+      if (!slottedItem.stack().isEmpty()) {
+        slottedItemsTag.add(slottedItem.save(registries));
+      }
+    }
+    tag.put(SLOTTED_ITEMS_KEY, slottedItemsTag);
+    
     super.saveAdditional(tag, registries);
-
-    ContainerHelper.saveAllItems(tag, this.items, registries);
-
     tag.putInt(TOMBSTONE_XP_KEY, this.xp);
 
     if (this.hasTombstoneOwner())
@@ -86,7 +103,7 @@ public class TombstoneBlockEntity extends BlockEntity implements GeoBlockEntity,
   }
   // #endregion NBT
 
-  //#region Gecko
+  // #region Gecko
   @Override
   public void registerControllers(ControllerRegistrar controllers) {
     controllers.add(new AnimationController<>(this, this::deployAnimController));
@@ -106,56 +123,18 @@ public class TombstoneBlockEntity extends BlockEntity implements GeoBlockEntity,
   public double getTick(Object blockEntity) {
     return RenderUtil.getCurrentTick();
   }
-  //#endregion Gecko
+  // #endregion Gecko
 
-  @Override
-  public void clearContent() {
-    this.items.clear();
-    this.setChanged();
-  }
-
-  @Override
-  public int getContainerSize() {
-    return 150;
-  }
-
-  @Override
   public boolean isEmpty() {
-    return this.items.stream().allMatch(ItemStack::isEmpty);
+    return this.slottedItems.isEmpty();
   }
 
-  @Override
-  public ItemStack getItem(int slot) {
-    return this.items.get(slot);
+  public List<SlottedItemStack> getSlottedItems() {
+    return this.slottedItems;
   }
 
-  public NonNullList<ItemStack> getItems() {
-    return this.items;
-  }
-
-  @Override
-  public ItemStack removeItem(int slot, int amount) {
-    ItemStack stack = ContainerHelper.removeItem(this.items, slot, amount);
-    this.setChanged();
-    return stack;
-  }
-
-  @Override
-  public ItemStack removeItemNoUpdate(int slot) {
-    ItemStack stack = ContainerHelper.takeItem(this.items, slot);
-    this.setChanged();
-    return stack;
-  }
-
-  @Override
-  public void setItem(int slot, ItemStack stack) {
-    stack.limitSize(this.getMaxStackSize(stack));
-    this.items.set(slot, stack);
-    this.setChanged();
-  }
-
-  public void setItems(NonNullList<ItemStack> items) {
-    this.items = items;
+  public void setSlottedItems(List<SlottedItemStack> slottedItems) {
+    this.slottedItems = new ArrayList<>(slottedItems);
     this.setChanged();
   }
 
@@ -197,10 +176,4 @@ public class TombstoneBlockEntity extends BlockEntity implements GeoBlockEntity,
   @Override
   public void setChanged() {
   }
-
-  @Override
-  public boolean stillValid(Player player) {
-    return Container.stillValidBlockEntity(this, player);
-  }
-
 }

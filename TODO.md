@@ -70,7 +70,7 @@ Deep lore
 - [ ] Better tombstones
 - [x] 3d
 - [x] Spawn '"Eternal Guardian"
-- [ ] put the item back in inv when retrieving the tombstone
+- [x] put the item back in inv when retrieving the tombstone
 
 ## Blocks list
 
