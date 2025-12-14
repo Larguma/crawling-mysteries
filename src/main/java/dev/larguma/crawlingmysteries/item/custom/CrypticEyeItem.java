@@ -6,7 +6,9 @@ import java.util.function.Consumer;
 import com.google.common.collect.LinkedHashMultimap;
 import com.google.common.collect.Multimap;
 
+import dev.larguma.crawlingmysteries.client.event.KeyMappingsEvents;
 import dev.larguma.crawlingmysteries.client.item.CrypticEyeItemRenderer;
+import dev.larguma.crawlingmysteries.client.screen.CrypticCodexScreen;
 import dev.larguma.crawlingmysteries.client.spell.ClientSpellCooldownManager;
 import dev.larguma.crawlingmysteries.data.ModDataComponents;
 import dev.larguma.crawlingmysteries.item.ModItems;
@@ -16,6 +18,7 @@ import dev.larguma.crawlingmysteries.spell.ModSpells;
 import dev.larguma.crawlingmysteries.spell.Spell;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
+import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.Holder;
@@ -29,12 +32,17 @@ import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.gameevent.GameEvent;
+import net.neoforged.api.distmarker.Dist;
+import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.common.EffectCures;
 import net.neoforged.neoforge.network.PacketDistributor;
 import software.bernie.geckolib.animatable.GeoItem;
@@ -98,8 +106,11 @@ public class CrypticEyeItem extends Item implements GeoItem, ICurioItem {
       }
       tooltipComponents.add(spellTooltip);
 
+      tooltipComponents.add(Component.translatable("tooltip.crawlingmysteries.blank"));
+      tooltipComponents.add(Component.translatable("item.crawlingmysteries.cryptic_eye.tooltip.open_codex", KeyMappingsEvents.OPEN_CODEX.get().getKey().getDisplayName()).withStyle(ChatFormatting.GOLD));
+
     } else {
-      tooltipComponents.add(Component.translatable("tolltip.crawlingmysteries.press_shift"));
+      tooltipComponents.add(Component.translatable("tooltip.crawlingmysteries.press_shift"));
     }
 
     super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
@@ -173,6 +184,23 @@ public class CrypticEyeItem extends Item implements GeoItem, ICurioItem {
         Component.translatable("message.crawlingmysteries.cryptic_eye.be_totem_effect"),
         BetterToastPacket.TYPE_INFO, this));
     // player.level().broadcastEntityEvent(player, (byte) 35);
+  }
+
+  @Override
+  public InteractionResultHolder<ItemStack> use(Level level, Player player, InteractionHand hand) {
+    ItemStack stack = player.getItemInHand(hand);
+
+    if (level.isClientSide()) {
+      openCodexScreen();
+      return InteractionResultHolder.success(stack);
+    }
+
+    return InteractionResultHolder.consume(stack);
+  }
+
+  @OnlyIn(Dist.CLIENT)
+  private void openCodexScreen() {
+    Minecraft.getInstance().setScreen(new CrypticCodexScreen());
   }
 
   private int getTotemsConsumed(ItemStack stack) {

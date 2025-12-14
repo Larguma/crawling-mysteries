@@ -48,7 +48,7 @@ public class EternalGuardiansBandItem extends Item implements ICurioItem {
       }
 
     } else {
-      tooltipComponents.add(Component.translatable("tolltip.crawlingmysteries.press_shift"));
+      tooltipComponents.add(Component.translatable("tooltip.crawlingmysteries.press_shift"));
     }
 
     if (!Config.SERVER.enableTombstone.get()) {

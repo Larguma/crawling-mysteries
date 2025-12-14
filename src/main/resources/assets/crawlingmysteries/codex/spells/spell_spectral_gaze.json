@@ -1,0 +1,19 @@
+{
+  "id": "spell_spectral_gaze",
+  "category": "spells",
+  "title": "Spectral Gaze",
+  "subtitle": "Pierce the veil",
+  "icon": "textures/spell/spectral_gaze.png",
+  "unlock_condition": "HAS_ETERNAL_GUARDIAN_MASK",
+  "pages": [
+    {
+      "type": "spell_info",
+      "spell": "spectral_gaze",
+      "content": "Active ability - toggle to reveal all nearby entities."
+    },
+    {
+      "type": "text",
+      "content": "Channel the power of the §5Eternal Guardian Mask§r to apply the §dGlowing§r effect to all nearby entities.\n\nThis reveals hidden enemies and allows you to track creatures through walls."
+    }
+  ]
+}

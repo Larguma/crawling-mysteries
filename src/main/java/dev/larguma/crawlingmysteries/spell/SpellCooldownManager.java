@@ -48,17 +48,30 @@ public class SpellCooldownManager {
   }
 
   public static String getRemainingCooldownFormatted(ServerPlayer player, Spell spell) {
-    int seconds = getRemainingCooldownSeconds(player, spell);
+    return cooldownFormatted(getRemainingCooldownSeconds(player, spell));
+  }
+
+  public static String getTotalCooldownFormatted(Spell spell) {
+    return cooldownFormatted(spell.cooldownTicks() / 20);
+  }
+
+  public static String cooldownFormatted(int seconds) {
     if (seconds <= 0) {
       return "0s";
-    } else if (seconds >= 60) {
-      int mins = seconds / 60;
-      int secs = seconds % 60;
-      return String.format("%dm %ds", mins, secs);
     } else if (seconds >= 3600) {
       int hours = seconds / 3600;
       int mins = (seconds % 3600) / 60;
+      if (mins == 0) {
+        return String.format("%dh", hours);
+      }
       return String.format("%dh %dm", hours, mins);
+    } else if (seconds >= 60) {
+      int mins = seconds / 60;
+      int secs = seconds % 60;
+      if (secs == 0) {
+        return String.format("%dm", mins);
+      }
+      return String.format("%dm %ds", mins, secs);
     } else {
       return String.format("%ds", seconds);
     }

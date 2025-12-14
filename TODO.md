@@ -55,7 +55,7 @@ Deep lore
 
 ### Cryptic Eye
 
-- [ ] in-game docu
+- [x] in-game docu
 - [x] find another use
 - [x] feed it undying totem to gain max health (or absorbtion (or regen or resistance, to op ?)) ?
 - [x] when feed x (50),change spell & act as a totem every x (5) minutes
@@ -126,3 +126,7 @@ Deep lore
 ### displayClientMessage
 
 - [x] add a custom ui to make it pretty
+
+## Random
+
+- [ ] make an external lib out of the cryptic codex

@@ -2,9 +2,10 @@ package dev.larguma.crawlingmysteries.item.helper;
 
 import java.util.Optional;
 
+import dev.larguma.crawlingmysteries.item.ModItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
-import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import top.theillusivec4.curios.api.CuriosApi;
@@ -41,7 +42,7 @@ public class ItemHelper {
    * @param targetItem The target trinket item to find.
    * @return The first matching equipped trinket item stack, or ItemStack.EMPTY.
    */
-  public static ItemStack findEquippedTrinket(ServerPlayer player, Item targetItem) {
+  public static ItemStack findEquippedTrinket(Player player, Item targetItem) {
     Optional<ICuriosItemHandler> curiosHandler = CuriosApi.getCuriosInventory(player);
     if (curiosHandler.isEmpty()) {
       return ItemStack.EMPTY;
@@ -53,5 +54,33 @@ public class ItemHelper {
     }
 
     return ItemStack.EMPTY;
+  }
+
+  /**
+   * Checks if the player has the Cryptic Eye item equipped or in inventory.
+   * 
+   * @param player The player to check.
+   * @return True if the player has the Cryptic Eye, false otherwise.
+   */
+  public static boolean hasCrypticEye(Player player) {
+    // Check curios slots
+    var curiosInventory = CuriosApi.getCuriosInventory(player);
+    if (curiosInventory.isPresent()) {
+      for (SlotResult slot : curiosInventory.get().findCurios(ModItems.CRYPTIC_EYE.get())) {
+        if (!slot.stack().isEmpty()) {
+          return true;
+        }
+      }
+    }
+
+    // Check main inventory
+    for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
+      ItemStack stack = player.getInventory().getItem(i);
+      if (stack.is(ModItems.CRYPTIC_EYE.get())) {
+        return true;
+      }
+    }
+
+    return false;
   }
 }

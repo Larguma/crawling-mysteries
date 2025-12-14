@@ -1,5 +1,6 @@
 package dev.larguma.crawlingmysteries.command.helper;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -31,11 +32,14 @@ public class CommandHelper {
   // #region Suggestions
 
   public static final SuggestionProvider<CommandSourceStack> TRINKET_SUGGESTIONS = (context, builder) -> {
-    List<String> trinketIds = ModSpells.getAllSpells().stream()
+    List<String> trinketIds = new ArrayList<>(ModSpells.getAllSpells().stream()
         .map(Spell::sourceItem)
         .distinct()
         .map(spell -> "\"" + spell.toString() + "\"")
-        .toList();
+        .toList());
+
+    // Trinkets without spells but with data components
+    trinketIds.add("\"crawlingmysteries:eternal_guardians_band\"");
 
     return SharedSuggestionProvider.suggest(trinketIds, builder);
   };

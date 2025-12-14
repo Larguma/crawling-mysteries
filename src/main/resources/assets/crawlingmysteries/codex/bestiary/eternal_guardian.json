@@ -1,0 +1,19 @@
+{
+  "id": "eternal_guardian",
+  "category": "bestiary",
+  "title": "Eternal Guardian",
+  "subtitle": "Deathless protector",
+  "icon": "textures/gui/codex/bestiary/eternal_guardian.png",
+  "unlock_condition": "KILLED_ETERNAL_GUARDIAN",
+  "pages": [
+    {
+      "type": "entity_display",
+      "entity": "crawlingmysteries:eternal_guardian",
+      "content": "The §cEternal Guardian§r is a spectral entity summoned to protect fallen warriors' belongings. They are bound to the §5Eternal Guardian's Band§r and will attack anyone who approaches the tombstone they guard."
+    },
+    {
+      "type": "text",
+      "content": "§6Defeating a Guardian§r\n\nWhen slain, the Guardian drops its §5Head§r, which can be crafted into the powerful §5Eternal Guardian Mask§r.\n\n§7Warning: Guardians are formidable opponents. Prepare accordingly.§r"
+    }
+  ]
+}

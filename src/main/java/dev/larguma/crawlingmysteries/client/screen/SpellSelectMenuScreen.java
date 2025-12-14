@@ -7,9 +7,11 @@ import org.lwjgl.glfw.GLFW;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 
+import dev.larguma.crawlingmysteries.client.event.KeyMappingsEvents;
 import dev.larguma.crawlingmysteries.client.particle.BackgroundParticle;
 import dev.larguma.crawlingmysteries.client.particle.FloatingRuneParticle;
 import dev.larguma.crawlingmysteries.client.particle.SpellParticle;
+import dev.larguma.crawlingmysteries.client.render.EyeRenderer;
 import dev.larguma.crawlingmysteries.client.render.RenderUtils;
 import dev.larguma.crawlingmysteries.client.render.SpellSlotRenderer;
 import dev.larguma.crawlingmysteries.client.spell.ClientSpellCooldownManager;
@@ -67,13 +69,16 @@ public class SpellSelectMenuScreen extends Screen {
     BackgroundParticle.update(particles, this.width, this.height);
     SpellParticle.updateParticles(spellParticles, animationTick);
     FloatingRuneParticle.update(floatingRunes, this.width, this.height, animationTick);
+    EyeRenderer.tick(animationTick);
   }
 
   @Override
   public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
     animationTick += partialTick;
-
+    
     renderTransparentBackground(guiGraphics);
+    EyeRenderer.renderEye(guiGraphics, mouseX, mouseY, animationTick, PRIMARY_COLOR, 
+    7 , 7, 32);
     BackgroundParticle.render(guiGraphics, particles, partialTick);
     FloatingRuneParticle.render(guiGraphics, floatingRunes, partialTick);
 
@@ -88,13 +93,14 @@ public class SpellSelectMenuScreen extends Screen {
 
     renderSpellSlots(guiGraphics, centerX, centerY, partialTick);
 
+    renderCenterIndicator(guiGraphics, centerX, centerY);
+    
+
     if (hoveredSpell != null) {
       renderSpellInfo(guiGraphics, mouseX, mouseY);
     } else if (availableSpells.isEmpty()) {
       renderNoSpellsMessage(guiGraphics, centerX, centerY);
     }
-
-    renderCenterIndicator(guiGraphics, centerX, centerY);
   }
 
   private void renderRuneCircle(GuiGraphics guiGraphics, int centerX, int centerY) {
@@ -444,11 +450,19 @@ public class SpellSelectMenuScreen extends Screen {
   private void renderNoSpellsMessage(GuiGraphics guiGraphics, int centerX, int centerY) {
     Component message = Component.translatable("screen.crawlingmysteries.spell_select.no_spells");
     int messageWidth = this.font.width(message);
+    
+    int panelWidth = messageWidth + 10;
+    int panelHeight = 20;
+    int panelX = centerX - panelWidth / 2;
+    int panelY = centerY - panelHeight / 2;
+    
+    renderTooltipPanel(guiGraphics, panelX, panelY, panelWidth, panelHeight);
+    
     guiGraphics.drawString(
         this.font,
         message,
         centerX - messageWidth / 2,
-        centerY,
+        panelY + 6,
         0xAAAAAA,
         true);
   }
@@ -479,7 +493,7 @@ public class SpellSelectMenuScreen extends Screen {
 
   @Override
   public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-    if (keyCode == GLFW.GLFW_KEY_ESCAPE) {
+    if (keyCode == GLFW.GLFW_KEY_ESCAPE || keyCode == KeyMappingsEvents.OPEN_SPELL_MENU.get().getKey().getValue()) {
       this.onClose();
       return true;
     }

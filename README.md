@@ -6,11 +6,13 @@
 
 ## This is an alpha
 
-Crawling Mysteries is under very slow development! You can read all the planned features on [Github (TODO)](https://github.com/Larguma/crawling-mysteries/blob/main/TODO.md). Follow us to ensure you don't miss any of the latest updates.
+Crawling Mysteries is under very slow development! You can read all the planned features on [Github (TODO)](TODO.md). Follow us to ensure you don't miss any of the latest updates.
 
-All the current implemented features are available on [(features.md)](https://github.com/Larguma/crawling-mysteries/blob/main/features.md). Later there will be an in-game lore-friendly wiki (I hope).
+All the current implemented features are available on [Github (features)](features.md). Later there will be an in-game lore-friendly wiki (I hope).
 
 New features requests/ideas or bug reports can be submitted with an [Issue](https://github.com/Larguma/crawling-mysteries/issues)
+
+You can suggest lore or wiki entries to add to the Cryptic Codex by following the instructions on the [Codex Guide](src/main/resources/assets/crawlingmysteries/codex/README.md).
 
 ---
 

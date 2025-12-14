@@ -1,0 +1,28 @@
+{
+  "id": "eternal_guardian_mask",
+  "category": "trinkets",
+  "title": "Eternal Guardian Mask",
+  "subtitle": "See beyond the veil",
+  "icon": "textures/item/eternal_guardian_mask_2d.png",
+  "unlock_condition": "HAS_ETERNAL_GUARDIAN_MASK",
+  "pages": [
+    {
+      "type": "item_showcase",
+      "item": "crawlingmysteries:eternal_guardian_mask",
+      "content": "A mask crafted from the head of a slain Eternal Guardian, granting Spectral Vision."
+    },
+    {
+      "type": "text",
+      "content": "Crafted from the head of a slain §cEternal Guardian§r, this mask grants the wearer §dSpectral Vision§r.\n\nWhile wearing the mask, you can reveal hidden entities and see through walls."
+    },
+    {
+      "type": "crafting",
+      "recipe": "crawlingmysteries:eternal_guardian_mask;_,_,_,minecraft:leather,crawlingmysteries:eternal_guardian_head,minecraft:leather,_,_,_",
+      "content": "Craft the mask by surrounding an Eternal Guardian Head with gold ingots."
+    },
+    {
+      "type": "text",
+      "content": "§6Growing Power§r\n\nThe longer you wear the mask, the more powerful the Spectral Gaze ability becomes, increasing its range and duration."
+    }
+  ]
+}
