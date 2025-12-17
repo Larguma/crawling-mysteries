@@ -8,7 +8,7 @@
   "pages": [
     {
       "type": "spell_info",
-      "spell": "spectral_gaze",
+      "extra": "spectral_gaze",
       "content": "Active ability - toggle to reveal all nearby entities."
     },
     {

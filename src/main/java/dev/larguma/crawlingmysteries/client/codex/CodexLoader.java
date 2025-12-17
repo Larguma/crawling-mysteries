@@ -135,21 +135,18 @@ public class CodexLoader {
    * Parses a page from JSON.
    */
   private static CodexPage parsePage(JsonObject json) {
+    PageType type;
     String typeStr = getStringOrDefault(json, "type", "text");
-    PageType type = parsePageType(typeStr);
-
+    String extraData = getStringOrDefault(json, "extra", "");
     String content = getStringOrDefault(json, "content", "");
-    String extraData = null;
 
-    //TODO: find how to do that dynamically
-    switch (type) {
-      case ITEM_SHOWCASE -> extraData = getStringOrDefault(json, "item", "");
-      case SPELL_INFO -> extraData = getStringOrDefault(json, "spell", "");
-      case IMAGE -> extraData = getStringOrDefault(json, "image", "");
-      case CRAFTING -> extraData = getStringOrDefault(json, "recipe", "");
-      case ENTITY_DISPLAY -> extraData = getStringOrDefault(json, "entity", "");
-      default -> {
-      }
+    switch (typeStr.toLowerCase()) {
+      case "crafting" -> type = PageType.CRAFTING;
+      case "entity_display" -> type = PageType.ENTITY_DISPLAY;
+      case "image" -> type = PageType.IMAGE;
+      case "item_showcase" -> type = PageType.ITEM_SHOWCASE;
+      case "spell_info" -> type = PageType.SPELL_INFO;
+      default -> type = PageType.TEXT;
     }
 
     return new CodexPage(type, Component.literal(content), extraData);
@@ -159,28 +156,13 @@ public class CodexLoader {
    * Parses a category string to enum.
    */
   private static CodexCategory parseCategory(String category) {
-    //TODO: find how to do that dynamically
+    // TODO: find how to do that dynamically
     return switch (category.toLowerCase()) {
       case "trinkets" -> CodexCategory.TRINKETS;
       case "spells" -> CodexCategory.SPELLS;
       case "lore" -> CodexCategory.LORE;
       case "bestiary" -> CodexCategory.BESTIARY;
       default -> CodexCategory.TRINKETS;
-    };
-  }
-
-  /**
-   * Parses a page type string to enum.
-   */
-  private static PageType parsePageType(String type) {
-    //TODO: find how to do that dynamically
-    return switch (type.toLowerCase()) {
-      case "image" -> PageType.IMAGE;
-      case "item_showcase", "item" -> PageType.ITEM_SHOWCASE;
-      case "spell_info", "spell" -> PageType.SPELL_INFO;
-      case "crafting", "recipe" -> PageType.CRAFTING;
-      case "entity_display", "entity" -> PageType.ENTITY_DISPLAY;
-      default -> PageType.TEXT;
     };
   }
 

@@ -8,7 +8,7 @@
   "pages": [
     {
       "type": "spell_info",
-      "spell": "feed_totem",
+      "extra": "feed_totem",
       "content": "Requires a Totem of Undying in your inventory to activate."
     },
     {

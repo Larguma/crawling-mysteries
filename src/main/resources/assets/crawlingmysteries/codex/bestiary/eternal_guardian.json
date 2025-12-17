@@ -8,7 +8,7 @@
   "pages": [
     {
       "type": "entity_display",
-      "entity": "crawlingmysteries:eternal_guardian",
+      "extra": "crawlingmysteries:eternal_guardian",
       "content": "The §cEternal Guardian§r is a spectral entity summoned to protect fallen warriors' belongings. They are bound to the §5Eternal Guardian's Band§r and will attack anyone who approaches the tombstone they guard."
     },
     {

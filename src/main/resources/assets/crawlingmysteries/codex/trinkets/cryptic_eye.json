@@ -8,7 +8,7 @@
   "pages": [
     {
       "type": "item_showcase",
-      "item": "crawlingmysteries:cryptic_eye",
+      "extra": "crawlingmysteries:cryptic_eye",
       "content": "A mysterious eye that seems to have chosen you as its bearer. It watches over you with an intelligence that feels... ancient."
     },
     {

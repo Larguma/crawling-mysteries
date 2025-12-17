@@ -8,7 +8,7 @@
   "pages": [
     {
       "type": "spell_info",
-      "spell": "be_totem",
+      "extra": "be_totem",
       "content": "Passive ability - triggers automatically when you take fatal damage."
     },
     {

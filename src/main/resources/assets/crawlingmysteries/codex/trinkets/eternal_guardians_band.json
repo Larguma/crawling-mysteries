@@ -8,7 +8,7 @@
   "pages": [
     {
       "type": "item_showcase",
-      "item": "crawlingmysteries:eternal_guardians_band",
+      "extra": "crawlingmysteries:eternal_guardians_band",
       "content": "An ancient ring found in the depths of the Ancient City. When first discovered, it is broken and dormant."
     },
     {

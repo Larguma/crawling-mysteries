@@ -8,7 +8,7 @@
   "pages": [
     {
       "type": "image",
-      "image": "textures/gui/codex/image/origins_illustration.png",
+      "extra": "textures/gui/codex/image/origins_illustration.png",
       "content": "Ancient symbols found throughout the Deep Dark"
     },
     {

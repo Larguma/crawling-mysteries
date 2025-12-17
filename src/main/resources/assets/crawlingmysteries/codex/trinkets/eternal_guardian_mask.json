@@ -8,7 +8,7 @@
   "pages": [
     {
       "type": "item_showcase",
-      "item": "crawlingmysteries:eternal_guardian_mask",
+      "extra": "crawlingmysteries:eternal_guardian_mask",
       "content": "A mask crafted from the head of a slain Eternal Guardian, granting Spectral Vision."
     },
     {
@@ -17,7 +17,7 @@
     },
     {
       "type": "crafting",
-      "recipe": "crawlingmysteries:eternal_guardian_mask;_,_,_,minecraft:leather,crawlingmysteries:eternal_guardian_head,minecraft:leather,_,_,_",
+      "extra": "crawlingmysteries:eternal_guardian_mask;_,_,_,minecraft:leather,crawlingmysteries:eternal_guardian_head,minecraft:leather,_,_,_",
       "content": "Craft the mask by surrounding an Eternal Guardian Head with gold ingots."
     },
     {

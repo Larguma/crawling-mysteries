@@ -32,7 +32,7 @@ The pages are generated from JSON, the text can be formatted with all of Minecra
       // show the model (GUI version) of an item with description
       "type": "item_showcase", 
       // item id to showcase
-      "item": "crawlingmysteries:cryptic_eye",
+      "extra": "crawlingmysteries:cryptic_eye",
       // additional text
       "content": "A mysterious eye that seems to have chosen you as its bearer. It watches over you with an intelligence that feels... ancient."
     },
@@ -41,7 +41,7 @@ The pages are generated from JSON, the text can be formatted with all of Minecra
       "type": "spell_info",
       // spell id
       // show cooldown, item source, description 
-      "spell": "feed_totem", 
+      "extra": "feed_totem", 
       // additional text
       "content": "Requires a Totem of Undying in your inventory to activate." 
     },
@@ -49,7 +49,7 @@ The pages are generated from JSON, the text can be formatted with all of Minecra
       // show an image with description
       "type": "image", 
       // image path
-      "image": "textures/gui/codex/image/origins_illustration.png",
+      "extra": "textures/gui/codex/image/origins_illustration.png",
       // additional text
       "content": "Ancient symbols found throughout the Deep Dark"
     },
@@ -59,7 +59,7 @@ The pages are generated from JSON, the text can be formatted with all of Minecra
       // crafting recipe, created in a 3x3 grid:
       // result;row1_col1,row1_col2,row1_col3,row2_col1,row2_col2,row2_col3,row3_col1,row3_col2,row3_col3
       // use _ for empty slots
-      "recipe": "crawlingmysteries:eternal_guardian_mask;_,_,_,minecraft:leather,crawlingmysteries:eternal_guardian_head,minecraft:leather,_,_,_",
+      "extra": "crawlingmysteries:eternal_guardian_mask;_,_,_,minecraft:leather,crawlingmysteries:eternal_guardian_head,minecraft:leather,_,_,_",
       // additional text
       "content": "Craft the mask by adding two leather pieces to the sides of the §5Eternal Guardian's Head§r."
     },
@@ -68,7 +68,7 @@ The pages are generated from JSON, the text can be formatted with all of Minecra
       "type": "entity_display",
       // entity id to display
       // show interactive 3D model, max health & armor
-      "entity": "crawlingmysteries:eternal_guardian",
+      "extra": "crawlingmysteries:eternal_guardian",
       // additional text
       "content": "The §cEternal Guardian§r is a spectral entity summoned to protect fallen warriors' belongings. They are bound to the §5Eternal Guardian's Band§r and will attack anyone who approaches the tombstone they guard."
     }
