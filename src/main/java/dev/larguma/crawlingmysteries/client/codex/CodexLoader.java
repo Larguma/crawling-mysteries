@@ -18,7 +18,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import dev.larguma.crawlingmysteries.CrawlingMysteries;
-import dev.larguma.crawlingmysteries.client.codex.CodexEntry.UnlockCondition;
 import dev.larguma.crawlingmysteries.client.codex.CodexPage.PageType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
@@ -111,7 +110,6 @@ public class CodexLoader {
     String unlockStr = getStringOrDefault(json, "unlock_condition", "ALWAYS");
 
     ResourceLocation icon = ResourceLocation.fromNamespaceAndPath(CrawlingMysteries.MOD_ID, iconPath);
-    UnlockCondition unlockCondition = parseUnlockCondition(unlockStr);
 
     List<CodexPage> pages = new ArrayList<>();
     if (json.has("pages") && json.get("pages").isJsonArray()) {
@@ -130,7 +128,7 @@ public class CodexLoader {
         Component.literal(subtitle),
         icon,
         pages,
-        unlockCondition);
+        unlockStr);
   }
 
   /**
@@ -168,21 +166,6 @@ public class CodexLoader {
       case "lore" -> CodexCategory.LORE;
       case "bestiary" -> CodexCategory.BESTIARY;
       default -> CodexCategory.TRINKETS;
-    };
-  }
-
-  /**
-   * Parses an unlock condition string to enum.
-   */
-  private static UnlockCondition parseUnlockCondition(String condition) {
-    //TODO: find how to do that dynamically
-    return switch (condition.toUpperCase()) {
-      case "HAS_CRYPTIC_EYE" -> UnlockCondition.HAS_CRYPTIC_EYE;
-      case "HAS_ETERNAL_GUARDIANS_BAND" -> UnlockCondition.HAS_ETERNAL_GUARDIANS_BAND;
-      case "HAS_ETERNAL_GUARDIAN_MASK" -> UnlockCondition.HAS_ETERNAL_GUARDIAN_MASK;
-      case "KILLED_ETERNAL_GUARDIAN" -> UnlockCondition.KILLED_ETERNAL_GUARDIAN;
-      case "DISCOVERED" -> UnlockCondition.DISCOVERED;
-      default -> UnlockCondition.ALWAYS;
     };
   }
 

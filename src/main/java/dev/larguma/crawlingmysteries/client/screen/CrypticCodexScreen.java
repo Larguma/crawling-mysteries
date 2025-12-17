@@ -16,7 +16,10 @@ import dev.larguma.crawlingmysteries.client.codex.CodexCategory;
 import dev.larguma.crawlingmysteries.client.codex.CodexEntry;
 import dev.larguma.crawlingmysteries.client.codex.CodexPage;
 import dev.larguma.crawlingmysteries.client.codex.CodexRegistry;
+import dev.larguma.crawlingmysteries.client.codex.CodexUnlockManager;
 import dev.larguma.crawlingmysteries.client.event.KeyMappingsEvents;
+import dev.larguma.crawlingmysteries.networking.packet.RequestStatsPacket;
+import net.neoforged.neoforge.network.PacketDistributor;
 import dev.larguma.crawlingmysteries.client.particle.BackgroundParticle;
 import dev.larguma.crawlingmysteries.client.particle.FloatingRuneParticle;
 import dev.larguma.crawlingmysteries.client.particle.OrbitingStarParticle;
@@ -46,8 +49,6 @@ import net.minecraft.world.item.ItemStack;
  * An in-game wiki accessed through the Cryptic Eye.
  */
 public class CrypticCodexScreen extends Screen {
-
-  // TODO: implement conditions for unlocking entries
 
   // #region Variables
 
@@ -118,6 +119,9 @@ public class CrypticCodexScreen extends Screen {
   @Override
   protected void init() {
     super.init();
+
+    PacketDistributor.sendToServer(new RequestStatsPacket());
+
     particles = BackgroundParticle.init(this.width, this.height);
     floatingRunes = FloatingRuneParticle.init(this.width, this.height);
     refreshEntries();
@@ -1247,8 +1251,20 @@ public class CrypticCodexScreen extends Screen {
    * Refreshes the list of entries for the currently selected category.
    */
   private void refreshEntries() {
-    currentEntries = CodexRegistry.getByCategory(selectedCategory);
+    currentEntries = CodexRegistry.getByCategory(selectedCategory).stream()
+        .filter(entry -> CodexUnlockManager.isUnlocked(minecraft.player, entry))
+        .toList();
     entryScrollOffset = 0;
+  }
+
+  /**
+   * Static helper to refresh the codex screen if it is currently open.
+   */
+  public static void refreshIfOpen() {
+    Minecraft mc = Minecraft.getInstance();
+    if (mc.screen instanceof CrypticCodexScreen codex) {
+      codex.refreshEntries();
+    }
   }
 
   // #endregion Helper Methods
@@ -1438,5 +1454,4 @@ public class CrypticCodexScreen extends Screen {
   public boolean isPauseScreen() {
     return false;
   }
-
 }

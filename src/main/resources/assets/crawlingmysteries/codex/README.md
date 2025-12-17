@@ -19,7 +19,7 @@ The pages are generated from JSON, the text can be formatted with all of Minecra
   // page icon path
   "icon": "textures/item/cryptic_eye_2d.png", 
   // NOT YET IMPLEMENTED
-  // condition to unlock the page, can be ALWAYS, HAS_ITEM_<item_id>, KILLED_<entity_id>, etc. (see CodexEntry.UnlockCondition in the code)
+  // condition to unlock the page, can be ALWAYS, HAS_<item_id>, KILLED_<entity_id>
   "unlock_condition": "ALWAYS", 
   "pages": [
     {

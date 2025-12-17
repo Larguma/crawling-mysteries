@@ -16,20 +16,7 @@ public record CodexEntry(
     Component subtitle,
     ResourceLocation icon,
     List<CodexPage> pages,
-    UnlockCondition unlockCondition) {
-
-  /**
-   * Conditions for unlocking codex entries.
-   */
-  //TODO: smth dynamic like HAS_ITEM_<item_id>, KILLED_<entity_id>, etc. (cf. src/main/resources/assets/crawlingmysteries/codex/README.md)
-  public enum UnlockCondition {
-    ALWAYS,
-    HAS_CRYPTIC_EYE,
-    HAS_ETERNAL_GUARDIANS_BAND,
-    HAS_ETERNAL_GUARDIAN_MASK,
-    KILLED_ETERNAL_GUARDIAN,
-    DISCOVERED
-  }
+    String unlockCondition) {
 
   public static Builder builder(String id, CodexCategory category) {
     return new Builder(id, category);
@@ -46,7 +33,7 @@ public record CodexEntry(
     private Component subtitle = Component.empty();
     private ResourceLocation icon;
     private List<CodexPage> pages = List.of();
-    private UnlockCondition unlockCondition = UnlockCondition.ALWAYS;
+    private String unlockCondition = "ALWAYS";
 
     private Builder(String id, CodexCategory category) {
       this.id = id;
@@ -96,7 +83,7 @@ public record CodexEntry(
       return this;
     }
 
-    public Builder unlockCondition(UnlockCondition condition) {
+    public Builder unlockCondition(String condition) {
       this.unlockCondition = condition;
       return this;
     }

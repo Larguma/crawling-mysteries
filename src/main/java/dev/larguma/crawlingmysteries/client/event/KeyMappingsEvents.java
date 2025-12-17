@@ -7,6 +7,7 @@ import com.mojang.blaze3d.platform.InputConstants;
 import dev.larguma.crawlingmysteries.CrawlingMysteries;
 import dev.larguma.crawlingmysteries.client.screen.CrypticCodexScreen;
 import dev.larguma.crawlingmysteries.client.screen.SpellSelectMenuScreen;
+import dev.larguma.crawlingmysteries.item.ModItems;
 import dev.larguma.crawlingmysteries.item.helper.ItemHelper;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
@@ -44,7 +45,7 @@ public class KeyMappingsEvents {
 
     while (OPEN_CODEX.get().consumeClick()) {
       if (minecraft.player != null && minecraft.screen == null) {
-        if (ItemHelper.hasCrypticEye(minecraft.player)) {
+        if (ItemHelper.hasItem(minecraft.player, ModItems.CRYPTIC_EYE.get())) {
           minecraft.setScreen(new CrypticCodexScreen());
         }
       }

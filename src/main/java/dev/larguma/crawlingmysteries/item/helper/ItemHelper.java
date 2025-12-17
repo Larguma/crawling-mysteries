@@ -2,7 +2,6 @@ package dev.larguma.crawlingmysteries.item.helper;
 
 import java.util.Optional;
 
-import dev.larguma.crawlingmysteries.item.ModItems;
 import net.minecraft.ChatFormatting;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
@@ -57,16 +56,18 @@ public class ItemHelper {
   }
 
   /**
-   * Checks if the player has the Cryptic Eye item equipped or in inventory.
+   * Checks if the player has the specified item, either in their main inventory
+   * or equipped as a trinket.
    * 
    * @param player The player to check.
-   * @return True if the player has the Cryptic Eye, false otherwise.
+   * @param item   The item to look for.
+   * @return True if the player has the item, false otherwise.
    */
-  public static boolean hasCrypticEye(Player player) {
+  public static boolean hasItem(Player player, Item item) {
     // Check curios slots
-    var curiosInventory = CuriosApi.getCuriosInventory(player);
+    Optional<ICuriosItemHandler> curiosInventory = CuriosApi.getCuriosInventory(player);
     if (curiosInventory.isPresent()) {
-      for (SlotResult slot : curiosInventory.get().findCurios(ModItems.CRYPTIC_EYE.get())) {
+      for (SlotResult slot : curiosInventory.get().findCurios(item)) {
         if (!slot.stack().isEmpty()) {
           return true;
         }
@@ -76,11 +77,10 @@ public class ItemHelper {
     // Check main inventory
     for (int i = 0; i < player.getInventory().getContainerSize(); i++) {
       ItemStack stack = player.getInventory().getItem(i);
-      if (stack.is(ModItems.CRYPTIC_EYE.get())) {
+      if (stack.is(item)) {
         return true;
       }
     }
-
     return false;
   }
 }

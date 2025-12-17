@@ -1,9 +1,12 @@
 package dev.larguma.crawlingmysteries.networking.handler;
 
+import dev.larguma.crawlingmysteries.client.codex.CodexUnlockManager;
 import dev.larguma.crawlingmysteries.client.gui.BetterToastOverlay;
+import dev.larguma.crawlingmysteries.client.screen.CrypticCodexScreen;
 import dev.larguma.crawlingmysteries.client.spell.ClientSpellCooldownManager;
 import dev.larguma.crawlingmysteries.networking.packet.BetterToastPacket;
 import dev.larguma.crawlingmysteries.networking.packet.SpellCooldownSyncPacket;
+import dev.larguma.crawlingmysteries.networking.packet.SyncUnlockedEntriesPacket;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public class ClientPayloadHandler {
@@ -22,6 +25,13 @@ public class ClientPayloadHandler {
     context.enqueueWork(() -> {
       BetterToastOverlay.ToastType type = BetterToastOverlay.ToastType.values()[packet.toastType()];
       BetterToastOverlay.showMessage(packet.message(), type, packet.getIconItem(), packet.getIconTexture());
+    });
+  }
+
+  public static void handleSyncUnlockedEntries(final SyncUnlockedEntriesPacket packet, final IPayloadContext context) {
+    context.enqueueWork(() -> {
+      CodexUnlockManager.setUnlockedEntries(packet.unlockedEntries());
+      CrypticCodexScreen.refreshIfOpen();
     });
   }
 }

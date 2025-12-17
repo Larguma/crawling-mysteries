@@ -1,7 +1,9 @@
 package dev.larguma.crawlingmysteries.data;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 import java.util.function.Supplier;
 
 import com.mojang.serialization.Codec;
@@ -23,6 +25,13 @@ public class ModDataAttachments {
       "spell_cooldowns",
       () -> AttachmentType.builder(() -> (Map<String, Long>) new HashMap<String, Long>())
           .serialize(Codec.unboundedMap(Codec.STRING, Codec.LONG))
+          .copyOnDeath()
+          .build());
+
+  public static final Supplier<AttachmentType<Set<String>>> UNLOCKED_CODEX_ENTRIES = ATTACHMENT_TYPES.register(
+      "unlocked_codex_entries",
+      () -> AttachmentType.builder(() -> (Set<String>) new HashSet<String>())
+          .serialize(Codec.STRING.listOf().xmap(HashSet::new, list -> list.stream().toList()))
           .copyOnDeath()
           .build());
 

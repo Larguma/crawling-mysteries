@@ -129,4 +129,5 @@ Deep lore
 
 ## Random
 
-- [ ] make an external lib out of the cryptic codex
+- [ ] make an external lib out of the cryptic codex, maybe
+- [ ] add [architectury](https://modrinth.com/mod/architectury-api)

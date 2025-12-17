@@ -4,7 +4,7 @@
   "title": "Cryptic Eye",
   "subtitle": "A watchful companion",
   "icon": "textures/item/cryptic_eye_2d.png",
-  "unlock_condition": "ALWAYS",
+  "unlock_condition": "HAS_CRYPTIC_EYE",
   "pages": [
     {
       "type": "item_showcase",

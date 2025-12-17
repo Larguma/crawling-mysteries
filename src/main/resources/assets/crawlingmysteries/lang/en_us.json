@@ -99,7 +99,7 @@
   "screen.crawlingmysteries.codex": "Cryptic Codex",
   "screen.crawlingmysteries.codex.title": "§5✦ Cryptic Codex ✦§r",
   "screen.crawlingmysteries.codex.entries": "§7Entries§r",
-  "screen.crawlingmysteries.codex.no_selection": "Select an entry to view its contents",
+  "screen.crawlingmysteries.codex.no_selection": "§7No entries discovered.§r",
   "codex.crawlingmysteries": "====== Codex ======",
   "codex.crawlingmysteries.category.trinkets": "Trinkets",
   "codex.crawlingmysteries.category.trinkets.desc": "Sentient artifacts that aid you on your journey",
