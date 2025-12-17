@@ -133,4 +133,4 @@ A crafting page shows a 3x3 crafting recipe grid along with additional text:
 
 The entity display page shows an interactive 3D model of the entity along with its max health, armor, and additional text:  
 ![entity_display](_readme/entity_display.png)  
-*The GUI size is 3 instead of 4 for this image.*
+*The GUI scale is 3 instead of 4 for this image to fit the whole of the page.*

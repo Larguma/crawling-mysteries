@@ -47,7 +47,7 @@ public class TombstoneBlockEntity extends BlockEntity implements GeoBlockEntity 
   // #region NBT
   @Override
   protected void loadAdditional(CompoundTag tag, Provider registries) {
-    
+
     this.slottedItems.clear();
     if (tag.contains(SLOTTED_ITEMS_KEY)) {
       ListTag slottedItemsTag = tag.getList(SLOTTED_ITEMS_KEY, Tag.TAG_COMPOUND);
@@ -59,7 +59,7 @@ public class TombstoneBlockEntity extends BlockEntity implements GeoBlockEntity 
         }
       }
     }
-    
+
     super.loadAdditional(tag, registries);
     this.xp = tag.getInt(TOMBSTONE_XP_KEY);
 
@@ -73,7 +73,7 @@ public class TombstoneBlockEntity extends BlockEntity implements GeoBlockEntity 
 
   @Override
   protected void saveAdditional(CompoundTag tag, Provider registries) {
-    
+
     ListTag slottedItemsTag = new ListTag();
     for (SlottedItemStack slottedItem : this.slottedItems) {
       if (!slottedItem.stack().isEmpty()) {
@@ -81,7 +81,7 @@ public class TombstoneBlockEntity extends BlockEntity implements GeoBlockEntity 
       }
     }
     tag.put(SLOTTED_ITEMS_KEY, slottedItemsTag);
-    
+
     super.saveAdditional(tag, registries);
     tag.putInt(TOMBSTONE_XP_KEY, this.xp);
 
@@ -144,6 +144,9 @@ public class TombstoneBlockEntity extends BlockEntity implements GeoBlockEntity 
   }
 
   public GameProfile getTombstoneOwner() {
+    if (this.tombstoneOwner == null) {
+      return new GameProfile(UUID.randomUUID(), "Unknown");
+    }
     return this.tombstoneOwner;
   }
 

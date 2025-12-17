@@ -1,12 +1,15 @@
 package dev.larguma.crawlingmysteries.client.screen;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
 import org.joml.Quaternionf;
-import org.joml.Vector3f;
 import org.lwjgl.glfw.GLFW;
+
+import com.mojang.blaze3d.platform.Lighting;
+import com.mojang.blaze3d.platform.NativeImage;
 
 import dev.larguma.crawlingmysteries.CrawlingMysteries;
 import dev.larguma.crawlingmysteries.client.codex.CodexCategory;
@@ -15,8 +18,8 @@ import dev.larguma.crawlingmysteries.client.codex.CodexPage;
 import dev.larguma.crawlingmysteries.client.codex.CodexRegistry;
 import dev.larguma.crawlingmysteries.client.event.KeyMappingsEvents;
 import dev.larguma.crawlingmysteries.client.particle.BackgroundParticle;
-import dev.larguma.crawlingmysteries.client.particle.OrbitingStarParticle;
 import dev.larguma.crawlingmysteries.client.particle.FloatingRuneParticle;
+import dev.larguma.crawlingmysteries.client.particle.OrbitingStarParticle;
 import dev.larguma.crawlingmysteries.client.render.PanelBorderRenderer;
 import dev.larguma.crawlingmysteries.spell.ModSpells;
 import dev.larguma.crawlingmysteries.spell.Spell;
@@ -24,11 +27,12 @@ import dev.larguma.crawlingmysteries.spell.SpellCooldownManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
-import net.minecraft.client.gui.screens.inventory.InventoryScreen;
+import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.util.FormattedCharSequence;
 import net.minecraft.util.Mth;
@@ -383,28 +387,7 @@ public class CrypticCodexScreen extends Screen {
 
     switch (page.type()) {
       case TEXT -> {
-        // Wrap and render text with scroll support
-        List<FormattedCharSequence> lines = this.font.split(page.content(), width);
-        int totalHeight = lines.size() * 12;
-        maxContentScroll = Math.max(0, totalHeight - maxHeight);
-        contentScrollOffset = Mth.clamp(contentScrollOffset, 0, maxContentScroll);
-
-        // Enable scissoring to clip text within content bounds
-        guiGraphics.enableScissor(x, y, x + width, y + maxHeight);
-
-        int lineY = y - contentScrollOffset;
-        for (FormattedCharSequence line : lines) {
-          // Only render visible lines
-          if (lineY >= y - 12 && lineY <= y + maxHeight + 12) {
-            guiGraphics.drawString(this.font, line, x, lineY, TEXT_COLOR, false);
-          }
-          lineY += 12;
-        }
-
-        guiGraphics.disableScissor();
-
-        // Scroll indicators
-        renderScrollIndicators(guiGraphics, x, y, width, maxHeight);
+        renderTextPage(guiGraphics, x, y, width, maxHeight, page);
       }
       case ITEM_SHOWCASE -> {
         renderItemShowcase(guiGraphics, x, y, width, maxHeight, page);
@@ -428,6 +411,35 @@ public class CrypticCodexScreen extends Screen {
   }
 
   // #endregion Render Basic Layout Components
+
+  // #region Text Page Rendering
+
+  /**
+   * Renders a text page with wrapping and scrolling.
+   */
+  public void renderTextPage(GuiGraphics guiGraphics, int x, int y, int width, int maxHeight, CodexPage page) {
+    List<FormattedCharSequence> lines = this.font.split(page.content(), width);
+    int totalHeight = lines.size() * 12;
+    maxContentScroll = Math.max(0, totalHeight - maxHeight);
+    contentScrollOffset = Mth.clamp(contentScrollOffset, 0, maxContentScroll);
+
+    guiGraphics.enableScissor(x, y, x + width, y + maxHeight);
+
+    int lineY = y - contentScrollOffset;
+    for (FormattedCharSequence line : lines) {
+      // Only render visible lines
+      if (lineY >= y - 12 && lineY <= y + maxHeight + 12) {
+        guiGraphics.drawString(this.font, line, x, lineY, TEXT_COLOR, false);
+      }
+      lineY += 12;
+    }
+
+    guiGraphics.disableScissor();
+
+    renderScrollIndicators(guiGraphics, x, y, width, maxHeight);
+  }
+
+  // #endregion Text Page Rendering
 
   // #region Item Showcase Page Rendering
 
@@ -471,7 +483,6 @@ public class CrypticCodexScreen extends Screen {
     maxContentScroll = Math.max(0, contentHeight - maxHeight);
     contentScrollOffset = Mth.clamp(contentScrollOffset, 0, maxContentScroll);
 
-    // Enable scissoring to clip content
     guiGraphics.enableScissor(x, y, x + width, y + maxHeight);
 
     int offsetY = y - contentScrollOffset;
@@ -492,24 +503,17 @@ public class CrypticCodexScreen extends Screen {
     guiGraphics.renderItem(itemStack, 0, 0);
     guiGraphics.pose().popPose();
 
-    // Item name
     Component itemName = itemStack.getHoverName();
     int nameWidth = this.font.width(itemName);
     guiGraphics.drawString(this.font, itemName, centerX - nameWidth / 2, itemY + itemSize + 16, 0xFFFFFF, true);
 
-    // Description text below item
     int descY = itemY + itemSize + 32;
     if (!page.content().getString().isEmpty()) {
-      List<FormattedCharSequence> lines = this.font.split(page.content(), width);
-      for (FormattedCharSequence line : lines) {
-        guiGraphics.drawString(this.font, line, x, descY, TEXT_COLOR, false);
-        descY += 12;
-      }
+      descY = renderFormattedText(guiGraphics, page.content(), x, descY, width);
     }
 
     guiGraphics.disableScissor();
 
-    // Scroll indicators
     renderScrollIndicators(guiGraphics, x, y, width, maxHeight);
   }
 
@@ -561,7 +565,6 @@ public class CrypticCodexScreen extends Screen {
     maxContentScroll = Math.max(0, contentHeight - maxHeight);
     contentScrollOffset = Mth.clamp(contentScrollOffset, 0, maxContentScroll);
 
-    // Enable scissoring to clip content
     guiGraphics.enableScissor(x, y, x + width, y + maxHeight);
 
     // Spell icon with border and particles
@@ -581,15 +584,12 @@ public class CrypticCodexScreen extends Screen {
         animationTick,
         iconSize + 8);
 
-    // Spell name
     Component spellName = spell.name();
     int nameWidth = this.font.width(spellName);
     guiGraphics.drawString(this.font, spellName, centerX - nameWidth / 2, iconY + iconSize + 12, 0xFFFFFF, true);
 
-    // Spell stats
     int statsY = iconY + iconSize + 28;
 
-    // Cooldown
     if (spell.cooldownTicks() > 0) {
       String cooldownText = String.format("§7Cooldown: §e" + SpellCooldownManager.getTotalCooldownFormatted(spell));
       int cooldownWidth = this.font.width(cooldownText);
@@ -597,7 +597,6 @@ public class CrypticCodexScreen extends Screen {
       statsY += 14;
     }
 
-    // Source item
     Component sourceText = Component.literal("§7Source: §b" + spell.sourceItem().getPath().replace("_", " "));
     int sourceWidth = this.font.width(sourceText);
     guiGraphics.drawString(this.font, sourceText, centerX - sourceWidth / 2, statsY, TEXT_COLOR, false);
@@ -607,28 +606,17 @@ public class CrypticCodexScreen extends Screen {
     guiGraphics.fill(x + 20, statsY, x + width - 20, statsY + 1, 0x44FFFFFF);
     statsY += 12;
 
-    // Description
     if (!description.getString().isEmpty()) {
-      List<FormattedCharSequence> lines = this.font.split(description, width);
-      for (FormattedCharSequence line : lines) {
-        guiGraphics.drawString(this.font, line, x, statsY, TEXT_COLOR, false);
-        statsY += 12;
-      }
+      statsY = renderFormattedText(guiGraphics, description, x, statsY, width);
     }
 
-    // Additional content from page
     if (!page.content().getString().isEmpty()) {
       statsY += 8;
-      List<FormattedCharSequence> lines = this.font.split(page.content(), width);
-      for (FormattedCharSequence line : lines) {
-        guiGraphics.drawString(this.font, line, x, statsY, TEXT_MUTED, false);
-        statsY += 12;
-      }
+      statsY = renderFormattedText(guiGraphics, page.content(), x, statsY, width);
     }
 
     guiGraphics.disableScissor();
 
-    // Scroll indicators
     renderScrollIndicators(guiGraphics, x, y, width, maxHeight);
   }
 
@@ -656,14 +644,36 @@ public class CrypticCodexScreen extends Screen {
       imageLocation = ResourceLocation.fromNamespaceAndPath(CrawlingMysteries.MOD_ID, imagePath);
     }
 
-    // Calculate image dimensions to fit within content area while maintaining
-    // aspect ratio
-    // TODO: Support custom image sizes not just square
     int maxImageWidth = width - 20;
     int maxImageHeight = maxHeight - 40;
-    int imageSize = Math.min(Math.min(maxImageWidth, maxImageHeight), 256);
-    int imageWidth = imageSize;
-    int imageHeight = imageSize;
+
+    int[] textureDimensions = getTextureDimensions(imageLocation);
+    int textureWidth = textureDimensions[0];
+    int textureHeight = textureDimensions[1];
+
+    float aspectRatio = (float) textureWidth / (float) textureHeight;
+    int imageWidth;
+    int imageHeight;
+
+    if (textureWidth > textureHeight) {
+      // Landscape or square
+      imageWidth = Math.min(maxImageWidth, textureWidth);
+      imageHeight = (int) (imageWidth / aspectRatio);
+
+      if (imageHeight > maxImageHeight) {
+        imageHeight = maxImageHeight;
+        imageWidth = (int) (imageHeight * aspectRatio);
+      }
+    } else {
+      // Portrait
+      imageHeight = Math.min(maxImageHeight, textureHeight);
+      imageWidth = (int) (imageHeight * aspectRatio);
+
+      if (imageWidth > maxImageWidth) {
+        imageWidth = maxImageWidth;
+        imageHeight = (int) (imageWidth / aspectRatio);
+      }
+    }
 
     // Calculate total content height
     int contentHeight = 10 + imageHeight + 12; // padding + image + spacing
@@ -675,7 +685,6 @@ public class CrypticCodexScreen extends Screen {
     maxContentScroll = Math.max(0, contentHeight - maxHeight);
     contentScrollOffset = Mth.clamp(contentScrollOffset, 0, maxContentScroll);
 
-    // Enable scissoring to clip content
     guiGraphics.enableScissor(x, y, x + width, y + maxHeight);
 
     int offsetY = y - contentScrollOffset;
@@ -695,17 +704,11 @@ public class CrypticCodexScreen extends Screen {
     // Caption text below image
     int captionY = imageY + imageHeight + 12;
     if (!page.content().getString().isEmpty()) {
-      List<FormattedCharSequence> lines = this.font.split(page.content(), width);
-      for (FormattedCharSequence line : lines) {
-        int lineWidth = this.font.width(line);
-        guiGraphics.drawString(this.font, line, x + (width - lineWidth) / 2, captionY, TEXT_MUTED, false);
-        captionY += 12;
-      }
+      captionY = renderFormattedText(guiGraphics, page.content(), x, captionY, width, true, TEXT_MUTED);
     }
 
     guiGraphics.disableScissor();
 
-    // Scroll indicators
     renderScrollIndicators(guiGraphics, x, y, width, maxHeight);
   }
 
@@ -746,12 +749,10 @@ public class CrypticCodexScreen extends Screen {
     maxContentScroll = Math.max(0, contentHeight - maxHeight);
     contentScrollOffset = Mth.clamp(contentScrollOffset, 0, maxContentScroll);
 
-    // Enable scissoring to clip content
     guiGraphics.enableScissor(x, y, x + width, y + maxHeight);
 
     int offsetY = y - contentScrollOffset;
 
-    // Title
     Component title = Component.literal("§lCrafting Recipe");
     int titleWidth = this.font.width(title);
     guiGraphics.drawString(this.font, title, centerX - titleWidth / 2, offsetY, 0xFFFFFF, true);
@@ -795,19 +796,13 @@ public class CrypticCodexScreen extends Screen {
     guiGraphics.fill(resultX + 1, resultY + 1, resultX + slotSize - 1, resultY + slotSize - 1, 0x44FFFFFF);
     renderRecipeItem(guiGraphics, resultId, resultX + 4, resultY + 4);
 
-    // Description below
     int descY = gridY + gridSize + 20;
     if (!page.content().getString().isEmpty()) {
-      List<FormattedCharSequence> lines = this.font.split(page.content(), width);
-      for (FormattedCharSequence line : lines) {
-        guiGraphics.drawString(this.font, line, x, descY, TEXT_COLOR, false);
-        descY += 12;
-      }
+      descY = renderFormattedText(guiGraphics, page.content(), x, descY, width);
     }
 
     guiGraphics.disableScissor();
 
-    // Scroll indicators
     renderScrollIndicators(guiGraphics, x, y, width, maxHeight);
   }
 
@@ -900,7 +895,6 @@ public class CrypticCodexScreen extends Screen {
     PanelBorderRenderer.renderPanelBorder(guiGraphics, displayX - 10, displayY - 10, displaySize + 20, displaySize + 20,
         PRIMARY_COLOR, 4);
 
-    // Render the entity
     if (cachedEntity instanceof LivingEntity livingEntity) {
       renderLivingEntityInPanel(guiGraphics, displayX, displayY, displaySize, livingEntity);
     } else {
@@ -949,13 +943,7 @@ public class CrypticCodexScreen extends Screen {
       guiGraphics.fill(x + 20, statsY, x + width - 20, statsY + 1, 0x44FFFFFF);
       statsY += 12;
 
-      // Description
-      //TODO: make a method for this and fix the bug from the codex readme
-      List<FormattedCharSequence> lines = this.font.split(page.content(), width);
-      for (FormattedCharSequence line : lines) {
-        guiGraphics.drawString(this.font, line, x, statsY, TEXT_COLOR, false);
-        statsY += 12;
-      }
+      statsY = renderFormattedText(guiGraphics, page.content(), x, statsY, width);
     }
 
     guiGraphics.disableScissor();
@@ -965,10 +953,11 @@ public class CrypticCodexScreen extends Screen {
 
   /**
    * Renders a living entity in the display panel with rotation support.
+   * Uses custom rendering to avoid the internal scissoring of
+   * InventoryScreen.renderEntityInInventory
    */
   private void renderLivingEntityInPanel(GuiGraphics guiGraphics, int displayX, int displayY, int displaySize,
       LivingEntity entity) {
-    // TODO: remove bug scissored when tilting entity
     // Calculate entity scale based on its bounding box
     float entityHeight = entity.getBbHeight();
     float entityWidth = entity.getBbWidth();
@@ -983,7 +972,7 @@ public class CrypticCodexScreen extends Screen {
     // Create rotation quaternion from rotation state
     Quaternionf rotation = new Quaternionf();
     rotation.rotateX((float) Math.toRadians(entityRotationX + 180));
-    rotation.rotateY((float) Math.toRadians(entityRotationY)); // +180 to face forward
+    rotation.rotateY((float) Math.toRadians(entityRotationY));
 
     // Store and set entity properties for rendering
     float oldYaw = entity.getYRot();
@@ -996,16 +985,7 @@ public class CrypticCodexScreen extends Screen {
     entity.yBodyRot = 0;
     entity.setXRot(0);
 
-    Vector3f translation = new Vector3f(0, 0, 0);
-    InventoryScreen.renderEntityInInventory(
-        guiGraphics,
-        entityX,
-        entityY,
-        scale,
-        translation,
-        rotation,
-        null,
-        entity);
+    renderEntityWithoutScissor(guiGraphics, entityX, entityY, scale, rotation, entity);
 
     // Restore entity properties
     entity.setYRot(oldYaw);
@@ -1014,9 +994,129 @@ public class CrypticCodexScreen extends Screen {
     entity.setXRot(oldPitch);
   }
 
+  /**
+   * Renders an entity without using scissor, allowing full 3D rotation without
+   * clipping.
+   * InventoryScreen.renderEntityInInventory
+   */
+  private void renderEntityWithoutScissor(GuiGraphics guiGraphics, float x, float y, float scale,
+      Quaternionf rotation, LivingEntity entity) {
+    guiGraphics.flush();
+
+    guiGraphics.pose().pushPose();
+    guiGraphics.pose().translate(x, y, 500.0F);
+    guiGraphics.pose().scale(scale, scale, -scale);
+    guiGraphics.pose().mulPose(rotation);
+
+    Lighting.setupForEntityInInventory();
+
+    EntityRenderDispatcher dispatcher = Minecraft.getInstance().getEntityRenderDispatcher();
+    dispatcher.setRenderShadow(false);
+
+    var bufferSource = Minecraft.getInstance().renderBuffers().bufferSource();
+    dispatcher.render(entity, 0.0, 0.0, 0.0, 0.0F, 1.0F, guiGraphics.pose(), bufferSource, 15728880);
+    bufferSource.endBatch();
+
+    dispatcher.setRenderShadow(true);
+
+    guiGraphics.pose().popPose();
+    Lighting.setupFor3DItems();
+  }
+
   // #endregion Entity Display Page Rendering
 
   // #region Helper Methods
+
+  /**
+   * Renders text with proper support for Minecraft formatting codes.
+   * Splits the text into multiple lines if needed and renders each line.
+   * This method handles the issue where color codes bleed across line wraps.
+   * 
+   * @param yOffset  The starting Y position
+   * @param centered If true, each line will be centered within the width
+   * @return The final Y position after rendering all lines
+   */
+  private int renderFormattedText(GuiGraphics guiGraphics, Component text, int x, int yOffset, int width,
+      boolean centered, int color) {
+    String rawText = text.getString();
+    List<String> lines = new ArrayList<>();
+
+    String[] words = rawText.split(" ");
+    StringBuilder currentLine = new StringBuilder();
+    String carriedFormatting = "";
+
+    for (int i = 0; i < words.length; i++) {
+      String word = words[i];
+      String testLine = currentLine.length() == 0 ? word : currentLine + " " + word;
+
+      // Remove formatting codes for width calculation
+      String testLineNoFormat = testLine.replaceAll("§.", "");
+
+      if (this.font.width(testLineNoFormat) <= width) {
+        if (currentLine.length() > 0)
+          currentLine.append(" ");
+        currentLine.append(word);
+      } else {
+        if (currentLine.length() > 0) {
+          lines.add(currentLine.toString());
+
+          carriedFormatting = getActiveFormatting(currentLine.toString());
+          currentLine = new StringBuilder(carriedFormatting);
+          currentLine.append(word);
+        } else {
+          // Single word is too long, add it anyway
+          currentLine.append(word);
+        }
+      }
+    }
+
+    if (currentLine.length() > 0) {
+      lines.add(currentLine.toString());
+    }
+
+    for (String line : lines) {
+      Component lineComponent = Component.literal(line);
+      int renderX = x;
+
+      if (centered) {
+        String lineNoFormat = line.replaceAll("§.", "");
+        int lineWidth = this.font.width(lineNoFormat);
+        renderX = x + (width - lineWidth) / 2;
+      }
+
+      guiGraphics.drawString(this.font, lineComponent, renderX, yOffset, color, false);
+      yOffset += 12;
+    }
+
+    return yOffset;
+  }
+
+  /**
+   * Overloaded method for renderFormattedText centered with default color.
+   */
+  private int renderFormattedText(GuiGraphics guiGraphics, Component text, int x, int yOffset, int width) {
+    return renderFormattedText(guiGraphics, text, x, yOffset, width, false, TEXT_COLOR);
+  }
+
+  /**
+   * Extracts the active formatting codes at the end of a string.
+   */
+  private String getActiveFormatting(String text) {
+    String formatting = "";
+    for (int i = 0; i < text.length() - 1; i++) {
+      if (text.charAt(i) == '§') {
+        char code = text.charAt(i + 1);
+        if (code == 'r') {
+          formatting = "";
+        } else if ("0123456789abcdef".indexOf(code) >= 0) {
+          formatting = "§" + code;
+        } else if ("klmno".indexOf(code) >= 0) {
+          formatting += "§" + code;
+        }
+      }
+    }
+    return formatting;
+  }
 
   /**
    * Render scroll indicators at top/bottom of content area.
@@ -1094,6 +1194,31 @@ public class CrypticCodexScreen extends Screen {
     }
     int pageIndex = Mth.clamp(currentPage, 0, selectedEntry.pages().size() - 1);
     return selectedEntry.pages().get(pageIndex).type() == CodexPage.PageType.ENTITY_DISPLAY;
+  }
+
+  /**
+   * Gets the actual dimensions of a texture from the resource pack.
+   * Returns [width, height]. Falls back to [256, 256] if unable to read.
+   */
+  private int[] getTextureDimensions(ResourceLocation textureLocation) {
+    try {
+      Minecraft mc = Minecraft.getInstance();
+
+      Optional<Resource> resourceOpt = mc.getResourceManager().getResource(textureLocation);
+      if (resourceOpt.isPresent()) {
+        try (InputStream stream = resourceOpt.get().open()) {
+          NativeImage image = NativeImage.read(stream);
+          int width = image.getWidth();
+          int height = image.getHeight();
+          image.close();
+          return new int[] { width, height };
+        }
+      }
+    } catch (Exception e) {
+      CrawlingMysteries.LOGGER.warn("Failed to read texture dimensions for {}: {}", textureLocation, e.getMessage());
+    }
+
+    return new int[] { 256, 256 };
   }
 
   /**
