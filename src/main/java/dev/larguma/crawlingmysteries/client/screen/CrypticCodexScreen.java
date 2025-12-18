@@ -18,12 +18,11 @@ import dev.larguma.crawlingmysteries.client.codex.CodexPage;
 import dev.larguma.crawlingmysteries.client.codex.CodexRegistry;
 import dev.larguma.crawlingmysteries.client.codex.CodexUnlockManager;
 import dev.larguma.crawlingmysteries.client.event.KeyMappingsEvents;
-import dev.larguma.crawlingmysteries.networking.packet.RequestStatsPacket;
-import net.neoforged.neoforge.network.PacketDistributor;
 import dev.larguma.crawlingmysteries.client.particle.BackgroundParticle;
 import dev.larguma.crawlingmysteries.client.particle.FloatingRuneParticle;
 import dev.larguma.crawlingmysteries.client.particle.OrbitingStarParticle;
 import dev.larguma.crawlingmysteries.client.render.PanelBorderRenderer;
+import dev.larguma.crawlingmysteries.networking.packet.RequestStatsPacket;
 import dev.larguma.crawlingmysteries.spell.ModSpells;
 import dev.larguma.crawlingmysteries.spell.Spell;
 import dev.larguma.crawlingmysteries.spell.SpellCooldownManager;
@@ -44,6 +43,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 /**
  * An in-game wiki accessed through the Cryptic Eye.
@@ -147,7 +147,6 @@ public class CrypticCodexScreen extends Screen {
   public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
     this.animationTick += this.minecraft.getTimer().getRealtimeDeltaTicks();
 
-    // Render background
     renderTransparentBackground(guiGraphics);
     BackgroundParticle.render(guiGraphics, particles, partialTick);
     FloatingRuneParticle.render(guiGraphics, floatingRunes, partialTick);
@@ -276,16 +275,18 @@ public class CrypticCodexScreen extends Screen {
     int iconSize = 16;
     int iconX = x + 8;
     int iconY = y + (CATEGORY_BUTTON_HEIGHT - iconSize) / 2;
+    int iconPadding = 0;
     ResourceLocation iconLoc = category.getIcon();
-    try {
+
+    if (this.minecraft.getResourceManager().getResource(iconLoc).isPresent()) {
       guiGraphics.blit(iconLoc, iconX, iconY, 0, 0, iconSize, iconSize, iconSize, iconSize);
-    } catch (Exception e) {
-      guiGraphics.fill(iconX, iconY, iconX + iconSize, iconY + iconSize, 0xFF000000 | SECONDARY_COLOR);
+      iconPadding = 20;
     }
 
     // Text
     int textColor = isSelected ? 0xFFFFFF : (isHovered ? 0xDDDDDD : TEXT_COLOR);
-    guiGraphics.drawString(this.font, category.getName(), x + 30, y + (CATEGORY_BUTTON_HEIGHT - 8) / 2,
+    int titleX = x + 8 + iconPadding;
+    guiGraphics.drawString(this.font, category.getName(), titleX, y + (CATEGORY_BUTTON_HEIGHT - 8) / 2,
         textColor, false);
   }
 
@@ -304,25 +305,27 @@ public class CrypticCodexScreen extends Screen {
     }
 
     // Entry icon
-    int iconSize = 16;
+    int iconSize = 0;
     int iconX = x + 10;
-    int iconY = y + (ENTRY_BUTTON_HEIGHT - iconSize) / 2;
+    int iconPadding = 0;
     ResourceLocation iconLoc = entry.icon();
-    try {
+    if (this.minecraft.getResourceManager().getResource(iconLoc).isPresent()) {
+      iconSize = 16;
+      int iconY = y + (ENTRY_BUTTON_HEIGHT - iconSize) / 2;
       guiGraphics.blit(iconLoc, iconX, iconY, 0, 0, iconSize, iconSize, iconSize, iconSize);
-    } catch (Exception e) {
-      guiGraphics.fill(iconX, iconY, iconX + iconSize, iconY + iconSize, 0xFF000000 | SECONDARY_COLOR);
+      iconPadding = 36;
     }
 
     // Truncate title if needed
     String title = entry.title().getString();
-    int maxTitleWidth = SIDEBAR_WIDTH - 36; // Account for icon
+    int maxTitleWidth = SIDEBAR_WIDTH - iconPadding;
     if (this.font.width(title) > maxTitleWidth) {
       title = this.font.plainSubstrByWidth(title, maxTitleWidth - 8) + "...";
     }
 
     int textColor = isSelected ? 0xFFFFFF : (isHovered ? 0xDDDDDD : TEXT_COLOR);
-    guiGraphics.drawString(this.font, title, x + 30, y + (ENTRY_BUTTON_HEIGHT - 8) / 2, textColor, false);
+    guiGraphics.drawString(this.font, title, x + 12 + (int) (iconSize * 1.2), y + (ENTRY_BUTTON_HEIGHT - 8) / 2,
+        textColor, false);
   }
 
   /**
@@ -343,20 +346,18 @@ public class CrypticCodexScreen extends Screen {
     }
 
     // Entry icon in header
-    int headerIconSize = 24;
+    int headerIconSize = 0;
     int headerIconX = x + CONTENT_PADDING;
     int headerIconY = y + CONTENT_PADDING - 2;
     ResourceLocation iconLoc = selectedEntry.icon();
-    try {
+    if (this.minecraft.getResourceManager().getResource(iconLoc).isPresent()) {
+      headerIconSize = 24;
       guiGraphics.blit(iconLoc, headerIconX, headerIconY, 0, 0, headerIconSize, headerIconSize, headerIconSize,
           headerIconSize);
-    } catch (Exception e) {
-      guiGraphics.fill(headerIconX, headerIconY, headerIconX + headerIconSize, headerIconY + headerIconSize,
-          0xFF000000 | SECONDARY_COLOR);
     }
 
     // Entry title
-    int titleX = x + CONTENT_PADDING + headerIconSize + 8;
+    int titleX = x + CONTENT_PADDING + (int) (headerIconSize * 1.2);
     guiGraphics.drawString(this.font, selectedEntry.title(), titleX, y + CONTENT_PADDING,
         0xFFFFFF, true);
 
