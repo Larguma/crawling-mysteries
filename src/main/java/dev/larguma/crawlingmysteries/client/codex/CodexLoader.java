@@ -27,49 +27,31 @@ import net.minecraft.server.packs.resources.ResourceManager;
 
 /**
  * Loads codex entries from JSON files in assets/crawlingmysteries/codex/
- * 
- * JSON Structure:
- * {
- * "id": "cryptic_eye",
- * "category": "trinkets",
- * "title": "Cryptic Eye",
- * "subtitle": "A watchful companion",
- * "icon": "textures/item/cryptic_eye_2d.png",
- * "unlock_condition": "ALWAYS",
- * "pages": [
- * {
- * "type": "text",
- * "content": "The Cryptic Eye appeared with you..."
- * },
- * {
- * "type": "item_showcase",
- * "item": "crawlingmysteries:cryptic_eye"
- * }
- * ]
- * }
  */
 public class CodexLoader {
 
   private static final Gson GSON = new GsonBuilder().setPrettyPrinting().create();
   private static final String CODEX_PATH = "codex";
 
+  // #region Loading
+
   /**
    * Loads all codex entries from the resource pack.
    */
-  public static List<CodexEntry> loadAllEntries() {
+  public static List<CodexEntry> loadAllEntries(List<CodexCategory> availableCategories) {
     List<CodexEntry> entries = new ArrayList<>();
     ResourceManager resourceManager = Minecraft.getInstance().getResourceManager();
 
-    // Find all JSON files in the codex directory
+    // Find all JSON files in the codex directory, excluding categories.json
     Map<ResourceLocation, Resource> resources = resourceManager.listResources(CODEX_PATH,
-        path -> path.getPath().endsWith(".json"));
+        path -> path.getPath().endsWith(".json") && !path.getPath().endsWith("/categories.json"));
 
     for (Entry<ResourceLocation, Resource> entry : resources.entrySet()) {
       ResourceLocation location = entry.getKey();
       Resource resource = entry.getValue();
 
       try {
-        Optional<CodexEntry> codexEntry = loadEntry(resource, location);
+        Optional<CodexEntry> codexEntry = loadEntry(resource, location, availableCategories);
         codexEntry.ifPresent(entries::add);
       } catch (Exception e) {
         CrawlingMysteries.LOGGER.error("Failed to load codex entry from {}: {}", location, e.getMessage());
@@ -83,12 +65,13 @@ public class CodexLoader {
   /**
    * Loads a single codex entry from a resource.
    */
-  private static Optional<CodexEntry> loadEntry(Resource resource, ResourceLocation location) {
+  private static Optional<CodexEntry> loadEntry(Resource resource, ResourceLocation location,
+      List<CodexCategory> categories) {
     try (InputStream inputStream = resource.open();
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
 
       JsonObject json = GSON.fromJson(reader, JsonObject.class);
-      return Optional.of(parseEntry(json, location));
+      return Optional.of(parseEntry(json, location, categories));
 
     } catch (IOException e) {
       CrawlingMysteries.LOGGER.error("Error reading codex file {}: {}", location, e.getMessage());
@@ -96,13 +79,44 @@ public class CodexLoader {
     }
   }
 
+  public static List<CodexCategory> loadAllCategories() {
+    List<CodexCategory> categories = new ArrayList<>();
+    ResourceLocation location = ResourceLocation.fromNamespaceAndPath(CrawlingMysteries.MOD_ID,
+        CODEX_PATH + "/categories.json");
+
+    Optional<Resource> resource = Minecraft.getInstance().getResourceManager().getResource(location);
+    if (resource.isPresent()) {
+      try (InputStream inputStream = resource.get().open();
+          BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8))) {
+
+        JsonArray jsonArray = GSON.fromJson(reader, JsonArray.class);
+        for (JsonElement element : jsonArray) {
+          if (element.isJsonObject()) {
+            categories.add(parseCategoryObject(element.getAsJsonObject()));
+          }
+        }
+      } catch (Exception e) {
+        CrawlingMysteries.LOGGER.error("Failed to load codex categories from {}: {}", location, e.getMessage());
+      }
+    } else {
+      CrawlingMysteries.LOGGER.warn("Codex categories file not found: {}", location);
+    }
+
+    CrawlingMysteries.LOGGER.info("Loaded {} codex categories", categories.size());
+    return categories;
+  }
+
+  // #endregion Loading
+
+  // #region Parsing
+
   /**
    * Parses a JsonObject into a CodexEntry.
    */
-  private static CodexEntry parseEntry(JsonObject json, ResourceLocation source) {
+  private static CodexEntry parseEntry(JsonObject json, ResourceLocation source, List<CodexCategory> categories) {
     String id = getStringOrDefault(json, "id", source.getPath().replace(CODEX_PATH + "/", "").replace(".json", ""));
     String categoryStr = getStringOrDefault(json, "category", "trinkets");
-    CodexCategory category = parseCategory(categoryStr);
+    CodexCategory category = parseCategory(categoryStr, categories);
 
     String title = getStringOrDefault(json, "title", id);
     String subtitle = getStringOrDefault(json, "subtitle", "");
@@ -121,14 +135,7 @@ public class CodexLoader {
       }
     }
 
-    return new CodexEntry(
-        id,
-        category,
-        Component.literal(title),
-        Component.literal(subtitle),
-        icon,
-        pages,
-        unlockStr);
+    return new CodexEntry(id, category, Component.translatable(title), Component.translatable(subtitle), icon, pages, unlockStr);
   }
 
   /**
@@ -149,22 +156,40 @@ public class CodexLoader {
       default -> type = PageType.TEXT;
     }
 
-    return new CodexPage(type, Component.literal(content), extraData);
+    return new CodexPage(type, Component.translatable(content), extraData);
   }
 
   /**
-   * Parses a category string to enum.
+   * Parses a category string to category object.
    */
-  private static CodexCategory parseCategory(String category) {
-    // TODO: find how to do that dynamically
-    return switch (category.toLowerCase()) {
-      case "trinkets" -> CodexCategory.TRINKETS;
-      case "spells" -> CodexCategory.SPELLS;
-      case "lore" -> CodexCategory.LORE;
-      case "bestiary" -> CodexCategory.BESTIARY;
-      default -> CodexCategory.TRINKETS;
-    };
+  private static CodexCategory parseCategory(String categoryId, List<CodexCategory> categories) {
+    return categories.stream()
+        .filter(c -> c.getId().equalsIgnoreCase(categoryId))
+        .findFirst().orElseGet(() -> {
+          if (!categories.isEmpty())
+            return categories.get(0);
+          return new CodexCategory("unknown", 0xFFFFFF);
+        });
   }
+
+  /**
+   * Parses a category from JSON object.
+   */
+  private static CodexCategory parseCategoryObject(JsonObject json) {
+    String id = getStringOrDefault(json, "name", "unknown");
+    String colorStr = getStringOrDefault(json, "color", "0xFFFFFF");
+
+    int color = 0xFFFFFF;
+    try {
+      color = Integer.decode(colorStr);
+    } catch (NumberFormatException e) {
+      CrawlingMysteries.LOGGER.warn("Invalid color format for category {}: {}", id, colorStr);
+    }
+
+    return new CodexCategory(id, color);
+  }
+
+  // #endregion Parsing
 
   /**
    * Helper to get a string from JSON with a default value.

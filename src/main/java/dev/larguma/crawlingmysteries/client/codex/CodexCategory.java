@@ -5,18 +5,14 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 
 /**
- * Categories for organizing codex entries.
+ * Category for organizing codex entries.
+ * Loaded from JSON file.
  */
-public enum CodexCategory {
-  TRINKETS("trinkets", 0x6B33D7),
-  SPELLS("spells", 0x32CD32),
-  LORE("lore", 0x9B59B6),
-  BESTIARY("bestiary", 0xFF6347);
-
+public class CodexCategory {
   private final String id;
   private final int color;
 
-  CodexCategory(String id, int color) {
+  public CodexCategory(String id, int color) {
     this.id = id;
     this.color = color;
   }

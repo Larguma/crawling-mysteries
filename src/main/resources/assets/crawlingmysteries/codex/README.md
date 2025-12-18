@@ -10,18 +10,21 @@ The pages are generated from JSON, the text can be formatted with all of Minecra
 {
   // unique id for the page
   "id": "cryptic_eye", 
-  // bestiary, lore, spells, trinkets
+  // defined in "categories.json": bestiary, lore, spells, trinkets, ...
+  // set display name via "codex.crawlingmysteries.category.<category_id>"
   "category": "trinkets",
   // page title
+  // translatable (e.g.: "title": "my.translation.entry1.title", )
   "title": "Cryptic Eye", 
   // page subtitle
+  // translatable (e.g.: "subtitle": "my.translation.entry1.subtitle", )
   "subtitle": "A watchful companion", 
   // page icon path
   "icon": "textures/item/cryptic_eye_2d.png", 
-  // NOT YET IMPLEMENTED
   // condition to unlock the page, can be ALWAYS, HAS_<item_id>, KILLED_<entity_id>
   "unlock_condition": "ALWAYS", 
   "pages": [
+    // all "content" fields are translatable (e.g.: "content": "my.translation.entry1.page1.content", )
     {
       // just show text and nothing else
       "type": "text",

@@ -17,6 +17,7 @@ public class CodexRegistry {
 
   private static final Map<ResourceLocation, CodexEntry> ENTRIES = new HashMap<>();
   private static final Map<CodexCategory, List<CodexEntry>> ENTRIES_BY_CATEGORY = new HashMap<>();
+  private static List<CodexCategory> CATEGORIES = new ArrayList<>();
   private static boolean initialized = false;
 
   /**
@@ -28,23 +29,23 @@ public class CodexRegistry {
       return;
     }
 
-    // Clear existing entries
     ENTRIES.clear();
     ENTRIES_BY_CATEGORY.clear();
+    CATEGORIES.clear();
 
-    // Initialize category lists
-    for (CodexCategory category : CodexCategory.values()) {
+    CATEGORIES = CodexLoader.loadAllCategories();
+    for (CodexCategory category : CATEGORIES) {
       ENTRIES_BY_CATEGORY.put(category, new ArrayList<>());
     }
 
-    // Load entries from JSON files
-    List<CodexEntry> loadedEntries = CodexLoader.loadAllEntries();
+    List<CodexEntry> loadedEntries = CodexLoader.loadAllEntries(CATEGORIES);
     for (CodexEntry entry : loadedEntries) {
       register(entry);
     }
 
     initialized = true;
-    CrawlingMysteries.LOGGER.info("Codex registry initialized with {} entries", ENTRIES.size());
+    CrawlingMysteries.LOGGER.info("Codex registry initialized with {} entries and {} categories", ENTRIES.size(),
+        CATEGORIES.size());
   }
 
   /**
@@ -58,7 +59,9 @@ public class CodexRegistry {
   private static void register(CodexEntry entry) {
     ResourceLocation id = entry.getRegistryId();
     ENTRIES.put(id, entry);
-    ENTRIES_BY_CATEGORY.get(entry.category()).add(entry);
+    // Ensure the list exists even if category wasn't in initial load list (edge
+    // case)
+    ENTRIES_BY_CATEGORY.computeIfAbsent(entry.category(), k -> new ArrayList<>()).add(entry);
     CrawlingMysteries.LOGGER.debug("Registered codex entry: {}", id);
   }
 
@@ -79,6 +82,11 @@ public class CodexRegistry {
   public static List<CodexEntry> getByCategory(CodexCategory category) {
     ensureInitialized();
     return new ArrayList<>(ENTRIES_BY_CATEGORY.getOrDefault(category, List.of()));
+  }
+
+  public static List<CodexCategory> getCategories() {
+    ensureInitialized();
+    return new ArrayList<>(CATEGORIES);
   }
 
   public static int getEntryCount() {

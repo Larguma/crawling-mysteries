@@ -72,7 +72,7 @@ public class CrypticCodexScreen extends Screen {
 
   // State
   private float animationTick = 0;
-  private CodexCategory selectedCategory = CodexCategory.TRINKETS;
+  private CodexCategory selectedCategory = null;
   private CodexEntry selectedEntry = null;
   private int currentPage = 0;
   private int entryScrollOffset = 0;
@@ -124,9 +124,13 @@ public class CrypticCodexScreen extends Screen {
 
     particles = BackgroundParticle.init(this.width, this.height);
     floatingRunes = FloatingRuneParticle.init(this.width, this.height);
+
+    if (selectedCategory == null && !CodexRegistry.getCategories().isEmpty()) {
+      selectedCategory = CodexRegistry.getCategories().get(0);
+    }
+
     refreshEntries();
 
-    // Select first entry if available
     if (!currentEntries.isEmpty() && selectedEntry == null) {
       selectedEntry = currentEntries.get(0);
     }
@@ -196,7 +200,7 @@ public class CrypticCodexScreen extends Screen {
 
     // Category buttons
     int buttonY = y;
-    for (CodexCategory category : CodexCategory.values()) {
+    for (CodexCategory category : CodexRegistry.getCategories()) {
       boolean isSelected = category == selectedCategory;
       boolean isHovered = isMouseOver(mouseX, mouseY, x, buttonY, SIDEBAR_WIDTH, CATEGORY_BUTTON_HEIGHT);
 
@@ -1290,7 +1294,7 @@ public class CrypticCodexScreen extends Screen {
 
     // Check category buttons
     int buttonY = sidebarY;
-    for (CodexCategory category : CodexCategory.values()) {
+    for (CodexCategory category : CodexRegistry.getCategories()) {
       if (isMouseOver((int) mouseX, (int) mouseY, sidebarX, buttonY, SIDEBAR_WIDTH, CATEGORY_BUTTON_HEIGHT)) {
         if (category != selectedCategory) {
           selectedCategory = category;
