@@ -20,6 +20,7 @@ public class ConfigClient {
 
     public final ModConfigSpec.BooleanValue renderTrinkets;
     public final ModConfigSpec.BooleanValue renderPassiveSpellHud;
+    public final ModConfigSpec.BooleanValue renderScreenAnimations;
 
     Client(ModConfigSpec.Builder builder) {
 
@@ -36,6 +37,11 @@ public class ConfigClient {
           .comment(" Whether the passive spell HUD should be rendered")
           .translation(CONFIG_PREFIX + ".render_passive_spell_hud")
           .define("render_passive_spell_hud", true);
+
+      renderScreenAnimations = builder
+          .comment(" Whether screen animations should be rendered")
+          .translation(CONFIG_PREFIX + ".render_screen_animations")
+          .define("render_screen_animations", true);
     }
   }
 }

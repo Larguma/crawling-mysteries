@@ -11,6 +11,7 @@ import org.lwjgl.glfw.GLFW;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.platform.NativeImage;
 
+import dev.larguma.crawlingmysteries.ConfigClient;
 import dev.larguma.crawlingmysteries.CrawlingMysteries;
 import dev.larguma.crawlingmysteries.client.codex.CodexCategory;
 import dev.larguma.crawlingmysteries.client.codex.CodexEntry;
@@ -71,6 +72,7 @@ public class CrypticCodexScreen extends Screen {
   private static final int TEXT_MUTED = 0x888888;
 
   // State
+  private boolean animate;
   private float animationTick = 0;
   private CodexCategory selectedCategory = null;
   private CodexEntry selectedEntry = null;
@@ -120,6 +122,8 @@ public class CrypticCodexScreen extends Screen {
   protected void init() {
     super.init();
 
+    animate = ConfigClient.CLIENT.renderScreenAnimations.get();
+
     PacketDistributor.sendToServer(new RequestStatsPacket());
 
     particles = BackgroundParticle.init(this.width, this.height);
@@ -139,8 +143,10 @@ public class CrypticCodexScreen extends Screen {
   @Override
   public void tick() {
     super.tick();
-    BackgroundParticle.update(particles, this.width, this.height);
-    FloatingRuneParticle.update(floatingRunes, this.width, this.height, this.animationTick);
+    if (animate) {
+      BackgroundParticle.update(particles, this.width, this.height);
+      FloatingRuneParticle.update(floatingRunes, this.width, this.height, this.animationTick);
+    }
   }
 
   @Override
@@ -183,7 +189,10 @@ public class CrypticCodexScreen extends Screen {
     int lineY = 28;
     int lineWidth = 200;
     int lineX = (this.width - lineWidth) / 2;
-    float pulse = 0.5f + 0.5f * (float) Math.sin(this.animationTick * 0.05f);
+    float pulse = 1.0f;
+    if (animate) {
+      pulse = 0.5f + 0.5f * (float) Math.sin(this.animationTick * 0.05f);
+    }
     int alpha = (int) (pulse * 128) + 64;
     guiGraphics.fill(lineX, lineY, lineX + lineWidth, lineY + 1, (alpha << 24) | (PRIMARY_COLOR & 0xFFFFFF));
   }
@@ -589,9 +598,10 @@ public class CrypticCodexScreen extends Screen {
     ResourceLocation iconLocation = ResourceLocation.fromNamespaceAndPath(
         CrawlingMysteries.MOD_ID, "textures/" + spell.icon().getPath() + ".png");
     guiGraphics.blit(iconLocation, iconX, iconY, 0, 0, iconSize, iconSize, iconSize, iconSize);
-    OrbitingStarParticle.renderOrbitingStars(guiGraphics, iconX + iconSize / 2, iconY + iconSize / 2, primaryColor,
-        animationTick,
-        iconSize + 8);
+    if (animate) {
+      OrbitingStarParticle.renderOrbitingStars(guiGraphics, iconX + iconSize / 2, iconY + iconSize / 2, primaryColor,
+          animationTick, iconSize + 8);
+    }
 
     Component spellName = spell.name();
     int nameWidth = this.font.width(spellName);
@@ -918,8 +928,11 @@ public class CrypticCodexScreen extends Screen {
     guiGraphics.drawString(this.font, entityName, centerX - nameWidth / 2, nameY, 0xFFFFFF, true);
 
     // Rotation hint with animated opacity
-    float hintPulse = 0.5f + 0.3f * (float) Math.sin(animationTick * 0.08f);
-    int hintAlpha = (int) (hintPulse * 200);
+    int hintAlpha = 200;
+    if (animate) {
+      float hintPulse = 0.5f + 0.3f * (float) Math.sin(animationTick * 0.08f);
+      hintAlpha = (int) (hintPulse * 200);
+    }
     String rotateHint = "§7⟲ Drag to rotate";
     int hintWidth = this.font.width(rotateHint);
     guiGraphics.drawString(this.font, rotateHint, centerX - hintWidth / 2, nameY + 14, (hintAlpha << 24) | 0x888888,
