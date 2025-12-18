@@ -64,6 +64,9 @@ public class DataGenerators {
     generator.addProvider(event.includeClient(), new ModItemModelProvider(packOutput, existingFileHelper));
 
     generator.addProvider(event.includeClient(),
+        new ModParticleDescriptionProvider(packOutput, existingFileHelper));
+
+    generator.addProvider(event.includeClient(),
         new ModSpriteSourceProvider(packOutput, lookupProvider, existingFileHelper));
 
   }

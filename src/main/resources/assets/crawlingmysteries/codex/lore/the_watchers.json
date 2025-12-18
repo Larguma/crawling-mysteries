@@ -1,0 +1,14 @@
+{
+  "id": "the_watchers",
+  "category": "lore",
+  "title": "The Watchers",
+  "subtitle": "They see all",
+  "icon": "textures/gui/codex/lore/the_watchers.png",
+  "unlock_condition": "HAS_CRYPTIC_EYE",
+  "pages": [
+    {
+      "type": "text",
+      "content": "The Cryptic Eye is not alone. There are others like it, watching from the shadows.\n\nThey call themselves §5The Watchers§r, and they have taken an interest in you."
+    }
+  ]
+}

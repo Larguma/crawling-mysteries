@@ -1,0 +1,19 @@
+{
+  "id": "spell_be_totem",
+  "category": "spells",
+  "title": "Be Totem",
+  "subtitle": "Cheat death",
+  "icon": "textures/spell/be_totem.png",
+  "unlock_condition": "HAS_CRYPTIC_EYE",
+  "pages": [
+    {
+      "type": "spell_info",
+      "extra": "be_totem",
+      "content": "Passive ability - triggers automatically when you take fatal damage."
+    },
+    {
+      "type": "text",
+      "content": "After the Cryptic Eye has consumed §e50 totems§r, it unlocks this passive ability.\n\nWhen you would take fatal damage, the Eye will sacrifice some of its stored power to save your life, granting regeneration and fire resistance."
+    }
+  ]
+}

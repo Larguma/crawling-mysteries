@@ -36,6 +36,7 @@ import top.theillusivec4.curios.api.type.capability.ICurioItem;
 public class EternalGuardianMaskItem extends Item implements GeoItem, ICurioItem {
 
   private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
+  // Wait x minutes to attune
   private static final int ATTUNEMENT_MINUTES = 360;
 
   public EternalGuardianMaskItem() {
@@ -63,7 +64,7 @@ public class EternalGuardianMaskItem extends Item implements GeoItem, ICurioItem
           .append(Component.translatable(
               "tooltip.crawlingmysteries" + (ItemDataHelper.isEnabled(stack) ? ".active" : ".inactive"))));
     } else {
-      tooltipComponents.add(Component.translatable("tolltip.crawlingmysteries.press_shift"));
+      tooltipComponents.add(Component.translatable("tooltip.crawlingmysteries.press_shift"));
     }
 
     super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);

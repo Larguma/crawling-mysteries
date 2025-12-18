@@ -5,7 +5,10 @@ import org.lwjgl.glfw.GLFW;
 import com.mojang.blaze3d.platform.InputConstants;
 
 import dev.larguma.crawlingmysteries.CrawlingMysteries;
+import dev.larguma.crawlingmysteries.client.screen.CrypticCodexScreen;
 import dev.larguma.crawlingmysteries.client.screen.SpellSelectMenuScreen;
+import dev.larguma.crawlingmysteries.item.ModItems;
+import dev.larguma.crawlingmysteries.item.helper.ItemHelper;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.neoforged.api.distmarker.Dist;
@@ -25,6 +28,12 @@ public class KeyMappingsEvents {
       GLFW.GLFW_KEY_V,
       KEY_CATEGORY_CRAWLING_MYSTERIES));
 
+  public static final Lazy<KeyMapping> OPEN_CODEX = Lazy.of(() -> new KeyMapping(
+      "key.crawlingmysteries.open_codex",
+      InputConstants.Type.KEYSYM,
+      GLFW.GLFW_KEY_H,
+      KEY_CATEGORY_CRAWLING_MYSTERIES));
+
   @SubscribeEvent
   public static void onClientTick(ClientTickEvent.Post event) {
     Minecraft minecraft = Minecraft.getInstance();
@@ -33,11 +42,20 @@ public class KeyMappingsEvents {
         minecraft.setScreen(new SpellSelectMenuScreen());
       }
     }
+
+    while (OPEN_CODEX.get().consumeClick()) {
+      if (minecraft.player != null && minecraft.screen == null) {
+        if (ItemHelper.hasItem(minecraft.player, ModItems.CRYPTIC_EYE.get())) {
+          minecraft.setScreen(new CrypticCodexScreen());
+        }
+      }
+    }
   }
 
   @SubscribeEvent
   public static void registerBindings(RegisterKeyMappingsEvent event) {
     event.register(OPEN_SPELL_MENU.get());
+    event.register(OPEN_CODEX.get());
   }
 
 }

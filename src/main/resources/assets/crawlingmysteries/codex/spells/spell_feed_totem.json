@@ -1,0 +1,19 @@
+{
+  "id": "spell_feed_totem",
+  "category": "spells",
+  "title": "Feed Totem",
+  "subtitle": "Sacrifice for power",
+  "icon": "textures/spell/feed_totem.png",
+  "unlock_condition": "HAS_CRYPTIC_EYE",
+  "pages": [
+    {
+      "type": "spell_info",
+      "extra": "feed_totem",
+      "content": "Requires a Totem of Undying in your inventory to activate."
+    },
+    {
+      "type": "text",
+      "content": "This spell allows you to feed a §eTotem of Undying§r to your Cryptic Eye from anywhere in your inventory.\n\nThe Eye speaks when fed, revealing fragments of its mysterious nature."
+    }
+  ]
+}

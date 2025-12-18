@@ -1,0 +1,27 @@
+{
+  "id": "cryptic_eye",
+  "category": "trinkets",
+  "title": "Cryptic Eye",
+  "subtitle": "A watchful companion",
+  "icon": "textures/item/cryptic_eye_2d.png",
+  "unlock_condition": "HAS_CRYPTIC_EYE",
+  "pages": [
+    {
+      "type": "item_showcase",
+      "extra": "crawlingmysteries:cryptic_eye",
+      "content": "A mysterious eye that seems to have chosen you as its bearer. It watches over you with an intelligence that feels... ancient."
+    },
+    {
+      "type": "text",
+      "content": "§5The Cryptic Eye§r appeared with you when you first awoke in this world. Its origins are unknown, but it seems to have chosen you as its bearer.\n\nThe Eye watches over you with an intelligence that feels... §oancient§r."
+    },
+    {
+      "type": "text",
+      "content": "§6Feeding§r\n\nThe Eye hungers for §eTotem of Undying§r. When you hold one, the Eye will consume it, growing stronger with each sacrifice.\n\nEach 5 totems consumed grants §c+1 max health§r."
+    },
+    {
+      "type": "text",
+      "content": "§6Totem Absorption§r\n\nAfter consuming §e50 totems§r, the Eye becomes fully satiated and unlocks a new power: it can act as a §eTotem of Undying§r itself, saving you from death every 5 minutes."
+    }
+  ]
+}

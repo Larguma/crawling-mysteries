@@ -1,6 +1,8 @@
 package dev.larguma.crawlingmysteries.block.custom;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import com.mojang.authlib.GameProfile;
@@ -11,9 +13,9 @@ import dev.larguma.crawlingmysteries.block.ModBlocks;
 import dev.larguma.crawlingmysteries.block.entity.TombstoneBlockEntity;
 import dev.larguma.crawlingmysteries.entity.ModEntities;
 import dev.larguma.crawlingmysteries.entity.custom.EternalGuardianEntity;
+import dev.larguma.crawlingmysteries.util.SlottedItemStack;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
-import net.minecraft.core.NonNullList;
 import net.minecraft.core.particles.ParticleTypes;
 import net.minecraft.core.particles.SimpleParticleType;
 import net.minecraft.network.chat.Component;
@@ -24,6 +26,7 @@ import net.minecraft.util.RandomSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.Entity.RemovalReason;
 import net.minecraft.world.entity.MobSpawnType;
+import net.minecraft.world.entity.player.Inventory;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
@@ -47,6 +50,9 @@ import net.minecraft.world.phys.AABB;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
+import top.theillusivec4.curios.api.CuriosApi;
+import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
+import top.theillusivec4.curios.api.type.inventory.IDynamicStackHandler;
 
 public class TombstoneBlock extends BaseEntityBlock implements SimpleWaterloggedBlock {
   public static final MapCodec<TombstoneBlock> CODEC = simpleCodec(TombstoneBlock::new);
@@ -159,11 +165,11 @@ public class TombstoneBlock extends BaseEntityBlock implements SimpleWaterlogged
 
   @Override
   public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
-    dropAllGrave(level, pos, player);
+    restoreGraveItems(level, pos, player);
     return super.playerWillDestroy(level, pos, state, player);
   }
 
-  public void dropAllGrave(Level level, BlockPos pos, Player player) {
+  public void restoreGraveItems(Level level, BlockPos pos, Player player) {
     if (level.isClientSide())
       return;
 
@@ -171,21 +177,91 @@ public class TombstoneBlock extends BaseEntityBlock implements SimpleWaterlogged
 
     if (!(be instanceof TombstoneBlockEntity))
       return;
-    TombstoneBlockEntity blockEntity = (TombstoneBlockEntity) be;
 
+    TombstoneBlockEntity blockEntity = (TombstoneBlockEntity) be;
     blockEntity.setChanged();
 
-    if (blockEntity.getItems() == null)
-      return;
+    List<SlottedItemStack> slottedItems = blockEntity.getSlottedItems();
+    List<ItemStack> overflowItems = new ArrayList<>();
 
-    for (ItemStack stack : blockEntity.getItems()) {
-      player.drop(stack, true, false);
+    // Restore items to their original slots
+    for (SlottedItemStack slottedItem : slottedItems) {
+      if (slottedItem.stack().isEmpty()) {
+        continue;
+      }
+
+      boolean restored = false;
+
+      if (slottedItem.isMainInventory()) {
+        int slot = slottedItem.slotIndex();
+        if (slot >= 0 && slot < player.getInventory().items.size()) {
+          if (player.getInventory().items.get(slot).isEmpty()) {
+            player.getInventory().items.set(slot, slottedItem.stack().copy());
+            restored = true;
+          }
+        }
+      } else if (slottedItem.isArmor()) {
+        int slot = slottedItem.slotIndex();
+        if (slot >= 0 && slot < player.getInventory().armor.size()) {
+          if (player.getInventory().armor.get(slot).isEmpty()) {
+            player.getInventory().armor.set(slot, slottedItem.stack().copy());
+            restored = true;
+          }
+        }
+      } else if (slottedItem.isOffhand()) {
+        int slot = slottedItem.slotIndex();
+        if (slot >= 0 && slot < player.getInventory().offhand.size()) {
+          if (player.getInventory().offhand.get(slot).isEmpty()) {
+            player.getInventory().offhand.set(slot, slottedItem.stack().copy());
+            restored = true;
+          }
+        }
+      } else if (slottedItem.isCurios()) {
+        restored = restoreCuriosItem(player, slottedItem);
+      }
+
+      if (!restored) {
+        overflowItems.add(slottedItem.stack().copy());
+      }
     }
 
-    blockEntity.setItems(NonNullList.of(ItemStack.EMPTY));
+    // Place overflow items in any available slot
+    for (ItemStack stack : overflowItems) {
+      if (!stack.isEmpty()) {
+        player.getInventory().placeItemBackInInventory(stack);
+      }
+    }
+
+    blockEntity.setSlottedItems(new ArrayList<>());
   }
 
-  public static void placeTombstone(Player player, List<ItemStack> trinketStacks) {
+  private boolean restoreCuriosItem(Player player, SlottedItemStack slottedItem) {
+    Optional<ICuriosItemHandler> curiosInventory = CuriosApi.getCuriosInventory(player);
+    if (curiosInventory.isEmpty()) {
+      return false;
+    }
+
+    ICuriosItemHandler handler = curiosInventory.get();
+    String slotId = slottedItem.curiosSlotId();
+    int slotIndex = slottedItem.slotIndex();
+    boolean isCosmetic = slottedItem.isCosmetic();
+
+    return handler.getCurios().entrySet().stream()
+        .filter(entry -> entry.getKey().equals(slotId)).findFirst()
+        .map(entry -> {
+          IDynamicStackHandler stacks = isCosmetic ? entry.getValue().getCosmeticStacks()
+              : entry.getValue().getStacks();
+          if (slotIndex >= 0 && slotIndex < stacks.getSlots()) {
+            if (stacks.getStackInSlot(slotIndex).isEmpty()) {
+              stacks.setStackInSlot(slotIndex, slottedItem.stack().copy());
+              return true;
+            }
+          }
+          return false;
+        }).orElse(false);
+  }
+
+  public static void placeTombstone(Player player, List<SlottedItemStack> trinketStacks) {
     Level level = player.getCommandSenderWorld();
     if (level.isClientSide || player.isFakePlayer()) {
       return;
@@ -199,12 +275,35 @@ public class TombstoneBlock extends BaseEntityBlock implements SimpleWaterlogged
     BlockState blockState = level.getBlockState(blockPos);
     Block block = blockState.getBlock();
 
-    NonNullList<ItemStack> combinedInventory = NonNullList.create();
+    List<SlottedItemStack> allSlottedItems = new ArrayList<>();
 
-    combinedInventory.addAll(player.getInventory().items);
-    combinedInventory.addAll(player.getInventory().armor);
-    combinedInventory.addAll(player.getInventory().offhand);
-    combinedInventory.addAll(trinketStacks);
+    // Main inventory items (slots 0-35)
+    Inventory inventory = player.getInventory();
+    for (int i = 0; i < inventory.items.size(); i++) {
+      ItemStack stack = inventory.items.get(i);
+      if (!stack.isEmpty()) {
+        allSlottedItems.add(SlottedItemStack.forMainInventory(stack.copy(), i));
+      }
+    }
+
+    // Armor items (slots 100-103)
+    for (int i = 0; i < inventory.armor.size(); i++) {
+      ItemStack stack = inventory.armor.get(i);
+      if (!stack.isEmpty()) {
+        allSlottedItems.add(SlottedItemStack.forArmor(stack.copy(), i));
+      }
+    }
+
+    // Offhand items (slot 150)
+    for (int i = 0; i < inventory.offhand.size(); i++) {
+      ItemStack stack = inventory.offhand.get(i);
+      if (!stack.isEmpty()) {
+        allSlottedItems.add(SlottedItemStack.forOffhand(stack.copy(), i));
+      }
+    }
+
+    // Curios items (slot info)
+    allSlottedItems.addAll(trinketStacks);
 
     boolean placed = false;
 
@@ -214,7 +313,7 @@ public class TombstoneBlock extends BaseEntityBlock implements SimpleWaterlogged
         UUID guardianUuid = spawnEternalGuardian(level, pos, player.getGameProfile());
         placed = level.setBlockAndUpdate(pos, state);
         TombstoneBlockEntity tombstoneBlockEntity = new TombstoneBlockEntity(pos, state);
-        tombstoneBlockEntity.setItems(combinedInventory);
+        tombstoneBlockEntity.setSlottedItems(allSlottedItems);
         tombstoneBlockEntity.setTombstoneOwner(player.getGameProfile());
         tombstoneBlockEntity.setXp(player.totalExperience);
         tombstoneBlockEntity.setGuardianUUID(guardianUuid);

@@ -105,8 +105,6 @@ public class ModDataComponents {
     return value != null ? value : (T) info.defaultValue;
   }
 
-  // #endregion Command Support
-
   public enum ComponentType {
     BOOLEAN {
       @Override
@@ -179,4 +177,6 @@ public class ModDataComponents {
   private record ComponentInfo<T>(DeferredHolder<DataComponentType<?>, DataComponentType<T>> holder, ComponentType type,
       T defaultValue) {
   }
+
+  // #endregion Command Support
 }

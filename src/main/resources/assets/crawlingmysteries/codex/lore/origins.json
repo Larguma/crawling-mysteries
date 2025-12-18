@@ -1,0 +1,23 @@
+{
+  "id": "origins",
+  "category": "lore",
+  "title": "Origins",
+  "subtitle": "The beginning",
+  "icon": "textures/gui/codex/lore/origins.png",
+  "unlock_condition": "ALWAYS",
+  "pages": [
+    {
+      "type": "image",
+      "extra": "textures/gui/codex/image/origins_illustration.png",
+      "content": "Ancient symbols found throughout the Deep Dark"
+    },
+    {
+      "type": "text",
+      "content": "§oWhere do these artifacts come from? Who created them, and why did they choose you?§r\n\nThe answers lie scattered across the world, waiting to be discovered..."
+    },
+    {
+      "type": "text",
+      "content": "Some say the trinkets were forged in the End, by beings older than the Ender Dragon itself. Others whisper of a connection to the Deep Dark...\n\n§8More will be revealed as you bond with your trinkets.§r"
+    }
+  ]
+}

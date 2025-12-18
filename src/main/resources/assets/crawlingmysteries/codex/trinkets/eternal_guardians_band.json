@@ -1,0 +1,23 @@
+{
+  "id": "eternal_guardians_band",
+  "category": "trinkets",
+  "title": "Eternal Guardian's Band",
+  "subtitle": "Protection from beyond death",
+  "icon": "textures/item/eternal_guardians_band_2d.png",
+  "unlock_condition": "HAS_ETERNAL_GUARDIANS_BAND",
+  "pages": [
+    {
+      "type": "item_showcase",
+      "extra": "crawlingmysteries:eternal_guardians_band",
+      "content": "An ancient ring found in the depths of the Ancient City. When first discovered, it is broken and dormant."
+    },
+    {
+      "type": "text",
+      "content": "§5The Eternal Guardian's Band§r is an ancient ring found in the depths of the Ancient City. When first discovered, it is broken and dormant.\n\nTo attune to the ring, you must §csuck the souls§r of hostile creatures."
+    },
+    {
+      "type": "text",
+      "content": "§6Death Protection§r\n\nOnce attuned, when you die with the ring equipped, a §5Tombstone§r will be created containing all your items and experience.\n\nAn §cEternal Guardian§r will spawn to protect your belongings from other players."
+    }
+  ]
+}

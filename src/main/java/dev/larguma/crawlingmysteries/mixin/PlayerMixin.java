@@ -13,6 +13,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import dev.larguma.crawlingmysteries.Config;
 import dev.larguma.crawlingmysteries.block.custom.TombstoneBlock;
 import dev.larguma.crawlingmysteries.item.ModItems;
+import dev.larguma.crawlingmysteries.item.helper.ItemDataHelper;
+import dev.larguma.crawlingmysteries.util.SlottedItemStack;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentEffectComponents;
@@ -20,6 +22,7 @@ import net.minecraft.world.item.enchantment.EnchantmentHelper;
 import net.minecraft.world.level.GameRules;
 import net.neoforged.neoforge.items.IItemHandlerModifiable;
 import top.theillusivec4.curios.api.CuriosApi;
+import top.theillusivec4.curios.api.SlotResult;
 import top.theillusivec4.curios.api.type.capability.ICurio.DropRule;
 import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 
@@ -34,37 +37,40 @@ public abstract class PlayerMixin {
 
     Player player = (Player) (Object) this;
     boolean keepInventory = player.level().getGameRules().getBoolean(GameRules.RULE_KEEPINVENTORY);
-    List<ItemStack> trinketStacks = new ArrayList<>();
+    List<SlottedItemStack> trinketStacks = new ArrayList<>();
 
     Optional<ICuriosItemHandler> curiosInventory = CuriosApi.getCuriosInventory(player);
-    boolean hasEternalGuardiansBand = curiosInventory.map(inv -> inv.isEquipped(ModItems.ETERNAL_GUARDIANS_BAND.get()))
-        .orElse(false);
+    List<SlotResult> eternalGuardiansBand = curiosInventory
+        .map(inv -> inv.findCurios(ModItems.ETERNAL_GUARDIANS_BAND.get())).orElse(List.of());
+    boolean hasEternalGuardiansBand = eternalGuardiansBand.stream().anyMatch(slot -> {
+      return ItemDataHelper.getAttunement(slot.stack()) >= 1.0f;
+    });
     curiosInventory.ifPresent(inv -> collectTrinkets(inv, trinketStacks, keepInventory));
 
     if (hasEternalGuardiansBand) {
       TombstoneBlock.placeTombstone(player, trinketStacks);
       player.getInventory().clearContent();
     } else {
-      for (ItemStack stack : trinketStacks) {
-        player.drop(stack, true, false);
+      for (SlottedItemStack slottedStack : trinketStacks) {
+        player.drop(slottedStack.stack(), true, false);
       }
       player.getInventory().dropAll();
     }
   }
 
   @Unique
-  private void collectTrinkets(ICuriosItemHandler curiosInventory, List<ItemStack> trinketStacks,
+  private void collectTrinkets(ICuriosItemHandler curiosInventory, List<SlottedItemStack> trinketStacks,
       boolean keepInventory) {
     curiosInventory.getCurios().forEach((slotId, stacksHandler) -> {
       DropRule dropRule = stacksHandler.getDropRule();
-      collectFromHandler(stacksHandler.getStacks(), trinketStacks, dropRule, keepInventory);
-      collectFromHandler(stacksHandler.getCosmeticStacks(), trinketStacks, dropRule, keepInventory);
+      collectFromHandler(stacksHandler.getStacks(), trinketStacks, dropRule, keepInventory, slotId, false);
+      collectFromHandler(stacksHandler.getCosmeticStacks(), trinketStacks, dropRule, keepInventory, slotId, true);
     });
   }
 
   @Unique
-  private void collectFromHandler(IItemHandlerModifiable handler, List<ItemStack> trinketStacks,
-      DropRule dropRule, boolean keepInventory) {
+  private void collectFromHandler(IItemHandlerModifiable handler, List<SlottedItemStack> trinketStacks,
+      DropRule dropRule, boolean keepInventory, String slotId, boolean isCosmetic) {
     for (int i = 0; i < handler.getSlots(); i++) {
       ItemStack stack = handler.getStackInSlot(i);
       if (stack.isEmpty()) {
@@ -73,7 +79,7 @@ public abstract class PlayerMixin {
 
       switch (dropRule) {
         case ALWAYS_DROP -> {
-          trinketStacks.add(stack);
+          trinketStacks.add(SlottedItemStack.forCurios(stack.copy(), slotId, i, isCosmetic));
           handler.setStackInSlot(i, ItemStack.EMPTY);
         }
         case DESTROY -> handler.setStackInSlot(i, ItemStack.EMPTY);
@@ -81,7 +87,7 @@ public abstract class PlayerMixin {
           /* do nothing */ }
         default -> {
           if (!keepInventory && !EnchantmentHelper.has(stack, EnchantmentEffectComponents.PREVENT_EQUIPMENT_DROP)) {
-            trinketStacks.add(stack);
+            trinketStacks.add(SlottedItemStack.forCurios(stack.copy(), slotId, i, isCosmetic));
             handler.setStackInSlot(i, ItemStack.EMPTY);
           }
         }

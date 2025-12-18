@@ -3,6 +3,7 @@ plugins {
     id 'maven-publish'
     id 'net.neoforged.moddev' version '2.0.119'
     id 'idea'
+    id 'eclipse'
 }
 
 tasks.named('wrapper', Wrapper).configure {
@@ -202,6 +203,20 @@ idea {
     module {
         downloadSources = true
         downloadJavadoc = true
+    }
+}
+
+eclipse {
+    classpath {
+        file {
+            whenMerged { cp ->
+                // Force VS Code/Eclipse to recognize the generated folder as a source folder
+                def generated = new org.gradle.plugins.ide.eclipse.model.SourceFolder('src/generated/resources', null)
+                if (!cp.entries.find { it.path == 'src/generated/resources' }) {
+                    cp.entries.add(generated)
+                }
+            }
+        }
     }
 }
 

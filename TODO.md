@@ -10,6 +10,8 @@ Advancements to progress
 
 [Curios API](https://docs.illusivesoulworks.com/category/curios)
 
+Deep lore
+
 ## Items list
 
 - [ ] New Metal (Mysterium ?) (for crafting trinkets)
@@ -53,7 +55,7 @@ Advancements to progress
 
 ### Cryptic Eye
 
-- [ ] in-game docu
+- [x] in-game docu
 - [x] find another use
 - [x] feed it undying totem to gain max health (or absorbtion (or regen or resistance, to op ?)) ?
 - [x] when feed x (50),change spell & act as a totem every x (5) minutes
@@ -62,10 +64,13 @@ Advancements to progress
 
 ### Eternal Guardian's Band
 
-- [ ] found broken, need souls, Hostile(100) (fill bar to repair)
+- [x] found broken, need souls, Hostile(100) (attunement)
+  - [x] animation to suck the soul inside you
+  - [ ] make custom soul_suckle particles
 - [ ] Better tombstones
 - [x] 3d
 - [x] Spawn '"Eternal Guardian"
+- [x] put the item back in inv when retrieving the tombstone
 
 ## Blocks list
 
@@ -106,10 +111,23 @@ Advancements to progress
 - Tavern, NPC (shop ? for what ?), beer
 - Swampwitch hut
 
+### Waypoints
+
+- because why not ?
+  - might be really useless
+- or maybe waystones or smth like it
+- with nice ui and lore explanaition
+
 ### Keybinds (replace)
 
 - [x] replace keybinds by wheel
+- [ ] keybind last used
 
 ### displayClientMessage
 
 - [x] add a custom ui to make it pretty
+
+## Random
+
+- [ ] make an external lib out of the cryptic codex, maybe
+- [ ] add [architectury](https://modrinth.com/mod/architectury-api)

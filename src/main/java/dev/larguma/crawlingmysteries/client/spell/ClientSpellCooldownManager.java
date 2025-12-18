@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import dev.larguma.crawlingmysteries.spell.Spell;
+import dev.larguma.crawlingmysteries.spell.SpellCooldownManager;
 
 public class ClientSpellCooldownManager {
 
@@ -57,19 +58,7 @@ public class ClientSpellCooldownManager {
   }
 
   public static String getRemainingCooldownFormatted(Spell spell) {
-    int seconds = getRemainingCooldownSeconds(spell);
-    if (seconds <= 0) {
-      return "0s";
-    } else if (seconds >= 60) {
-      int mins = seconds / 60;
-      int secs = seconds % 60;
-      return String.format("%dm %ds", mins, secs);
-    } else if (seconds >= 3600) {
-      int hours = seconds / 3600;
-      int mins = (seconds % 3600) / 60;
-      return String.format("%dh %dm", hours, mins);
-    }
-    return String.format("%ds", seconds);
+    return SpellCooldownManager.cooldownFormatted(getRemainingCooldownSeconds(spell));
   }
 
   /**
