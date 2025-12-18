@@ -145,7 +145,7 @@ public class CrypticCodexScreen extends Screen {
 
   @Override
   public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-    this.animationTick += partialTick;
+    this.animationTick += this.minecraft.getTimer().getRealtimeDeltaTicks();
 
     // Render background
     renderTransparentBackground(guiGraphics);

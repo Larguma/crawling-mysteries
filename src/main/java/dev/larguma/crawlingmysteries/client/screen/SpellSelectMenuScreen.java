@@ -74,8 +74,8 @@ public class SpellSelectMenuScreen extends Screen {
 
   @Override
   public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-    animationTick += partialTick;
-    
+    this.animationTick += this.minecraft.getTimer().getRealtimeDeltaTicks();
+
     renderTransparentBackground(guiGraphics);
     EyeRenderer.renderEye(guiGraphics, mouseX, mouseY, animationTick, PRIMARY_COLOR, 
     7 , 7, 32);
