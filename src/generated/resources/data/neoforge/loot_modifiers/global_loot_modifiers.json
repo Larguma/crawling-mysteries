@@ -1,6 +1,20 @@
 {
   "entries": [
-    "crawlingmysteries:eternal_guardians_band_from_ancient_city"
+    "crawlingmysteries:eternal_guardians_band_from_ancient_city",
+    "crawlingmysteries:lucky_horseshoe_from_dungeon",
+    "crawlingmysteries:lucky_horseshoe_from_mineshaft",
+    "crawlingmysteries:lucky_horseshoe_from_desert_pyramid",
+    "crawlingmysteries:lucky_horseshoe_from_jungle_temple",
+    "crawlingmysteries:lucky_horseshoe_from_stronghold_corridor",
+    "crawlingmysteries:lucky_horseshoe_from_stronghold_crossing",
+    "crawlingmysteries:lucky_horseshoe_from_stronghold_library",
+    "crawlingmysteries:lucky_horseshoe_from_village_weaponsmith",
+    "crawlingmysteries:lucky_horseshoe_from_village_toolsmith",
+    "crawlingmysteries:lucky_horseshoe_from_woodland_mansion",
+    "crawlingmysteries:lucky_horseshoe_from_pillager_outpost",
+    "crawlingmysteries:lucky_horseshoe_from_ruined_portal",
+    "crawlingmysteries:lucky_horseshoe_from_shipwreck_treasure",
+    "crawlingmysteries:lucky_horseshoe_from_buried_treasure"
   ],
   "replace": false
 }

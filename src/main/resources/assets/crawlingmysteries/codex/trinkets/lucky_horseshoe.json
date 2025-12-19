@@ -1,0 +1,29 @@
+{
+  "id": "lucky_horseshoe",
+  "category": "trinkets",
+  "title": "Lucky Horseshoe",
+  "subtitle": "A trinket of good fortune",
+  "icon": "textures/item/lucky_horseshoe_tier_1.png",
+  "unlock_condition": "HAS_LUCKY_HORSESHOE",
+  "pages": [
+    {
+      "type": "text",
+      "content": "§5The Lucky Horseshoe§r is a trinket that brings good fortune to its bearer. It might negate some fall damage.\n\nThere is a total of §a4 tiers§r of Lucky Horseshoes, each providing increased benefits. Upgrade your horseshoe to enhance its luck!\n\nTo upgrade/downgrade a §bLucky Horseshoe§r, arrange §a8 Emeralds§r, §a8 Diamonds§r or §a8 Netherite Ingots§r around a §bLucky Horseshoe§r in a crafting table.\n\nEvery tier can be upgraded to every other tier using the same recipe. The material used determines the tier of the resulting horseshoe."
+    },
+    {
+      "type": "crafting",
+      "extra": "crawlingmysteries:lucky_horseshoe_upgrade_tier_2",
+      "content": "§6Upgrade to Tier 2§r using §a8 Emeralds§r."
+    },
+    {
+      "type": "crafting",
+      "extra": "crawlingmysteries:lucky_horseshoe_upgrade_tier_3",
+      "content": "§6Upgrade to Tier 3§r using §a8 Diamonds§r."
+    },
+    {
+      "type": "crafting",
+      "extra": "crawlingmysteries:lucky_horseshoe_upgrade_tier_4",
+      "content": "§6Upgrade to Tier 4§r using §a8 Netherite Ingots§r."
+    }
+  ]
+}

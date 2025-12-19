@@ -1,6 +1,0 @@
-{
-  "parent": "minecraft:item/handheld",
-  "textures": {
-    "layer0": "crawlingmysteries:item/cryptic_eye_2d"
-  }
-}

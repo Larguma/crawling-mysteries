@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "crawlingmysteries:item/cryptic_eye_2d"
+  }
+}

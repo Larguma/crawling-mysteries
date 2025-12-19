@@ -6,6 +6,7 @@ import dev.larguma.crawlingmysteries.item.custom.CrypticEyeItem;
 import dev.larguma.crawlingmysteries.item.custom.EternalGuardianHeadItem;
 import dev.larguma.crawlingmysteries.item.custom.EternalGuardianMaskItem;
 import dev.larguma.crawlingmysteries.item.custom.EternalGuardiansBandItem;
+import dev.larguma.crawlingmysteries.item.custom.LuckyHorseshoe;
 import net.minecraft.world.item.Item;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.common.DeferredSpawnEggItem;
@@ -23,6 +24,8 @@ public class ModItems {
       EternalGuardianHeadItem::new);
   public static final DeferredItem<Item> ETERNAL_GUARDIAN_MASK = ITEMS.register("eternal_guardian_mask",
       EternalGuardianMaskItem::new);
+  public static final DeferredItem<Item> LUCKY_HORSESHOE = ITEMS.register("lucky_horseshoe",
+      LuckyHorseshoe::new);
   // #endregion Custom
 
   // #region Egg

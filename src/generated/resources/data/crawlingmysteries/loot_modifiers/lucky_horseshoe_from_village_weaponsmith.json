@@ -1,0 +1,16 @@
+{
+  "type": "crawlingmysteries:add_item",
+  "chance": 0.2,
+  "components": {
+    "crawlingmysteries:horseshoe_tier": {
+      "tier": 1
+    }
+  },
+  "conditions": [
+    {
+      "condition": "neoforge:loot_table_id",
+      "loot_table_id": "minecraft:chests/village/village_weaponsmith"
+    }
+  ],
+  "item": "crawlingmysteries:lucky_horseshoe"
+}

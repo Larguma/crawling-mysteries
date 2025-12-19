@@ -17,12 +17,12 @@
     },
     {
       "type": "crafting",
-      "extra": "crawlingmysteries:eternal_guardian_mask;_,_,_,minecraft:leather,crawlingmysteries:eternal_guardian_head,minecraft:leather,_,_,_",
-      "content": "Craft the mask by surrounding an Eternal Guardian Head with gold ingots."
+      "extra": "crawlingmysteries:eternal_guardian_mask",
+      "content": "Craft the mask by adding two leather pieces to the sides of the §5Eternal Guardian's Head§r."
     },
     {
       "type": "text",
-      "content": "§6Growing Power§r\n\nThe longer you wear the mask, the more powerful the Spectral Gaze ability becomes, increasing its range and duration."
+      "content": "§6Growing Power§r\n\nThe longer you wear the mask, the more powerful the Spectral Gaze ability becomes, increasing its range and adding colors."
     }
   ]
 }

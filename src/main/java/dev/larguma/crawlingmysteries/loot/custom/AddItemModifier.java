@@ -5,6 +5,7 @@ import com.mojang.serialization.MapCodec;
 import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
@@ -18,14 +19,23 @@ public class AddItemModifier extends LootModifier {
       .mapCodec(inst -> LootModifier.codecStart(inst)
           .and(BuiltInRegistries.ITEM.byNameCodec().fieldOf("item").forGetter(e -> e.item))
           .and(Codec.FLOAT.fieldOf("chance").forGetter(e -> e.chance))
+          .and(DataComponentPatch.CODEC.optionalFieldOf("components", DataComponentPatch.EMPTY)
+              .forGetter(e -> e.components))
           .apply(inst, AddItemModifier::new));
+
   private final Item item;
   private final float chance;
+  private final DataComponentPatch components;
 
   public AddItemModifier(LootItemCondition[] conditionsIn, Item item, float chance) {
+    this(conditionsIn, item, chance, DataComponentPatch.EMPTY);
+  }
+
+  public AddItemModifier(LootItemCondition[] conditionsIn, Item item, float chance, DataComponentPatch components) {
     super(conditionsIn);
     this.item = item;
     this.chance = chance;
+    this.components = components;
   }
 
   @Override
@@ -36,7 +46,9 @@ public class AddItemModifier extends LootModifier {
       }
     }
     if (lootContext.getRandom().nextFloat() <= this.chance) {
-      generatedLoot.add(new ItemStack(this.item));
+      ItemStack stack = new ItemStack(this.item);
+      stack.applyComponents(this.components);
+      generatedLoot.add(stack);
     }
     return generatedLoot;
   }
