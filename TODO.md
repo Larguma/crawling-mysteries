@@ -1,17 +1,5 @@
 # Crawling Mysteries
 
-## General Ideas
-
-Journal to record discoveries (in-game documentation)
-
-Break Geodes on workbench (new block)
-
-Advancements to progress
-
-[Curios API](https://docs.illusivesoulworks.com/category/curios)
-
-Deep lore
-
 ## Items list
 
 - [ ] New Metal (Mysterium ?) (for crafting trinkets)
@@ -22,7 +10,7 @@ Deep lore
 
 ### Trinkets
 
-- [ ] lucky horseshoe, 50% fall damage, upgrade
+- [x] lucky horseshoe, 50% fall damage, upgrade
 
 #### Gems Type
 
@@ -75,6 +63,7 @@ Deep lore
 ## Blocks list
 
 - [ ] bar
+- [ ] beer keg with cutscene
 
 ### Geode workbench
 
@@ -109,6 +98,7 @@ Deep lore
 ### New structures
 
 - Tavern, NPC (shop ? for what ?), beer
+  - cook meal MH style (cutscene)
 - Swampwitch hut
 
 ### Waypoints
@@ -118,10 +108,10 @@ Deep lore
 - or maybe waystones or smth like it
 - with nice ui and lore explanaition
 
-### Keybinds (replace)
+### Keybinds
 
 - [x] replace keybinds by wheel
-- [ ] keybind last used
+- [x] keybind last used
 
 ### displayClientMessage
 

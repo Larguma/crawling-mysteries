@@ -28,6 +28,10 @@ public class ModDataAttachments {
           .copyOnDeath()
           .build());
 
+  public static final Supplier<AttachmentType<String>> LAST_USED_SPELL = ATTACHMENT_TYPES.register(
+      "last_used_spell",
+      () -> AttachmentType.builder(() -> "").serialize(Codec.STRING).copyOnDeath().build());
+
   public static final Supplier<AttachmentType<Set<String>>> UNLOCKED_CODEX_ENTRIES = ATTACHMENT_TYPES.register(
       "unlocked_codex_entries",
       () -> AttachmentType.builder(() -> (Set<String>) new HashSet<String>())
