@@ -11,6 +11,8 @@ import dev.larguma.crawlingmysteries.datagen.loot.ModBlockLootTableProvider;
 import dev.larguma.crawlingmysteries.datagen.loot.ModEntityLootTableProvider;
 import dev.larguma.crawlingmysteries.datagen.loot.ModGlobalLootModifierProvider;
 import dev.larguma.crawlingmysteries.datagen.recipe.ModRecipeProvider;
+import dev.larguma.crawlingmysteries.datagen.sound.ModJukeboxSongProvider;
+import dev.larguma.crawlingmysteries.datagen.sound.ModSoundDefinitionProvider;
 import dev.larguma.crawlingmysteries.datagen.tag.ModBlockTagProvider;
 import dev.larguma.crawlingmysteries.datagen.tag.ModEntityTypeTagProvider;
 import dev.larguma.crawlingmysteries.datagen.tag.ModItemTagProvider;
@@ -72,6 +74,9 @@ public class DataGenerators {
 
     generator.addProvider(event.includeClient(),
         new ModParticleDescriptionProvider(packOutput, existingFileHelper));
+
+    generator.addProvider(event.includeClient(), new ModSoundDefinitionProvider(packOutput, existingFileHelper));
+    generator.addProvider(event.includeClient(), new ModJukeboxSongProvider(packOutput, lookupProvider));
 
     generator.addProvider(event.includeClient(),
         new ModSpriteSourceProvider(packOutput, lookupProvider, existingFileHelper));

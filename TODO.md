@@ -89,6 +89,10 @@
 
 ## Gameplay ideas
 
+### Sentience
+
+- [ ] slap googly eyes to make item sentient
+
 ### Find new items
 
 - In sus sand
@@ -116,6 +120,15 @@
 ### displayClientMessage
 
 - [x] add a custom ui to make it pretty
+
+## Music
+
+- [ ] Main theme music
+- [ ] Tavern music
+- [ ] Swampwitch music
+- [ ] Eternal Guardian music
+- [ ] Codex music
+- [ ] at least 9239475 more tracks
 
 ## Random
 

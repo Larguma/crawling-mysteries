@@ -1,0 +1,10 @@
+{
+  "ost_01": {
+    "sounds": [
+      {
+        "name": "crawlingmysteries:ost_01",
+        "stream": true
+      }
+    ]
+  }
+}
