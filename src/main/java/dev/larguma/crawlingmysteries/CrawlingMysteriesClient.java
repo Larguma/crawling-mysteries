@@ -5,6 +5,7 @@ import dev.larguma.crawlingmysteries.client.ModBlockRenderers;
 import dev.larguma.crawlingmysteries.client.ModEntityRenderers;
 import dev.larguma.crawlingmysteries.client.gui.BetterToastOverlay;
 import dev.larguma.crawlingmysteries.client.gui.PassiveSpellHudOverlay;
+import dev.larguma.crawlingmysteries.client.item.ItemProperty;
 import dev.larguma.crawlingmysteries.particle.ModParticles;
 import dev.larguma.crawlingmysteries.particle.custom.SoulSuckleParticles;
 import net.neoforged.api.distmarker.Dist;
@@ -47,5 +48,6 @@ public class CrawlingMysteriesClient {
   @SubscribeEvent
   static void onClientSetup(FMLClientSetupEvent event) {
     CurioRenderers.register();
+    ItemProperty.register(event);
   }
 }

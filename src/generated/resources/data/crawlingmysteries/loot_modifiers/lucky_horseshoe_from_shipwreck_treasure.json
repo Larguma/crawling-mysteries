@@ -1,0 +1,16 @@
+{
+  "type": "crawlingmysteries:add_item",
+  "chance": 0.1,
+  "components": {
+    "crawlingmysteries:horseshoe_tier": {
+      "tier": 1
+    }
+  },
+  "conditions": [
+    {
+      "condition": "neoforge:loot_table_id",
+      "loot_table_id": "minecraft:chests/shipwreck_treasure"
+    }
+  ],
+  "item": "crawlingmysteries:lucky_horseshoe"
+}

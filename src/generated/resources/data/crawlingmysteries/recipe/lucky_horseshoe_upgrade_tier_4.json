@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "H": {
+      "item": "crawlingmysteries:lucky_horseshoe"
+    },
+    "N": {
+      "item": "minecraft:netherite_ingot"
+    }
+  },
+  "pattern": [
+    "NNN",
+    "NHN",
+    "NNN"
+  ],
+  "result": {
+    "components": {
+      "crawlingmysteries:horseshoe_tier": {
+        "tier": 4
+      }
+    },
+    "count": 1,
+    "id": "crawlingmysteries:lucky_horseshoe"
+  }
+}

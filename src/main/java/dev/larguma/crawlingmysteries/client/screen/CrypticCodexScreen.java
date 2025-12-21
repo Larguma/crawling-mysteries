@@ -11,6 +11,7 @@ import org.lwjgl.glfw.GLFW;
 import com.mojang.blaze3d.platform.Lighting;
 import com.mojang.blaze3d.platform.NativeImage;
 
+import dev.larguma.crawlingmysteries.ConfigClient;
 import dev.larguma.crawlingmysteries.CrawlingMysteries;
 import dev.larguma.crawlingmysteries.client.codex.CodexCategory;
 import dev.larguma.crawlingmysteries.client.codex.CodexEntry;
@@ -18,12 +19,11 @@ import dev.larguma.crawlingmysteries.client.codex.CodexPage;
 import dev.larguma.crawlingmysteries.client.codex.CodexRegistry;
 import dev.larguma.crawlingmysteries.client.codex.CodexUnlockManager;
 import dev.larguma.crawlingmysteries.client.event.KeyMappingsEvents;
-import dev.larguma.crawlingmysteries.networking.packet.RequestStatsPacket;
-import net.neoforged.neoforge.network.PacketDistributor;
 import dev.larguma.crawlingmysteries.client.particle.BackgroundParticle;
 import dev.larguma.crawlingmysteries.client.particle.FloatingRuneParticle;
 import dev.larguma.crawlingmysteries.client.particle.OrbitingStarParticle;
 import dev.larguma.crawlingmysteries.client.render.PanelBorderRenderer;
+import dev.larguma.crawlingmysteries.networking.packet.RequestStatsPacket;
 import dev.larguma.crawlingmysteries.spell.ModSpells;
 import dev.larguma.crawlingmysteries.spell.Spell;
 import dev.larguma.crawlingmysteries.spell.SpellCooldownManager;
@@ -32,6 +32,7 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.entity.EntityRenderDispatcher;
 import net.minecraft.client.resources.sounds.SimpleSoundInstance;
+import net.minecraft.core.NonNullList;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -44,6 +45,11 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.crafting.Ingredient;
+import net.minecraft.world.item.crafting.Recipe;
+import net.minecraft.world.item.crafting.RecipeHolder;
+import net.minecraft.world.item.crafting.ShapedRecipe;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 /**
  * An in-game wiki accessed through the Cryptic Eye.
@@ -71,6 +77,7 @@ public class CrypticCodexScreen extends Screen {
   private static final int TEXT_MUTED = 0x888888;
 
   // State
+  private boolean animate;
   private float animationTick = 0;
   private CodexCategory selectedCategory = null;
   private CodexEntry selectedEntry = null;
@@ -120,6 +127,8 @@ public class CrypticCodexScreen extends Screen {
   protected void init() {
     super.init();
 
+    animate = ConfigClient.CLIENT.renderScreenAnimations.get();
+
     PacketDistributor.sendToServer(new RequestStatsPacket());
 
     particles = BackgroundParticle.init(this.width, this.height);
@@ -139,15 +148,16 @@ public class CrypticCodexScreen extends Screen {
   @Override
   public void tick() {
     super.tick();
-    BackgroundParticle.update(particles, this.width, this.height);
-    FloatingRuneParticle.update(floatingRunes, this.width, this.height, this.animationTick);
+    if (animate) {
+      BackgroundParticle.update(particles, this.width, this.height);
+      FloatingRuneParticle.update(floatingRunes, this.width, this.height, this.animationTick);
+    }
   }
 
   @Override
   public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-    this.animationTick += partialTick;
+    this.animationTick += this.minecraft.getTimer().getRealtimeDeltaTicks();
 
-    // Render background
     renderTransparentBackground(guiGraphics);
     BackgroundParticle.render(guiGraphics, particles, partialTick);
     FloatingRuneParticle.render(guiGraphics, floatingRunes, partialTick);
@@ -184,7 +194,10 @@ public class CrypticCodexScreen extends Screen {
     int lineY = 28;
     int lineWidth = 200;
     int lineX = (this.width - lineWidth) / 2;
-    float pulse = 0.5f + 0.5f * (float) Math.sin(this.animationTick * 0.05f);
+    float pulse = 1.0f;
+    if (animate) {
+      pulse = 0.5f + 0.5f * (float) Math.sin(this.animationTick * 0.05f);
+    }
     int alpha = (int) (pulse * 128) + 64;
     guiGraphics.fill(lineX, lineY, lineX + lineWidth, lineY + 1, (alpha << 24) | (PRIMARY_COLOR & 0xFFFFFF));
   }
@@ -276,16 +289,18 @@ public class CrypticCodexScreen extends Screen {
     int iconSize = 16;
     int iconX = x + 8;
     int iconY = y + (CATEGORY_BUTTON_HEIGHT - iconSize) / 2;
+    int iconPadding = 0;
     ResourceLocation iconLoc = category.getIcon();
-    try {
+
+    if (this.minecraft.getResourceManager().getResource(iconLoc).isPresent()) {
       guiGraphics.blit(iconLoc, iconX, iconY, 0, 0, iconSize, iconSize, iconSize, iconSize);
-    } catch (Exception e) {
-      guiGraphics.fill(iconX, iconY, iconX + iconSize, iconY + iconSize, 0xFF000000 | SECONDARY_COLOR);
+      iconPadding = 20;
     }
 
     // Text
     int textColor = isSelected ? 0xFFFFFF : (isHovered ? 0xDDDDDD : TEXT_COLOR);
-    guiGraphics.drawString(this.font, category.getName(), x + 30, y + (CATEGORY_BUTTON_HEIGHT - 8) / 2,
+    int titleX = x + 8 + iconPadding;
+    guiGraphics.drawString(this.font, category.getName(), titleX, y + (CATEGORY_BUTTON_HEIGHT - 8) / 2,
         textColor, false);
   }
 
@@ -304,25 +319,27 @@ public class CrypticCodexScreen extends Screen {
     }
 
     // Entry icon
-    int iconSize = 16;
+    int iconSize = 0;
     int iconX = x + 10;
-    int iconY = y + (ENTRY_BUTTON_HEIGHT - iconSize) / 2;
+    int iconPadding = 0;
     ResourceLocation iconLoc = entry.icon();
-    try {
+    if (this.minecraft.getResourceManager().getResource(iconLoc).isPresent()) {
+      iconSize = 16;
+      int iconY = y + (ENTRY_BUTTON_HEIGHT - iconSize) / 2;
       guiGraphics.blit(iconLoc, iconX, iconY, 0, 0, iconSize, iconSize, iconSize, iconSize);
-    } catch (Exception e) {
-      guiGraphics.fill(iconX, iconY, iconX + iconSize, iconY + iconSize, 0xFF000000 | SECONDARY_COLOR);
+      iconPadding = 36;
     }
 
     // Truncate title if needed
     String title = entry.title().getString();
-    int maxTitleWidth = SIDEBAR_WIDTH - 36; // Account for icon
+    int maxTitleWidth = SIDEBAR_WIDTH - iconPadding;
     if (this.font.width(title) > maxTitleWidth) {
       title = this.font.plainSubstrByWidth(title, maxTitleWidth - 8) + "...";
     }
 
     int textColor = isSelected ? 0xFFFFFF : (isHovered ? 0xDDDDDD : TEXT_COLOR);
-    guiGraphics.drawString(this.font, title, x + 30, y + (ENTRY_BUTTON_HEIGHT - 8) / 2, textColor, false);
+    guiGraphics.drawString(this.font, title, x + 12 + (int) (iconSize * 1.2), y + (ENTRY_BUTTON_HEIGHT - 8) / 2,
+        textColor, false);
   }
 
   /**
@@ -343,26 +360,39 @@ public class CrypticCodexScreen extends Screen {
     }
 
     // Entry icon in header
-    int headerIconSize = 24;
+    int headerIconSize = 0;
     int headerIconX = x + CONTENT_PADDING;
     int headerIconY = y + CONTENT_PADDING - 2;
     ResourceLocation iconLoc = selectedEntry.icon();
-    try {
+    if (this.minecraft.getResourceManager().getResource(iconLoc).isPresent()) {
+      headerIconSize = 24;
       guiGraphics.blit(iconLoc, headerIconX, headerIconY, 0, 0, headerIconSize, headerIconSize, headerIconSize,
           headerIconSize);
-    } catch (Exception e) {
-      guiGraphics.fill(headerIconX, headerIconY, headerIconX + headerIconSize, headerIconY + headerIconSize,
-          0xFF000000 | SECONDARY_COLOR);
     }
 
     // Entry title
-    int titleX = x + CONTENT_PADDING + headerIconSize + 8;
-    guiGraphics.drawString(this.font, selectedEntry.title(), titleX, y + CONTENT_PADDING,
+    // Truncate
+    String title = selectedEntry.title().getString();
+    if (title.isEmpty()) {
+      title = "Untitled";
+    }
+    int maxTitleWidth = width - CONTENT_PADDING * 2 - (int) (headerIconSize * 1.2);
+    if (this.font.width(title) > maxTitleWidth) {
+      title = this.font.plainSubstrByWidth(title, maxTitleWidth - 6) + "...";
+    }
+
+    int titleX = x + CONTENT_PADDING + (int) (headerIconSize * 1.2);
+    guiGraphics.drawString(this.font, title, titleX, y + CONTENT_PADDING,
         0xFFFFFF, true);
 
     // Subtitle
-    if (!selectedEntry.subtitle().getString().isEmpty()) {
-      guiGraphics.drawString(this.font, selectedEntry.subtitle(), titleX, y + CONTENT_PADDING + 14,
+    String subtitle = selectedEntry.subtitle().getString();
+    if (!subtitle.isEmpty()) {
+      // Truncate
+      if (this.font.width(subtitle) > maxTitleWidth) {
+        subtitle = this.font.plainSubstrByWidth(subtitle, maxTitleWidth - 6) + "...";
+      }
+      guiGraphics.drawString(this.font, subtitle, titleX, y + CONTENT_PADDING + 14,
           TEXT_MUTED, false);
     }
 
@@ -426,21 +456,18 @@ public class CrypticCodexScreen extends Screen {
    * Renders a text page with wrapping and scrolling.
    */
   public void renderTextPage(GuiGraphics guiGraphics, int x, int y, int width, int maxHeight, CodexPage page) {
-    List<FormattedCharSequence> lines = this.font.split(page.content(), width);
-    int totalHeight = lines.size() * 12;
-    maxContentScroll = Math.max(0, totalHeight - maxHeight);
+    int contentHeight = 10;
+    if (!page.content().getString().isEmpty()) {
+      List<FormattedCharSequence> lines = this.font.split(page.content(), width);
+      contentHeight += lines.size() * 12;
+    }
+
+    maxContentScroll = Math.max(0, contentHeight - maxHeight);
     contentScrollOffset = Mth.clamp(contentScrollOffset, 0, maxContentScroll);
 
     guiGraphics.enableScissor(x, y, x + width, y + maxHeight);
 
-    int lineY = y - contentScrollOffset;
-    for (FormattedCharSequence line : lines) {
-      // Only render visible lines
-      if (lineY >= y - 12 && lineY <= y + maxHeight + 12) {
-        guiGraphics.drawString(this.font, line, x, lineY, TEXT_COLOR, false);
-      }
-      lineY += 12;
-    }
+    renderFormattedText(guiGraphics, page.content(), x, y - contentScrollOffset, width);
 
     guiGraphics.disableScissor();
 
@@ -588,9 +615,10 @@ public class CrypticCodexScreen extends Screen {
     ResourceLocation iconLocation = ResourceLocation.fromNamespaceAndPath(
         CrawlingMysteries.MOD_ID, "textures/" + spell.icon().getPath() + ".png");
     guiGraphics.blit(iconLocation, iconX, iconY, 0, 0, iconSize, iconSize, iconSize, iconSize);
-    OrbitingStarParticle.renderOrbitingStars(guiGraphics, iconX + iconSize / 2, iconY + iconSize / 2, primaryColor,
-        animationTick,
-        iconSize + 8);
+    if (animate) {
+      OrbitingStarParticle.renderOrbitingStars(guiGraphics, iconX + iconSize / 2, iconY + iconSize / 2, primaryColor,
+          animationTick, iconSize + 8);
+    }
 
     Component spellName = spell.name();
     int nameWidth = this.font.width(spellName);
@@ -728,20 +756,42 @@ public class CrypticCodexScreen extends Screen {
    * Renders a crafting recipe page (simplified display).
    */
   private void renderCrafting(GuiGraphics guiGraphics, int x, int y, int width, int maxHeight, CodexPage page) {
-    String recipeData = page.extraData();
-    if (recipeData == null || recipeData.isEmpty()) {
+    String recipeId = page.extraData();
+    if (recipeId == null || recipeId.isEmpty()) {
       maxContentScroll = 0;
       guiGraphics.drawString(this.font, "§cNo recipe specified", x, y, TEXT_MUTED, false);
       return;
     }
 
-    int centerX = x + width / 2;
+    // Get recipe
+    Minecraft mc = Minecraft.getInstance();
+    if (mc.level == null)
+      return;
 
-    // Parse recipe data: format
-    // "result;slot1,slot2,slot3,slot4,slot5,slot6,slot7,slot8,slot9"
-    String[] parts = recipeData.split(";");
-    String resultId = parts[0];
-    String[] ingredients = parts.length > 1 ? parts[1].split(",") : new String[0];
+    ResourceLocation id;
+    try {
+      if (recipeId.contains(":")) {
+        id = ResourceLocation.parse(recipeId);
+      } else {
+        id = ResourceLocation.fromNamespaceAndPath(CrawlingMysteries.MOD_ID, recipeId);
+      }
+    } catch (Exception e) {
+      maxContentScroll = 0;
+      guiGraphics.drawString(this.font, "§cInvalid recipe ID: " + recipeId, x, y, TEXT_MUTED, false);
+      return;
+    }
+
+    Optional<RecipeHolder<?>> recipeHolderOpt = mc.level.getRecipeManager().byKey(id);
+    if (recipeHolderOpt.isEmpty()) {
+      maxContentScroll = 0;
+      guiGraphics.drawString(this.font, "§cRecipe not found: " + recipeId, x, y, TEXT_MUTED, false);
+      return;
+    }
+
+    RecipeHolder<?> recipeHolder = recipeHolderOpt.get();
+    Recipe<?> recipe = recipeHolder.value();
+
+    int centerX = x + width / 2;
 
     // Crafting grid dimensions
     int slotSize = 24;
@@ -772,20 +822,37 @@ public class CrypticCodexScreen extends Screen {
     guiGraphics.fill(gridX - 4, gridY - 4, gridX + gridSize + 4, gridY + gridSize + 4, 0x66000000);
     PanelBorderRenderer.renderPanelBorder(guiGraphics, gridX - 4, gridY - 4, gridSize + 8, gridSize + 8, TEXT_MUTED, 3);
 
+    NonNullList<Ingredient> ingredients = recipe.getIngredients();
+
     // Draw grid slots and ingredients
     for (int row = 0; row < 3; row++) {
       for (int col = 0; col < 3; col++) {
-        int slotIndex = row * 3 + col;
         int slotX = gridX + col * slotSize;
         int slotY = gridY + row * slotSize;
 
         // Slot background
         guiGraphics.fill(slotX + 1, slotY + 1, slotX + slotSize - 1, slotY + slotSize - 1, 0x44FFFFFF);
 
-        // Render ingredient if present
-        if (slotIndex < ingredients.length && !ingredients[slotIndex].isEmpty()
-            && !ingredients[slotIndex].equals("_")) {
-          renderRecipeItem(guiGraphics, ingredients[slotIndex], slotX + 4, slotY + 4);
+        Ingredient ingredient = Ingredient.EMPTY;
+        if (recipe instanceof ShapedRecipe shapedRecipe) {
+          int recipeWidth = shapedRecipe.getWidth();
+          int recipeHeight = shapedRecipe.getHeight();
+          if (col < recipeWidth && row < recipeHeight) {
+            int index = row * recipeWidth + col;
+            if (index < ingredients.size()) {
+              ingredient = ingredients.get(index);
+            }
+          }
+        } else {
+          // Shapeless or other
+          int index = row * 3 + col;
+          if (index < ingredients.size()) {
+            ingredient = ingredients.get(index);
+          }
+        }
+
+        if (!ingredient.isEmpty()) {
+          renderIngredient(guiGraphics, ingredient, slotX + 4, slotY + 4);
         }
       }
     }
@@ -802,7 +869,10 @@ public class CrypticCodexScreen extends Screen {
     PanelBorderRenderer.renderPanelBorder(guiGraphics, resultX - 2, resultY - 2, slotSize + 4, slotSize + 4,
         PRIMARY_COLOR, 3);
     guiGraphics.fill(resultX + 1, resultY + 1, resultX + slotSize - 1, resultY + slotSize - 1, 0x44FFFFFF);
-    renderRecipeItem(guiGraphics, resultId, resultX + 4, resultY + 4);
+
+    ItemStack resultStack = recipe.getResultItem(mc.level.registryAccess());
+    guiGraphics.renderItem(resultStack, resultX + 4, resultY + 4);
+    guiGraphics.renderItemDecorations(this.font, resultStack, resultX + 4, resultY + 4);
 
     int descY = gridY + gridSize + 20;
     if (!page.content().getString().isEmpty()) {
@@ -917,8 +987,11 @@ public class CrypticCodexScreen extends Screen {
     guiGraphics.drawString(this.font, entityName, centerX - nameWidth / 2, nameY, 0xFFFFFF, true);
 
     // Rotation hint with animated opacity
-    float hintPulse = 0.5f + 0.3f * (float) Math.sin(animationTick * 0.08f);
-    int hintAlpha = (int) (hintPulse * 200);
+    int hintAlpha = 200;
+    if (animate) {
+      float hintPulse = 0.5f + 0.3f * (float) Math.sin(animationTick * 0.08f);
+      hintAlpha = (int) (hintPulse * 200);
+    }
     String rotateHint = "§7⟲ Drag to rotate";
     int hintWidth = this.font.width(rotateHint);
     guiGraphics.drawString(this.font, rotateHint, centerX - hintWidth / 2, nameY + 14, (hintAlpha << 24) | 0x888888,
@@ -1049,37 +1122,49 @@ public class CrypticCodexScreen extends Screen {
     String rawText = text.getString();
     List<String> lines = new ArrayList<>();
 
-    String[] words = rawText.split(" ");
-    StringBuilder currentLine = new StringBuilder();
+    String[] paragraphs = rawText.split("\n", -1);
     String carriedFormatting = "";
 
-    for (int i = 0; i < words.length; i++) {
-      String word = words[i];
-      String testLine = currentLine.length() == 0 ? word : currentLine + " " + word;
+    for (String paragraph : paragraphs) {
+      if (paragraph.isEmpty()) {
+        lines.add("");
+        continue;
+      }
 
-      // Remove formatting codes for width calculation
-      String testLineNoFormat = testLine.replaceAll("§.", "");
+      String[] words = paragraph.split(" ");
+      StringBuilder currentLine = new StringBuilder();
+      currentLine.append(carriedFormatting);
 
-      if (this.font.width(testLineNoFormat) <= width) {
-        if (currentLine.length() > 0)
-          currentLine.append(" ");
-        currentLine.append(word);
-      } else {
-        if (currentLine.length() > 0) {
-          lines.add(currentLine.toString());
+      for (int i = 0; i < words.length; i++) {
+        String word = words[i];
+        boolean isLineStart = currentLine.length() == carriedFormatting.length();
+        String testLine = isLineStart ? currentLine + word : currentLine + " " + word;
 
-          carriedFormatting = getActiveFormatting(currentLine.toString());
-          currentLine = new StringBuilder(carriedFormatting);
+        // Remove formatting codes for width calculation
+        String testLineNoFormat = testLine.replaceAll("§.", "");
+
+        if (this.font.width(testLineNoFormat) <= width) {
+          if (!isLineStart)
+            currentLine.append(" ");
           currentLine.append(word);
         } else {
-          // Single word is too long, add it anyway
-          currentLine.append(word);
+          if (!isLineStart) {
+            lines.add(currentLine.toString());
+
+            carriedFormatting = getActiveFormatting(currentLine.toString());
+            currentLine = new StringBuilder(carriedFormatting);
+            currentLine.append(word);
+          } else {
+            // Single word is too long, add it anyway
+            currentLine.append(word);
+          }
         }
       }
-    }
 
-    if (currentLine.length() > 0) {
-      lines.add(currentLine.toString());
+      if (currentLine.length() > 0) {
+        lines.add(currentLine.toString());
+        carriedFormatting = getActiveFormatting(currentLine.toString());
+      }
     }
 
     for (String line : lines) {
@@ -1143,21 +1228,19 @@ public class CrypticCodexScreen extends Screen {
   }
 
   /**
-   * Render an item in a recipe slot.
+   * Render an ingredient in a recipe slot.
    */
-  private void renderRecipeItem(GuiGraphics guiGraphics, String itemId, int x, int y) {
-    ResourceLocation itemLocation;
-    if (itemId.contains(":")) {
-      itemLocation = ResourceLocation.parse(itemId);
-    } else {
-      itemLocation = ResourceLocation.fromNamespaceAndPath(CrawlingMysteries.MOD_ID, itemId);
-    }
+  private void renderIngredient(GuiGraphics guiGraphics, Ingredient ingredient, int x, int y) {
+    ItemStack[] items = ingredient.getItems();
+    if (items.length == 0)
+      return;
 
-    Optional<Item> itemOpt = BuiltInRegistries.ITEM.getOptional(itemLocation);
-    if (itemOpt.isPresent()) {
-      ItemStack itemStack = new ItemStack(itemOpt.get());
-      guiGraphics.renderItem(itemStack, x, y);
-    }
+    int index = (int) (animationTick / 20) % items.length;
+    if (index < 0)
+      index = 0;
+    ItemStack stack = items[index];
+    guiGraphics.renderItem(stack, x, y);
+    guiGraphics.renderItemDecorations(this.font, stack, x, y);
   }
 
   /**

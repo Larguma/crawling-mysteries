@@ -59,10 +59,8 @@ The pages are generated from JSON, the text can be formatted with all of Minecra
     {
       // show crafting recipe with description
       "type": "crafting", 
-      // crafting recipe, created in a 3x3 grid:
-      // result;row1_col1,row1_col2,row1_col3,row2_col1,row2_col2,row2_col3,row3_col1,row3_col2,row3_col3
-      // use _ for empty slots
-      "extra": "crawlingmysteries:eternal_guardian_mask;_,_,_,minecraft:leather,crawlingmysteries:eternal_guardian_head,minecraft:leather,_,_,_",
+      // crafting recipe, use the recipe id
+      "extra": "crawlingmysteries:eternal_guardian_mask",
       // additional text
       "content": "Craft the mask by adding two leather pieces to the sides of the §5Eternal Guardian's Head§r."
     },

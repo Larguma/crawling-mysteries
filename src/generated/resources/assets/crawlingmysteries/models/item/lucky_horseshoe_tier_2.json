@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "crawlingmysteries:item/lucky_horseshoe_tier_2"
+  }
+}

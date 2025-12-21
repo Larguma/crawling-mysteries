@@ -7,8 +7,10 @@ import com.mojang.blaze3d.platform.InputConstants;
 import dev.larguma.crawlingmysteries.CrawlingMysteries;
 import dev.larguma.crawlingmysteries.client.screen.CrypticCodexScreen;
 import dev.larguma.crawlingmysteries.client.screen.SpellSelectMenuScreen;
+import dev.larguma.crawlingmysteries.data.ModDataAttachments;
 import dev.larguma.crawlingmysteries.item.ModItems;
 import dev.larguma.crawlingmysteries.item.helper.ItemHelper;
+import dev.larguma.crawlingmysteries.networking.packet.SpellSelectPacket;
 import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.neoforged.api.distmarker.Dist;
@@ -17,6 +19,7 @@ import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.client.event.ClientTickEvent;
 import net.neoforged.neoforge.client.event.RegisterKeyMappingsEvent;
 import net.neoforged.neoforge.common.util.Lazy;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 @EventBusSubscriber(modid = CrawlingMysteries.MOD_ID, value = Dist.CLIENT)
 public class KeyMappingsEvents {
@@ -25,13 +28,19 @@ public class KeyMappingsEvents {
   public static final Lazy<KeyMapping> OPEN_SPELL_MENU = Lazy.of(() -> new KeyMapping(
       "key.crawlingmysteries.open_spell_menu",
       InputConstants.Type.KEYSYM,
-      GLFW.GLFW_KEY_V,
+      GLFW.GLFW_KEY_X,
       KEY_CATEGORY_CRAWLING_MYSTERIES));
 
   public static final Lazy<KeyMapping> OPEN_CODEX = Lazy.of(() -> new KeyMapping(
       "key.crawlingmysteries.open_codex",
       InputConstants.Type.KEYSYM,
       GLFW.GLFW_KEY_H,
+      KEY_CATEGORY_CRAWLING_MYSTERIES));
+
+  public static final Lazy<KeyMapping> CAST_LAST_SPELL = Lazy.of(() -> new KeyMapping(
+      "key.crawlingmysteries.cast_last_spell",
+      InputConstants.Type.KEYSYM,
+      GLFW.GLFW_KEY_V,
       KEY_CATEGORY_CRAWLING_MYSTERIES));
 
   @SubscribeEvent
@@ -50,11 +59,18 @@ public class KeyMappingsEvents {
         }
       }
     }
+
+    while (CAST_LAST_SPELL.get().consumeClick()) {
+      if (minecraft.player != null && minecraft.screen == null) {
+        PacketDistributor.sendToServer(new SpellSelectPacket(minecraft.player.getData(ModDataAttachments.LAST_USED_SPELL)));
+      }
+    }
   }
 
   @SubscribeEvent
   public static void registerBindings(RegisterKeyMappingsEvent event) {
     event.register(OPEN_SPELL_MENU.get());
+    event.register(CAST_LAST_SPELL.get());
     event.register(OPEN_CODEX.get());
   }
 

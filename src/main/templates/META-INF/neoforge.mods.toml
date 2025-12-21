@@ -39,7 +39,7 @@ displayURL="https://modrinth.com/mod/crawling-mysteries" #optional
 logoFile="icon.png" #optional
 
 # A text field displayed in the mod UI
-#credits="" #optional
+credits="${mod_credits}" #optional
 
 # A text field displayed in the mod UI
 authors="${mod_authors}" #optional
@@ -83,6 +83,22 @@ config="${mod_id}.mixins.json"
     type="required"
     # This version range declares a minimum of the current minecraft version up to but not including the next major version
     versionRange="${minecraft_version_range}"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.${mod_id}]]
+    modId="geckolib"
+    type="required"
+    reason="GeckoLib is required for animated models and effects"
+    versionRange="[${geckolib_version},)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.${mod_id}]]
+    modId="curios"
+    type="required"
+    reason="Curios is required for additional equipment slots"
+    versionRange="[${curios_version},)"
     ordering="NONE"
     side="BOTH"
 

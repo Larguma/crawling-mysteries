@@ -3,11 +3,13 @@ package dev.larguma.crawlingmysteries.data;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
+import java.util.function.Supplier;
 import java.util.function.UnaryOperator;
 
 import com.mojang.serialization.Codec;
 
 import dev.larguma.crawlingmysteries.CrawlingMysteries;
+import dev.larguma.crawlingmysteries.data.custom.HorseshoeDataComponent;
 import net.minecraft.core.component.DataComponentType;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.ItemStack;
@@ -45,6 +47,18 @@ public class ModDataComponents {
       builder -> builder.persistent(Codec.INT),
       ComponentType.INTEGER, 0);
 
+  // Horseshoe Tier
+  public static final DeferredHolder<DataComponentType<?>, DataComponentType<HorseshoeDataComponent>> HORSESHOE_TIER = registerCustom(
+      "horseshoe_tier",
+      () -> DataComponentType.<HorseshoeDataComponent>builder()
+          .persistent(HorseshoeDataComponent.CODEC)
+          .networkSynchronized(HorseshoeDataComponent.STREAM_CODEC)
+          .build(),
+      ComponentType.HORSESHOE_TIER,
+      new HorseshoeDataComponent(1));
+
+  // #region Registration Methods
+
   private static <T> DeferredHolder<DataComponentType<?>, DataComponentType<T>> register(String name,
       UnaryOperator<DataComponentType.Builder<T>> builderOperator, ComponentType type, T defaultValue) {
     DeferredHolder<DataComponentType<?>, DataComponentType<T>> holder = DATA_COMPONENT_TYPES.register(name,
@@ -53,9 +67,19 @@ public class ModDataComponents {
     return holder;
   }
 
+  private static <T> DeferredHolder<DataComponentType<?>, DataComponentType<T>> registerCustom(String name,
+      Supplier<DataComponentType<T>> componentSupplier, ComponentType type, T defaultValue) {
+    DeferredHolder<DataComponentType<?>, DataComponentType<T>> holder = DATA_COMPONENT_TYPES.register(name,
+        componentSupplier);
+    COMPONENT_REGISTRY.put(name, new ComponentInfo<>(holder, type, defaultValue));
+    return holder;
+  }
+
   public static void register(IEventBus eventBus) {
     DATA_COMPONENT_TYPES.register(eventBus);
   }
+
+  // #endregion Registration Methods
 
   // #region Command Support
 
@@ -167,11 +191,42 @@ public class ModDataComponents {
       public String getTypeName() {
         return "string";
       }
+    },
+    HORSESHOE_TIER {
+      @Override
+      public Object parse(String value) {
+        try {
+          int tier = Integer.parseInt(value);
+          if (tier < 1 || tier > HorseshoeDataComponent.MAX_TIER) {
+            return null;
+          }
+          return new HorseshoeDataComponent(tier);
+        } catch (NumberFormatException e) {
+          return null;
+        }
+      }
+
+      @Override
+      public String getTypeName() {
+        return "horseshoe_tier (1-4)";
+      }
+
+      @Override
+      public String format(Object value) {
+        if (value instanceof HorseshoeDataComponent horseshoe) {
+          return String.valueOf(horseshoe.tier());
+        }
+        return super.format(value);
+      }
     };
 
     public abstract Object parse(String value);
 
     public abstract String getTypeName();
+
+    public String format(Object value) {
+      return value != null ? value.toString() : "null";
+    }
   }
 
   private record ComponentInfo<T>(DeferredHolder<DataComponentType<?>, DataComponentType<T>> holder, ComponentType type,

@@ -1,0 +1,15 @@
+{
+  "parent": "minecraft:item/handheld",
+  "base": {
+    "parent": "crawlingmysteries:item/eternal_guardian_mask_3d"
+  },
+  "loader": "neoforge:separate_transforms",
+  "perspectives": {
+    "fixed": {
+      "parent": "crawlingmysteries:item/eternal_guardian_mask_2d"
+    },
+    "gui": {
+      "parent": "crawlingmysteries:item/eternal_guardian_mask_2d"
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "parent": "minecraft:item/generated",
+  "overrides": [
+    {
+      "model": "crawlingmysteries:item/lucky_horseshoe_tier_2",
+      "predicate": {
+        "crawlingmysteries:tier": 2.0
+      }
+    },
+    {
+      "model": "crawlingmysteries:item/lucky_horseshoe_tier_3",
+      "predicate": {
+        "crawlingmysteries:tier": 3.0
+      }
+    },
+    {
+      "model": "crawlingmysteries:item/lucky_horseshoe_tier_4",
+      "predicate": {
+        "crawlingmysteries:tier": 4.0
+      }
+    }
+  ],
+  "textures": {
+    "layer0": "crawlingmysteries:item/lucky_horseshoe_tier_1"
+  }
+}

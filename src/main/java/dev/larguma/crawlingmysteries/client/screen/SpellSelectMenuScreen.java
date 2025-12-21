@@ -7,6 +7,7 @@ import org.lwjgl.glfw.GLFW;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 
+import dev.larguma.crawlingmysteries.ConfigClient;
 import dev.larguma.crawlingmysteries.client.event.KeyMappingsEvents;
 import dev.larguma.crawlingmysteries.client.particle.BackgroundParticle;
 import dev.larguma.crawlingmysteries.client.particle.FloatingRuneParticle;
@@ -34,6 +35,7 @@ public class SpellSelectMenuScreen extends Screen {
   private static final int CENTER_DEADZONE = 40;
 
   private float animationTick = 0;
+  private boolean animate;
 
   private static final int PRIMARY_COLOR = 0x6B33D7; // Purple
   private static final int SECONDARY_COLOR = 0x7D90FD; // Light blue
@@ -53,6 +55,8 @@ public class SpellSelectMenuScreen extends Screen {
   @Override
   protected void init() {
     super.init();
+    animate = ConfigClient.CLIENT.renderScreenAnimations.get();
+
     if (this.minecraft != null && this.minecraft.player != null) {
       this.availableSpells = ModSpells.getAvailableSpells(this.minecraft.player);
     } else {
@@ -66,19 +70,23 @@ public class SpellSelectMenuScreen extends Screen {
   @Override
   public void tick() {
     super.tick();
-    BackgroundParticle.update(particles, this.width, this.height);
-    SpellParticle.updateParticles(spellParticles, animationTick);
-    FloatingRuneParticle.update(floatingRunes, this.width, this.height, animationTick);
-    EyeRenderer.tick(animationTick);
+    if (animate) {
+      BackgroundParticle.update(particles, this.width, this.height);
+      SpellParticle.updateParticles(spellParticles, animationTick);
+      FloatingRuneParticle.update(floatingRunes, this.width, this.height, animationTick);
+      EyeRenderer.tick(animationTick);
+    }
   }
 
   @Override
   public void render(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
-    animationTick += partialTick;
-    
+    this.animationTick += this.minecraft.getTimer().getRealtimeDeltaTicks();
+
     renderTransparentBackground(guiGraphics);
-    EyeRenderer.renderEye(guiGraphics, mouseX, mouseY, animationTick, PRIMARY_COLOR, 
-    7 , 7, 32);
+    if (animate) {
+      EyeRenderer.renderEye(guiGraphics, mouseX, mouseY, animationTick, PRIMARY_COLOR,
+          7, 7, 32);
+    }
     BackgroundParticle.render(guiGraphics, particles, partialTick);
     FloatingRuneParticle.render(guiGraphics, floatingRunes, partialTick);
 
@@ -94,7 +102,6 @@ public class SpellSelectMenuScreen extends Screen {
     renderSpellSlots(guiGraphics, centerX, centerY, partialTick);
 
     renderCenterIndicator(guiGraphics, centerX, centerY);
-    
 
     if (hoveredSpell != null) {
       renderSpellInfo(guiGraphics, mouseX, mouseY);
@@ -107,8 +114,12 @@ public class SpellSelectMenuScreen extends Screen {
     RenderSystem.enableBlend();
     RenderSystem.defaultBlendFunc();
 
-    float rotation = animationTick * 0.02f;
-    float pulse = (float) (0.3f + 0.2f * Math.sin(animationTick * SpellSlotRenderer.PULSE_SPEED));
+    float rotation = 0;
+    float pulse = 1.0f;
+    if (animate) {
+      rotation = animationTick * 0.02f;
+      pulse = (float) (0.3f + 0.2f * Math.sin(animationTick * SpellSlotRenderer.PULSE_SPEED));
+    }
 
     int outerRadius = RADIUS + 30;
     drawRuneRing(guiGraphics, centerX, centerY, outerRadius, rotation, pulse, PRIMARY_COLOR);
@@ -134,7 +145,10 @@ public class SpellSelectMenuScreen extends Screen {
       int x = centerX + (int) (Math.cos(angle) * radius);
       int y = centerY + (int) (Math.sin(angle) * radius);
 
-      float runeAlpha = alpha * (0.5f + 0.5f * (float) Math.sin(animationTick * 0.05f + i));
+      float runeAlpha = alpha;
+      if (animate) {
+        runeAlpha = alpha * (0.5f + 0.5f * (float) Math.sin(animationTick * 0.05f + i));
+      }
       int a = (int) (runeAlpha * 255);
       int argb = (a << 24) | (r << 16) | (g << 8) | b;
 
@@ -192,13 +206,17 @@ public class SpellSelectMenuScreen extends Screen {
       int x = centerX + (int) (Math.cos(angle) * radius);
       int y = centerY + (int) (Math.sin(angle) * radius);
 
-      float dotAlpha = alpha * (0.4f + 0.3f * (float) Math.sin(animationTick * 0.08f + i * 0.5f));
+      float dotAlpha = alpha;
+      if (animate) {
+        dotAlpha = alpha * (0.4f + 0.3f * (float) Math.sin(animationTick * 0.08f + i * 0.5f));
+      }
       int a = (int) (dotAlpha * 255);
       int argb = (a << 24) | (r1 << 16) | (g1 << 8) | b1;
 
       int dotSize = (i % 3 == 0) ? 2 : 1;
       guiGraphics.fill(x - dotSize, y - dotSize, x + dotSize, y + dotSize, argb);
     }
+
   }
 
   private void renderCenterIndicator(GuiGraphics guiGraphics, int centerX, int centerY) {
@@ -206,7 +224,10 @@ public class SpellSelectMenuScreen extends Screen {
     RenderSystem.defaultBlendFunc();
     RenderSystem.setShader(GameRenderer::getPositionColorShader);
 
-    float pulse = (float) (0.5f + 0.3f * Math.sin(animationTick * SpellSlotRenderer.PULSE_SPEED));
+    float pulse = 1.0f;
+    if (animate) {
+      pulse = (float) (0.5f + 0.3f * Math.sin(animationTick * SpellSlotRenderer.PULSE_SPEED));
+    }
     int innerAlpha = (int) (pulse * 180);
     RenderUtils.drawCircle(guiGraphics, centerX, centerY, 8, PRIMARY_COLOR, innerAlpha);
 
@@ -305,7 +326,7 @@ public class SpellSelectMenuScreen extends Screen {
 
       boolean isSelected = (i == selectedIndex);
 
-      if (isSelected) {
+      if (isSelected && animate) {
         int glowColor = spell.getPrimaryColor();
         SpellSlotRenderer.renderPulsingGlow(guiGraphics, slotCenterX, slotCenterY, glowColor, animationTick, true);
         SpellParticle.renderParticles(guiGraphics, spellParticles, slotCenterX, slotCenterY, animationTick);
@@ -314,7 +335,10 @@ public class SpellSelectMenuScreen extends Screen {
       SpellSlotRenderer.renderSlotBackground(guiGraphics, slotX, slotY, SLOT_TEXTURE_SIZE, isSelected);
 
       float phaseOffset = i * 0.8f;
-      int bobOffset = SpellSlotRenderer.calculateBobOffset(animationTick, phaseOffset, isSelected);
+      int bobOffset = 0;
+      if (animate) {
+        bobOffset = SpellSlotRenderer.calculateBobOffset(animationTick, phaseOffset, isSelected);
+      }
 
       int iconX = slotX + (SLOT_TEXTURE_SIZE - SLOT_SIZE) / 2;
       int iconY = slotY + (SLOT_TEXTURE_SIZE - SLOT_SIZE) / 2 + bobOffset;
@@ -336,7 +360,10 @@ public class SpellSelectMenuScreen extends Screen {
       return;
     }
 
-    float pulse = (float) (0.4f + 0.4f * Math.sin(animationTick * SpellSlotRenderer.PULSE_SPEED));
+    float pulse = 1.0f;
+    if (animate) {
+      pulse = (float) (0.4f + 0.4f * Math.sin(animationTick * SpellSlotRenderer.PULSE_SPEED));
+    }
     int alpha = (int) (pulse * 200);
     int color = spell.getPrimaryColor();
     int lineWidth = 3;
@@ -450,14 +477,14 @@ public class SpellSelectMenuScreen extends Screen {
   private void renderNoSpellsMessage(GuiGraphics guiGraphics, int centerX, int centerY) {
     Component message = Component.translatable("screen.crawlingmysteries.spell_select.no_spells");
     int messageWidth = this.font.width(message);
-    
+
     int panelWidth = messageWidth + 10;
     int panelHeight = 20;
     int panelX = centerX - panelWidth / 2;
     int panelY = centerY - panelHeight / 2;
-    
+
     renderTooltipPanel(guiGraphics, panelX, panelY, panelWidth, panelHeight);
-    
+
     guiGraphics.drawString(
         this.font,
         message,

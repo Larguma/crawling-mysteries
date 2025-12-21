@@ -8,7 +8,7 @@
 
 Crawling Mysteries is under very slow development! You can read all the planned features on [Github (TODO)](TODO.md). Follow us to ensure you don't miss any of the latest updates.
 
-All the current implemented features are available on [Github (features)](features.md). Later there will be an in-game lore-friendly wiki (I hope).
+All the current implemented features are available on [Github (features)](features.md).
 
 New features requests/ideas or bug reports can be submitted with an [Issue](https://github.com/Larguma/crawling-mysteries/issues)
 

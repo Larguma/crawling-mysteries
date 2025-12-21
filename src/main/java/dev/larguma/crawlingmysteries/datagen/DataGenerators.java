@@ -5,6 +5,17 @@ import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 import dev.larguma.crawlingmysteries.CrawlingMysteries;
+import dev.larguma.crawlingmysteries.datagen.curios.CuriosItemTagProvider;
+import dev.larguma.crawlingmysteries.datagen.curios.CuriosProvider;
+import dev.larguma.crawlingmysteries.datagen.loot.ModBlockLootTableProvider;
+import dev.larguma.crawlingmysteries.datagen.loot.ModEntityLootTableProvider;
+import dev.larguma.crawlingmysteries.datagen.loot.ModGlobalLootModifierProvider;
+import dev.larguma.crawlingmysteries.datagen.recipe.ModRecipeProvider;
+import dev.larguma.crawlingmysteries.datagen.sound.ModJukeboxSongProvider;
+import dev.larguma.crawlingmysteries.datagen.sound.ModSoundDefinitionProvider;
+import dev.larguma.crawlingmysteries.datagen.tag.ModBlockTagProvider;
+import dev.larguma.crawlingmysteries.datagen.tag.ModEntityTypeTagProvider;
+import dev.larguma.crawlingmysteries.datagen.tag.ModItemTagProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
@@ -37,10 +48,8 @@ public class DataGenerators {
 
     generator.addProvider(event.includeServer(), new LootTableProvider(packOutput, Collections.emptySet(),
         List.of(
-            new LootTableProvider.SubProviderEntry(ModBlockLootTableProvider::new,
-                LootContextParamSets.BLOCK),
-            new LootTableProvider.SubProviderEntry(ModEntityLootTableProvider::new,
-                LootContextParamSets.ENTITY)),
+            new LootTableProvider.SubProviderEntry(ModBlockLootTableProvider::new, LootContextParamSets.BLOCK),
+            new LootTableProvider.SubProviderEntry(ModEntityLootTableProvider::new, LootContextParamSets.ENTITY)),
         lookupProvider));
 
     generator.addProvider(event.includeServer(),
@@ -65,6 +74,9 @@ public class DataGenerators {
 
     generator.addProvider(event.includeClient(),
         new ModParticleDescriptionProvider(packOutput, existingFileHelper));
+
+    generator.addProvider(event.includeClient(), new ModSoundDefinitionProvider(packOutput, existingFileHelper));
+    generator.addProvider(event.includeClient(), new ModJukeboxSongProvider(packOutput, lookupProvider));
 
     generator.addProvider(event.includeClient(),
         new ModSpriteSourceProvider(packOutput, lookupProvider, existingFileHelper));

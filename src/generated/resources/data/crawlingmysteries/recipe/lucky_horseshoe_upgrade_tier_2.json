@@ -1,0 +1,26 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "E": {
+      "item": "minecraft:emerald"
+    },
+    "H": {
+      "item": "crawlingmysteries:lucky_horseshoe"
+    }
+  },
+  "pattern": [
+    "EEE",
+    "EHE",
+    "EEE"
+  ],
+  "result": {
+    "components": {
+      "crawlingmysteries:horseshoe_tier": {
+        "tier": 2
+      }
+    },
+    "count": 1,
+    "id": "crawlingmysteries:lucky_horseshoe"
+  }
+}

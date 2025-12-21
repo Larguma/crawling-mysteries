@@ -1,0 +1,43 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_emerald": {
+      "conditions": {
+        "items": [
+          {
+            "items": "minecraft:emerald"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_lucky_horseshoe": {
+      "conditions": {
+        "items": [
+          {
+            "items": "crawlingmysteries:lucky_horseshoe"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "crawlingmysteries:lucky_horseshoe_upgrade_tier_2"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_lucky_horseshoe",
+      "has_emerald"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "crawlingmysteries:lucky_horseshoe_upgrade_tier_2"
+    ]
+  }
+}

@@ -22,7 +22,8 @@ import net.neoforged.neoforge.network.handling.IPayloadContext;
 public class ServerPayloadHandler {
 
   /**
-   * Handles the request from the client to sync player stats and unlocked codex entries.
+   * Handles the request from the client to sync player stats and unlocked codex
+   * entries.
    */
   public static void handleRequestStats(final RequestStatsPacket data, final IPayloadContext context) {
     ServerPlayer player = (ServerPlayer) context.player();
@@ -56,7 +57,7 @@ public class ServerPayloadHandler {
     Optional<Spell> spell = ModSpells.getSpell(id);
     if (spell.isEmpty()) {
       PacketDistributor.sendToPlayer(player, new BetterToastPacket(
-          Component.translatable("spell.crawlingmysteries.unknown", id), BetterToastPacket.TYPE_ERROR));
+          Component.translatable("spell.crawlingmysteries.empty"), BetterToastPacket.TYPE_ERROR));
       return;
     }
 
@@ -81,6 +82,7 @@ public class ServerPayloadHandler {
     };
 
     if (success) {
+      player.setData(ModDataAttachments.LAST_USED_SPELL, id);
       SpellCooldownManager.setCooldown(player, spellData);
     }
   }
