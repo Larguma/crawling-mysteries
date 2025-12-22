@@ -53,6 +53,15 @@ public class ServerPayloadHandler {
   public static void handleSpellSelect(final SpellSelectPacket data, final IPayloadContext context) {
     ServerPlayer player = (ServerPlayer) context.player();
     String id = data.id();
+    String last_spell = player.getData(ModDataAttachments.LAST_USED_SPELL);
+
+    if (id.isEmpty()) {
+      id = last_spell;
+    }
+
+    if (!last_spell.equals(id)) {
+      player.setData(ModDataAttachments.LAST_USED_SPELL, id);
+    }
 
     Optional<Spell> spell = ModSpells.getSpell(id);
     if (spell.isEmpty()) {
@@ -82,7 +91,6 @@ public class ServerPayloadHandler {
     };
 
     if (success) {
-      player.setData(ModDataAttachments.LAST_USED_SPELL, id);
       SpellCooldownManager.setCooldown(player, spellData);
     }
   }
