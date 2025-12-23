@@ -16,6 +16,9 @@ public class ModBlockEntities {
   public static final Supplier<BlockEntityType<TombstoneBlockEntity>> TOMBSTONE_BE = BLOCK_ENTITIES
       .register("tombstone_be", () -> BlockEntityType.Builder.of(
           TombstoneBlockEntity::new, ModBlocks.TOMBSTONE.get()).build(null));
+  public static final Supplier<BlockEntityType<BeerMugBlockEntity>> BEER_MUG_BE = BLOCK_ENTITIES
+      .register("beer_mug_be", () -> BlockEntityType.Builder.of(
+          BeerMugBlockEntity::new, ModBlocks.BEER_MUG.get()).build(null));
 
   public static void register(IEventBus eventBus) {
     BLOCK_ENTITIES.register(eventBus);

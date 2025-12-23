@@ -1,0 +1,70 @@
+{
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "functions": [
+            {
+              "function": "minecraft:copy_components",
+              "include": [
+                "minecraft:block_entity_data"
+              ],
+              "source": "block_entity"
+            },
+            {
+              "add": false,
+              "conditions": [
+                {
+                  "block": "crawlingmysteries:beer_mug",
+                  "condition": "minecraft:block_state_property",
+                  "properties": {
+                    "mugs": "2"
+                  }
+                }
+              ],
+              "count": 2.0,
+              "function": "minecraft:set_count"
+            },
+            {
+              "add": false,
+              "conditions": [
+                {
+                  "block": "crawlingmysteries:beer_mug",
+                  "condition": "minecraft:block_state_property",
+                  "properties": {
+                    "mugs": "3"
+                  }
+                }
+              ],
+              "count": 3.0,
+              "function": "minecraft:set_count"
+            },
+            {
+              "add": false,
+              "conditions": [
+                {
+                  "block": "crawlingmysteries:beer_mug",
+                  "condition": "minecraft:block_state_property",
+                  "properties": {
+                    "mugs": "4"
+                  }
+                }
+              ],
+              "count": 4.0,
+              "function": "minecraft:set_count"
+            },
+            {
+              "function": "minecraft:explosion_decay"
+            }
+          ],
+          "name": "crawlingmysteries:beer_mug"
+        }
+      ],
+      "rolls": 1.0
+    }
+  ],
+  "random_sequence": "crawlingmysteries:blocks/beer_mug"
+}
