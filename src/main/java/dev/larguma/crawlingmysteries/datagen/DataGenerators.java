@@ -16,6 +16,7 @@ import dev.larguma.crawlingmysteries.datagen.sound.ModSoundDefinitionProvider;
 import dev.larguma.crawlingmysteries.datagen.tag.ModBlockTagProvider;
 import dev.larguma.crawlingmysteries.datagen.tag.ModEntityTypeTagProvider;
 import dev.larguma.crawlingmysteries.datagen.tag.ModItemTagProvider;
+import dev.larguma.crawlingmysteries.datagen.tag.ModPoiTypeTagProvider;
 import net.minecraft.core.HolderLookup;
 import net.minecraft.data.DataGenerator;
 import net.minecraft.data.PackOutput;
@@ -38,46 +39,37 @@ public class DataGenerators {
     BlockTagsProvider blockTagsProvider = new ModBlockTagProvider(packOutput, lookupProvider, existingFileHelper);
 
     generator.addProvider(event.includeServer(), blockTagsProvider);
-
+    generator.addProvider(event.includeServer(),
+        new CuriosProvider(packOutput, existingFileHelper, lookupProvider));
     generator.addProvider(event.includeServer(),
         new CuriosItemTagProvider(packOutput, lookupProvider, blockTagsProvider.contentsGetter(),
             existingFileHelper));
-
-    generator.addProvider(event.includeServer(),
-        new CuriosProvider(packOutput, existingFileHelper, lookupProvider));
-
-    generator.addProvider(event.includeServer(), new LootTableProvider(packOutput, Collections.emptySet(),
-        List.of(
-            new LootTableProvider.SubProviderEntry(ModBlockLootTableProvider::new, LootContextParamSets.BLOCK),
-            new LootTableProvider.SubProviderEntry(ModEntityLootTableProvider::new, LootContextParamSets.ENTITY)),
-        lookupProvider));
-
-    generator.addProvider(event.includeServer(),
-        new ModAdvancementProvider(packOutput, lookupProvider, existingFileHelper));
-
-    generator.addProvider(event.includeServer(), new ModDataMapProvider(packOutput, lookupProvider));
-
-    generator.addProvider(event.includeServer(),
-        new ModEntityTypeTagProvider(packOutput, lookupProvider, existingFileHelper));
-
-    generator.addProvider(event.includeServer(), new ModGlobalLootModifierProvider(packOutput, lookupProvider));
-
     generator.addProvider(event.includeServer(),
         new ModItemTagProvider(packOutput, lookupProvider, blockTagsProvider.contentsGetter(),
             existingFileHelper));
-
+    generator.addProvider(event.includeServer(), new LootTableProvider(packOutput, Collections.emptySet(),
+        List.of(
+            new LootTableProvider.SubProviderEntry(ModBlockLootTableProvider::new,
+                LootContextParamSets.BLOCK),
+            new LootTableProvider.SubProviderEntry(ModEntityLootTableProvider::new,
+                LootContextParamSets.ENTITY)),
+        lookupProvider));
+    generator.addProvider(event.includeServer(),
+        new ModAdvancementProvider(packOutput, lookupProvider, existingFileHelper));
+    generator.addProvider(event.includeServer(), new ModDataMapProvider(packOutput, lookupProvider));
+    generator.addProvider(event.includeServer(),
+        new ModEntityTypeTagProvider(packOutput, lookupProvider, existingFileHelper));
+    generator.addProvider(event.includeServer(), new ModGlobalLootModifierProvider(packOutput, lookupProvider));
     generator.addProvider(event.includeServer(), new ModRecipeProvider(packOutput, lookupProvider));
+    generator.addProvider(event.includeServer(),
+        new ModPoiTypeTagProvider(packOutput, lookupProvider, existingFileHelper));
 
     generator.addProvider(event.includeClient(), new ModBlockStateProvider(packOutput, existingFileHelper));
-
     generator.addProvider(event.includeClient(), new ModItemModelProvider(packOutput, existingFileHelper));
-
     generator.addProvider(event.includeClient(),
         new ModParticleDescriptionProvider(packOutput, existingFileHelper));
-
     generator.addProvider(event.includeClient(), new ModSoundDefinitionProvider(packOutput, existingFileHelper));
     generator.addProvider(event.includeClient(), new ModJukeboxSongProvider(packOutput, lookupProvider));
-
     generator.addProvider(event.includeClient(),
         new ModSpriteSourceProvider(packOutput, lookupProvider, existingFileHelper));
 

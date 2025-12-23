@@ -46,6 +46,7 @@
   "entity.crawlingmysteries": "====== Entity ======",
   "entity.crawlingmysteries.eternal_guardian": "Eternal Guardian",
   "entity.crawlingmysteries.eternal_guardian.custom_name": "%s's Guardian",
+  "entity.minecraft.villager.crawlingmysteries.barkeeper": "Barkeeper",
   "general.crawlingmysteries": "====== General ======",
   "general.crawlingmysteries.mod_name": "Crawling Mysteries",
   "tooltip.crawlingmysteries": "====== Tooltips ======",

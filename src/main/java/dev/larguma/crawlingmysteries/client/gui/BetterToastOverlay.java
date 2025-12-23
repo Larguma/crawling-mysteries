@@ -9,7 +9,7 @@ import com.mojang.blaze3d.systems.RenderSystem;
 
 import dev.larguma.crawlingmysteries.CrawlingMysteries;
 import dev.larguma.crawlingmysteries.client.particle.FloatingEmberParticle;
-import dev.larguma.crawlingmysteries.client.render.RenderUtils;
+import dev.larguma.crawlingmysteries.client.screen.render.RenderUtils;
 import net.minecraft.client.DeltaTracker;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.Font;

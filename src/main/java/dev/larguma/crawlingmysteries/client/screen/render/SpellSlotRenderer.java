@@ -1,4 +1,4 @@
-package dev.larguma.crawlingmysteries.client.render;
+package dev.larguma.crawlingmysteries.client.screen.render;
 
 import com.mojang.blaze3d.systems.RenderSystem;
 
