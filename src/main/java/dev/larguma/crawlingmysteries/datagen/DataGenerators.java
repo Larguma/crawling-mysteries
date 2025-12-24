@@ -8,6 +8,7 @@ import dev.larguma.crawlingmysteries.CrawlingMysteries;
 import dev.larguma.crawlingmysteries.datagen.curios.CuriosItemTagProvider;
 import dev.larguma.crawlingmysteries.datagen.curios.CuriosProvider;
 import dev.larguma.crawlingmysteries.datagen.loot.ModBlockLootTableProvider;
+import dev.larguma.crawlingmysteries.datagen.loot.ModChestLootTableProvider;
 import dev.larguma.crawlingmysteries.datagen.loot.ModEntityLootTableProvider;
 import dev.larguma.crawlingmysteries.datagen.loot.ModGlobalLootModifierProvider;
 import dev.larguma.crawlingmysteries.datagen.recipe.ModRecipeProvider;
@@ -52,7 +53,9 @@ public class DataGenerators {
             new LootTableProvider.SubProviderEntry(ModBlockLootTableProvider::new,
                 LootContextParamSets.BLOCK),
             new LootTableProvider.SubProviderEntry(ModEntityLootTableProvider::new,
-                LootContextParamSets.ENTITY)),
+                LootContextParamSets.ENTITY),
+            new LootTableProvider.SubProviderEntry(ModChestLootTableProvider::new,
+                LootContextParamSets.CHEST)),
         lookupProvider));
     generator.addProvider(event.includeServer(),
         new ModAdvancementProvider(packOutput, lookupProvider, existingFileHelper));
