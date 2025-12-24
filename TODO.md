@@ -29,9 +29,9 @@
   - [ ] aoe spell, 4 charges
     - [x] 4 charges
     - [ ] confused effect on mobs: stop attacking, walk random
-    - [ ] refillable at beer keg
+    - [x] refillable at beer keg
   - [ ] animate spell, beer waves
-  - [ ] sound effect
+  - [x] sound effect
 
 ### Ethereal Lantern
 
@@ -70,8 +70,8 @@
 ## Blocks list
 
 - [ ] beer keg with cutscene
-  - [ ] refill beer mug
-  - [ ] villagers work poi
+  - [x] refill beer mug
+  - [x] villagers work poi
 
 ### Geode workbench
 
@@ -80,7 +80,7 @@
 
 ## Mobs list
 
-- [ ] barkeeper (Villager)
+- [x] barkeeper (Villager)
   - [ ] add trade: googly eyes
 
 ### Swampwitch
@@ -110,7 +110,10 @@
 
 ### New structures
 
-- Tavern, NPC (shop ? for what ?), beer
+- [x] Tavern
+  - [x] NPC
+    - [ ] (shop ? for what ?)
+  - [x] beer
   - cook meal MH style (cutscene)
 - Swampwitch hut
 
