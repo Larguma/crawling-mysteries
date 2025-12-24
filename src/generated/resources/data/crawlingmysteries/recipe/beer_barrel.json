@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "H": {
+      "item": "minecraft:iron_bars"
+    },
+    "O": {
+      "item": "minecraft:oak_planks"
+    }
+  },
+  "pattern": [
+    "OOO",
+    "OHO",
+    "OOO"
+  ],
+  "result": {
+    "count": 1,
+    "id": "crawlingmysteries:beer_barrel"
+  }
+}

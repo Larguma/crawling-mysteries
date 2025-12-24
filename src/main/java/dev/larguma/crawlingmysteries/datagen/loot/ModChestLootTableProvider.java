@@ -47,6 +47,7 @@ public record ModChestLootTableProvider(HolderLookup.Provider registries) implem
             ResourceLocation.fromNamespaceAndPath(CrawlingMysteries.MOD_ID, "chests/tavern_storage")),
         LootTable.lootTable().withPool(LootPool.lootPool().setRolls(UniformGenerator.between(3.0F, 10.0F))
             .add(LootItem.lootTableItem(ModItems.ETERNAL_GUARDIAN_HEAD.get()).setWeight(1))
+            .add(LootItem.lootTableItem(ModItems.BEER_BARREL.get()).setWeight(2))
             .add(LootItem.lootTableItem(Items.DIAMOND).setWeight(5))
             .add(LootItem.lootTableItem(Items.EMERALD).setWeight(10))));
 

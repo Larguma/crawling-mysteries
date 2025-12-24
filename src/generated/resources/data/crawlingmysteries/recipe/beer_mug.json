@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "tag": "c:barrels"
+    },
+    "S": {
+      "item": "minecraft:stick"
+    }
+  },
+  "pattern": [
+    "BS "
+  ],
+  "result": {
+    "count": 1,
+    "id": "crawlingmysteries:beer_mug"
+  }
+}

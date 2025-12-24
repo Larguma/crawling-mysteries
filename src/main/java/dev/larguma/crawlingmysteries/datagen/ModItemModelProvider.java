@@ -20,6 +20,7 @@ public class ModItemModelProvider extends ItemModelProvider {
   @Override
   protected void registerModels() {
     this.basicItem(ModItems.MUSIC_DISC_OST_01.get());
+    this.basicItem(ModItems.BEER_BARREL.get());
 
     this.withExistingParent(ModItems.ETERNAL_GUARDIAN_SPAWN_EGG.getId().toString(), mcLoc("item/template_spawn_egg"));
     this.withExistingParent(ModBlocks.TOMBSTONE.getId().toString(), modLoc("block/tombstone"));

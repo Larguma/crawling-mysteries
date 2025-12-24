@@ -7,12 +7,24 @@
         {
           "type": "minecraft:item",
           "name": "crawlingmysteries:beer_mug"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:bread"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:cooked_beef"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:apple"
         }
       ],
       "rolls": {
         "type": "minecraft:uniform",
-        "max": 1.0,
-        "min": 1.0
+        "max": 10.0,
+        "min": 2.0
       }
     }
   ],

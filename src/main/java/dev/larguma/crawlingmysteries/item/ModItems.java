@@ -31,6 +31,13 @@ public class ModItems {
 
   // #endregion Custom
 
+  // #region Simple
+
+  public static final DeferredItem<Item> BEER_BARREL = ITEMS.register("beer_barrel",
+      () -> new Item(new Item.Properties().stacksTo(16)));
+
+  // #endregion Simple
+
   // #region Egg
 
   public static final DeferredItem<Item> ETERNAL_GUARDIAN_SPAWN_EGG = ITEMS.register("eternal_guardian_spawn_egg",
@@ -41,7 +48,8 @@ public class ModItems {
   // #region Music Discs
 
   public static final DeferredItem<Item> MUSIC_DISC_OST_01 = ITEMS.register("music_disc_ost_01",
-      () -> new Item(new Item.Properties().jukeboxPlayable(ModSounds.OST_01_KEY).stacksTo(1).rarity(Rarity.RARE)));
+      () -> new Item(
+          new Item.Properties().jukeboxPlayable(ModSounds.OST_01_KEY).stacksTo(1).rarity(Rarity.RARE)));
 
   // #endregion Music Discs
 

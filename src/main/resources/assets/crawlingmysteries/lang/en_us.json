@@ -66,6 +66,7 @@
   "item.crawlingmysteries.beer_mug.beer_level": "§7Beer Level: §6%s§r",
   "item.crawlingmysteries.beer_mug.empty": "§7The mug is empty.§r",
   "item.crawlingmysteries.beer_keg.tooltip": "§7A keg full of refreshing beer.§r",
+  "item.crawlingmysteries.beer_barrel": "Beer Barrel",
   "item.crawlingmysteries.cryptic_eye": "Cryptic Eye",
   "item.crawlingmysteries.cryptic_eye.tooltip.line1": "§7A mysterious eye that seems to watch over you.§r",
   "item.crawlingmysteries.cryptic_eye.tooltip.hungry": "§8Perhaps it's worth investigating further.§r",

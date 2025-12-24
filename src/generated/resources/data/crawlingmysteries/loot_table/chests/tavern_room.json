@@ -7,12 +7,26 @@
         {
           "type": "minecraft:item",
           "name": "minecraft:golden_apple"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:iron_sword",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:shield",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:crossbow"
         }
       ],
       "rolls": {
         "type": "minecraft:uniform",
-        "max": 1.0,
-        "min": 1.0
+        "max": 5.0,
+        "min": 2.0
       }
     }
   ],
