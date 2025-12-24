@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "item": "crawlingmysteries:beer_barrel"
+    },
+    "I": {
+      "item": "minecraft:iron_ingot"
+    }
+  },
+  "pattern": [
+    " I ",
+    "IBI",
+    " I "
+  ],
+  "result": {
+    "count": 1,
+    "id": "crawlingmysteries:beer_keg"
+  }
+}

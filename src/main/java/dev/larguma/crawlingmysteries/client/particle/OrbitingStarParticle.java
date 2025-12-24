@@ -1,6 +1,6 @@
 package dev.larguma.crawlingmysteries.client.particle;
 
-import dev.larguma.crawlingmysteries.client.render.RenderUtils;
+import dev.larguma.crawlingmysteries.client.screen.render.RenderUtils;
 import net.minecraft.client.gui.GuiGraphics;
 
 /**

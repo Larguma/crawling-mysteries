@@ -19,11 +19,13 @@ public class ModItemModelProvider extends ItemModelProvider {
 
   @Override
   protected void registerModels() {
-    basicItem(ModItems.MUSIC_DISC_OST_01.get());
-
+    this.basicItem(ModItems.MUSIC_DISC_OST_01.get());
+    this.basicItem(ModItems.BEER_BARREL.get());
 
     this.withExistingParent(ModItems.ETERNAL_GUARDIAN_SPAWN_EGG.getId().toString(), mcLoc("item/template_spawn_egg"));
     this.withExistingParent(ModBlocks.TOMBSTONE.getId().toString(), modLoc("block/tombstone"));
+    this.withExistingParent(ModBlocks.BEER_MUG.getId().toString(), modLoc("block/beer_mug"));
+    this.withExistingParent(ModBlocks.BEER_KEG.getId().toString(), modLoc("block/beer_keg"));
 
     this.withExistingParent(ModItems.CRYPTIC_EYE.getId().toString() + "_2d", mcLoc("item/generated"))
         .texture("layer0", "item/cryptic_eye_2d");

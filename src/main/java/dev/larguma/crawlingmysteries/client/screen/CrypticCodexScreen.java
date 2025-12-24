@@ -22,7 +22,7 @@ import dev.larguma.crawlingmysteries.client.event.KeyMappingsEvents;
 import dev.larguma.crawlingmysteries.client.particle.BackgroundParticle;
 import dev.larguma.crawlingmysteries.client.particle.FloatingRuneParticle;
 import dev.larguma.crawlingmysteries.client.particle.OrbitingStarParticle;
-import dev.larguma.crawlingmysteries.client.render.PanelBorderRenderer;
+import dev.larguma.crawlingmysteries.client.screen.render.PanelBorderRenderer;
 import dev.larguma.crawlingmysteries.networking.packet.RequestStatsPacket;
 import dev.larguma.crawlingmysteries.spell.ModSpells;
 import dev.larguma.crawlingmysteries.spell.Spell;
@@ -1521,12 +1521,14 @@ public class CrypticCodexScreen extends Screen {
     if (selectedEntry != null && selectedEntry.pages().size() > 1) {
       if ((keyCode == GLFW.GLFW_KEY_LEFT || keyCode == GLFW.GLFW_KEY_A) && currentPage > 0) {
         currentPage--;
+        contentScrollOffset = 0;
         playClickSound();
         return true;
       }
       if ((keyCode == GLFW.GLFW_KEY_RIGHT || keyCode == GLFW.GLFW_KEY_D)
           && currentPage < selectedEntry.pages().size() - 1) {
         currentPage++;
+        contentScrollOffset = 0;
         playClickSound();
         return true;
       }

@@ -1,0 +1,14 @@
+{
+  "structures": [
+    {
+      "structure": "crawlingmysteries:tavern",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 61686495,
+    "spacing": 80,
+    "separation": 70
+  }
+}

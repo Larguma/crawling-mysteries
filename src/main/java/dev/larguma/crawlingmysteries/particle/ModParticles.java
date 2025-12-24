@@ -16,6 +16,9 @@ public class ModParticles {
   public static final Supplier<SimpleParticleType> SOUL_SUCKLE = PARTICLE_TYPES.register("soul_suckle",
       () -> new SimpleParticleType(true));
 
+  public static final Supplier<SimpleParticleType> BEER_FLOW = PARTICLE_TYPES.register("beer_flow",
+      () -> new SimpleParticleType(false));
+
   public static void register(IEventBus eventBus) {
     PARTICLE_TYPES.register(eventBus);
   }

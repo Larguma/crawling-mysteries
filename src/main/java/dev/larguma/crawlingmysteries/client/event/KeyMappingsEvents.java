@@ -7,7 +7,6 @@ import com.mojang.blaze3d.platform.InputConstants;
 import dev.larguma.crawlingmysteries.CrawlingMysteries;
 import dev.larguma.crawlingmysteries.client.screen.CrypticCodexScreen;
 import dev.larguma.crawlingmysteries.client.screen.SpellSelectMenuScreen;
-import dev.larguma.crawlingmysteries.data.ModDataAttachments;
 import dev.larguma.crawlingmysteries.item.ModItems;
 import dev.larguma.crawlingmysteries.item.helper.ItemHelper;
 import dev.larguma.crawlingmysteries.networking.packet.SpellSelectPacket;
@@ -62,7 +61,7 @@ public class KeyMappingsEvents {
 
     while (CAST_LAST_SPELL.get().consumeClick()) {
       if (minecraft.player != null && minecraft.screen == null) {
-        PacketDistributor.sendToServer(new SpellSelectPacket(minecraft.player.getData(ModDataAttachments.LAST_USED_SPELL)));
+        PacketDistributor.sendToServer(new SpellSelectPacket(""));
       }
     }
   }

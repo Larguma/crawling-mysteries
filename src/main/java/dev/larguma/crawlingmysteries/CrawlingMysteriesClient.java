@@ -7,6 +7,7 @@ import dev.larguma.crawlingmysteries.client.gui.BetterToastOverlay;
 import dev.larguma.crawlingmysteries.client.gui.PassiveSpellHudOverlay;
 import dev.larguma.crawlingmysteries.client.item.ItemProperty;
 import dev.larguma.crawlingmysteries.particle.ModParticles;
+import dev.larguma.crawlingmysteries.particle.custom.BeerFlowParticle;
 import dev.larguma.crawlingmysteries.particle.custom.SoulSuckleParticles;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
@@ -43,6 +44,7 @@ public class CrawlingMysteriesClient {
   @SubscribeEvent
   public static void registerParticleFactories(RegisterParticleProvidersEvent event) {
     event.registerSpriteSet(ModParticles.SOUL_SUCKLE.get(), SoulSuckleParticles.Provider::new);
+    event.registerSpriteSet(ModParticles.BEER_FLOW.get(), BeerFlowParticle.Provider::new);
   }
 
   @SubscribeEvent

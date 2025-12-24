@@ -19,6 +19,9 @@ public class ModSounds {
   public static final ResourceKey<JukeboxSong> OST_01_KEY = createSong("ost_01");
   public static final Supplier<SoundEvent> OST_01 = registerSoundEvent("ost_01");
 
+  public static final Supplier<SoundEvent> BEER_POUR = registerSoundEvent("beer_pour");
+  public static final Supplier<SoundEvent> BEER_DRINK = registerSoundEvent("beer_drink");
+
   private static ResourceKey<JukeboxSong> createSong(String name) {
     return ResourceKey.create(Registries.JUKEBOX_SONG,
         ResourceLocation.fromNamespaceAndPath(CrawlingMysteries.MOD_ID, name));

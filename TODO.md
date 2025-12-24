@@ -23,8 +23,15 @@
 ### Beers
 
 - [ ] find use
-- [ ] 3d model
-- [ ] drinkable
+- [x] 3d model
+- [x] drinkable
+- [ ] w/ googly eyes
+  - [ ] aoe spell, 4 charges
+    - [x] 4 charges
+    - [ ] confused effect on mobs: stop attacking, walk random
+    - [ ] refillable at beer keg
+  - [ ] animate spell, beer waves
+  - [ ] sound effect
 
 ### Ethereal Lantern
 
@@ -62,8 +69,9 @@
 
 ## Blocks list
 
-- [ ] bar
 - [ ] beer keg with cutscene
+  - [ ] refill beer mug
+  - [ ] villagers work poi
 
 ### Geode workbench
 
@@ -73,6 +81,7 @@
 ## Mobs list
 
 - [ ] barkeeper (Villager)
+  - [ ] add trade: googly eyes
 
 ### Swampwitch
 

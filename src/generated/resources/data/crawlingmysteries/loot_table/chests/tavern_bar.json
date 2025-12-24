@@ -1,0 +1,32 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "bonus_rolls": 0.0,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "crawlingmysteries:beer_mug"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:bread"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:cooked_beef"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:apple"
+        }
+      ],
+      "rolls": {
+        "type": "minecraft:uniform",
+        "max": 10.0,
+        "min": 2.0
+      }
+    }
+  ],
+  "random_sequence": "crawlingmysteries:chests/tavern_bar"
+}

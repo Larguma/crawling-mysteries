@@ -1,0 +1,16 @@
+{
+  "variants": {
+    "mugs=1": {
+      "model": "crawlingmysteries:block/beer_mug"
+    },
+    "mugs=2": {
+      "model": "crawlingmysteries:block/beer_mug"
+    },
+    "mugs=3": {
+      "model": "crawlingmysteries:block/beer_mug"
+    },
+    "mugs=4": {
+      "model": "crawlingmysteries:block/beer_mug"
+    }
+  }
+}

@@ -18,6 +18,7 @@ public class ModParticleDescriptionProvider extends ParticleDescriptionProvider 
 
     spriteSet(ModParticles.SOUL_SUCKLE.get(),
         ResourceLocation.fromNamespaceAndPath(CrawlingMysteries.MOD_ID, "soul_suckle"), 11, false);
+    spriteSet(ModParticles.BEER_FLOW.get(), ResourceLocation.withDefaultNamespace("drip_fall"));
   }
 
 }

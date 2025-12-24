@@ -3,6 +3,7 @@ package dev.larguma.crawlingmysteries.datagen.recipe;
 import java.util.concurrent.CompletableFuture;
 
 import dev.larguma.crawlingmysteries.CrawlingMysteries;
+import dev.larguma.crawlingmysteries.block.ModBlocks;
 import dev.larguma.crawlingmysteries.data.ModDataComponents;
 import dev.larguma.crawlingmysteries.data.custom.HorseshoeDataComponent;
 import dev.larguma.crawlingmysteries.item.ModItems;
@@ -14,6 +15,7 @@ import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.world.item.Items;
+import net.neoforged.neoforge.common.Tags;
 
 public class ModRecipeProvider extends RecipeProvider {
 
@@ -32,6 +34,34 @@ public class ModRecipeProvider extends RecipeProvider {
         .save(recipeOutput);
 
     buildHorseshoeUpgradeRecipes(recipeOutput);
+
+    ShapedRecipeBuilder.shaped(RecipeCategory.BREWING, ModBlocks.BEER_KEG.get())
+        .define('B', ModItems.BEER_BARREL.get())
+        .define('I', Items.IRON_INGOT)
+        .pattern(" I ")
+        .pattern("IBI")
+        .pattern(" I ")
+        .unlockedBy("has_beer_barrel", has(ModItems.BEER_BARREL.get()))
+        .unlockedBy("has_iron_ingot", has(Items.IRON_INGOT))
+        .save(recipeOutput);
+
+    ShapedRecipeBuilder.shaped(RecipeCategory.BREWING, ModItems.BEER_BARREL.get())
+        .define('O', Items.OAK_PLANKS)
+        .define('H', Items.IRON_BARS)
+        .pattern("OOO")
+        .pattern("OHO")
+        .pattern("OOO")
+        .unlockedBy("has_oak_planks", has(Items.OAK_PLANKS))
+        .unlockedBy("has_iron_bars", has(Items.IRON_BARS))
+        .save(recipeOutput);
+
+    ShapedRecipeBuilder.shaped(RecipeCategory.BREWING, ModBlocks.BEER_MUG.get())
+        .define('B', Tags.Items.BARRELS)
+        .define('S', Items.STICK)
+        .pattern("BS ")
+        .unlockedBy("has_barrel", has(Tags.Items.BARRELS))
+        .unlockedBy("has_stick", has(Items.STICK))
+        .save(recipeOutput);
   }
 
   private void buildHorseshoeUpgradeRecipes(RecipeOutput recipeOutput) {

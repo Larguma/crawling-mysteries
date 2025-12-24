@@ -10,7 +10,7 @@ import dev.larguma.crawlingmysteries.ConfigClient;
 import dev.larguma.crawlingmysteries.CrawlingMysteries;
 import dev.larguma.crawlingmysteries.client.particle.FloatingEmberParticle;
 import dev.larguma.crawlingmysteries.client.particle.OrbitingStarParticle;
-import dev.larguma.crawlingmysteries.client.render.SpellSlotRenderer;
+import dev.larguma.crawlingmysteries.client.screen.render.SpellSlotRenderer;
 import dev.larguma.crawlingmysteries.client.spell.ClientSpellCooldownManager;
 import dev.larguma.crawlingmysteries.spell.ModSpells;
 import dev.larguma.crawlingmysteries.spell.Spell;
