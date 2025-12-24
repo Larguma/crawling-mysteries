@@ -4,9 +4,11 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import dev.larguma.crawlingmysteries.CrawlingMysteries;
+import dev.larguma.crawlingmysteries.block.custom.BeerKegBlock;
 import dev.larguma.crawlingmysteries.block.custom.BeerMugBlock;
 import dev.larguma.crawlingmysteries.block.custom.TombstoneBlock;
 import dev.larguma.crawlingmysteries.item.ModItems;
+import dev.larguma.crawlingmysteries.item.custom.BeerKegItem;
 import dev.larguma.crawlingmysteries.item.custom.BeerMugItem;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.BlockItem;
@@ -22,6 +24,8 @@ public class ModBlocks {
   public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(CrawlingMysteries.MOD_ID);
 
   public static final DeferredBlock<Block> TOMBSTONE = registerBlock("tombstone", () -> new TombstoneBlock());
+  public static final DeferredBlock<Block> BEER_KEG = registerBlock("beer_keg", () -> new BeerKegBlock(),
+      block -> new BeerKegItem(block, new Item.Properties()));
   public static final DeferredBlock<Block> BEER_MUG = registerBlock("beer_mug", () -> new BeerMugBlock(),
       block -> new BeerMugItem(block, new Item.Properties()));
 

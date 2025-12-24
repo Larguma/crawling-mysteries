@@ -1,4 +1,17 @@
 {
+  "beer_drink": {
+    "sounds": [
+      "crawlingmysteries:beer_drink"
+    ]
+  },
+  "beer_pour": {
+    "sounds": [
+      {
+        "name": "crawlingmysteries:beer_pour",
+        "volume": 0.5
+      }
+    ]
+  },
   "ost_01": {
     "sounds": [
       {

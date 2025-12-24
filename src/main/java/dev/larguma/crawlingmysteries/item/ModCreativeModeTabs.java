@@ -32,6 +32,7 @@ public class ModCreativeModeTabs {
             
             output.accept(ModBlocks.TOMBSTONE.get());
             output.accept(ModBlocks.BEER_MUG.get());
+            output.accept(ModBlocks.BEER_KEG.get());
           })
           .build());
 
