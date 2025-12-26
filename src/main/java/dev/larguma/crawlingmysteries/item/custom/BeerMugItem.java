@@ -3,7 +3,11 @@ package dev.larguma.crawlingmysteries.item.custom;
 import java.util.List;
 import java.util.function.Consumer;
 
+import dev.larguma.crawlingmysteries.block.custom.BeerMugBlock;
 import dev.larguma.crawlingmysteries.block.entity.BeerMugBlockEntity;
+import net.minecraft.core.BlockPos;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockState;
 import dev.larguma.crawlingmysteries.client.item.BeerMugItemRenderer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
@@ -12,6 +16,7 @@ import net.minecraft.core.component.DataComponents;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
+import net.minecraft.sounds.SoundSource;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
@@ -48,8 +53,36 @@ public class BeerMugItem extends BlockItem implements GeoItem {
   }
 
   @Override
-  public InteractionResult onItemUseFirst(ItemStack stack, UseOnContext context) {
-    return super.onItemUseFirst(stack, context);
+  public InteractionResult useOn(UseOnContext context) {
+    Player player = context.getPlayer();
+    if (player != null && !player.isCrouching()) {
+      return InteractionResult.PASS;
+    }
+
+    Level level = context.getLevel();
+    BlockPos clickedPos = context.getClickedPos();
+    BlockState clickedState = level.getBlockState(clickedPos);
+
+    if (player != null && player.isCrouching() && clickedState.is(this.getBlock())) {
+      int mugs = clickedState.getValue(BeerMugBlock.MUGS);
+      if (mugs < 4) {
+        if (!level.isClientSide) {
+          BlockState newState = clickedState.setValue(BeerMugBlock.MUGS, mugs + 1);
+          level.setBlock(clickedPos, newState, 3);
+
+          SoundType soundtype = newState.getSoundType(level, clickedPos, player);
+          level.playSound(null, clickedPos, soundtype.getPlaceSound(), SoundSource.BLOCKS, soundtype.getVolume(),
+              soundtype.getPitch());
+
+          if (!player.getAbilities().instabuild) {
+            context.getItemInHand().shrink(1);
+          }
+        }
+        return InteractionResult.sidedSuccess(level.isClientSide);
+      }
+    }
+
+    return super.useOn(context);
   }
 
   @Override
