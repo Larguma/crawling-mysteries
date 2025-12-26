@@ -9,6 +9,7 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import dev.larguma.crawlingmysteries.client.item.BeerMugItemRenderer;
+import dev.larguma.crawlingmysteries.effect.ModMobEffects;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
@@ -21,6 +22,7 @@ import net.minecraft.stats.Stats;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
+import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
@@ -119,6 +121,13 @@ public class BeerMugItem extends BlockItem implements GeoItem {
     if (player != null) {
       player.awardStat(Stats.ITEM_USED.get(this));
       setBeerLevel(stack, getBeerLevel(stack) - 1);
+      if (player.getEffect(ModMobEffects.DRUNK) != null) {
+        MobEffectInstance currentEffect = player.getEffect(ModMobEffects.DRUNK);
+        int newAmplifier = Math.min(4, currentEffect.getAmplifier() + 1);
+        player.addEffect(new MobEffectInstance(ModMobEffects.DRUNK, currentEffect.getDuration() + 100, newAmplifier));
+      } else {
+        player.addEffect(new MobEffectInstance(ModMobEffects.DRUNK, 200, 0));
+      }
     }
 
     livingEntity.gameEvent(GameEvent.DRINK);
