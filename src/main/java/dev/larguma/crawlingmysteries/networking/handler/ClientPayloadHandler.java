@@ -1,9 +1,9 @@
 package dev.larguma.crawlingmysteries.networking.handler;
 
-import dev.larguma.crawlingmysteries.client.codex.CodexUnlockManager;
 import dev.larguma.crawlingmysteries.client.gui.BetterToastOverlay;
 import dev.larguma.crawlingmysteries.client.screen.CrypticCodexScreen;
 import dev.larguma.crawlingmysteries.client.spell.ClientSpellCooldownManager;
+import dev.larguma.crawlingmysteries.codex.CodexUnlockManager;
 import dev.larguma.crawlingmysteries.networking.packet.BetterToastPacket;
 import dev.larguma.crawlingmysteries.networking.packet.SpellCooldownSyncPacket;
 import dev.larguma.crawlingmysteries.networking.packet.SyncUnlockedEntriesPacket;

@@ -1,4 +1,4 @@
-package dev.larguma.crawlingmysteries.client.codex;
+package dev.larguma.crawlingmysteries.codex;
 
 import net.minecraft.network.chat.Component;
 

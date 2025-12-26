@@ -13,16 +13,16 @@ import com.mojang.blaze3d.platform.NativeImage;
 
 import dev.larguma.crawlingmysteries.ConfigClient;
 import dev.larguma.crawlingmysteries.CrawlingMysteries;
-import dev.larguma.crawlingmysteries.client.codex.CodexCategory;
-import dev.larguma.crawlingmysteries.client.codex.CodexEntry;
-import dev.larguma.crawlingmysteries.client.codex.CodexPage;
-import dev.larguma.crawlingmysteries.client.codex.CodexRegistry;
-import dev.larguma.crawlingmysteries.client.codex.CodexUnlockManager;
 import dev.larguma.crawlingmysteries.client.event.KeyMappingsEvents;
 import dev.larguma.crawlingmysteries.client.particle.BackgroundParticle;
 import dev.larguma.crawlingmysteries.client.particle.FloatingRuneParticle;
 import dev.larguma.crawlingmysteries.client.particle.OrbitingStarParticle;
 import dev.larguma.crawlingmysteries.client.screen.render.PanelBorderRenderer;
+import dev.larguma.crawlingmysteries.codex.CodexCategory;
+import dev.larguma.crawlingmysteries.codex.CodexEntry;
+import dev.larguma.crawlingmysteries.codex.CodexPage;
+import dev.larguma.crawlingmysteries.codex.CodexRegistry;
+import dev.larguma.crawlingmysteries.codex.CodexUnlockManager;
 import dev.larguma.crawlingmysteries.networking.packet.RequestStatsPacket;
 import dev.larguma.crawlingmysteries.spell.ModSpells;
 import dev.larguma.crawlingmysteries.spell.Spell;
@@ -85,6 +85,9 @@ public class CrypticCodexScreen extends Screen {
   private int entryScrollOffset = 0;
   private int contentScrollOffset = 0;
   private int maxContentScroll = 0;
+  private int categoryScrollOffset = 0;
+  private int cachedMaxCategoryScroll = 0;
+  private static final int MAX_VISIBLE_CATEGORIES = 4;
 
   // Cached layout values for mouse interactions
   private int cachedEntryListStartY = 0;
@@ -213,12 +216,39 @@ public class CrypticCodexScreen extends Screen {
 
     // Category buttons
     int buttonY = y;
-    for (CodexCategory category : CodexRegistry.getCategories()) {
+    List<CodexCategory> categories = CodexRegistry.getCategories();
+    cachedMaxCategoryScroll = Math.max(0, categories.size() - MAX_VISIBLE_CATEGORIES);
+    categoryScrollOffset = Mth.clamp(categoryScrollOffset, 0, cachedMaxCategoryScroll);
+
+    int visibleCategories = Math.min(categories.size(), MAX_VISIBLE_CATEGORIES);
+
+    // Category Scroll Up
+    if (categoryScrollOffset > 0) {
+      boolean upHovered = isMouseOver(mouseX, mouseY, x + SIDEBAR_WIDTH - SCROLL_BUTTON_SIZE - 4,
+          y + LEFT_PANEL_SCROLL_OFFSET_TOP, SCROLL_BUTTON_SIZE, SCROLL_BUTTON_SIZE);
+      int upColor = upHovered ? 0xFFFFFF : TEXT_MUTED;
+      guiGraphics.drawString(this.font, "▲", x + SIDEBAR_WIDTH - SCROLL_BUTTON_SIZE, y + LEFT_PANEL_SCROLL_OFFSET_TOP,
+          upColor, false);
+    }
+
+    for (int i = categoryScrollOffset; i < categoryScrollOffset + visibleCategories; i++) {
+      if (i >= categories.size())
+        break;
+      CodexCategory category = categories.get(i);
       boolean isSelected = category == selectedCategory;
       boolean isHovered = isMouseOver(mouseX, mouseY, x, buttonY, SIDEBAR_WIDTH, CATEGORY_BUTTON_HEIGHT);
 
       renderCategoryButton(guiGraphics, x, buttonY, category, isSelected, isHovered);
       buttonY += CATEGORY_BUTTON_HEIGHT + 4;
+    }
+
+    // Category Scroll Down
+    if (categoryScrollOffset < cachedMaxCategoryScroll) {
+      boolean downHovered = isMouseOver(mouseX, mouseY, x + SIDEBAR_WIDTH - SCROLL_BUTTON_SIZE - 4,
+          buttonY + LEFT_PANEL_SCROLL_OFFSET_BOT - 4, SCROLL_BUTTON_SIZE, SCROLL_BUTTON_SIZE);
+      int downColor = downHovered ? 0xFFFFFF : TEXT_MUTED;
+      guiGraphics.drawString(this.font, "▼", x + SIDEBAR_WIDTH - SCROLL_BUTTON_SIZE,
+          buttonY + LEFT_PANEL_SCROLL_OFFSET_BOT - 4, downColor, false);
     }
 
     // Separator
@@ -253,21 +283,17 @@ public class CrypticCodexScreen extends Screen {
 
     if (entryScrollOffset > 0) {
       boolean upHovered = isMouseOver(mouseX, mouseY, x + SIDEBAR_WIDTH - SCROLL_BUTTON_SIZE - 4,
-          cachedScrollUpY + LEFT_PANEL_SCROLL_OFFSET_TOP,
-          SCROLL_BUTTON_SIZE, SCROLL_BUTTON_SIZE);
+          cachedScrollUpY + LEFT_PANEL_SCROLL_OFFSET_TOP, SCROLL_BUTTON_SIZE, SCROLL_BUTTON_SIZE);
       int upColor = upHovered ? 0xFFFFFF : TEXT_MUTED;
       guiGraphics.drawString(this.font, "▲", x + SIDEBAR_WIDTH - SCROLL_BUTTON_SIZE,
-          cachedScrollUpY + LEFT_PANEL_SCROLL_OFFSET_TOP, upColor,
-          false);
+          cachedScrollUpY + LEFT_PANEL_SCROLL_OFFSET_TOP, upColor, false);
     }
     if (entryScrollOffset < cachedMaxEntryScroll) {
       boolean downHovered = isMouseOver(mouseX, mouseY, x + SIDEBAR_WIDTH - SCROLL_BUTTON_SIZE - 4,
-          cachedScrollDownY + LEFT_PANEL_SCROLL_OFFSET_BOT,
-          SCROLL_BUTTON_SIZE, SCROLL_BUTTON_SIZE);
+          cachedScrollDownY + LEFT_PANEL_SCROLL_OFFSET_BOT, SCROLL_BUTTON_SIZE, SCROLL_BUTTON_SIZE);
       int downColor = downHovered ? 0xFFFFFF : TEXT_MUTED;
       guiGraphics.drawString(this.font, "▼", x + SIDEBAR_WIDTH - SCROLL_BUTTON_SIZE,
-          cachedScrollDownY + LEFT_PANEL_SCROLL_OFFSET_BOT, downColor,
-          false);
+          cachedScrollDownY + LEFT_PANEL_SCROLL_OFFSET_BOT, downColor, false);
     }
   }
 
@@ -1376,8 +1402,33 @@ public class CrypticCodexScreen extends Screen {
     int sidebarY = 40;
 
     // Check category buttons
+    int visibleCategories = Math.min(CodexRegistry.getCategories().size(), MAX_VISIBLE_CATEGORIES);
     int buttonY = sidebarY;
-    for (CodexCategory category : CodexRegistry.getCategories()) {
+
+    // Check scroll buttons (Category)
+    if (categoryScrollOffset > 0
+        && isMouseOver((int) mouseX, (int) mouseY, sidebarX + SIDEBAR_WIDTH - SCROLL_BUTTON_SIZE - 4,
+            sidebarY + LEFT_PANEL_SCROLL_OFFSET_TOP, SCROLL_BUTTON_SIZE * 2, SCROLL_BUTTON_SIZE * 2)) {
+      categoryScrollOffset = Math.max(0, categoryScrollOffset - 1);
+      playClickSound();
+      return true;
+    }
+
+    int categoryListHeight = visibleCategories * (CATEGORY_BUTTON_HEIGHT + 4);
+    int downY = sidebarY + categoryListHeight + LEFT_PANEL_SCROLL_OFFSET_BOT - 4;
+
+    if (categoryScrollOffset < cachedMaxCategoryScroll && isMouseOver((int) mouseX, (int) mouseY,
+        sidebarX + SIDEBAR_WIDTH - SCROLL_BUTTON_SIZE - 4, downY, SCROLL_BUTTON_SIZE * 2, SCROLL_BUTTON_SIZE * 2)) {
+      categoryScrollOffset = Math.min(cachedMaxCategoryScroll, categoryScrollOffset + 1);
+      playClickSound();
+      return true;
+    }
+
+    for (int i = categoryScrollOffset; i < categoryScrollOffset + visibleCategories; i++) {
+      if (i >= CodexRegistry.getCategories().size())
+        break;
+      CodexCategory category = CodexRegistry.getCategories().get(i);
+
       if (isMouseOver((int) mouseX, (int) mouseY, sidebarX, buttonY, SIDEBAR_WIDTH, CATEGORY_BUTTON_HEIGHT)) {
         if (category != selectedCategory) {
           selectedCategory = category;
@@ -1496,8 +1547,13 @@ public class CrypticCodexScreen extends Screen {
 
     // Over sidebar
     if (mouseX >= sidebarX && mouseX < sidebarX + SIDEBAR_WIDTH + 4) {
-      entryScrollOffset -= (int) scrollY;
-      entryScrollOffset = Mth.clamp(entryScrollOffset, 0, cachedMaxEntryScroll);
+      if (mouseY < cachedEntryListStartY - 20) {
+        categoryScrollOffset -= (int) scrollY;
+        categoryScrollOffset = Mth.clamp(categoryScrollOffset, 0, cachedMaxCategoryScroll);
+      } else {
+        entryScrollOffset -= (int) scrollY;
+        entryScrollOffset = Mth.clamp(entryScrollOffset, 0, cachedMaxEntryScroll);
+      }
       return true;
     }
 

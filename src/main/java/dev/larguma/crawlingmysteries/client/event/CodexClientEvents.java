@@ -1,7 +1,7 @@
 package dev.larguma.crawlingmysteries.client.event;
 
 import dev.larguma.crawlingmysteries.CrawlingMysteries;
-import dev.larguma.crawlingmysteries.client.codex.CodexUnlockManager;
+import dev.larguma.crawlingmysteries.codex.CodexUnlockManager;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;

@@ -114,8 +114,8 @@
   - [x] NPC
     - [ ] (shop ? for what ?)
   - [x] beer
-  - cook meal MH style (cutscene)
-- Swampwitch hut
+  - [ ] cook meal MH style (cutscene)
+- [ ] Swampwitch hut
 
 ### Waypoints
 

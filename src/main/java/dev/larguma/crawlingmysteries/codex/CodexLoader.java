@@ -1,4 +1,4 @@
-package dev.larguma.crawlingmysteries.client.codex;
+package dev.larguma.crawlingmysteries.codex;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -18,7 +18,7 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import dev.larguma.crawlingmysteries.CrawlingMysteries;
-import dev.larguma.crawlingmysteries.client.codex.CodexPage.PageType;
+import dev.larguma.crawlingmysteries.codex.CodexPage.PageType;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
