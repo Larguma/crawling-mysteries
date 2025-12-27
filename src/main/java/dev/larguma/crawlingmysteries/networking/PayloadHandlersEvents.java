@@ -8,6 +8,7 @@ import dev.larguma.crawlingmysteries.networking.packet.RequestStatsPacket;
 import dev.larguma.crawlingmysteries.networking.packet.SpellCooldownSyncPacket;
 import dev.larguma.crawlingmysteries.networking.packet.SpellSelectPacket;
 import dev.larguma.crawlingmysteries.networking.packet.SyncUnlockedEntriesPacket;
+import dev.larguma.crawlingmysteries.networking.packet.TavernMusicPacket;
 import dev.larguma.crawlingmysteries.networking.packet.UnlockCodexEntryPacket;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -43,5 +44,9 @@ public class PayloadHandlersEvents {
         SyncUnlockedEntriesPacket.TYPE,
         SyncUnlockedEntriesPacket.STREAM_CODEC,
         ClientPayloadHandler::handleSyncUnlockedEntries);
+    registrar.playToClient(
+        TavernMusicPacket.TYPE,
+        TavernMusicPacket.STREAM_CODEC,
+        ClientPayloadHandler::handleTavernMusic);
   }
 }

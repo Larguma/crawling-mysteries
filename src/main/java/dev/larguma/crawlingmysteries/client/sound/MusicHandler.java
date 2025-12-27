@@ -1,9 +1,8 @@
 package dev.larguma.crawlingmysteries.client.sound;
 
 import net.minecraft.client.Minecraft;
-import net.minecraft.client.resources.sounds.SimpleSoundInstance;
-import net.minecraft.client.resources.sounds.SoundInstance;
 import net.minecraft.sounds.SoundEvent;
+import net.minecraft.sounds.SoundSource;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -22,9 +21,22 @@ public class MusicHandler {
   private static final int MAX_DELAY = 20 * 1200;
   private static final Minecraft minecraft = Minecraft.getInstance();
   private static int ticksUntilMusic = 0;
-  private static SoundInstance customMusicPlaying;
+  private static FadeableSoundInstance customMusicPlaying;
+  private static boolean insideTavern = false;
 
   private static List<SoundEvent> musicTracks = null;
+
+  public static void setInsideTavern(boolean inside) {
+    if (insideTavern != inside) {
+      insideTavern = inside;
+      stopPlaying();
+      if (inside) {
+        minecraft.getMusicManager().stopPlaying();
+      } else {
+        ticksUntilMusic = MIN_DELAY + minecraft.level.random.nextInt(MAX_DELAY - MIN_DELAY);
+      }
+    }
+  }
 
   private static void initMusicTracks() {
     if (musicTracks == null) {
@@ -50,6 +62,16 @@ public class MusicHandler {
       ticksUntilMusic = MIN_DELAY + minecraft.level.random.nextInt(MAX_DELAY - MIN_DELAY);
     }
 
+    if (insideTavern) {
+      if (customMusicPlaying == null) {
+        FadeableSoundInstance soundInstance = new FadeableSoundInstance(ModSounds.OST_02.get(), SoundSource.MUSIC, 1.0f,
+            1.0f, minecraft.level.random, 60);
+        minecraft.getSoundManager().play(soundInstance);
+        customMusicPlaying = soundInstance;
+      }
+      return;
+    }
+
     boolean vanillaMusicPlaying = minecraft.getMusicManager().isPlayingMusic(minecraft.getSituationalMusic());
     if (!vanillaMusicPlaying && customMusicPlaying == null) {
       if (ticksUntilMusic > 0) {
@@ -72,14 +94,15 @@ public class MusicHandler {
     int randomIndex = minecraft.level.random.nextInt(musicTracks.size());
     SoundEvent musicSound = musicTracks.get(randomIndex);
 
-    SoundInstance soundInstance = SimpleSoundInstance.forMusic(musicSound);
+    FadeableSoundInstance soundInstance = new FadeableSoundInstance(musicSound, SoundSource.MUSIC, 1.0f, 1.0f,
+        minecraft.level.random, 60);
     minecraft.getSoundManager().play(soundInstance);
     customMusicPlaying = soundInstance;
   }
 
   public static void stopPlaying() {
     if (customMusicPlaying != null) {
-      Minecraft.getInstance().getSoundManager().stop(customMusicPlaying);
+      customMusicPlaying.fadeOut();
       customMusicPlaying = null;
     }
 

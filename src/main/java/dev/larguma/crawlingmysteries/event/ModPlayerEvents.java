@@ -1,25 +1,62 @@
 package dev.larguma.crawlingmysteries.event;
 
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
 import dev.larguma.crawlingmysteries.CrawlingMysteries;
 import dev.larguma.crawlingmysteries.data.ModDataAttachments;
 import dev.larguma.crawlingmysteries.data.ModDataComponents;
 import dev.larguma.crawlingmysteries.data.custom.HorseshoeDataComponent;
 import dev.larguma.crawlingmysteries.item.ModItems;
 import dev.larguma.crawlingmysteries.item.helper.ItemHelper;
+import dev.larguma.crawlingmysteries.networking.packet.TavernMusicPacket;
 import dev.larguma.crawlingmysteries.spell.SpellCooldownManager;
+import net.minecraft.core.registries.Registries;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.tags.DamageTypeTags;
+import net.minecraft.tags.TagKey;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.levelgen.structure.Structure;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.entity.living.LivingDamageEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerChangedDimensionEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedInEvent;
+import net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerLoggedOutEvent;
 import net.neoforged.neoforge.event.entity.player.PlayerEvent.PlayerRespawnEvent;
+import net.neoforged.neoforge.event.tick.PlayerTickEvent;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 @EventBusSubscriber(modid = CrawlingMysteries.MOD_ID)
 public class ModPlayerEvents {
+
+  private static final ResourceLocation TAVERN_LOCATION = ResourceLocation
+      .fromNamespaceAndPath(CrawlingMysteries.MOD_ID, "tavern");
+  private static final TagKey<Structure> TAVERN_TAG = TagKey.create(Registries.STRUCTURE, TAVERN_LOCATION);
+  private static final Map<UUID, Boolean> insideTavernMap = new HashMap<>();
+
+  @SubscribeEvent
+  public static void onPlayerTick(PlayerTickEvent.Post event) {
+    if (event.getEntity().level().isClientSide) {
+      return;
+    }
+
+    ServerPlayer player = (ServerPlayer) event.getEntity();
+    if (player.tickCount % 20 != 0) {
+      return;
+    }
+
+    boolean insideTavern = player.serverLevel().structureManager()
+        .getStructureWithPieceAt(player.blockPosition(), TAVERN_TAG).isValid();
+
+    if (insideTavernMap.getOrDefault(player.getUUID(), false) != insideTavern) {
+      insideTavernMap.put(player.getUUID(), insideTavern);
+      PacketDistributor.sendToPlayer(player, new TavernMusicPacket(insideTavern));
+    }
+  }
 
   @SubscribeEvent
   public static void playerLogin(PlayerLoggedInEvent event) {
@@ -34,6 +71,11 @@ public class ModPlayerEvents {
     }
 
     SpellCooldownManager.syncAllCooldownsToClient((ServerPlayer) player);
+  }
+
+  @SubscribeEvent
+  public static void playerLogout(PlayerLoggedOutEvent event) {
+    insideTavernMap.remove(event.getEntity().getUUID());
   }
 
   @SubscribeEvent

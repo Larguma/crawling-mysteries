@@ -136,7 +136,7 @@
 ## Music
 
 - [ ] Main theme music
-- [ ] Tavern music
+- [x] Tavern music
 - [ ] Swampwitch music
 - [ ] Eternal Guardian music
 - [ ] Codex music

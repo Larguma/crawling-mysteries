@@ -2,11 +2,13 @@ package dev.larguma.crawlingmysteries.networking.handler;
 
 import dev.larguma.crawlingmysteries.client.gui.BetterToastOverlay;
 import dev.larguma.crawlingmysteries.client.screen.CrypticCodexScreen;
+import dev.larguma.crawlingmysteries.client.sound.MusicHandler;
 import dev.larguma.crawlingmysteries.client.spell.ClientSpellCooldownManager;
 import dev.larguma.crawlingmysteries.codex.CodexUnlockManager;
 import dev.larguma.crawlingmysteries.networking.packet.BetterToastPacket;
 import dev.larguma.crawlingmysteries.networking.packet.SpellCooldownSyncPacket;
 import dev.larguma.crawlingmysteries.networking.packet.SyncUnlockedEntriesPacket;
+import dev.larguma.crawlingmysteries.networking.packet.TavernMusicPacket;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public class ClientPayloadHandler {
@@ -32,6 +34,12 @@ public class ClientPayloadHandler {
     context.enqueueWork(() -> {
       CodexUnlockManager.setUnlockedEntries(packet.unlockedEntries());
       CrypticCodexScreen.refreshIfOpen();
+    });
+  }
+
+  public static void handleTavernMusic(final TavernMusicPacket packet, final IPayloadContext context) {
+    context.enqueueWork(() -> {
+      MusicHandler.setInsideTavern(packet.insideTavern());
     });
   }
 }
