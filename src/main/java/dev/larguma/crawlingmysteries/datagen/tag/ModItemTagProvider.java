@@ -5,7 +5,9 @@ import java.util.concurrent.CompletableFuture;
 import org.jetbrains.annotations.Nullable;
 
 import dev.larguma.crawlingmysteries.CrawlingMysteries;
+import dev.larguma.crawlingmysteries.block.ModBlocks;
 import dev.larguma.crawlingmysteries.item.ModItems;
+import dev.larguma.crawlingmysteries.tag.ModTags;
 import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.data.PackOutput;
 import net.minecraft.data.tags.ItemTagsProvider;
@@ -30,6 +32,9 @@ public class ModItemTagProvider extends ItemTagsProvider {
     tag(Tags.Items.MUSIC_DISCS)
         .add(ModItems.MUSIC_DISC_OST_01.get())
         .add(ModItems.MUSIC_DISC_OST_02.get());
+
+    tag(ModTags.Items.CAN_BE_SENTIENT)
+        .add(ModBlocks.BEER_MUG.asItem());
   }
 
 }

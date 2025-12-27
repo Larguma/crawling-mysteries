@@ -2,7 +2,7 @@
 
 ## Items list
 
-- [ ] New Metal (Mysterium ?) (for crafting trinkets)
+- [x] New Metal (Mysterious stone for sentient trinkets)
 
 ### Geodes
 
@@ -82,7 +82,6 @@
 ## Mobs list
 
 - [x] barkeeper (Villager)
-  - [ ] add trade: googly eyes
 
 ### Swampwitch
 

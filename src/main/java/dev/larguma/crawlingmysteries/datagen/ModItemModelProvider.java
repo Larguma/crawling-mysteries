@@ -22,6 +22,8 @@ public class ModItemModelProvider extends ItemModelProvider {
     this.basicItem(ModItems.MUSIC_DISC_OST_01.get());
     this.basicItem(ModItems.MUSIC_DISC_OST_02.get());
     this.basicItem(ModItems.BEER_BARREL.get());
+    this.basicItem(ModItems.PETRIFIED_EYE.get());
+    this.basicItem(ModItems.AWAKENED_EYE.get());
 
     this.withExistingParent(ModItems.ETERNAL_GUARDIAN_SPAWN_EGG.getId().toString(), mcLoc("item/template_spawn_egg"));
     this.withExistingParent(ModBlocks.TOMBSTONE.getId().toString(), modLoc("block/tombstone"));

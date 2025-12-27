@@ -1,0 +1,54 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_awakened_eye": {
+      "conditions": {
+        "items": [
+          {
+            "items": "crawlingmysteries:awakened_eye"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_can_be_sentient": {
+      "conditions": {
+        "items": [
+          {
+            "items": "#crawlingmysteries:can_be_sentient"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_echo_shard": {
+      "conditions": {
+        "items": [
+          {
+            "items": "minecraft:echo_shard"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "crawlingmysteries:awakening_recipe"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_echo_shard",
+      "has_can_be_sentient",
+      "has_awakened_eye"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "crawlingmysteries:awakening_recipe"
+    ]
+  }
+}

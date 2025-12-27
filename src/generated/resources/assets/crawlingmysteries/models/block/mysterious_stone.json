@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "crawlingmysteries:block/mysterious_stone"
+  }
+}

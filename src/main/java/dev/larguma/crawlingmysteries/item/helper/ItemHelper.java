@@ -3,10 +3,13 @@ package dev.larguma.crawlingmysteries.item.helper;
 import java.util.Optional;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotResult;
 import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
@@ -32,6 +35,23 @@ public class ItemHelper {
         .append(Component.literal("￭".repeat(filled)).withStyle(ChatFormatting.DARK_PURPLE))
         .append(Component.literal("･".repeat(empty)).withStyle(ChatFormatting.DARK_GRAY))
         .append(Component.literal(" " + percentage + "%")).withStyle(ChatFormatting.GRAY);
+  }
+
+  /**
+   * Spawns an item stack slightly above the specified block position.
+   * 
+   * @param level The level to spawn the item in.
+   * @param pos   The block position above which to spawn the item.
+   * @param stack The item stack to spawn.
+   */
+  public static void spawnItemAboveBlock(Level level, BlockPos pos, ItemStack stack) {
+    double x = pos.getX() + 0.5;
+    double y = pos.getY() + 1.0;
+    double z = pos.getZ() + 0.5;
+
+    ItemEntity entity = new ItemEntity(level, x, y, z, stack);
+    entity.setDeltaMovement(0, 0.2, 0);
+    level.addFreshEntity(entity);
   }
 
   /**
