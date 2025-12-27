@@ -31,7 +31,8 @@ public record ModChestLootTableProvider(HolderLookup.Provider registries) implem
         ResourceKey.create(Registries.LOOT_TABLE,
             ResourceLocation.fromNamespaceAndPath(CrawlingMysteries.MOD_ID, "chests/tavern_jukebox")),
         LootTable.lootTable().withPool(LootPool.lootPool().setRolls(UniformGenerator.between(2.0F, 5.0F))
-            .add(LootItem.lootTableItem(ModItems.MUSIC_DISC_OST_01.get()))));
+            .add(LootItem.lootTableItem(ModItems.MUSIC_DISC_OST_01.get()))
+            .add(LootItem.lootTableItem(ModItems.MUSIC_DISC_OST_02.get()))));
 
     writer.accept(
         ResourceKey.create(Registries.LOOT_TABLE,

@@ -24,10 +24,12 @@ public class ModItemTagProvider extends ItemTagsProvider {
   @Override
   protected void addTags(Provider provider) {
     tag(ItemTags.CREEPER_DROP_MUSIC_DISCS)
-        .add(ModItems.MUSIC_DISC_OST_01.get());
+        .add(ModItems.MUSIC_DISC_OST_01.get())
+        .add(ModItems.MUSIC_DISC_OST_02.get());
 
     tag(Tags.Items.MUSIC_DISCS)
-        .add(ModItems.MUSIC_DISC_OST_01.get());
+        .add(ModItems.MUSIC_DISC_OST_01.get())
+        .add(ModItems.MUSIC_DISC_OST_02.get());
   }
 
 }

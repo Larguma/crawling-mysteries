@@ -19,5 +19,13 @@
         "stream": true
       }
     ]
+  },
+  "ost_02": {
+    "sounds": [
+      {
+        "name": "crawlingmysteries:ost_02",
+        "stream": true
+      }
+    ]
   }
 }

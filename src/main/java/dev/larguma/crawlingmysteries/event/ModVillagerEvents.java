@@ -29,6 +29,9 @@ public class ModVillagerEvents {
       trades.get(1).add((pTrader, pRandom) -> new MerchantOffer(
           new ItemCost(Items.EMERALD, 6),
           new ItemStack(ModItems.MUSIC_DISC_OST_01.get(), 1), 1, 10, 0.05f));
+      trades.get(2).add((pTrader, pRandom) -> new MerchantOffer(
+          new ItemCost(Items.EMERALD, 12),
+          new ItemStack(ModItems.MUSIC_DISC_OST_02.get(), 1), 1, 10, 0.05f));
     }
   }
 

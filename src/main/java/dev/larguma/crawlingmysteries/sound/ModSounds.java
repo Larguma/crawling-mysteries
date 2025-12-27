@@ -18,6 +18,8 @@ public class ModSounds {
 
   public static final ResourceKey<JukeboxSong> OST_01_KEY = createSong("ost_01");
   public static final Supplier<SoundEvent> OST_01 = registerSoundEvent("ost_01");
+  public static final ResourceKey<JukeboxSong> OST_02_KEY = createSong("ost_02");
+  public static final Supplier<SoundEvent> OST_02 = registerSoundEvent("ost_02");
 
   public static final Supplier<SoundEvent> BEER_POUR = registerSoundEvent("beer_pour");
   public static final Supplier<SoundEvent> BEER_DRINK = registerSoundEvent("beer_drink");

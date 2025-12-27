@@ -7,6 +7,10 @@
         {
           "type": "minecraft:item",
           "name": "crawlingmysteries:music_disc_ost_01"
+        },
+        {
+          "type": "minecraft:item",
+          "name": "crawlingmysteries:music_disc_ost_02"
         }
       ],
       "rolls": {

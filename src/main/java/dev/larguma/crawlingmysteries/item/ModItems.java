@@ -48,8 +48,9 @@ public class ModItems {
   // #region Music Discs
 
   public static final DeferredItem<Item> MUSIC_DISC_OST_01 = ITEMS.register("music_disc_ost_01",
-      () -> new Item(
-          new Item.Properties().jukeboxPlayable(ModSounds.OST_01_KEY).stacksTo(1).rarity(Rarity.RARE)));
+      () -> new Item(new Item.Properties().jukeboxPlayable(ModSounds.OST_01_KEY).stacksTo(1).rarity(Rarity.RARE)));
+  public static final DeferredItem<Item> MUSIC_DISC_OST_02 = ITEMS.register("music_disc_ost_02",
+      () -> new Item(new Item.Properties().jukeboxPlayable(ModSounds.OST_02_KEY).stacksTo(1).rarity(Rarity.RARE)));
 
   // #endregion Music Discs
 
