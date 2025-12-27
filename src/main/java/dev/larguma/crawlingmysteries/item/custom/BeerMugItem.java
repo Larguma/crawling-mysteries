@@ -10,6 +10,7 @@ import net.minecraft.world.level.block.SoundType;
 import net.minecraft.world.level.block.state.BlockState;
 import dev.larguma.crawlingmysteries.client.item.BeerMugItemRenderer;
 import dev.larguma.crawlingmysteries.effect.ModMobEffects;
+import dev.larguma.crawlingmysteries.item.helper.ItemDataHelper;
 import net.minecraft.ChatFormatting;
 import net.minecraft.advancements.CriteriaTriggers;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
@@ -66,6 +67,16 @@ public class BeerMugItem extends BlockItem implements GeoItem {
     BlockState clickedState = level.getBlockState(clickedPos);
 
     if (player != null && player.isCrouching() && clickedState.is(this.getBlock())) {
+      boolean itemHasEyes = ItemDataHelper.isSentient(context.getItemInHand());
+      boolean blockHasEyes = false;
+      if (level.getBlockEntity(clickedPos) instanceof BeerMugBlockEntity be) {
+        blockHasEyes = be.hasGooglyEyes();
+      }
+
+      if (itemHasEyes || blockHasEyes) {
+        return super.useOn(context);
+      }
+
       int mugs = clickedState.getValue(BeerMugBlock.MUGS);
       if (mugs < 4) {
         if (!level.isClientSide) {

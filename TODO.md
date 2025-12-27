@@ -25,10 +25,10 @@
 - [ ] find use
 - [x] 3d model
 - [x] drinkable
-- [ ] w/ googly eyes
+- [x] w/ googly eyes
   - [ ] aoe spell, 4 charges
     - [x] 4 charges
-    - [ ] confused effect on mobs: stop attacking, walk random
+    - [x] confused effect on mobs: stop attacking, walk random
     - [x] refillable at beer keg
   - [ ] animate spell, beer waves
   - [x] sound effect
@@ -69,7 +69,8 @@
 
 ## Blocks list
 
-- [ ] beer keg with cutscene
+- [x] beer keg
+  - [x] with animations/sounds
   - [x] refill beer mug
   - [x] villagers work poi
 
@@ -100,7 +101,15 @@
 
 ### Sentience
 
-- [ ] slap googly eyes to make item sentient
+- [x] slap googly eyes to make item sentient
+  - [ ] make procedural animation
+- [ ] talk to player (BetterToast)
+- [ ] gain levels (exp from kills, blocks mined, ...)
+  - [ ] gain small buffs
+- [ ] have personality (chosen randomly on slap)
+- [ ] have quests ?
+  - [ ] figure out for waht rewards
+- [ ] die ? (or lose sentience)
 
 ### Find new items
 
@@ -141,6 +150,13 @@
 - [ ] Eternal Guardian music
 - [ ] Codex music
 - [ ] at least 9239475 more tracks
+
+## Lore
+
+- [ ] Tavern lore
+- [ ] find lore justification for googly eyes
+- [ ] Eternal Guardian lore
+- [ ] Cryptic Eye lore
 
 ## Random
 

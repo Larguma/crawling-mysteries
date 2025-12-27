@@ -1,4 +1,4 @@
-package dev.larguma.crawlingmysteries.command.spell;
+package dev.larguma.crawlingmysteries.command.trinket;
 
 import java.util.Optional;
 
@@ -20,15 +20,14 @@ public class GetTrinketData {
 
   public GetTrinketData(CommandDispatcher<CommandSourceStack> dispatcher) {
     dispatcher.register(CommandHelper.MOD_COMMAND
-        .then(Commands.literal("spell")
-            .then(Commands.literal("trinketdata")
-                .then(Commands.literal("get")
-                    .then(Commands.argument("player", EntityArgument.player())
-                        .then(Commands.argument("trinket_item", StringArgumentType.string())
-                            .suggests(CommandHelper.TRINKET_SUGGESTIONS)
-                            .then(Commands.argument("data_component", StringArgumentType.string())
-                                .suggests(CommandHelper.DATA_COMPONENT_SUGGESTIONS)
-                                .executes(this::execute))))))));
+        .then(Commands.literal("trinket")
+            .then(Commands.literal("getdata")
+                .then(Commands.argument("player", EntityArgument.player())
+                    .then(Commands.argument("trinket_item", StringArgumentType.string())
+                        .suggests(CommandHelper.TRINKET_SUGGESTIONS)
+                        .then(Commands.argument("data_component", StringArgumentType.string())
+                            .suggests(CommandHelper.DATA_COMPONENT_SUGGESTIONS)
+                            .executes(this::execute)))))));
   }
 
   private int execute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {

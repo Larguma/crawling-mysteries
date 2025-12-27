@@ -99,4 +99,24 @@ public final class ItemDataHelper {
 
   // #endregion Attunement
 
+  // #region Sentience
+
+  /**
+   * Checks if the item is sentient.
+   */
+  public static boolean isSentient(ItemStack stack) {
+    if (!stack.has(ModDataComponents.GOOGLY_EYES))
+      stack.set(ModDataComponents.GOOGLY_EYES, false);
+    return stack.get(ModDataComponents.GOOGLY_EYES);
+  }
+
+  /**
+   * Sets the sentience state of the item.
+   */
+  public static void setSentient(ItemStack stack, boolean sentient) {
+    stack.set(ModDataComponents.GOOGLY_EYES, sentient);
+  }
+
+  // #endregion Sentience
+
 }

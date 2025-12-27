@@ -19,7 +19,7 @@
   "command.crawlingmysteries.spell.cooldowns.clear.success": "Cleared cooldown for %s on %s",
   "command.crawlingmysteries.spell.cooldowns.get.success": "%s's cooldown for %s is %s",
   "command.crawlingmysteries.spell.trinketdata.item_not_found": "Item not found: %s",
-  "command.crawlingmysteries.spell.trinketdata.trinket_not_equipped": "%s does not have %s equipped",
+  "command.crawlingmysteries.spell.trinketdata.trinket_not_equipped": "%s does not have %s equipped or in their hands",
   "command.crawlingmysteries.spell.trinketdata.component_not_found": "Unknown data component: %s. Available: %s",
   "command.crawlingmysteries.spell.trinketdata.set.success": "Set %s to %s on %s's %s",
   "command.crawlingmysteries.spell.trinketdata.set.failure": "Failed to set %s. Expected type: %s",

@@ -36,6 +36,7 @@ public class ItemHelper {
 
   /**
    * Finds the first equipped trinket item matching the target item.
+   * Can be in curios slots or held in main/off hand.
    * 
    * @param player     The player to search trinkets on.
    * @param targetItem The target trinket item to find.
@@ -50,6 +51,13 @@ public class ItemHelper {
     ICuriosItemHandler inventory = curiosHandler.get();
     for (SlotResult slotResult : inventory.findCurios(stack -> stack.is(targetItem))) {
       return slotResult.stack();
+    }
+
+    if (player.getMainHandItem().is(targetItem)) {
+      return player.getMainHandItem();
+    }
+    if (player.getOffhandItem().is(targetItem)) {
+      return player.getOffhandItem();
     }
 
     return ItemStack.EMPTY;

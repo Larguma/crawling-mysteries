@@ -39,6 +39,11 @@ public class ModDataComponents {
       "spell_stage",
       builder -> builder.persistent(Codec.INT),
       ComponentType.INTEGER, 0);
+
+  public static final DeferredHolder<DataComponentType<?>, DataComponentType<Boolean>> GOOGLY_EYES = register(
+      "googly_eyes",
+      builder -> builder.persistent(Codec.BOOL),
+      ComponentType.BOOLEAN, false);
   // #endregion Common
 
   // Cryptic Eye
