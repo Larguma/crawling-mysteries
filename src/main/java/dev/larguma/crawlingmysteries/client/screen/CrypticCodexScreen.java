@@ -13,17 +13,19 @@ import com.mojang.blaze3d.platform.NativeImage;
 
 import dev.larguma.crawlingmysteries.ConfigClient;
 import dev.larguma.crawlingmysteries.CrawlingMysteries;
-import dev.larguma.crawlingmysteries.client.codex.CodexCategory;
-import dev.larguma.crawlingmysteries.client.codex.CodexEntry;
-import dev.larguma.crawlingmysteries.client.codex.CodexPage;
-import dev.larguma.crawlingmysteries.client.codex.CodexRegistry;
-import dev.larguma.crawlingmysteries.client.codex.CodexUnlockManager;
 import dev.larguma.crawlingmysteries.client.event.KeyMappingsEvents;
 import dev.larguma.crawlingmysteries.client.particle.BackgroundParticle;
 import dev.larguma.crawlingmysteries.client.particle.FloatingRuneParticle;
 import dev.larguma.crawlingmysteries.client.particle.OrbitingStarParticle;
 import dev.larguma.crawlingmysteries.client.screen.render.PanelBorderRenderer;
+import dev.larguma.crawlingmysteries.codex.CodexCategory;
+import dev.larguma.crawlingmysteries.codex.CodexEntry;
+import dev.larguma.crawlingmysteries.codex.CodexPage;
+import dev.larguma.crawlingmysteries.codex.CodexRegistry;
+import dev.larguma.crawlingmysteries.codex.CodexUnlockManager;
+import dev.larguma.crawlingmysteries.data.ModDataComponents;
 import dev.larguma.crawlingmysteries.networking.packet.RequestStatsPacket;
+import dev.larguma.crawlingmysteries.recipe.SmithingAwakeningRecipe;
 import dev.larguma.crawlingmysteries.spell.ModSpells;
 import dev.larguma.crawlingmysteries.spell.Spell;
 import dev.larguma.crawlingmysteries.spell.SpellCooldownManager;
@@ -49,6 +51,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.ShapedRecipe;
+import net.minecraft.world.item.crafting.SmithingRecipe;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 /**
@@ -85,6 +88,9 @@ public class CrypticCodexScreen extends Screen {
   private int entryScrollOffset = 0;
   private int contentScrollOffset = 0;
   private int maxContentScroll = 0;
+  private int categoryScrollOffset = 0;
+  private int cachedMaxCategoryScroll = 0;
+  private static final int MAX_VISIBLE_CATEGORIES = 4;
 
   // Cached layout values for mouse interactions
   private int cachedEntryListStartY = 0;
@@ -213,12 +219,39 @@ public class CrypticCodexScreen extends Screen {
 
     // Category buttons
     int buttonY = y;
-    for (CodexCategory category : CodexRegistry.getCategories()) {
+    List<CodexCategory> categories = CodexRegistry.getCategories();
+    cachedMaxCategoryScroll = Math.max(0, categories.size() - MAX_VISIBLE_CATEGORIES);
+    categoryScrollOffset = Mth.clamp(categoryScrollOffset, 0, cachedMaxCategoryScroll);
+
+    int visibleCategories = Math.min(categories.size(), MAX_VISIBLE_CATEGORIES);
+
+    // Category Scroll Up
+    if (categoryScrollOffset > 0) {
+      boolean upHovered = isMouseOver(mouseX, mouseY, x + SIDEBAR_WIDTH - SCROLL_BUTTON_SIZE - 4,
+          y + LEFT_PANEL_SCROLL_OFFSET_TOP, SCROLL_BUTTON_SIZE, SCROLL_BUTTON_SIZE);
+      int upColor = upHovered ? 0xFFFFFF : TEXT_MUTED;
+      guiGraphics.drawString(this.font, "▲", x + SIDEBAR_WIDTH - SCROLL_BUTTON_SIZE, y + LEFT_PANEL_SCROLL_OFFSET_TOP,
+          upColor, false);
+    }
+
+    for (int i = categoryScrollOffset; i < categoryScrollOffset + visibleCategories; i++) {
+      if (i >= categories.size())
+        break;
+      CodexCategory category = categories.get(i);
       boolean isSelected = category == selectedCategory;
       boolean isHovered = isMouseOver(mouseX, mouseY, x, buttonY, SIDEBAR_WIDTH, CATEGORY_BUTTON_HEIGHT);
 
       renderCategoryButton(guiGraphics, x, buttonY, category, isSelected, isHovered);
       buttonY += CATEGORY_BUTTON_HEIGHT + 4;
+    }
+
+    // Category Scroll Down
+    if (categoryScrollOffset < cachedMaxCategoryScroll) {
+      boolean downHovered = isMouseOver(mouseX, mouseY, x + SIDEBAR_WIDTH - SCROLL_BUTTON_SIZE - 4,
+          buttonY + LEFT_PANEL_SCROLL_OFFSET_BOT - 4, SCROLL_BUTTON_SIZE, SCROLL_BUTTON_SIZE);
+      int downColor = downHovered ? 0xFFFFFF : TEXT_MUTED;
+      guiGraphics.drawString(this.font, "▼", x + SIDEBAR_WIDTH - SCROLL_BUTTON_SIZE,
+          buttonY + LEFT_PANEL_SCROLL_OFFSET_BOT - 4, downColor, false);
     }
 
     // Separator
@@ -253,21 +286,17 @@ public class CrypticCodexScreen extends Screen {
 
     if (entryScrollOffset > 0) {
       boolean upHovered = isMouseOver(mouseX, mouseY, x + SIDEBAR_WIDTH - SCROLL_BUTTON_SIZE - 4,
-          cachedScrollUpY + LEFT_PANEL_SCROLL_OFFSET_TOP,
-          SCROLL_BUTTON_SIZE, SCROLL_BUTTON_SIZE);
+          cachedScrollUpY + LEFT_PANEL_SCROLL_OFFSET_TOP, SCROLL_BUTTON_SIZE, SCROLL_BUTTON_SIZE);
       int upColor = upHovered ? 0xFFFFFF : TEXT_MUTED;
       guiGraphics.drawString(this.font, "▲", x + SIDEBAR_WIDTH - SCROLL_BUTTON_SIZE,
-          cachedScrollUpY + LEFT_PANEL_SCROLL_OFFSET_TOP, upColor,
-          false);
+          cachedScrollUpY + LEFT_PANEL_SCROLL_OFFSET_TOP, upColor, false);
     }
     if (entryScrollOffset < cachedMaxEntryScroll) {
       boolean downHovered = isMouseOver(mouseX, mouseY, x + SIDEBAR_WIDTH - SCROLL_BUTTON_SIZE - 4,
-          cachedScrollDownY + LEFT_PANEL_SCROLL_OFFSET_BOT,
-          SCROLL_BUTTON_SIZE, SCROLL_BUTTON_SIZE);
+          cachedScrollDownY + LEFT_PANEL_SCROLL_OFFSET_BOT, SCROLL_BUTTON_SIZE, SCROLL_BUTTON_SIZE);
       int downColor = downHovered ? 0xFFFFFF : TEXT_MUTED;
       guiGraphics.drawString(this.font, "▼", x + SIDEBAR_WIDTH - SCROLL_BUTTON_SIZE,
-          cachedScrollDownY + LEFT_PANEL_SCROLL_OFFSET_BOT, downColor,
-          false);
+          cachedScrollDownY + LEFT_PANEL_SCROLL_OFFSET_BOT, downColor, false);
     }
   }
 
@@ -428,19 +457,19 @@ public class CrypticCodexScreen extends Screen {
         renderTextPage(guiGraphics, x, y, width, maxHeight, page);
       }
       case ITEM_SHOWCASE -> {
-        renderItemShowcase(guiGraphics, x, y, width, maxHeight, page);
+        renderItemShowcasePage(guiGraphics, x, y, width, maxHeight, page);
       }
       case SPELL_INFO -> {
-        renderSpellInfo(guiGraphics, x, y, width, maxHeight, page);
+        renderSpellInfoPage(guiGraphics, x, y, width, maxHeight, page);
       }
       case IMAGE -> {
-        renderImage(guiGraphics, x, y, width, maxHeight, page);
+        renderImagePage(guiGraphics, x, y, width, maxHeight, page);
       }
       case CRAFTING -> {
-        renderCrafting(guiGraphics, x, y, width, maxHeight, page);
+        renderCraftingPage(guiGraphics, x, y, width, maxHeight, page);
       }
       case ENTITY_DISPLAY -> {
-        renderEntityDisplay(guiGraphics, x, y, width, maxHeight, page);
+        renderEntityDisplayPage(guiGraphics, x, y, width, maxHeight, page);
       }
       default -> {
         maxContentScroll = 0;
@@ -481,18 +510,25 @@ public class CrypticCodexScreen extends Screen {
   /**
    * Renders an item showcase page with a large item icon and description.
    */
-  private void renderItemShowcase(GuiGraphics guiGraphics, int x, int y, int width, int maxHeight, CodexPage page) {
+  private void renderItemShowcasePage(GuiGraphics guiGraphics, int x, int y, int width, int maxHeight, CodexPage page) {
     String itemId = page.extraData();
+    String itemData = null;
     if (itemId == null || itemId.isEmpty()) {
       maxContentScroll = 0;
       guiGraphics.drawString(this.font, "§cNo item specified", x, y, TEXT_MUTED, false);
       return;
     }
 
+    // crawlingmysteries:beer_mug[crawlingmysteries:googly_eyes=true]
+    if (itemId.contains("[") && itemId.contains("]")) {
+      itemData = itemId.substring(itemId.indexOf("[") + 1, itemId.indexOf("]"));
+      itemId = itemId.substring(0, itemId.indexOf("["));
+    }
+
     // Parse item ID (format: "modid:item_name" or just "item_name")
     ResourceLocation itemLocation;
     if (itemId.contains(":")) {
-      itemLocation = ResourceLocation.parse(itemId);
+      itemLocation = ResourceLocation.tryParse(itemId);
     } else {
       itemLocation = ResourceLocation.fromNamespaceAndPath(CrawlingMysteries.MOD_ID, itemId);
     }
@@ -500,11 +536,15 @@ public class CrypticCodexScreen extends Screen {
     Optional<Item> itemOpt = BuiltInRegistries.ITEM.getOptional(itemLocation);
     if (itemOpt.isEmpty()) {
       maxContentScroll = 0;
-      guiGraphics.drawString(this.font, "§cItem not found: " + itemId, x, y, TEXT_MUTED, false);
+      guiGraphics.drawString(this.font, "§cItem not found:", x, y, TEXT_MUTED, false);
+      guiGraphics.drawString(this.font, "§c" + itemId, x, y + 12, TEXT_MUTED, false);
       return;
     }
 
     ItemStack itemStack = new ItemStack(itemOpt.get());
+    if (itemData != null) {
+      itemStack = ModDataComponents.applyItemDataFromString(itemStack, itemData);
+    }
     int centerX = x + width / 2;
 
     // Calculate total content height
@@ -559,7 +599,7 @@ public class CrypticCodexScreen extends Screen {
   /**
    * Renders a spell info page with spell icon, stats, and description.
    */
-  private void renderSpellInfo(GuiGraphics guiGraphics, int x, int y, int width, int maxHeight, CodexPage page) {
+  private void renderSpellInfoPage(GuiGraphics guiGraphics, int x, int y, int width, int maxHeight, CodexPage page) {
     String spellId = page.extraData();
     if (spellId == null || spellId.isEmpty()) {
       maxContentScroll = 0;
@@ -663,7 +703,7 @@ public class CrypticCodexScreen extends Screen {
   /**
    * Renders an image page with a texture.
    */
-  private void renderImage(GuiGraphics guiGraphics, int x, int y, int width, int maxHeight, CodexPage page) {
+  private void renderImagePage(GuiGraphics guiGraphics, int x, int y, int width, int maxHeight, CodexPage page) {
     String imagePath = page.extraData();
     if (imagePath == null || imagePath.isEmpty()) {
       maxContentScroll = 0;
@@ -755,7 +795,7 @@ public class CrypticCodexScreen extends Screen {
   /**
    * Renders a crafting recipe page (simplified display).
    */
-  private void renderCrafting(GuiGraphics guiGraphics, int x, int y, int width, int maxHeight, CodexPage page) {
+  private void renderCraftingPage(GuiGraphics guiGraphics, int x, int y, int width, int maxHeight, CodexPage page) {
     String recipeId = page.extraData();
     if (recipeId == null || recipeId.isEmpty()) {
       maxContentScroll = 0;
@@ -791,6 +831,25 @@ public class CrypticCodexScreen extends Screen {
     RecipeHolder<?> recipeHolder = recipeHolderOpt.get();
     Recipe<?> recipe = recipeHolder.value();
 
+    guiGraphics.enableScissor(x, y, x + width, y + maxHeight);
+
+    if (recipe instanceof SmithingRecipe smithingRecipe) {
+      renderSmithing(guiGraphics, x, y, width, maxHeight, page, smithingRecipe);
+    } else {
+      renderCraftingGrid(guiGraphics, x, y, width, maxHeight, page, recipe);
+    }
+
+    guiGraphics.disableScissor();
+
+    renderScrollIndicators(guiGraphics, x, y, width, maxHeight);
+  }
+
+  /**
+   * Renders a standard crafting table recipe (3x3 grid).
+   */
+  private void renderCraftingGrid(GuiGraphics guiGraphics, int x, int y, int width, int maxHeight, CodexPage page,
+      Recipe<?> recipe) {
+    Minecraft mc = Minecraft.getInstance();
     int centerX = x + width / 2;
 
     // Crafting grid dimensions
@@ -806,8 +865,6 @@ public class CrypticCodexScreen extends Screen {
 
     maxContentScroll = Math.max(0, contentHeight - maxHeight);
     contentScrollOffset = Mth.clamp(contentScrollOffset, 0, maxContentScroll);
-
-    guiGraphics.enableScissor(x, y, x + width, y + maxHeight);
 
     int offsetY = y - contentScrollOffset;
 
@@ -865,12 +922,13 @@ public class CrypticCodexScreen extends Screen {
     // Result slot
     int resultX = arrowX + 20;
     int resultY = gridY + gridSize / 2 - slotSize / 2;
+    ItemStack resultStack = recipe.getResultItem(mc.level.registryAccess());
+
     guiGraphics.fill(resultX - 2, resultY - 2, resultX + slotSize + 2, resultY + slotSize + 2, 0x66000000);
     PanelBorderRenderer.renderPanelBorder(guiGraphics, resultX - 2, resultY - 2, slotSize + 4, slotSize + 4,
         PRIMARY_COLOR, 3);
     guiGraphics.fill(resultX + 1, resultY + 1, resultX + slotSize - 1, resultY + slotSize - 1, 0x44FFFFFF);
 
-    ItemStack resultStack = recipe.getResultItem(mc.level.registryAccess());
     guiGraphics.renderItem(resultStack, resultX + 4, resultY + 4);
     guiGraphics.renderItemDecorations(this.font, resultStack, resultX + 4, resultY + 4);
 
@@ -878,10 +936,92 @@ public class CrypticCodexScreen extends Screen {
     if (!page.content().getString().isEmpty()) {
       descY = renderFormattedText(guiGraphics, page.content(), x, descY, width);
     }
+  }
 
-    guiGraphics.disableScissor();
+  /**
+   * Renders a smithing recipe page.
+   */
+  private void renderSmithing(GuiGraphics guiGraphics, int x, int y, int width, int maxHeight, CodexPage page,
+      SmithingRecipe recipe) {
+    int centerX = x + width / 2;
 
-    renderScrollIndicators(guiGraphics, x, y, width, maxHeight);
+    // Calculate total content height
+    int slotSize = 24;
+    int contentHeight = 14 + 20 + slotSize + 20; // title + spacing + slots + spacing
+    if (!page.content().getString().isEmpty()) {
+      List<FormattedCharSequence> lines = this.font.split(page.content(), width);
+      contentHeight += lines.size() * 12;
+    }
+
+    maxContentScroll = Math.max(0, contentHeight - maxHeight);
+    contentScrollOffset = Mth.clamp(contentScrollOffset, 0, maxContentScroll);
+
+    int offsetY = y - contentScrollOffset;
+
+    Component title = Component.literal("§lSmithing Recipe");
+    int titleWidth = this.font.width(title);
+    guiGraphics.drawString(this.font, title, centerX - titleWidth / 2, offsetY, 0xFFFFFF, true);
+
+    int startY = offsetY + 30;
+    int gap = 8;
+
+    // Layout: [Template] [Base] [Addition] -> [Result]
+    int totalWidth = (slotSize * 3) + (gap * 2) + 20 + slotSize;
+    int startX = centerX - totalWidth / 2;
+
+    NonNullList<Ingredient> ingredients = recipe.getIngredients();
+
+    // Slots
+    for (int i = 0; i < 3; i++) {
+      int slotX = startX + i * (slotSize + gap);
+      Ingredient ingredient = (i < ingredients.size()) ? ingredients.get(i) : Ingredient.EMPTY;
+
+      guiGraphics.fill(slotX - 2, startY - 2, slotX + slotSize + 2, startY + slotSize + 2, 0x66000000);
+      PanelBorderRenderer.renderPanelBorder(guiGraphics, slotX - 2, startY - 2, slotSize + 4, slotSize + 4, TEXT_MUTED,
+          3);
+      guiGraphics.fill(slotX + 1, startY + 1, slotX + slotSize - 1, startY + slotSize - 1, 0x44FFFFFF);
+
+      if (!ingredient.isEmpty()) {
+        renderIngredient(guiGraphics, ingredient, slotX + 4, startY + 4);
+      }
+    }
+
+    // Arrow
+    int arrowX = startX + 3 * (slotSize + gap) + 2;
+    int arrowY = startY + slotSize / 2 - 4;
+    guiGraphics.drawString(this.font, "→", arrowX, arrowY, TEXT_COLOR, false);
+
+    // Result Slot
+    int resultX = arrowX + 16;
+    ItemStack resultStack;
+
+    if (recipe instanceof SmithingAwakeningRecipe awakeningRecipe) {
+      ItemStack[] baseItems = awakeningRecipe.getBase().getItems();
+      if (baseItems.length > 0) {
+        int index = (int) (animationTick / 20) % baseItems.length;
+        if (index < 0)
+          index = 0;
+        resultStack = baseItems[index].copy();
+        resultStack.set(ModDataComponents.GOOGLY_EYES, true);
+      } else {
+        resultStack = recipe.getResultItem(Minecraft.getInstance().level.registryAccess());
+      }
+    } else {
+      resultStack = recipe.getResultItem(Minecraft.getInstance().level.registryAccess());
+    }
+
+    guiGraphics.fill(resultX - 2, startY - 2, resultX + slotSize + 2, startY + slotSize + 2, 0x66000000);
+    PanelBorderRenderer.renderPanelBorder(guiGraphics, resultX - 2, startY - 2, slotSize + 4, slotSize + 4,
+        PRIMARY_COLOR, 3);
+    guiGraphics.fill(resultX + 1, startY + 1, resultX + slotSize - 1, startY + slotSize - 1, 0x44FFFFFF);
+
+    guiGraphics.renderItem(resultStack, resultX + 4, startY + 4);
+    guiGraphics.renderItemDecorations(this.font, resultStack, resultX + 4, startY + 4);
+
+    int descY = startY + slotSize + 20;
+    if (!page.content().getString().isEmpty()) {
+      descY = renderFormattedText(guiGraphics, page.content(), x, descY, width);
+    }
   }
 
   // #endregion Crafting Page Rendering
@@ -892,7 +1032,8 @@ public class CrypticCodexScreen extends Screen {
    * Renders an entity display page with an animated 3D entity model.
    * Supports mouse drag rotation and displays entity stats.
    */
-  private void renderEntityDisplay(GuiGraphics guiGraphics, int x, int y, int width, int maxHeight, CodexPage page) {
+  private void renderEntityDisplayPage(GuiGraphics guiGraphics, int x, int y, int width, int maxHeight,
+      CodexPage page) {
     String entityId = page.extraData();
     if (entityId == null || entityId.isEmpty()) {
       maxContentScroll = 0;
@@ -1376,8 +1517,33 @@ public class CrypticCodexScreen extends Screen {
     int sidebarY = 40;
 
     // Check category buttons
+    int visibleCategories = Math.min(CodexRegistry.getCategories().size(), MAX_VISIBLE_CATEGORIES);
     int buttonY = sidebarY;
-    for (CodexCategory category : CodexRegistry.getCategories()) {
+
+    // Check scroll buttons (Category)
+    if (categoryScrollOffset > 0
+        && isMouseOver((int) mouseX, (int) mouseY, sidebarX + SIDEBAR_WIDTH - SCROLL_BUTTON_SIZE - 4,
+            sidebarY + LEFT_PANEL_SCROLL_OFFSET_TOP, SCROLL_BUTTON_SIZE * 2, SCROLL_BUTTON_SIZE * 2)) {
+      categoryScrollOffset = Math.max(0, categoryScrollOffset - 1);
+      playClickSound();
+      return true;
+    }
+
+    int categoryListHeight = visibleCategories * (CATEGORY_BUTTON_HEIGHT + 4);
+    int downY = sidebarY + categoryListHeight + LEFT_PANEL_SCROLL_OFFSET_BOT - 4;
+
+    if (categoryScrollOffset < cachedMaxCategoryScroll && isMouseOver((int) mouseX, (int) mouseY,
+        sidebarX + SIDEBAR_WIDTH - SCROLL_BUTTON_SIZE - 4, downY, SCROLL_BUTTON_SIZE * 2, SCROLL_BUTTON_SIZE * 2)) {
+      categoryScrollOffset = Math.min(cachedMaxCategoryScroll, categoryScrollOffset + 1);
+      playClickSound();
+      return true;
+    }
+
+    for (int i = categoryScrollOffset; i < categoryScrollOffset + visibleCategories; i++) {
+      if (i >= CodexRegistry.getCategories().size())
+        break;
+      CodexCategory category = CodexRegistry.getCategories().get(i);
+
       if (isMouseOver((int) mouseX, (int) mouseY, sidebarX, buttonY, SIDEBAR_WIDTH, CATEGORY_BUTTON_HEIGHT)) {
         if (category != selectedCategory) {
           selectedCategory = category;
@@ -1496,8 +1662,13 @@ public class CrypticCodexScreen extends Screen {
 
     // Over sidebar
     if (mouseX >= sidebarX && mouseX < sidebarX + SIDEBAR_WIDTH + 4) {
-      entryScrollOffset -= (int) scrollY;
-      entryScrollOffset = Mth.clamp(entryScrollOffset, 0, cachedMaxEntryScroll);
+      if (mouseY < cachedEntryListStartY - 20) {
+        categoryScrollOffset -= (int) scrollY;
+        categoryScrollOffset = Mth.clamp(categoryScrollOffset, 0, cachedMaxCategoryScroll);
+      } else {
+        entryScrollOffset -= (int) scrollY;
+        entryScrollOffset = Mth.clamp(entryScrollOffset, 0, cachedMaxEntryScroll);
+      }
       return true;
     }
 

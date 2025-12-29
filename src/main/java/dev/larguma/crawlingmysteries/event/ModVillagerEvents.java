@@ -3,6 +3,7 @@ package dev.larguma.crawlingmysteries.event;
 import java.util.List;
 
 import dev.larguma.crawlingmysteries.CrawlingMysteries;
+import dev.larguma.crawlingmysteries.block.ModBlocks;
 import dev.larguma.crawlingmysteries.item.ModItems;
 import dev.larguma.crawlingmysteries.villager.ModVillager;
 import it.unimi.dsi.fastutil.ints.Int2ObjectMap;
@@ -27,8 +28,20 @@ public class ModVillagerEvents {
       Int2ObjectMap<List<VillagerTrades.ItemListing>> trades = event.getTrades();
 
       trades.get(1).add((pTrader, pRandom) -> new MerchantOffer(
+          new ItemCost(Items.EMERALD, 3),
+          new ItemStack(ModItems.BEER_BARREL.get(), 1), 10, 10, 0.05f));
+      trades.get(1).add((pTrader, pRandom) -> new MerchantOffer(
+          new ItemCost(Items.EMERALD, 5),
+          new ItemStack(Items.WHEAT, 5), 10, 10, 0.05f));
+      trades.get(2).add((pTrader, pRandom) -> new MerchantOffer(
+          new ItemCost(Items.EMERALD, 4),
+          new ItemStack(Items.GLOWSTONE_DUST, 3), 10, 10, 0.05f));
+      trades.get(2).add((pTrader, pRandom) -> new MerchantOffer(
           new ItemCost(Items.EMERALD, 6),
-          new ItemStack(ModItems.MUSIC_DISC_OST_01.get(), 1), 1, 10, 0.05f));
+          new ItemStack(ModBlocks.BEER_MUG.get(), 1), 5, 10, 0.05f));
+      trades.get(3).add((pTrader, pRandom) -> new MerchantOffer(
+          new ItemCost(Items.EMERALD, 20),
+          new ItemStack(ModItems.PETRIFIED_EYE.get(), 1), 1, 10, 0.05f));
     }
   }
 

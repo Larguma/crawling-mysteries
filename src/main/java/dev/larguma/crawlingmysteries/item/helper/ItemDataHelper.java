@@ -1,7 +1,12 @@
 package dev.larguma.crawlingmysteries.item.helper;
 
 import dev.larguma.crawlingmysteries.data.ModDataComponents;
+import dev.larguma.crawlingmysteries.networking.packet.BetterToastPacket;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.Component;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.item.ItemStack;
+import net.neoforged.neoforge.network.PacketDistributor;
 
 /**
  * Helper methods for managing item data components.
@@ -98,5 +103,51 @@ public final class ItemDataHelper {
   }
 
   // #endregion Attunement
+
+  // #region Sentience
+
+  /**
+   * Checks if the item is sentient.
+   */
+  public static boolean isSentient(ItemStack stack) {
+    if (!stack.has(ModDataComponents.GOOGLY_EYES))
+      stack.set(ModDataComponents.GOOGLY_EYES, false);
+    return stack.get(ModDataComponents.GOOGLY_EYES);
+  }
+
+  /**
+   * Sets the sentience state of the item.
+   */
+  public static void setSentient(ItemStack stack, boolean sentient) {
+    stack.set(ModDataComponents.GOOGLY_EYES, sentient);
+  }
+
+  /**
+   * Checks if the item has introduced himself.
+   */
+  public static boolean hasIntroduced(ItemStack stack) {
+    if (!stack.has(ModDataComponents.INTRODUCED))
+      stack.set(ModDataComponents.INTRODUCED, false);
+    return stack.get(ModDataComponents.INTRODUCED);
+  }
+
+  /**
+   * Sets the introduced state of the item.
+   */
+  public static void setIntroduced(ItemStack stack, boolean introduced) {
+    stack.set(ModDataComponents.INTRODUCED, introduced);
+  }
+
+  public static void introduce(ItemStack stack, ServerPlayer serverPlayer) {
+    if (!hasIntroduced(stack)) {
+      setIntroduced(stack, true);
+      String itemName = BuiltInRegistries.ITEM.getKey(stack.getItem()).getPath();
+      PacketDistributor.sendToPlayer(serverPlayer,
+          new BetterToastPacket(Component.translatable("message.crawlingmysteries." + itemName + ".introduction"),
+              BetterToastPacket.TYPE_INFO, stack.getItem()));
+    }
+  }
+
+  // #endregion Sentience
 
 }

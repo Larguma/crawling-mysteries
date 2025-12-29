@@ -35,6 +35,10 @@ public class ModItems {
 
   public static final DeferredItem<Item> BEER_BARREL = ITEMS.register("beer_barrel",
       () -> new Item(new Item.Properties().stacksTo(16)));
+  public static final DeferredItem<Item> PETRIFIED_EYE = ITEMS.register("petrified_eye",
+      () -> new Item(new Item.Properties()));
+  public static final DeferredItem<Item> AWAKENED_EYE = ITEMS.register("awakened_eye",
+      () -> new Item(new Item.Properties()));
 
   // #endregion Simple
 
@@ -50,6 +54,9 @@ public class ModItems {
   public static final DeferredItem<Item> MUSIC_DISC_OST_01 = ITEMS.register("music_disc_ost_01",
       () -> new Item(
           new Item.Properties().jukeboxPlayable(ModSounds.OST_01_KEY).stacksTo(1).rarity(Rarity.RARE)));
+  public static final DeferredItem<Item> MUSIC_DISC_OST_02 = ITEMS.register("music_disc_ost_02",
+      () -> new Item(
+          new Item.Properties().jukeboxPlayable(ModSounds.OST_02_KEY).stacksTo(1).rarity(Rarity.RARE)));
 
   // #endregion Music Discs
 

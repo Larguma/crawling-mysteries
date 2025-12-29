@@ -1,0 +1,19 @@
+{
+  "id": "awakened_eye",
+  "category": "items",
+  "title": "Awakened Eye",
+  "subtitle": "A mysterious, ancient eye",
+  "icon": "textures/item/awakened_eye.png",
+  "unlock_condition": "HAS_AWAKENED_EYE",
+  "pages": [
+    {
+      "type": "text",
+      "content": "The §5Awakened Eye§r is a powerful trinket that can be attached to certain items to unlock hidden abilities.\n\nTo awaken an item, you must attach it to an item in the §5Smithing Table§r with an §5Echo Shard§r. The Eye will bond with the item, granting it new powers."
+    },
+    {
+      "type": "crafting",
+      "extra": "crawlingmysteries:awakening_recipe",
+      "content": "§6Awaken an item§r using an §aEcho Shard§r."
+    }
+  ]
+}

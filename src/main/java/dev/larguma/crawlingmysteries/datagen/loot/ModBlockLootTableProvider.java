@@ -5,6 +5,7 @@ import java.util.Set;
 
 import dev.larguma.crawlingmysteries.block.ModBlocks;
 import dev.larguma.crawlingmysteries.block.custom.BeerMugBlock;
+import dev.larguma.crawlingmysteries.item.ModItems;
 import net.minecraft.advancements.critereon.StatePropertiesPredicate;
 import net.minecraft.core.Holder;
 import net.minecraft.core.HolderLookup;
@@ -30,6 +31,8 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
   @Override
   protected void generate() {
     add(ModBlocks.BEER_MUG.get(), createBeerMugDrops(ModBlocks.BEER_MUG.get()));
+    add(ModBlocks.MYSTERIOUS_STONE.get(),
+        block -> createOreDrop(ModBlocks.MYSTERIOUS_STONE.get(), ModItems.PETRIFIED_EYE.get()));
     dropSelf(ModBlocks.BEER_KEG.get());
   }
 

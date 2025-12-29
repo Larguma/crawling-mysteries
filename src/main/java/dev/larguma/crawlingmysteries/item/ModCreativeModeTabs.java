@@ -24,15 +24,19 @@ public class ModCreativeModeTabs {
             output.accept(ModItems.ETERNAL_GUARDIAN_HEAD.get());
             output.accept(ModItems.ETERNAL_GUARDIAN_MASK.get());
             output.accept(ModItems.LUCKY_HORSESHOE.get());
+            output.accept(ModItems.PETRIFIED_EYE.get());
+            output.accept(ModItems.AWAKENED_EYE.get());
 
             output.accept(ModItems.ETERNAL_GUARDIAN_SPAWN_EGG.get());
-            
+
             output.accept(ModItems.MUSIC_DISC_OST_01.get());
-            
+            output.accept(ModItems.MUSIC_DISC_OST_02.get());
+
             output.accept(ModBlocks.TOMBSTONE.get());
             output.accept(ModBlocks.BEER_MUG.get());
             output.accept(ModItems.BEER_BARREL.get());
             output.accept(ModBlocks.BEER_KEG.get());
+            output.accept(ModBlocks.MYSTERIOUS_STONE.get());
           })
           .build());
 

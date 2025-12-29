@@ -4,8 +4,8 @@ import dev.larguma.crawlingmysteries.CrawlingMysteries;
 import dev.larguma.crawlingmysteries.command.spell.ClearAllCooldowns;
 import dev.larguma.crawlingmysteries.command.spell.ClearCooldowns;
 import dev.larguma.crawlingmysteries.command.spell.GetCooldowns;
-import dev.larguma.crawlingmysteries.command.spell.GetTrinketData;
-import dev.larguma.crawlingmysteries.command.spell.SetTrinketData;
+import dev.larguma.crawlingmysteries.command.trinket.GetTrinketData;
+import dev.larguma.crawlingmysteries.command.trinket.SetTrinketData;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
 import net.neoforged.neoforge.event.RegisterCommandsEvent;
@@ -16,7 +16,6 @@ public class ModCommandEvents {
 
   @SubscribeEvent
   public static void onCommandsRegister(RegisterCommandsEvent event) {
-    // Spell
     new ClearAllCooldowns(event.getDispatcher());
     new ClearCooldowns(event.getDispatcher());
     new GetCooldowns(event.getDispatcher());

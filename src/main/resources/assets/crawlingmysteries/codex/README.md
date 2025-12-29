@@ -35,6 +35,7 @@ The pages are generated from JSON, the text can be formatted with all of Minecra
       // show the model (GUI version) of an item with description
       "type": "item_showcase", 
       // item id to showcase
+      // can include item data in square brackets, e.g.: crawlingmysteries:beer_mug[crawlingmysteries:googly_eyes=true]
       "extra": "crawlingmysteries:cryptic_eye",
       // additional text
       "content": "A mysterious eye that seems to have chosen you as its bearer. It watches over you with an intelligence that feels... ancient."

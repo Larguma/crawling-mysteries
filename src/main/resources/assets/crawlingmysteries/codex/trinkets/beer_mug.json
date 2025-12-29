@@ -1,0 +1,24 @@
+{
+  "id": "beer_mug",
+  "category": "trinkets",
+  "title": "Beer Mug",
+  "subtitle": "A frothy mug of ale",
+  "icon": "textures/item/beer_mug.png",
+  "unlock_condition": "HAS_BEER_MUG",
+  "pages": [
+    {
+      "type": "item_showcase",
+      "extra": "crawlingmysteries:beer_mug[crawlingmysteries:googly_eyes=true]",
+      "content": "A frothy mug of ale that seems to invite you to take a sip. It carries the warmth and cheer of a tavern on a cold night."
+    },
+    {
+      "type": "text",
+      "content": "§5The Beer Mug§r is a totally normal drinking mug that can be refilled with a §5Beer Keg§r... but it has a secret. It can be awakened by slapping an §5Awakened Eye§r onto it!\n\nOnce awakened, the §5Beer Mug§r gains the ability to spill its contents on command to make all the foes around you drunk.§n\n\n§6Effect of the Beer Mug's spill ability:§r\n§7Drunk§r - Enemies affected will stagger and start attacking each others."
+    },
+    {
+      "type": "crafting",
+      "extra": "crawlingmysteries:beer_mug",
+      "content": "You can craft a Beer Mug using any §abarrel§r and a §aStick§r."
+    }
+  ]
+}

@@ -41,6 +41,7 @@ public class CommandHelper {
     // Trinkets without spells but with data components
     trinketIds.add("\"crawlingmysteries:eternal_guardians_band\"");
     trinketIds.add("\"crawlingmysteries:lucky_horseshoe\"");
+    trinketIds.add("\"crawlingmysteries:beer_mug\"");
 
     return SharedSuggestionProvider.suggest(trinketIds, builder);
   };

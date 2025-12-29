@@ -7,6 +7,7 @@ import dev.larguma.crawlingmysteries.block.ModBlocks;
 import dev.larguma.crawlingmysteries.data.ModDataComponents;
 import dev.larguma.crawlingmysteries.data.custom.HorseshoeDataComponent;
 import dev.larguma.crawlingmysteries.item.ModItems;
+import dev.larguma.crawlingmysteries.tag.ModTags;
 import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.core.component.DataComponentPatch;
 import net.minecraft.data.PackOutput;
@@ -15,6 +16,7 @@ import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.Ingredient;
 import net.neoforged.neoforge.common.Tags;
 
 public class ModRecipeProvider extends RecipeProvider {
@@ -62,6 +64,17 @@ public class ModRecipeProvider extends RecipeProvider {
         .unlockedBy("has_barrel", has(Tags.Items.BARRELS))
         .unlockedBy("has_stick", has(Items.STICK))
         .save(recipeOutput);
+
+    SmithingAwakeningRecipeBuilder.smithing(
+        Ingredient.of(Items.ECHO_SHARD),
+        Ingredient.of(ModTags.Items.CAN_BE_SENTIENT),
+        Ingredient.of(ModItems.AWAKENED_EYE.get()),
+        RecipeCategory.MISC,
+        ModItems.AWAKENED_EYE.get())
+        .unlocks("has_echo_shard", has(Items.ECHO_SHARD))
+        .unlocks("has_can_be_sentient", has(ModTags.Items.CAN_BE_SENTIENT))
+        .unlocks("has_awakened_eye", has(ModItems.AWAKENED_EYE.get()))
+        .save(recipeOutput, CrawlingMysteries.MOD_ID + ":awakening_recipe");
   }
 
   private void buildHorseshoeUpgradeRecipes(RecipeOutput recipeOutput) {

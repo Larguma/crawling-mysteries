@@ -6,12 +6,15 @@ import java.util.List;
 import com.mojang.serialization.MapCodec;
 
 import dev.larguma.crawlingmysteries.block.entity.BeerMugBlockEntity;
+import dev.larguma.crawlingmysteries.data.ModDataComponents;
 import dev.larguma.crawlingmysteries.item.custom.BeerMugItem;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.context.BlockPlaceContext;
 import net.minecraft.world.level.BlockGetter;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
@@ -87,9 +90,27 @@ public class BeerMugBlock extends BushBlock implements EntityBlock {
   public BlockState getStateForPlacement(BlockPlaceContext context) {
     BlockState blockstate = context.getLevel().getBlockState(context.getClickedPos());
     if (blockstate.is(this)) {
-      return blockstate.setValue(MUGS, Math.min(4, blockstate.getValue(MUGS) + 1));
+      boolean itemHasEyes = context.getItemInHand().has(ModDataComponents.GOOGLY_EYES.get());
+      boolean blockHasEyes = false;
+      if (context.getLevel().getBlockEntity(context.getClickedPos()) instanceof BeerMugBlockEntity be) {
+        blockHasEyes = be.hasGooglyEyes();
+      }
+
+      if (!itemHasEyes && !blockHasEyes) {
+        return blockstate.setValue(MUGS, Math.min(4, blockstate.getValue(MUGS) + 1));
+      }
     }
     return super.getStateForPlacement(context).setValue(FACING, context.getHorizontalDirection().getOpposite());
+  }
+
+  @Override
+  public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
+    if (level.getBlockEntity(pos) instanceof BeerMugBlockEntity be) {
+      if (stack.has(ModDataComponents.GOOGLY_EYES.get())) {
+        be.setHasGooglyEyes(stack.get(ModDataComponents.GOOGLY_EYES.get()));
+      }
+    }
+    super.setPlacedBy(level, pos, state, placer, stack);
   }
 
   @Override
@@ -101,6 +122,9 @@ public class BeerMugBlock extends BushBlock implements EntityBlock {
     if (params.getOptionalParameter(LootContextParams.BLOCK_ENTITY) instanceof BeerMugBlockEntity be) {
       if (stack.getItem() instanceof BeerMugItem item) {
         item.setBeerLevel(stack, be.getBeerLevel());
+      }
+      if (be.hasGooglyEyes()) {
+        stack.set(ModDataComponents.GOOGLY_EYES.get(), true);
       }
     }
     drops.add(stack);
@@ -125,6 +149,16 @@ public class BeerMugBlock extends BushBlock implements EntityBlock {
 
   @Override
   public boolean canBeReplaced(BlockState state, BlockPlaceContext context) {
+    boolean itemHasEyes = context.getItemInHand().has(ModDataComponents.GOOGLY_EYES.get());
+    boolean blockHasEyes = false;
+    if (context.getLevel().getBlockEntity(context.getClickedPos()) instanceof BeerMugBlockEntity be) {
+      blockHasEyes = be.hasGooglyEyes();
+    }
+
+    if (itemHasEyes || blockHasEyes) {
+      return false;
+    }
+
     return !context.isSecondaryUseActive()
         && context.getItemInHand().getItem() == this.asItem()
         && state.getValue(MUGS) < 4

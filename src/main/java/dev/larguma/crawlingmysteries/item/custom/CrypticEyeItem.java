@@ -14,6 +14,7 @@ import dev.larguma.crawlingmysteries.data.ModDataComponents;
 import dev.larguma.crawlingmysteries.item.ModItems;
 import dev.larguma.crawlingmysteries.item.helper.ItemDataHelper;
 import dev.larguma.crawlingmysteries.networking.packet.BetterToastPacket;
+import dev.larguma.crawlingmysteries.networking.packet.TotemAnimationPacket;
 import dev.larguma.crawlingmysteries.spell.ModSpells;
 import dev.larguma.crawlingmysteries.spell.Spell;
 import net.minecraft.ChatFormatting;
@@ -25,16 +26,17 @@ import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
+import net.minecraft.world.InteractionHand;
+import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraft.world.entity.player.Player;
-import net.minecraft.world.InteractionHand;
-import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
@@ -51,6 +53,7 @@ import software.bernie.geckolib.animatable.client.GeoRenderProvider;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.animation.AnimatableManager;
 import software.bernie.geckolib.animation.AnimationController;
+import software.bernie.geckolib.animation.PlayState;
 import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 import top.theillusivec4.curios.api.CuriosApi;
@@ -61,11 +64,11 @@ public class CrypticEyeItem extends Item implements GeoItem, ICurioItem {
 
   private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
   private static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenLoop("idle");
+  private static final RawAnimation CONSUME_ANIM = RawAnimation.begin().thenPlay("consume");
   private static final int TOTEMS_FOR_BONUS = 5;
   private static final int MAX_BONUS_TOTEMS = 50;
   private static final int MAX_HEALTH_BONUS = MAX_BONUS_TOTEMS / TOTEMS_FOR_BONUS;
 
-  //TODO: make it bound to one player to prevent dupe
   public CrypticEyeItem() {
     super(new Item.Properties().stacksTo(1).component(ModDataComponents.SPELL_STAGE.get(), 1));
     SingletonGeoAnimatable.registerSyncedAnimatable(this);
@@ -108,7 +111,8 @@ public class CrypticEyeItem extends Item implements GeoItem, ICurioItem {
       tooltipComponents.add(spellTooltip);
 
       tooltipComponents.add(Component.translatable("tooltip.crawlingmysteries.blank"));
-      tooltipComponents.add(Component.translatable("item.crawlingmysteries.cryptic_eye.tooltip.open_codex", KeyMappingsEvents.OPEN_CODEX.get().getKey().getDisplayName()).withStyle(ChatFormatting.GOLD));
+      tooltipComponents.add(Component.translatable("item.crawlingmysteries.cryptic_eye.tooltip.open_codex",
+          KeyMappingsEvents.OPEN_CODEX.get().getKey().getDisplayName()).withStyle(ChatFormatting.GOLD));
 
     } else {
       tooltipComponents.add(Component.translatable("tooltip.crawlingmysteries.press_shift"));
@@ -144,8 +148,8 @@ public class CrypticEyeItem extends Item implements GeoItem, ICurioItem {
         }
 
         totemEffects(player);
-        // TODO: add custom animation
-        player.level().broadcastEntityEvent(player, (byte) 35);
+        triggerAnim(player, GeoItem.getOrAssignId(stack, (ServerLevel) level), "Consume", "consume");
+        PacketDistributor.sendToPlayer(player, new TotemAnimationPacket(stack));
 
         if (!stack.has(ModDataComponents.TOTEMS_CONSUMED))
           stack.set(ModDataComponents.TOTEMS_CONSUMED, 0);
@@ -180,11 +184,10 @@ public class CrypticEyeItem extends Item implements GeoItem, ICurioItem {
   public void beTotem(ServerPlayer player) {
     player.setHealth(1.0F);
     totemEffects(player);
-    // TODO: own animation
     PacketDistributor.sendToPlayer(player, new BetterToastPacket(
         Component.translatable("message.crawlingmysteries.cryptic_eye.be_totem_effect"),
         BetterToastPacket.TYPE_INFO, this));
-    // player.level().broadcastEntityEvent(player, (byte) 35);
+    PacketDistributor.sendToPlayer(player, new TotemAnimationPacket(new ItemStack(this)));
   }
 
   @Override
@@ -240,6 +243,12 @@ public class CrypticEyeItem extends Item implements GeoItem, ICurioItem {
 
     return map;
   }
+
+  @Override
+  public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
+    ItemDataHelper.introduce(stack, (ServerPlayer) slotContext.entity());
+    ICurioItem.super.onEquip(slotContext, prevStack, stack);
+  }
   // #endregion Curio
 
   // #region Gecko
@@ -262,6 +271,8 @@ public class CrypticEyeItem extends Item implements GeoItem, ICurioItem {
     controllers.add(new AnimationController<>(this, "Idle", 0, state -> {
       return state.setAndContinue(IDLE_ANIM);
     }));
+    controllers.add(new AnimationController<>(this, "Consume", 0, state -> PlayState.STOP)
+        .triggerableAnim("consume", CONSUME_ANIM));
   }
 
   @Override

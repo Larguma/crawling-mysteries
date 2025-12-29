@@ -23,6 +23,8 @@ public class BeerMugBlockEntity extends BlockEntity implements GeoBlockEntity {
   private static final int MAX_BEER_LEVEL = 4;
   private int beerLevel = MAX_BEER_LEVEL;
   public static final String BEER_LEVEL_KEY = "beer_level";
+  private boolean hasGooglyEyes = false;
+  public static final String HAS_GOOGLY_EYES_KEY = "has_googly_eyes";
 
   public BeerMugBlockEntity(BlockPos pos, BlockState state) {
     super(ModBlockEntities.BEER_MUG_BE.get(), pos, state);
@@ -34,6 +36,9 @@ public class BeerMugBlockEntity extends BlockEntity implements GeoBlockEntity {
     if (tag.contains(BEER_LEVEL_KEY)) {
       this.beerLevel = tag.getInt(BEER_LEVEL_KEY);
     }
+    if (tag.contains(HAS_GOOGLY_EYES_KEY)) {
+      this.hasGooglyEyes = tag.getBoolean(HAS_GOOGLY_EYES_KEY);
+    }
 
     super.loadAdditional(tag, registries);
   }
@@ -41,6 +46,7 @@ public class BeerMugBlockEntity extends BlockEntity implements GeoBlockEntity {
   @Override
   protected void saveAdditional(CompoundTag tag, Provider registries) {
     tag.putInt(BEER_LEVEL_KEY, this.beerLevel);
+    tag.putBoolean(HAS_GOOGLY_EYES_KEY, this.hasGooglyEyes);
 
     super.saveAdditional(tag, registries);
   }
@@ -62,6 +68,15 @@ public class BeerMugBlockEntity extends BlockEntity implements GeoBlockEntity {
 
   public int getBeerLevel() {
     return this.beerLevel;
+  }
+  
+  public void setHasGooglyEyes(boolean hasGooglyEyes) {
+    this.hasGooglyEyes = hasGooglyEyes;
+    this.setChanged();
+  }
+
+  public boolean hasGooglyEyes() {
+    return this.hasGooglyEyes;
   }
   // #endregion NBT
 

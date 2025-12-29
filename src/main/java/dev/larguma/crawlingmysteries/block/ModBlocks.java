@@ -11,11 +11,13 @@ import dev.larguma.crawlingmysteries.item.ModItems;
 import dev.larguma.crawlingmysteries.item.custom.BeerKegItem;
 import dev.larguma.crawlingmysteries.item.custom.BeerMugItem;
 import net.minecraft.network.chat.Component;
+import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.DropExperienceBlock;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -23,11 +25,17 @@ import net.neoforged.neoforge.registries.DeferredRegister;
 public class ModBlocks {
   public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(CrawlingMysteries.MOD_ID);
 
+  // Custom
   public static final DeferredBlock<Block> TOMBSTONE = registerBlock("tombstone", () -> new TombstoneBlock());
   public static final DeferredBlock<Block> BEER_KEG = registerBlock("beer_keg", () -> new BeerKegBlock(),
       block -> new BeerKegItem(block, new Item.Properties()));
   public static final DeferredBlock<Block> BEER_MUG = registerBlock("beer_mug", () -> new BeerMugBlock(),
       block -> new BeerMugItem(block, new Item.Properties()));
+
+  // Standard
+  public static final DeferredBlock<Block> MYSTERIOUS_STONE = registerBlock("mysterious_stone",
+      () -> new DropExperienceBlock(UniformInt.of(2, 5),
+          Block.Properties.of().strength(3f).requiresCorrectToolForDrops()));
 
   private static <T extends Block> DeferredBlock<T> registerBlock(String name, Supplier<T> block) {
     DeferredBlock<T> toReturn = BLOCKS.register(name, block);

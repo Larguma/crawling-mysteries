@@ -1,0 +1,12 @@
+{
+  "type": "crawlingmysteries:smithing_awakening",
+  "addition": {
+    "item": "crawlingmysteries:awakened_eye"
+  },
+  "base": {
+    "tag": "crawlingmysteries:can_be_sentient"
+  },
+  "template": {
+    "item": "minecraft:echo_shard"
+  }
+}

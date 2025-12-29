@@ -3,10 +3,13 @@ package dev.larguma.crawlingmysteries.item.helper;
 import java.util.Optional;
 
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.entity.item.ItemEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.Level;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.SlotResult;
 import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
@@ -35,7 +38,25 @@ public class ItemHelper {
   }
 
   /**
+   * Spawns an item stack slightly above the specified block position.
+   * 
+   * @param level The level to spawn the item in.
+   * @param pos   The block position above which to spawn the item.
+   * @param stack The item stack to spawn.
+   */
+  public static void spawnItemAboveBlock(Level level, BlockPos pos, ItemStack stack) {
+    double x = pos.getX() + 0.5;
+    double y = pos.getY() + 1.0;
+    double z = pos.getZ() + 0.5;
+
+    ItemEntity entity = new ItemEntity(level, x, y, z, stack);
+    entity.setDeltaMovement(0, 0.2, 0);
+    level.addFreshEntity(entity);
+  }
+
+  /**
    * Finds the first equipped trinket item matching the target item.
+   * Can be in curios slots or held in main/off hand.
    * 
    * @param player     The player to search trinkets on.
    * @param targetItem The target trinket item to find.
@@ -50,6 +71,13 @@ public class ItemHelper {
     ICuriosItemHandler inventory = curiosHandler.get();
     for (SlotResult slotResult : inventory.findCurios(stack -> stack.is(targetItem))) {
       return slotResult.stack();
+    }
+
+    if (player.getMainHandItem().is(targetItem)) {
+      return player.getMainHandItem();
+    }
+    if (player.getOffhandItem().is(targetItem)) {
+      return player.getOffhandItem();
     }
 
     return ItemStack.EMPTY;

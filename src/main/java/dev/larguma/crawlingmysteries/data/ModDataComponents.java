@@ -10,7 +10,11 @@ import com.mojang.serialization.Codec;
 
 import dev.larguma.crawlingmysteries.CrawlingMysteries;
 import dev.larguma.crawlingmysteries.data.custom.HorseshoeDataComponent;
+import net.minecraft.resources.ResourceLocation;
+import com.google.gson.JsonParser;
+import com.mojang.serialization.JsonOps;
 import net.minecraft.core.component.DataComponentType;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.world.item.ItemStack;
 import net.neoforged.bus.api.IEventBus;
@@ -39,6 +43,16 @@ public class ModDataComponents {
       "spell_stage",
       builder -> builder.persistent(Codec.INT),
       ComponentType.INTEGER, 0);
+
+  public static final DeferredHolder<DataComponentType<?>, DataComponentType<Boolean>> GOOGLY_EYES = register(
+      "googly_eyes",
+      builder -> builder.persistent(Codec.BOOL),
+      ComponentType.BOOLEAN, false);
+
+  public static final DeferredHolder<DataComponentType<?>, DataComponentType<Boolean>> INTRODUCED = register(
+      "introduced",
+      builder -> builder.persistent(Codec.BOOL),
+      ComponentType.BOOLEAN, false);
   // #endregion Common
 
   // Cryptic Eye
@@ -234,4 +248,38 @@ public class ModDataComponents {
   }
 
   // #endregion Command Support
+
+  @SuppressWarnings("unchecked")
+  public static ItemStack applyItemDataFromString(ItemStack stack, String itemData) {
+    if (itemData == null || itemData.isEmpty()) {
+      return stack;
+    }
+    String[] parts = itemData.split(",");
+    for (String part : parts) {
+      String[] keyValue = part.split("=", 2);
+      if (keyValue.length != 2) {
+        continue;
+      }
+      String key = keyValue[0].trim();
+      String value = keyValue[1].trim();
+      if (hasComponent(key)) {
+        setComponentValue(stack, key, value);
+      } else {
+        ResourceLocation id = ResourceLocation.tryParse(key);
+        if (id != null) {
+          DataComponentType<?> type = BuiltInRegistries.DATA_COMPONENT_TYPE.get(id);
+          if (type != null && type.codec() != null) {
+            try {
+              var json = JsonParser.parseString(value);
+              var result = ((Codec<Object>) type.codecOrThrow()).parse(JsonOps.INSTANCE, json);
+              result.result().ifPresent(val -> stack.set((DataComponentType<Object>) type, val));
+            } catch (Exception e) {
+              // ignore
+            }
+          }
+        }
+      }
+    }
+    return stack;
+  }
 }

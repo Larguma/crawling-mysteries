@@ -12,6 +12,10 @@
     "color": "0xFF6347"
   },
   {
+    "name": "items",
+    "color": "0xF1C40F"
+  },
+  {
     "name": "lore",
     "color": "0x9B59B6"
   }

@@ -1,0 +1,19 @@
+{
+  "id": "beer_barrel",
+  "category": "items",
+  "title": "Beer Barrel",
+  "subtitle": "A large empty barrel",
+  "icon": "textures/item/beer_barrel.png",
+  "unlock_condition": "HAS_BEER_BARREL",
+  "pages": [
+    {
+      "type": "text",
+      "content": "The Beer Barrel is just a crafting ingredient used to create a §5Beer Keg§r."
+    },
+    {
+      "type": "crafting",
+      "extra": "crawlingmysteries:beer_barrel",
+      "content": "You can craft a Beer Barrel using §aOak Planks§r and §aIron Bars§r."
+    }
+  ]
+}
