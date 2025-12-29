@@ -22,15 +22,15 @@
 
 ### Beers
 
-- [ ] find use
+- [x] find use
 - [x] 3d model
 - [x] drinkable
 - [x] w/ googly eyes
-  - [ ] aoe spell, 4 charges
+  - [x] aoe spell, 4 charges
     - [x] 4 charges
     - [x] confused effect on mobs: stop attacking, walk random
     - [x] refillable at beer keg
-  - [ ] animate spell, beer waves
+  - [x] animate spell, beer waves
   - [x] sound effect
 
 ### Ethereal Lantern
@@ -120,7 +120,6 @@
 
 - [x] Tavern
   - [x] NPC
-    - [ ] (shop ? for what ?)
   - [x] beer
   - [ ] cook meal MH style (cutscene)
 - [ ] Swampwitch hut

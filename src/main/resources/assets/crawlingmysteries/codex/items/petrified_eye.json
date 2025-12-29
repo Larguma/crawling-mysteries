@@ -1,0 +1,14 @@
+{
+  "id": "petrified_eye",
+  "category": "items",
+  "title": "Petrified Eye",
+  "subtitle": "A fossilized eye of unknown origin",
+  "icon": "textures/item/petrified_eye.png",
+  "unlock_condition": "HAS_PETRIFIED_EYE",
+  "pages": [
+    {
+      "type": "text",
+      "content": "The §5Petrified Eye§r is just a crafting ingredient used to create a §5Awakened Eye§r.\nYou can find §5Petrified Eyes§r only in §5Mysterious Stone§r who generate in the deepslate.\n\nTo transform a §5Petrified Eye§r into an §5Awakened Eye§r, you must grind it on a §5Grindstone§r, but be careful, the process is delicate and requires precision."
+    }
+  ]
+}
