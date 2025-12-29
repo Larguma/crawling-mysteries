@@ -9,6 +9,7 @@ import dev.larguma.crawlingmysteries.networking.packet.SpellCooldownSyncPacket;
 import dev.larguma.crawlingmysteries.networking.packet.SpellSelectPacket;
 import dev.larguma.crawlingmysteries.networking.packet.SyncUnlockedEntriesPacket;
 import dev.larguma.crawlingmysteries.networking.packet.TavernMusicPacket;
+import dev.larguma.crawlingmysteries.networking.packet.TotemAnimationPacket;
 import dev.larguma.crawlingmysteries.networking.packet.UnlockCodexEntryPacket;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.common.EventBusSubscriber;
@@ -40,6 +41,10 @@ public class PayloadHandlersEvents {
         BetterToastPacket.TYPE,
         BetterToastPacket.STREAM_CODEC,
         ClientPayloadHandler::handleBetterToast);
+    registrar.playToClient(
+        TotemAnimationPacket.TYPE,
+        TotemAnimationPacket.STREAM_CODEC,
+        ClientPayloadHandler::handleTotemAnimation);
     registrar.playToClient(
         SyncUnlockedEntriesPacket.TYPE,
         SyncUnlockedEntriesPacket.STREAM_CODEC,
