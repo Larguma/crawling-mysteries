@@ -141,7 +141,6 @@ public class ModPlayerEvents {
 
   @SubscribeEvent
   public static void onGrindstoneInteract(RightClickBlock event) {
-    // TODO: JEI compat
     Level level = event.getLevel();
     BlockPos pos = event.getPos();
 

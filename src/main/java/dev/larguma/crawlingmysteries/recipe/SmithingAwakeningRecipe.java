@@ -5,23 +5,22 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import dev.larguma.crawlingmysteries.data.ModDataComponents;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.NonNullList;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.RecipeSerializer;
-import net.minecraft.world.item.crafting.SmithingRecipe;
 import net.minecraft.world.item.crafting.SmithingRecipeInput;
-import net.minecraft.world.level.Level;
+import net.minecraft.world.item.crafting.SmithingTransformRecipe;
 
-public class SmithingAwakeningRecipe implements SmithingRecipe {
+public class SmithingAwakeningRecipe extends SmithingTransformRecipe {
 
   final Ingredient template;
   final Ingredient base;
   final Ingredient addition;
 
   public SmithingAwakeningRecipe(Ingredient template, Ingredient base, Ingredient addition) {
+    super(template, base, addition, ItemStack.EMPTY);
     this.template = template;
     this.base = base;
     this.addition = addition;
@@ -29,12 +28,6 @@ public class SmithingAwakeningRecipe implements SmithingRecipe {
 
   public Ingredient getBase() {
     return this.base;
-  }
-
-  @Override
-  public boolean matches(SmithingRecipeInput input, Level level) {
-    return this.template.test(input.template()) && this.base.test(input.base())
-        && this.addition.test(input.addition());
   }
 
   @Override
@@ -57,32 +50,8 @@ public class SmithingAwakeningRecipe implements SmithingRecipe {
   }
 
   @Override
-  public boolean isTemplateIngredient(ItemStack stack) {
-    return this.template.test(stack);
-  }
-
-  @Override
-  public boolean isBaseIngredient(ItemStack stack) {
-    return this.base.test(stack);
-  }
-
-  @Override
-  public boolean isAdditionIngredient(ItemStack stack) {
-    return this.addition.test(stack);
-  }
-
-  @Override
   public RecipeSerializer<?> getSerializer() {
-    return ModRecipeSerializers.SMITHING_AWAKENING.get();
-  }
-
-  @Override
-  public NonNullList<Ingredient> getIngredients() {
-    NonNullList<Ingredient> ingredients = NonNullList.create();
-    ingredients.add(this.template);
-    ingredients.add(this.base);
-    ingredients.add(this.addition);
-    return ingredients;
+    return ModRecipes.SMITHING_AWAKENING.get();
   }
 
   public static class Serializer implements RecipeSerializer<SmithingAwakeningRecipe> {
