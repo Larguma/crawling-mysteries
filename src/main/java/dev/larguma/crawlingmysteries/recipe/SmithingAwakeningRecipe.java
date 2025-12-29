@@ -5,6 +5,7 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import dev.larguma.crawlingmysteries.data.ModDataComponents;
 import net.minecraft.core.HolderLookup;
+import net.minecraft.core.NonNullList;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
@@ -52,6 +53,15 @@ public class SmithingAwakeningRecipe extends SmithingTransformRecipe {
   @Override
   public RecipeSerializer<?> getSerializer() {
     return ModRecipes.SMITHING_AWAKENING.get();
+  }
+
+  @Override
+  public NonNullList<Ingredient> getIngredients() {
+    NonNullList<Ingredient> ingredients = NonNullList.create();
+    ingredients.add(this.template);
+    ingredients.add(this.base);
+    ingredients.add(this.addition);
+    return ingredients;
   }
 
   public static class Serializer implements RecipeSerializer<SmithingAwakeningRecipe> {
