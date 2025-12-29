@@ -25,6 +25,7 @@ import net.minecraft.world.InteractionHand;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.InteractionResultHolder;
 import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.entity.Entity;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.BlockItem;
@@ -58,6 +59,15 @@ public class BeerMugItem extends BlockItem implements GeoItem {
   public BeerMugItem(Block block, Properties properties) {
     super(block, properties);
     SingletonGeoAnimatable.registerSyncedAnimatable(this);
+  }
+
+  @Override
+  public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
+    if (!level.isClientSide && entity instanceof ServerPlayer serverPlayer) {
+      if (ItemDataHelper.isSentient(stack)) {
+        ItemDataHelper.introduce(stack, serverPlayer);
+      }
+    }
   }
 
   @Override

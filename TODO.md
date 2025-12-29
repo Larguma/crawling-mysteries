@@ -102,7 +102,7 @@
 
 - [x] slap googly eyes to make item sentient
   - [ ] make procedural animation
-- [ ] talk to player (BetterToast)
+- [x] talk to player (BetterToast)
 - [ ] gain levels (exp from kills, blocks mined, ...)
   - [ ] gain small buffs
 - [ ] have personality (chosen randomly on slap)

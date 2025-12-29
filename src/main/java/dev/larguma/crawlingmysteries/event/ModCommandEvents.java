@@ -16,7 +16,6 @@ public class ModCommandEvents {
 
   @SubscribeEvent
   public static void onCommandsRegister(RegisterCommandsEvent event) {
-    // Spell
     new ClearAllCooldowns(event.getDispatcher());
     new ClearCooldowns(event.getDispatcher());
     new GetCooldowns(event.getDispatcher());

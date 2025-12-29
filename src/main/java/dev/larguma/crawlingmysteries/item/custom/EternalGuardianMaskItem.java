@@ -14,6 +14,7 @@ import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraft.core.Holder;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -104,6 +105,12 @@ public class EternalGuardianMaskItem extends Item implements GeoItem, ICurioItem
   @Override
   public boolean isEnderMask(SlotContext slotContext, EnderMan enderMan, ItemStack stack) {
     return true;
+  }
+
+  @Override
+  public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
+    ItemDataHelper.introduce(stack, (ServerPlayer) slotContext.entity());
+    ICurioItem.super.onEquip(slotContext, prevStack, stack);
   }
   // #endregion Curio
 

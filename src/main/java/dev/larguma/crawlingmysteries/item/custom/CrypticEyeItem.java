@@ -65,7 +65,6 @@ public class CrypticEyeItem extends Item implements GeoItem, ICurioItem {
   private static final int MAX_BONUS_TOTEMS = 50;
   private static final int MAX_HEALTH_BONUS = MAX_BONUS_TOTEMS / TOTEMS_FOR_BONUS;
 
-  //TODO: make it bound to one player to prevent dupe
   public CrypticEyeItem() {
     super(new Item.Properties().stacksTo(1).component(ModDataComponents.SPELL_STAGE.get(), 1));
     SingletonGeoAnimatable.registerSyncedAnimatable(this);
@@ -108,7 +107,8 @@ public class CrypticEyeItem extends Item implements GeoItem, ICurioItem {
       tooltipComponents.add(spellTooltip);
 
       tooltipComponents.add(Component.translatable("tooltip.crawlingmysteries.blank"));
-      tooltipComponents.add(Component.translatable("item.crawlingmysteries.cryptic_eye.tooltip.open_codex", KeyMappingsEvents.OPEN_CODEX.get().getKey().getDisplayName()).withStyle(ChatFormatting.GOLD));
+      tooltipComponents.add(Component.translatable("item.crawlingmysteries.cryptic_eye.tooltip.open_codex",
+          KeyMappingsEvents.OPEN_CODEX.get().getKey().getDisplayName()).withStyle(ChatFormatting.GOLD));
 
     } else {
       tooltipComponents.add(Component.translatable("tooltip.crawlingmysteries.press_shift"));
@@ -239,6 +239,12 @@ public class CrypticEyeItem extends Item implements GeoItem, ICurioItem {
     }
 
     return map;
+  }
+
+  @Override
+  public void onEquip(SlotContext slotContext, ItemStack prevStack, ItemStack stack) {
+    ItemDataHelper.introduce(stack, (ServerPlayer) slotContext.entity());
+    ICurioItem.super.onEquip(slotContext, prevStack, stack);
   }
   // #endregion Curio
 
