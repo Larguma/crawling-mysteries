@@ -7,11 +7,6 @@
   "unlock_condition": "ALWAYS",
   "pages": [
     {
-      "type": "image",
-      "extra": "textures/gui/codex/image/origins_illustration.png",
-      "content": "Ancient symbols found throughout the Deep Dark"
-    },
-    {
       "type": "text",
       "content": "§oWhere do these artifacts come from? Who created them, and why did they choose you?§r\n\nThe answers lie scattered across the world, waiting to be discovered..."
     },

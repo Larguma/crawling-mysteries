@@ -137,6 +137,8 @@
   "codex.crawlingmysteries": "====== Codex ======",
   "codex.crawlingmysteries.category.trinkets": "Trinkets",
   "codex.crawlingmysteries.category.trinkets.desc": "Artifacts that aid you on your journey",
+  "codex.crawlingmysteries.category.items": "Items",
+  "codex.crawlingmysteries.category.items.desc": "Useful objects",
   "codex.crawlingmysteries.category.spells": "Spells",
   "codex.crawlingmysteries.category.spells.desc": "Mystical abilities granted by your trinkets",
   "codex.crawlingmysteries.category.lore": "Lore",
