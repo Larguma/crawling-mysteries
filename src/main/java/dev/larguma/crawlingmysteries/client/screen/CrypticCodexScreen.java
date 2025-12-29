@@ -512,16 +512,23 @@ public class CrypticCodexScreen extends Screen {
    */
   private void renderItemShowcasePage(GuiGraphics guiGraphics, int x, int y, int width, int maxHeight, CodexPage page) {
     String itemId = page.extraData();
+    String itemData = null;
     if (itemId == null || itemId.isEmpty()) {
       maxContentScroll = 0;
       guiGraphics.drawString(this.font, "§cNo item specified", x, y, TEXT_MUTED, false);
       return;
     }
 
+    // crawlingmysteries:beer_mug[crawlingmysteries:googly_eyes=true]
+    if (itemId.contains("[") && itemId.contains("]")) {
+      itemData = itemId.substring(itemId.indexOf("[") + 1, itemId.indexOf("]"));
+      itemId = itemId.substring(0, itemId.indexOf("["));
+    }
+
     // Parse item ID (format: "modid:item_name" or just "item_name")
     ResourceLocation itemLocation;
     if (itemId.contains(":")) {
-      itemLocation = ResourceLocation.parse(itemId);
+      itemLocation = ResourceLocation.tryParse(itemId);
     } else {
       itemLocation = ResourceLocation.fromNamespaceAndPath(CrawlingMysteries.MOD_ID, itemId);
     }
@@ -529,11 +536,15 @@ public class CrypticCodexScreen extends Screen {
     Optional<Item> itemOpt = BuiltInRegistries.ITEM.getOptional(itemLocation);
     if (itemOpt.isEmpty()) {
       maxContentScroll = 0;
-      guiGraphics.drawString(this.font, "§cItem not found: " + itemId, x, y, TEXT_MUTED, false);
+      guiGraphics.drawString(this.font, "§cItem not found:", x, y, TEXT_MUTED, false);
+      guiGraphics.drawString(this.font, "§c" + itemId, x, y + 12, TEXT_MUTED, false);
       return;
     }
 
     ItemStack itemStack = new ItemStack(itemOpt.get());
+    if (itemData != null) {
+      itemStack = ModDataComponents.applyItemDataFromString(itemStack, itemData);
+    }
     int centerX = x + width / 2;
 
     // Calculate total content height

@@ -8,7 +8,7 @@
   "pages": [
     {
       "type": "item_showcase",
-      "extra": "crawlingmysteries:beer_mug",
+      "extra": "crawlingmysteries:beer_mug[crawlingmysteries:googly_eyes=true]",
       "content": "A frothy mug of ale that seems to invite you to take a sip. It carries the warmth and cheer of a tavern on a cold night."
     },
     {
