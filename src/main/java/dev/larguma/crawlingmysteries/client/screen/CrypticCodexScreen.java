@@ -23,7 +23,9 @@ import dev.larguma.crawlingmysteries.codex.CodexEntry;
 import dev.larguma.crawlingmysteries.codex.CodexPage;
 import dev.larguma.crawlingmysteries.codex.CodexRegistry;
 import dev.larguma.crawlingmysteries.codex.CodexUnlockManager;
+import dev.larguma.crawlingmysteries.data.ModDataComponents;
 import dev.larguma.crawlingmysteries.networking.packet.RequestStatsPacket;
+import dev.larguma.crawlingmysteries.recipe.SmithingAwakeningRecipe;
 import dev.larguma.crawlingmysteries.spell.ModSpells;
 import dev.larguma.crawlingmysteries.spell.Spell;
 import dev.larguma.crawlingmysteries.spell.SpellCooldownManager;
@@ -49,6 +51,7 @@ import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.item.crafting.ShapedRecipe;
+import net.minecraft.world.item.crafting.SmithingRecipe;
 import net.neoforged.neoforge.network.PacketDistributor;
 
 /**
@@ -454,19 +457,19 @@ public class CrypticCodexScreen extends Screen {
         renderTextPage(guiGraphics, x, y, width, maxHeight, page);
       }
       case ITEM_SHOWCASE -> {
-        renderItemShowcase(guiGraphics, x, y, width, maxHeight, page);
+        renderItemShowcasePage(guiGraphics, x, y, width, maxHeight, page);
       }
       case SPELL_INFO -> {
-        renderSpellInfo(guiGraphics, x, y, width, maxHeight, page);
+        renderSpellInfoPage(guiGraphics, x, y, width, maxHeight, page);
       }
       case IMAGE -> {
-        renderImage(guiGraphics, x, y, width, maxHeight, page);
+        renderImagePage(guiGraphics, x, y, width, maxHeight, page);
       }
       case CRAFTING -> {
-        renderCrafting(guiGraphics, x, y, width, maxHeight, page);
+        renderCraftingPage(guiGraphics, x, y, width, maxHeight, page);
       }
       case ENTITY_DISPLAY -> {
-        renderEntityDisplay(guiGraphics, x, y, width, maxHeight, page);
+        renderEntityDisplayPage(guiGraphics, x, y, width, maxHeight, page);
       }
       default -> {
         maxContentScroll = 0;
@@ -507,7 +510,7 @@ public class CrypticCodexScreen extends Screen {
   /**
    * Renders an item showcase page with a large item icon and description.
    */
-  private void renderItemShowcase(GuiGraphics guiGraphics, int x, int y, int width, int maxHeight, CodexPage page) {
+  private void renderItemShowcasePage(GuiGraphics guiGraphics, int x, int y, int width, int maxHeight, CodexPage page) {
     String itemId = page.extraData();
     if (itemId == null || itemId.isEmpty()) {
       maxContentScroll = 0;
@@ -585,7 +588,7 @@ public class CrypticCodexScreen extends Screen {
   /**
    * Renders a spell info page with spell icon, stats, and description.
    */
-  private void renderSpellInfo(GuiGraphics guiGraphics, int x, int y, int width, int maxHeight, CodexPage page) {
+  private void renderSpellInfoPage(GuiGraphics guiGraphics, int x, int y, int width, int maxHeight, CodexPage page) {
     String spellId = page.extraData();
     if (spellId == null || spellId.isEmpty()) {
       maxContentScroll = 0;
@@ -689,7 +692,7 @@ public class CrypticCodexScreen extends Screen {
   /**
    * Renders an image page with a texture.
    */
-  private void renderImage(GuiGraphics guiGraphics, int x, int y, int width, int maxHeight, CodexPage page) {
+  private void renderImagePage(GuiGraphics guiGraphics, int x, int y, int width, int maxHeight, CodexPage page) {
     String imagePath = page.extraData();
     if (imagePath == null || imagePath.isEmpty()) {
       maxContentScroll = 0;
@@ -781,7 +784,7 @@ public class CrypticCodexScreen extends Screen {
   /**
    * Renders a crafting recipe page (simplified display).
    */
-  private void renderCrafting(GuiGraphics guiGraphics, int x, int y, int width, int maxHeight, CodexPage page) {
+  private void renderCraftingPage(GuiGraphics guiGraphics, int x, int y, int width, int maxHeight, CodexPage page) {
     String recipeId = page.extraData();
     if (recipeId == null || recipeId.isEmpty()) {
       maxContentScroll = 0;
@@ -817,6 +820,25 @@ public class CrypticCodexScreen extends Screen {
     RecipeHolder<?> recipeHolder = recipeHolderOpt.get();
     Recipe<?> recipe = recipeHolder.value();
 
+    guiGraphics.enableScissor(x, y, x + width, y + maxHeight);
+
+    if (recipe instanceof SmithingRecipe smithingRecipe) {
+      renderSmithing(guiGraphics, x, y, width, maxHeight, page, smithingRecipe);
+    } else {
+      renderCraftingGrid(guiGraphics, x, y, width, maxHeight, page, recipe);
+    }
+
+    guiGraphics.disableScissor();
+
+    renderScrollIndicators(guiGraphics, x, y, width, maxHeight);
+  }
+
+  /**
+   * Renders a standard crafting table recipe (3x3 grid).
+   */
+  private void renderCraftingGrid(GuiGraphics guiGraphics, int x, int y, int width, int maxHeight, CodexPage page,
+      Recipe<?> recipe) {
+    Minecraft mc = Minecraft.getInstance();
     int centerX = x + width / 2;
 
     // Crafting grid dimensions
@@ -832,8 +854,6 @@ public class CrypticCodexScreen extends Screen {
 
     maxContentScroll = Math.max(0, contentHeight - maxHeight);
     contentScrollOffset = Mth.clamp(contentScrollOffset, 0, maxContentScroll);
-
-    guiGraphics.enableScissor(x, y, x + width, y + maxHeight);
 
     int offsetY = y - contentScrollOffset;
 
@@ -891,12 +911,13 @@ public class CrypticCodexScreen extends Screen {
     // Result slot
     int resultX = arrowX + 20;
     int resultY = gridY + gridSize / 2 - slotSize / 2;
+    ItemStack resultStack = recipe.getResultItem(mc.level.registryAccess());
+
     guiGraphics.fill(resultX - 2, resultY - 2, resultX + slotSize + 2, resultY + slotSize + 2, 0x66000000);
     PanelBorderRenderer.renderPanelBorder(guiGraphics, resultX - 2, resultY - 2, slotSize + 4, slotSize + 4,
         PRIMARY_COLOR, 3);
     guiGraphics.fill(resultX + 1, resultY + 1, resultX + slotSize - 1, resultY + slotSize - 1, 0x44FFFFFF);
 
-    ItemStack resultStack = recipe.getResultItem(mc.level.registryAccess());
     guiGraphics.renderItem(resultStack, resultX + 4, resultY + 4);
     guiGraphics.renderItemDecorations(this.font, resultStack, resultX + 4, resultY + 4);
 
@@ -904,10 +925,92 @@ public class CrypticCodexScreen extends Screen {
     if (!page.content().getString().isEmpty()) {
       descY = renderFormattedText(guiGraphics, page.content(), x, descY, width);
     }
+  }
 
-    guiGraphics.disableScissor();
+  /**
+   * Renders a smithing recipe page.
+   */
+  private void renderSmithing(GuiGraphics guiGraphics, int x, int y, int width, int maxHeight, CodexPage page,
+      SmithingRecipe recipe) {
+    int centerX = x + width / 2;
 
-    renderScrollIndicators(guiGraphics, x, y, width, maxHeight);
+    // Calculate total content height
+    int slotSize = 24;
+    int contentHeight = 14 + 20 + slotSize + 20; // title + spacing + slots + spacing
+    if (!page.content().getString().isEmpty()) {
+      List<FormattedCharSequence> lines = this.font.split(page.content(), width);
+      contentHeight += lines.size() * 12;
+    }
+
+    maxContentScroll = Math.max(0, contentHeight - maxHeight);
+    contentScrollOffset = Mth.clamp(contentScrollOffset, 0, maxContentScroll);
+
+    int offsetY = y - contentScrollOffset;
+
+    Component title = Component.literal("§lSmithing Recipe");
+    int titleWidth = this.font.width(title);
+    guiGraphics.drawString(this.font, title, centerX - titleWidth / 2, offsetY, 0xFFFFFF, true);
+
+    int startY = offsetY + 30;
+    int gap = 8;
+
+    // Layout: [Template] [Base] [Addition] -> [Result]
+    int totalWidth = (slotSize * 3) + (gap * 2) + 20 + slotSize;
+    int startX = centerX - totalWidth / 2;
+
+    NonNullList<Ingredient> ingredients = recipe.getIngredients();
+
+    // Slots
+    for (int i = 0; i < 3; i++) {
+      int slotX = startX + i * (slotSize + gap);
+      Ingredient ingredient = (i < ingredients.size()) ? ingredients.get(i) : Ingredient.EMPTY;
+
+      guiGraphics.fill(slotX - 2, startY - 2, slotX + slotSize + 2, startY + slotSize + 2, 0x66000000);
+      PanelBorderRenderer.renderPanelBorder(guiGraphics, slotX - 2, startY - 2, slotSize + 4, slotSize + 4, TEXT_MUTED,
+          3);
+      guiGraphics.fill(slotX + 1, startY + 1, slotX + slotSize - 1, startY + slotSize - 1, 0x44FFFFFF);
+
+      if (!ingredient.isEmpty()) {
+        renderIngredient(guiGraphics, ingredient, slotX + 4, startY + 4);
+      }
+    }
+
+    // Arrow
+    int arrowX = startX + 3 * (slotSize + gap) + 2;
+    int arrowY = startY + slotSize / 2 - 4;
+    guiGraphics.drawString(this.font, "→", arrowX, arrowY, TEXT_COLOR, false);
+
+    // Result Slot
+    int resultX = arrowX + 16;
+    ItemStack resultStack;
+
+    if (recipe instanceof SmithingAwakeningRecipe awakeningRecipe) {
+      ItemStack[] baseItems = awakeningRecipe.getBase().getItems();
+      if (baseItems.length > 0) {
+        int index = (int) (animationTick / 20) % baseItems.length;
+        if (index < 0)
+          index = 0;
+        resultStack = baseItems[index].copy();
+        resultStack.set(ModDataComponents.GOOGLY_EYES, true);
+      } else {
+        resultStack = recipe.getResultItem(Minecraft.getInstance().level.registryAccess());
+      }
+    } else {
+      resultStack = recipe.getResultItem(Minecraft.getInstance().level.registryAccess());
+    }
+
+    guiGraphics.fill(resultX - 2, startY - 2, resultX + slotSize + 2, startY + slotSize + 2, 0x66000000);
+    PanelBorderRenderer.renderPanelBorder(guiGraphics, resultX - 2, startY - 2, slotSize + 4, slotSize + 4,
+        PRIMARY_COLOR, 3);
+    guiGraphics.fill(resultX + 1, startY + 1, resultX + slotSize - 1, startY + slotSize - 1, 0x44FFFFFF);
+
+    guiGraphics.renderItem(resultStack, resultX + 4, startY + 4);
+    guiGraphics.renderItemDecorations(this.font, resultStack, resultX + 4, startY + 4);
+
+    int descY = startY + slotSize + 20;
+    if (!page.content().getString().isEmpty()) {
+      descY = renderFormattedText(guiGraphics, page.content(), x, descY, width);
+    }
   }
 
   // #endregion Crafting Page Rendering
@@ -918,7 +1021,8 @@ public class CrypticCodexScreen extends Screen {
    * Renders an entity display page with an animated 3D entity model.
    * Supports mouse drag rotation and displays entity stats.
    */
-  private void renderEntityDisplay(GuiGraphics guiGraphics, int x, int y, int width, int maxHeight, CodexPage page) {
+  private void renderEntityDisplayPage(GuiGraphics guiGraphics, int x, int y, int width, int maxHeight,
+      CodexPage page) {
     String entityId = page.extraData();
     if (entityId == null || entityId.isEmpty()) {
       maxContentScroll = 0;
