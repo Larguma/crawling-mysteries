@@ -15,6 +15,7 @@ import net.minecraft.data.recipes.RecipeCategory;
 import net.minecraft.data.recipes.RecipeOutput;
 import net.minecraft.data.recipes.RecipeProvider;
 import net.minecraft.data.recipes.ShapedRecipeBuilder;
+import net.minecraft.tags.ItemTags;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.neoforged.neoforge.common.Tags;
@@ -27,6 +28,21 @@ public class ModRecipeProvider extends RecipeProvider {
 
   @Override
   protected void buildRecipes(RecipeOutput recipeOutput) {
+    ShapedRecipeBuilder.shaped(RecipeCategory.FOOD,
+        ModBlocks.COOKING_ALTAR_TIER_1.get())
+        .define('m', ModBlocks.MYSTERIOUS_STONE.get())
+        .define('l', ItemTags.LOGS)
+        .define('c', Items.CAMPFIRE)
+        .define('d', Items.CAULDRON)
+        .pattern("lml")
+        .pattern("ldl")
+        .pattern("lcl")
+        .unlockedBy("has_mysterious_stone", has(ModBlocks.MYSTERIOUS_STONE.get()))
+        .unlockedBy("has_log", has(ItemTags.LOGS))
+        .unlockedBy("has_campfire", has(Items.CAMPFIRE))
+        .unlockedBy("has_cauldron", has(Items.CAULDRON))
+        .save(recipeOutput);
+
     ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.ETERNAL_GUARDIAN_MASK.get())
         .define('l', Items.LEATHER)
         .define('h', ModItems.ETERNAL_GUARDIAN_HEAD)

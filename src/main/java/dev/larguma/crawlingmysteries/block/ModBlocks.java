@@ -4,12 +4,9 @@ import java.util.List;
 import java.util.function.Supplier;
 
 import dev.larguma.crawlingmysteries.CrawlingMysteries;
-import dev.larguma.crawlingmysteries.block.custom.BeerKegBlock;
-import dev.larguma.crawlingmysteries.block.custom.BeerMugBlock;
-import dev.larguma.crawlingmysteries.block.custom.TombstoneBlock;
+import dev.larguma.crawlingmysteries.block.custom.*;
 import dev.larguma.crawlingmysteries.item.ModItems;
-import dev.larguma.crawlingmysteries.item.custom.BeerKegItem;
-import dev.larguma.crawlingmysteries.item.custom.BeerMugItem;
+import dev.larguma.crawlingmysteries.item.custom.*;
 import net.minecraft.network.chat.Component;
 import net.minecraft.util.valueproviders.UniformInt;
 import net.minecraft.world.item.BlockItem;
@@ -31,6 +28,8 @@ public class ModBlocks {
       block -> new BeerKegItem(block, new Item.Properties()));
   public static final DeferredBlock<Block> BEER_MUG = registerBlock("beer_mug", () -> new BeerMugBlock(),
       block -> new BeerMugItem(block, new Item.Properties()));
+  public static final DeferredBlock<Block> COOKING_ALTAR_TIER_1 = registerBlock("cooking_altar_tier_1",
+      () -> new CookingAltarTier1Block(), block -> new CookingAltarTier1Item(block, new Item.Properties()));
 
   // Standard
   public static final DeferredBlock<Block> MYSTERIOUS_STONE = registerBlock("mysterious_stone",

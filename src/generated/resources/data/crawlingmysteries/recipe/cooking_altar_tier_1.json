@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "c": {
+      "item": "minecraft:campfire"
+    },
+    "d": {
+      "item": "minecraft:cauldron"
+    },
+    "l": {
+      "tag": "minecraft:logs"
+    },
+    "m": {
+      "item": "crawlingmysteries:mysterious_stone"
+    }
+  },
+  "pattern": [
+    "lml",
+    "ldl",
+    "lcl"
+  ],
+  "result": {
+    "count": 1,
+    "id": "crawlingmysteries:cooking_altar_tier_1"
+  }
+}

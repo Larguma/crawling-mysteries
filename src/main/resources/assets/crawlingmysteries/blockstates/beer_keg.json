@@ -1,7 +1,7 @@
 {
   "variants": {
     "": {
-      "model": "crawlingmysteries:block/beer_mug"
+      "model": "crawlingmysteries:block/beer_keg"
     }
   }
 }

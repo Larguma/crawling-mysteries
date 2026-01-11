@@ -2,11 +2,21 @@
   "credit": "Made with Blockbench",
   "parent": "builtin/entity",
   "texture_size": [
-    128,
-    128
+    64,
+    64
   ],
   "display": {
     "thirdperson_righthand": {
+      "rotation": [
+        0,
+        90,
+        0
+      ],
+      "translation": [
+        0,
+        -9,
+        -4.5
+      ],
       "scale": [
         0.5,
         0.5,
@@ -14,6 +24,16 @@
       ]
     },
     "thirdperson_lefthand": {
+      "rotation": [
+        0,
+        90,
+        0
+      ],
+      "translation": [
+        0,
+        -9,
+        -4.5
+      ],
       "scale": [
         0.5,
         0.5,
@@ -23,25 +43,25 @@
     "firstperson_righthand": {
       "rotation": [
         0,
-        -180,
+        90,
         0
       ],
-      "scale": [
-        0.5,
-        0.5,
-        0.5
+      "translation": [
+        4.5,
+        -15,
+        0
       ]
     },
     "firstperson_lefthand": {
       "rotation": [
         0,
-        -180,
+        90,
         0
       ],
-      "scale": [
-        0.5,
-        0.5,
-        0.5
+      "translation": [
+        4.5,
+        -15,
+        0
       ]
     },
     "ground": {
@@ -53,44 +73,54 @@
     },
     "gui": {
       "rotation": [
-        14,
-        -136,
+        22,
+        30,
         0
       ],
       "translation": [
-        0.5,
-        -6,
-        1.75
+        0,
+        -6.5,
+        0
       ],
       "scale": [
-        0.7,
-        0.7,
-        0.7
+        0.44,
+        0.44,
+        0.44
       ]
     },
     "head": {
       "translation": [
         0,
-        6.5,
+        6.25,
         0
+      ],
+      "scale": [
+        0.5,
+        0.5,
+        0.5
       ]
     },
     "fixed": {
       "translation": [
         0,
-        -8.25,
+        -9,
         0
+      ],
+      "scale": [
+        0.55,
+        0.55,
+        0.55
       ]
     },
     "on_shelf": {
-      "rotation": [
-        0,
-        -180,
-        0
+      "scale": [
+        0.5,
+        0.5,
+        0.5
       ]
     }
   },
   "textures": {
-    "particle": "crawlingmysteries:block/beer_keg"
+    "particle": "crawlingmysteries:block/cooking_altar_tier_1"
   }
 }

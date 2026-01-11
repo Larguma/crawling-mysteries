@@ -1,5 +1,5 @@
 {
-  "format_version": "1.21.20",
+  "format_version": "1.12.0",
   "minecraft:geometry": [
     {
       "description": {
@@ -16,7 +16,7 @@
           "pivot": [0, -0.5, 0],
           "locators": {
             "beer_flow_point": {
-              "offset": [0, 3.3, -7],
+              "offset": [0, 3.1, -7],
               "rotation": [-180, 0, 0]
             }
           }

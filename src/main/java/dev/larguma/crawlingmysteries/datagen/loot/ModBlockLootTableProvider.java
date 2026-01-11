@@ -34,6 +34,7 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
     add(ModBlocks.MYSTERIOUS_STONE.get(),
         block -> createOreDrop(ModBlocks.MYSTERIOUS_STONE.get(), ModItems.PETRIFIED_EYE.get()));
     dropSelf(ModBlocks.BEER_KEG.get());
+    dropSelf(ModBlocks.COOKING_ALTAR_TIER_1.get());
   }
 
   @Override

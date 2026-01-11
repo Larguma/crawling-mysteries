@@ -131,6 +131,11 @@
 - or maybe waystones or smth like it
 - with nice ui and lore explanaition
 
+### Magic storage (AE2 like)
+
+- [ ] find a way to make it fit the lore
+- [ ] make large factories
+
 ### Keybinds
 
 - [x] replace keybinds by wheel

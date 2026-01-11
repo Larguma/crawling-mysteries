@@ -22,6 +22,9 @@ public class ModBlockEntities {
   public static final Supplier<BlockEntityType<BeerKegBlockEntity>> BEER_KEG_BE = BLOCK_ENTITIES
       .register("beer_keg_be", () -> BlockEntityType.Builder.of(
           BeerKegBlockEntity::new, ModBlocks.BEER_KEG.get()).build(null));
+  public static final Supplier<BlockEntityType<CookingAltarTier1BlockEntity>> COOKING_ALTAR_TIER_1_BE = BLOCK_ENTITIES
+      .register("cooking_altar_tier_1_be", () -> BlockEntityType.Builder.of(
+          CookingAltarTier1BlockEntity::new, ModBlocks.COOKING_ALTAR_TIER_1.get()).build(null));
 
   public static void register(IEventBus eventBus) {
     BLOCK_ENTITIES.register(eventBus);

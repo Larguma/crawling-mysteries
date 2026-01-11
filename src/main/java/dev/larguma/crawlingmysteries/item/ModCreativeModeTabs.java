@@ -37,6 +37,8 @@ public class ModCreativeModeTabs {
             output.accept(ModItems.BEER_BARREL.get());
             output.accept(ModBlocks.BEER_KEG.get());
             output.accept(ModBlocks.MYSTERIOUS_STONE.get());
+
+            output.accept(ModBlocks.COOKING_ALTAR_TIER_1.get());
           })
           .build());
 
