@@ -1,8 +1,7 @@
 package dev.larguma.crawlingmysteries.effect;
 
 import dev.larguma.crawlingmysteries.CrawlingMysteries;
-import dev.larguma.crawlingmysteries.effect.custom.DrunkEffect;
-import dev.larguma.crawlingmysteries.effect.custom.SpectralGazeEffect;
+import dev.larguma.crawlingmysteries.effect.custom.*;
 import net.minecraft.core.Holder;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.effect.MobEffect;
@@ -15,6 +14,9 @@ public class ModMobEffects {
 
   public static final Holder<MobEffect> SPECTRAL_GAZE = MOB_EFFECTS.register("spectral_gaze", SpectralGazeEffect::new);
   public static final Holder<MobEffect> DRUNK = MOB_EFFECTS.register("drunk", DrunkEffect::new);
+  public static final Holder<MobEffect> IRON_STOMACH = MOB_EFFECTS.register("iron_stomach", IronStomachEffect::new);
+  public static final Holder<MobEffect> AETHER_SIGHT = MOB_EFFECTS.register("aether_sight", AetherSightEffect::new);
+  public static final Holder<MobEffect> VOID_WALKER = MOB_EFFECTS.register("void_walker", VoidWalkerEffect::new);
 
   public static void register(IEventBus eventBus) {
     MOB_EFFECTS.register(eventBus);
