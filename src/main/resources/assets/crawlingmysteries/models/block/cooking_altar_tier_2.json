@@ -1,0 +1,151 @@
+{
+  "credit": "Made with Blockbench",
+  "parent": "builtin/entity",
+  "texture_size": [
+    64,
+    64
+  ],
+  "display": {
+    "thirdperson_righthand": {
+      "rotation": [
+        -28,
+        122,
+        -36
+      ],
+      "translation": [
+        1.5,
+        -3,
+        0
+      ],
+      "scale": [
+        0.25,
+        0.25,
+        0.25
+      ]
+    },
+    "thirdperson_lefthand": {
+      "rotation": [
+        -8,
+        -165,
+        -15
+      ],
+      "translation": [
+        0.75,
+        -4.5,
+        -1
+      ],
+      "scale": [
+        0.25,
+        0.25,
+        0.25
+      ]
+    },
+    "firstperson_righthand": {
+      "rotation": [
+        0,
+        -180,
+        0
+      ],
+      "translation": [
+        3,
+        -2,
+        3
+      ],
+      "scale": [
+        0.25,
+        0.25,
+        0.25
+      ]
+    },
+    "firstperson_lefthand": {
+      "rotation": [
+        0,
+        -180,
+        0
+      ],
+      "translation": [
+        0,
+        -2,
+        3
+      ],
+      "scale": [
+        0.25,
+        0.25,
+        0.25
+      ]
+    },
+    "ground": {
+      "translation": [
+        -4,
+        0,
+        -3.25
+      ],
+      "scale": [
+        0.5,
+        0.5,
+        0.5
+      ]
+    },
+    "gui": {
+      "rotation": [
+        19,
+        -156,
+        0
+      ],
+      "translation": [
+        3.5,
+        -6,
+        0
+      ],
+      "scale": [
+        0.34,
+        0.34,
+        0.34
+      ]
+    },
+    "head": {
+      "translation": [
+        -3.5,
+        6.25,
+        -3.5
+      ],
+      "scale": [
+        0.44,
+        0.44,
+        0.44
+      ]
+    },
+    "fixed": {
+      "translation": [
+        -3.75,
+        -9.75,
+        -2.75
+      ],
+      "scale": [
+        0.5,
+        0.5,
+        0.5
+      ]
+    },
+    "on_shelf": {
+      "rotation": [
+        0,
+        -180,
+        0
+      ],
+      "translation": [
+        3.25,
+        0,
+        -1
+      ],
+      "scale": [
+        0.41,
+        0.41,
+        0.41
+      ]
+    }
+  },
+  "textures": {
+    "particle": "crawlingmysteries:block/cooking_altar_tier_2"
+  }
+}
