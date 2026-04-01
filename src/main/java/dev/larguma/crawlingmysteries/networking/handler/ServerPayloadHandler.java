@@ -4,8 +4,10 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
+import dev.larguma.crawlingmysteries.block.entity.custom.CookingAltarTier2BlockEntity;
 import dev.larguma.crawlingmysteries.data.ModDataAttachments;
 import dev.larguma.crawlingmysteries.networking.packet.BetterToastPacket;
+import dev.larguma.crawlingmysteries.networking.packet.DistilleryActionPacket;
 import dev.larguma.crawlingmysteries.networking.packet.RequestStatsPacket;
 import dev.larguma.crawlingmysteries.networking.packet.SpellSelectPacket;
 import dev.larguma.crawlingmysteries.networking.packet.SyncUnlockedEntriesPacket;
@@ -92,6 +94,25 @@ public class ServerPayloadHandler {
 
     if (success) {
       SpellCooldownManager.setCooldown(player, spellData);
+    }
+  }
+
+  /**
+   * Handles distillery actions.
+   */
+  public static void handleDistilleryAction(final DistilleryActionPacket data, final IPayloadContext context) {
+    ServerPlayer player = (ServerPlayer) context.player();
+
+    if (player.level().getBlockEntity(data.pos()) instanceof CookingAltarTier2BlockEntity blockEntity) {
+      if (player.distanceToSqr(data.pos().getX() + 0.5, data.pos().getY() + 0.5, data.pos().getZ() + 0.5) > 64) {
+        return;
+      }
+
+      if (data.action() == DistilleryActionPacket.Action.START) {
+        blockEntity.startCooking();
+      } else if (data.action() == DistilleryActionPacket.Action.STABILIZE) {
+        blockEntity.stabilizeNeedle();
+      }
     }
   }
 }

@@ -6,12 +6,11 @@ import org.jetbrains.annotations.Nullable;
 
 import com.mojang.serialization.MapCodec;
 
+import dev.larguma.crawlingmysteries.block.entity.ModBlockEntities;
 import dev.larguma.crawlingmysteries.block.entity.custom.CookingAltarTier2BlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.sounds.SoundEvents;
-import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -26,6 +25,8 @@ import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.block.RenderShape;
 import net.minecraft.world.level.block.entity.BlockEntity;
+import net.minecraft.world.level.block.entity.BlockEntityTicker;
+import net.minecraft.world.level.block.entity.BlockEntityType;
 import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraft.world.level.block.state.BlockState;
 import net.minecraft.world.level.block.state.StateDefinition;
@@ -74,6 +75,22 @@ public class CookingAltarTier2Block extends BaseEntityBlock {
   @Override
   public BlockEntity newBlockEntity(BlockPos pos, BlockState state) {
     return state.getValue(PART) == 0 ? new CookingAltarTier2BlockEntity(pos, state) : null;
+  }
+
+  @Nullable
+  @Override
+  public <T extends BlockEntity> BlockEntityTicker<T> getTicker(Level level, BlockState state,
+      BlockEntityType<T> blockEntityType) {
+    if (state.getValue(PART) != 0) {
+      return null;
+    }
+    if (level.isClientSide()) {
+      return createTickerHelper(blockEntityType, ModBlockEntities.COOKING_ALTAR_TIER_2_BE.get(),
+          CookingAltarTier2BlockEntity::clientTick);
+    } else {
+      return createTickerHelper(blockEntityType, ModBlockEntities.COOKING_ALTAR_TIER_2_BE.get(),
+          CookingAltarTier2BlockEntity::serverTick);
+    }
   }
 
   @Override
@@ -255,11 +272,11 @@ public class CookingAltarTier2Block extends BaseEntityBlock {
 
     BlockPos masterPos = getMasterPos(pos, state);
 
-    if (level.getBlockEntity(masterPos) instanceof CookingAltarTier2BlockEntity ) {
-      if (!level.isClientSide && player instanceof ServerPlayer) {
-          level.playSound(null, masterPos, SoundEvents.COPPER_BREAK, SoundSource.BLOCKS, 0.5f, 1.2f);
-        }
-      
+    if (level.getBlockEntity(masterPos) instanceof CookingAltarTier2BlockEntity blockEntity) {
+      if (!level.isClientSide && player instanceof ServerPlayer serverPlayer) {
+        serverPlayer.openMenu(blockEntity, masterPos);
+      }
+
       return InteractionResult.sidedSuccess(level.isClientSide);
     }
 

@@ -6,9 +6,11 @@ import dev.larguma.crawlingmysteries.client.ModEntityRenderers;
 import dev.larguma.crawlingmysteries.client.gui.BetterToastOverlay;
 import dev.larguma.crawlingmysteries.client.gui.PassiveSpellHudOverlay;
 import dev.larguma.crawlingmysteries.client.item.ItemProperty;
+import dev.larguma.crawlingmysteries.client.screen.AlchemicalDistilleryScreen;
 import dev.larguma.crawlingmysteries.particle.ModParticles;
 import dev.larguma.crawlingmysteries.particle.custom.BeerFlowParticle;
 import dev.larguma.crawlingmysteries.particle.custom.SoulSuckleParticles;
+import dev.larguma.crawlingmysteries.screen.ModMenuTypes;
 import net.neoforged.api.distmarker.Dist;
 import net.neoforged.bus.api.SubscribeEvent;
 import net.neoforged.fml.ModContainer;
@@ -17,6 +19,7 @@ import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 import net.neoforged.neoforge.client.event.EntityRenderersEvent;
 import net.neoforged.neoforge.client.event.RegisterGuiLayersEvent;
+import net.neoforged.neoforge.client.event.RegisterMenuScreensEvent;
 import net.neoforged.neoforge.client.event.RegisterParticleProvidersEvent;
 import net.neoforged.neoforge.client.gui.ConfigurationScreen;
 import net.neoforged.neoforge.client.gui.IConfigScreenFactory;
@@ -45,6 +48,11 @@ public class CrawlingMysteriesClient {
   public static void registerParticleFactories(RegisterParticleProvidersEvent event) {
     event.registerSpriteSet(ModParticles.SOUL_SUCKLE.get(), SoulSuckleParticles.Provider::new);
     event.registerSpriteSet(ModParticles.BEER_FLOW.get(), BeerFlowParticle.Provider::new);
+  }
+
+  @SubscribeEvent
+  public static void registerMenuScreens(RegisterMenuScreensEvent event) {
+    event.register(ModMenuTypes.ALCHEMICAL_DISTILLERY_MENU.get(), AlchemicalDistilleryScreen::new);
   }
 
   @SubscribeEvent

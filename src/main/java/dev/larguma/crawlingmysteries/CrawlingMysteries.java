@@ -18,6 +18,7 @@ import dev.larguma.crawlingmysteries.loot.ModLootModifiers;
 import dev.larguma.crawlingmysteries.particle.ModParticles;
 import dev.larguma.crawlingmysteries.potion.ModPotions;
 import dev.larguma.crawlingmysteries.recipe.ModRecipes;
+import dev.larguma.crawlingmysteries.screen.ModMenuTypes;
 import dev.larguma.crawlingmysteries.sound.ModSounds;
 import dev.larguma.crawlingmysteries.spell.ModSpells;
 import dev.larguma.crawlingmysteries.villager.ModVillager;
@@ -50,6 +51,7 @@ public class CrawlingMysteries {
     ModEntities.register(modEventBus);
     ModItems.register(modEventBus);
     ModLootModifiers.register(modEventBus);
+    ModMenuTypes.register(modEventBus);
     ModMobEffects.register(modEventBus);
     ModParticles.register(modEventBus);
     ModPotions.register(modEventBus);

@@ -4,6 +4,7 @@ import dev.larguma.crawlingmysteries.CrawlingMysteries;
 import dev.larguma.crawlingmysteries.networking.handler.ClientPayloadHandler;
 import dev.larguma.crawlingmysteries.networking.handler.ServerPayloadHandler;
 import dev.larguma.crawlingmysteries.networking.packet.BetterToastPacket;
+import dev.larguma.crawlingmysteries.networking.packet.DistilleryActionPacket;
 import dev.larguma.crawlingmysteries.networking.packet.RequestStatsPacket;
 import dev.larguma.crawlingmysteries.networking.packet.SpellCooldownSyncPacket;
 import dev.larguma.crawlingmysteries.networking.packet.SpellSelectPacket;
@@ -33,6 +34,10 @@ public class PayloadHandlersEvents {
         UnlockCodexEntryPacket.TYPE,
         UnlockCodexEntryPacket.STREAM_CODEC,
         ServerPayloadHandler::handleUnlockCodexEntry);
+    registrar.playToServer(
+        DistilleryActionPacket.TYPE,
+        DistilleryActionPacket.STREAM_CODEC,
+        ServerPayloadHandler::handleDistilleryAction);
     registrar.playToClient(
         SpellCooldownSyncPacket.TYPE,
         SpellCooldownSyncPacket.STREAM_CODEC,

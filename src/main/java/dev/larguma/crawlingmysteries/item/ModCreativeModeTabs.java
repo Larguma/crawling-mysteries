@@ -39,6 +39,7 @@ public class ModCreativeModeTabs {
             output.accept(ModBlocks.MYSTERIOUS_STONE.get());
 
             output.accept(ModBlocks.COOKING_ALTAR_TIER_1.get());
+            output.accept(ModBlocks.COOKING_ALTAR_TIER_2.get());
           })
           .build());
 
