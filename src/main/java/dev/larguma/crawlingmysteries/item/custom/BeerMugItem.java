@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.function.Consumer;
 
 import dev.larguma.crawlingmysteries.block.custom.BeerMugBlock;
-import dev.larguma.crawlingmysteries.block.entity.BeerMugBlockEntity;
+import dev.larguma.crawlingmysteries.block.entity.custom.BeerMugBlockEntity;
 import dev.larguma.crawlingmysteries.client.item.BeerMugItemRenderer;
 import dev.larguma.crawlingmysteries.effect.ModMobEffects;
 import dev.larguma.crawlingmysteries.item.helper.ItemDataHelper;

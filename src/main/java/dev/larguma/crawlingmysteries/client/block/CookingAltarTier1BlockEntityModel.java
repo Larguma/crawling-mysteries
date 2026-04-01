@@ -1,7 +1,7 @@
 package dev.larguma.crawlingmysteries.client.block;
 
 import dev.larguma.crawlingmysteries.CrawlingMysteries;
-import dev.larguma.crawlingmysteries.block.entity.CookingAltarTier1BlockEntity;
+import dev.larguma.crawlingmysteries.block.entity.custom.CookingAltarTier1BlockEntity;
 import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib.model.DefaultedBlockGeoModel;
 

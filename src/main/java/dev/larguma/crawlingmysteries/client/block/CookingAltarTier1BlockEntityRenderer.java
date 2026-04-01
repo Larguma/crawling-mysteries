@@ -1,6 +1,6 @@
 package dev.larguma.crawlingmysteries.client.block;
 
-import dev.larguma.crawlingmysteries.block.entity.CookingAltarTier1BlockEntity;
+import dev.larguma.crawlingmysteries.block.entity.custom.CookingAltarTier1BlockEntity;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import software.bernie.geckolib.renderer.GeoBlockRenderer;
 import software.bernie.geckolib.renderer.layer.AutoGlowingGeoLayer;

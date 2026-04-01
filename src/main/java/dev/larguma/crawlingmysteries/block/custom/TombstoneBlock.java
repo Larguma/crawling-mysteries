@@ -10,7 +10,7 @@ import com.mojang.serialization.MapCodec;
 
 import dev.larguma.crawlingmysteries.CrawlingMysteries;
 import dev.larguma.crawlingmysteries.block.ModBlocks;
-import dev.larguma.crawlingmysteries.block.entity.TombstoneBlockEntity;
+import dev.larguma.crawlingmysteries.block.entity.custom.TombstoneBlockEntity;
 import dev.larguma.crawlingmysteries.entity.ModEntities;
 import dev.larguma.crawlingmysteries.entity.custom.EternalGuardianEntity;
 import dev.larguma.crawlingmysteries.util.SlottedItemStack;

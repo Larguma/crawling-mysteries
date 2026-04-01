@@ -12,6 +12,8 @@ public class ModBlockRenderers {
     event.registerBlockEntityRenderer(ModBlockEntities.BEER_KEG_BE.get(), BeerKegBlockEntityRenderer::new);
     event.registerBlockEntityRenderer(ModBlockEntities.COOKING_ALTAR_TIER_1_BE.get(),
         CookingAltarTier1BlockEntityRenderer::new);
+    event.registerBlockEntityRenderer(ModBlockEntities.COOKING_ALTAR_TIER_2_BE.get(),
+        CookingAltarTier2BlockEntityRenderer::new);
   }
 
 }

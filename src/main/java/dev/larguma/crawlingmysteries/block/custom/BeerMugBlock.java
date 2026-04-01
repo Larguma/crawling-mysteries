@@ -5,7 +5,7 @@ import java.util.List;
 
 import com.mojang.serialization.MapCodec;
 
-import dev.larguma.crawlingmysteries.block.entity.BeerMugBlockEntity;
+import dev.larguma.crawlingmysteries.block.entity.custom.BeerMugBlockEntity;
 import dev.larguma.crawlingmysteries.data.ModDataComponents;
 import dev.larguma.crawlingmysteries.item.custom.BeerMugItem;
 import net.minecraft.core.BlockPos;

@@ -4,7 +4,7 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 
-import dev.larguma.crawlingmysteries.block.entity.BeerMugBlockEntity;
+import dev.larguma.crawlingmysteries.block.entity.custom.BeerMugBlockEntity;
 import dev.larguma.crawlingmysteries.data.ModDataComponents;
 import dev.larguma.crawlingmysteries.item.custom.BeerMugItem;
 import net.minecraft.client.Minecraft;

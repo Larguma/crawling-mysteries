@@ -1,5 +1,6 @@
-package dev.larguma.crawlingmysteries.block.entity;
+package dev.larguma.crawlingmysteries.block.entity.custom;
 
+import dev.larguma.crawlingmysteries.block.entity.ModBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.core.particles.ParticleTypes;

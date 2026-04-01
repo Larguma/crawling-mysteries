@@ -18,6 +18,9 @@ import net.neoforged.api.distmarker.OnlyIn;
 import net.neoforged.neoforge.network.handling.IPayloadContext;
 
 public class ClientPayloadHandler {
+  private ClientPayloadHandler() {
+    /* This utility class should not be instantiated */
+  }
 
   public static void handleSpellCooldownSync(final SpellCooldownSyncPacket packet, final IPayloadContext context) {
     context.enqueueWork(() -> {
@@ -38,20 +41,19 @@ public class ClientPayloadHandler {
 
   public static void handleTotemAnimation(final TotemAnimationPacket packet, final IPayloadContext context) {
     context.enqueueWork(
-      new Runnable() {
-        @OnlyIn(Dist.CLIENT)
-        @Override
-        public void run() {
-          Minecraft mc = Minecraft.getInstance();
-          if (mc.player != null) {
-            mc.particleEngine.createTrackingEmitter(mc.player, ParticleTypes.TOTEM_OF_UNDYING, 30);
-            mc.level.playLocalSound(mc.player.getX(), mc.player.getY(), mc.player.getZ(), SoundEvents.TOTEM_USE,
-                mc.player.getSoundSource(), 1.0F, 1.0F, false);
-            mc.gameRenderer.displayItemActivation(packet.itemStack());
+        new Runnable() {
+          @OnlyIn(Dist.CLIENT)
+          @Override
+          public void run() {
+            Minecraft mc = Minecraft.getInstance();
+            if (mc.player != null) {
+              mc.particleEngine.createTrackingEmitter(mc.player, ParticleTypes.TOTEM_OF_UNDYING, 30);
+              mc.level.playLocalSound(mc.player.getX(), mc.player.getY(), mc.player.getZ(), SoundEvents.TOTEM_USE,
+                  mc.player.getSoundSource(), 1.0F, 1.0F, false);
+              mc.gameRenderer.displayItemActivation(packet.itemStack());
+            }
           }
-        }
-      }
-    );
+        });
   }
 
   public static void handleSyncUnlockedEntries(final SyncUnlockedEntriesPacket packet, final IPayloadContext context) {
@@ -62,8 +64,6 @@ public class ClientPayloadHandler {
   }
 
   public static void handleTavernMusic(final TavernMusicPacket packet, final IPayloadContext context) {
-    context.enqueueWork(() -> {
-      MusicHandler.setInsideTavern(packet.insideTavern());
-    });
+    context.enqueueWork(() -> MusicHandler.setInsideTavern(packet.insideTavern()));
   }
 }

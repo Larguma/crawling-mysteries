@@ -30,6 +30,7 @@ public class ModItemModelProvider extends ItemModelProvider {
     this.withExistingParent(ModBlocks.BEER_MUG.getId().toString(), modLoc("block/beer_mug"));
     this.withExistingParent(ModBlocks.BEER_KEG.getId().toString(), modLoc("block/beer_keg"));
     this.withExistingParent(ModBlocks.COOKING_ALTAR_TIER_1.getId().toString(), modLoc("block/cooking_altar_tier_1"));
+    this.withExistingParent(ModBlocks.COOKING_ALTAR_TIER_2.getId().toString(), modLoc("block/cooking_altar_tier_2"));
 
     this.withExistingParent(ModItems.CRYPTIC_EYE.getId().toString() + "_2d", mcLoc("item/generated"))
         .texture("layer0", "item/cryptic_eye_2d");

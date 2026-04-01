@@ -4,8 +4,8 @@ import org.jetbrains.annotations.Nullable;
 
 import com.mojang.serialization.MapCodec;
 
-import dev.larguma.crawlingmysteries.block.entity.BeerKegBlockEntity;
 import dev.larguma.crawlingmysteries.block.entity.ModBlockEntities;
+import dev.larguma.crawlingmysteries.block.entity.custom.BeerKegBlockEntity;
 import dev.larguma.crawlingmysteries.item.custom.BeerMugItem;
 import dev.larguma.crawlingmysteries.sound.ModSounds;
 import net.minecraft.core.BlockPos;

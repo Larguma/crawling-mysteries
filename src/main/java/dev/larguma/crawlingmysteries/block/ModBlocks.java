@@ -30,6 +30,8 @@ public class ModBlocks {
       block -> new BeerMugItem(block, new Item.Properties()));
   public static final DeferredBlock<Block> COOKING_ALTAR_TIER_1 = registerBlock("cooking_altar_tier_1",
       () -> new CookingAltarTier1Block(), block -> new CookingAltarTier1Item(block, new Item.Properties()));
+  public static final DeferredBlock<Block> COOKING_ALTAR_TIER_2 = registerBlock("cooking_altar_tier_2",
+      () -> new CookingAltarTier2Block(), block -> new CookingAltarTier2Item(block, new Item.Properties()));
 
   // Standard
   public static final DeferredBlock<Block> MYSTERIOUS_STONE = registerBlock("mysterious_stone",

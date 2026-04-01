@@ -1,5 +1,6 @@
-package dev.larguma.crawlingmysteries.block.entity;
+package dev.larguma.crawlingmysteries.block.entity.custom;
 
+import dev.larguma.crawlingmysteries.block.entity.ModBlockEntities;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.nbt.CompoundTag;
@@ -69,7 +70,7 @@ public class BeerMugBlockEntity extends BlockEntity implements GeoBlockEntity {
   public int getBeerLevel() {
     return this.beerLevel;
   }
-  
+
   public void setHasGooglyEyes(boolean hasGooglyEyes) {
     this.hasGooglyEyes = hasGooglyEyes;
     this.setChanged();

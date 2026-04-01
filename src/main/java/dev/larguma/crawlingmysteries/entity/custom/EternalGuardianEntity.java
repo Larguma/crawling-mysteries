@@ -5,7 +5,7 @@ import java.util.UUID;
 
 import dev.larguma.crawlingmysteries.CrawlingMysteries;
 import dev.larguma.crawlingmysteries.block.ModBlocks;
-import dev.larguma.crawlingmysteries.block.entity.TombstoneBlockEntity;
+import dev.larguma.crawlingmysteries.block.entity.custom.TombstoneBlockEntity;
 import dev.larguma.crawlingmysteries.entity.ai.GoToTombstoneGoal;
 import dev.larguma.crawlingmysteries.entity.ai.ProtectTombstoneGoal;
 import dev.larguma.crawlingmysteries.util.NbtHelper;

@@ -1,6 +1,7 @@
-package dev.larguma.crawlingmysteries.block.entity;
+package dev.larguma.crawlingmysteries.block.entity.custom;
 
 import dev.larguma.crawlingmysteries.block.custom.BeerKegBlock;
+import dev.larguma.crawlingmysteries.block.entity.ModBlockEntities;
 import dev.larguma.crawlingmysteries.particle.ModParticles;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;

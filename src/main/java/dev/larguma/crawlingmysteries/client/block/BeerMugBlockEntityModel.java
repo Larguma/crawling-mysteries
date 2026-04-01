@@ -2,7 +2,7 @@ package dev.larguma.crawlingmysteries.client.block;
 
 import dev.larguma.crawlingmysteries.CrawlingMysteries;
 import dev.larguma.crawlingmysteries.block.custom.BeerMugBlock;
-import dev.larguma.crawlingmysteries.block.entity.BeerMugBlockEntity;
+import dev.larguma.crawlingmysteries.block.entity.custom.BeerMugBlockEntity;
 import net.minecraft.resources.ResourceLocation;
 import software.bernie.geckolib.animation.AnimationState;
 import software.bernie.geckolib.cache.object.GeoBone;

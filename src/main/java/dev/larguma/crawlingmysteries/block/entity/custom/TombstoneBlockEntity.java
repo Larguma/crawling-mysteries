@@ -1,10 +1,12 @@
-package dev.larguma.crawlingmysteries.block.entity;
+package dev.larguma.crawlingmysteries.block.entity.custom;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
 import com.mojang.authlib.GameProfile;
+
+import dev.larguma.crawlingmysteries.block.entity.ModBlockEntities;
 import dev.larguma.crawlingmysteries.util.NbtHelper;
 import dev.larguma.crawlingmysteries.util.SlottedItemStack;
 import net.minecraft.core.BlockPos;

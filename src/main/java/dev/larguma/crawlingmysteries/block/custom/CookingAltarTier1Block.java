@@ -4,8 +4,8 @@ import org.jetbrains.annotations.Nullable;
 
 import com.mojang.serialization.MapCodec;
 
-import dev.larguma.crawlingmysteries.block.entity.CookingAltarTier1BlockEntity;
 import dev.larguma.crawlingmysteries.block.entity.ModBlockEntities;
+import dev.larguma.crawlingmysteries.block.entity.custom.CookingAltarTier1BlockEntity;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -92,6 +92,8 @@ public class CookingAltarTier1Block extends BaseEntityBlock {
   }
 
   // #region Double Block Placement Logic
+
+  // TODO: when we look only at the upper half, the block don't render
   @Nullable
   @Override
   public BlockState getStateForPlacement(BlockPlaceContext context) {
