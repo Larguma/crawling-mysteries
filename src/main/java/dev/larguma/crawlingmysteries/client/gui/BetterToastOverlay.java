@@ -126,9 +126,9 @@ public class BetterToastOverlay implements LayeredDraw.Layer {
 
       RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, fadeAlpha);
       if (toast.getIconItem().isPresent()) {
-        guiGraphics.renderItem(toast.getIconItem().get(), contentX, iconY);
+        guiGraphics.renderItem(toast.getIconItem().get(), contentX, iconY); // NOSONAR
       } else if (toast.getIconTexture().isPresent()) {
-        ResourceLocation textureLoc = toast.getIconTexture().get();
+        ResourceLocation textureLoc = toast.getIconTexture().get(); // NOSONAR
         RenderSystem.setShaderTexture(0, textureLoc);
         guiGraphics.blit(textureLoc, contentX, iconY, ICON_SIZE, ICON_SIZE, 0, 0, 16, 16, 16, 16);
       }

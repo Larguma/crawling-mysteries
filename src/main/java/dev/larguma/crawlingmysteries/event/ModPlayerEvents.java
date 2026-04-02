@@ -2,6 +2,7 @@ package dev.larguma.crawlingmysteries.event;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 
 import dev.larguma.crawlingmysteries.CrawlingMysteries;
@@ -11,6 +12,9 @@ import dev.larguma.crawlingmysteries.data.custom.HorseshoeDataComponent;
 import dev.larguma.crawlingmysteries.item.ModItems;
 import dev.larguma.crawlingmysteries.item.helper.ItemHelper;
 import dev.larguma.crawlingmysteries.networking.packet.TavernMusicPacket;
+import dev.larguma.crawlingmysteries.recipe.GrindstoneGrindRecipe;
+import dev.larguma.crawlingmysteries.recipe.GrindstoneGrindRecipeInput;
+import dev.larguma.crawlingmysteries.recipe.ModRecipes;
 import dev.larguma.crawlingmysteries.spell.SpellCooldownManager;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.particles.ParticleTypes;
@@ -25,7 +29,7 @@ import net.minecraft.tags.TagKey;
 import net.minecraft.world.InteractionResult;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.Blocks;
 import net.minecraft.world.level.levelgen.structure.Structure;
@@ -144,31 +148,44 @@ public class ModPlayerEvents {
     Level level = event.getLevel();
     BlockPos pos = event.getPos();
 
-    if (level.getBlockState(pos).is(Blocks.GRINDSTONE) && event.getItemStack().is(ModItems.PETRIFIED_EYE.get())) {
+    if (!level.getBlockState(pos).is(Blocks.GRINDSTONE)) {
+      return;
+    }
 
-      event.setCanceled(true);
-      event.setCancellationResult(InteractionResult.SUCCESS);
+    ItemStack heldItem = event.getItemStack();
+    GrindstoneGrindRecipeInput recipeInput = new GrindstoneGrindRecipeInput(heldItem);
 
-      if (!level.isClientSide) {
-        level.playSound(null, pos, SoundEvents.GRINDSTONE_USE, SoundSource.BLOCKS, 1.0F, 1.0F);
+    Optional<RecipeHolder<GrindstoneGrindRecipe>> recipeOpt = level.getRecipeManager()
+        .getRecipeFor(ModRecipes.GRINDSTONE_GRIND_TYPE.get(), recipeInput, level);
 
-        if (!event.getEntity().isCreative()) {
-          event.getItemStack().shrink(1);
-        }
+    if (recipeOpt.isEmpty()) {
+      return;
+    }
 
-        if (level.random.nextFloat() < 0.3F) {
-          ItemHelper.spawnItemAboveBlock(level, pos, new ItemStack(ModItems.AWAKENED_EYE.get()));
-          ((ServerLevel) level).sendParticles(ParticleTypes.HAPPY_VILLAGER, pos.getX() + 0.5, pos.getY() + 0.5,
-              pos.getZ() + 0.5, 5, 0.2, 0.2, 0.2, 0.0);
-        } else {
-          ItemHelper.spawnItemAboveBlock(level, pos, new ItemStack(Items.GRAVEL));
-          level.playSound(null, pos, SoundEvents.ITEM_BREAK, SoundSource.BLOCKS, 1.0F, 0.8F);
-          ((ServerLevel) level).sendParticles(ParticleTypes.SMOKE, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
-              5, 0.2, 0.2, 0.2, 0.0);
-        }
-      } else {
-        event.getEntity().swing(event.getHand());
+    GrindstoneGrindRecipe recipe = recipeOpt.get().value();
+
+    event.setCanceled(true);
+    event.setCancellationResult(InteractionResult.SUCCESS);
+
+    if (!level.isClientSide) {
+      level.playSound(null, pos, SoundEvents.GRINDSTONE_USE, SoundSource.BLOCKS, 1.0F, 1.0F);
+
+      if (!event.getEntity().isCreative()) {
+        heldItem.shrink(1);
       }
+
+      if (level.random.nextFloat() < recipe.getSuccessChance()) {
+        ItemHelper.spawnItemAboveBlock(level, pos, recipe.getSuccessOutput().copy());
+        ((ServerLevel) level).sendParticles(ParticleTypes.HAPPY_VILLAGER, pos.getX() + 0.5, pos.getY() + 0.5,
+            pos.getZ() + 0.5, 5, 0.2, 0.2, 0.2, 0.0);
+      } else {
+        ItemHelper.spawnItemAboveBlock(level, pos, recipe.getFailureOutput().copy());
+        level.playSound(null, pos, SoundEvents.ITEM_BREAK, SoundSource.BLOCKS, 1.0F, 0.8F);
+        ((ServerLevel) level).sendParticles(ParticleTypes.SMOKE, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
+            5, 0.2, 0.2, 0.2, 0.0);
+      }
+    } else {
+      event.getEntity().swing(event.getHand());
     }
   }
 }

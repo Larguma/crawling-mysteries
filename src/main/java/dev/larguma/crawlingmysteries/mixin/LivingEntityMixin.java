@@ -21,7 +21,7 @@ public abstract class LivingEntityMixin {
 
   @Inject(at = @At("HEAD"), method = "checkTotemDeathProtection", cancellable = true)
   private boolean checkTotemDeathProtection(DamageSource source, CallbackInfoReturnable<Boolean> info) {
-    if (!((Object) this instanceof ServerPlayer))
+    if (!((Object) this instanceof ServerPlayer)) // NOSONAR
       return info.getReturnValueZ();
     ServerPlayer player = (ServerPlayer) (Object) this;
     ItemStack stack = SpellHandlerHelper.getCurioEquipped(player, ModItems.CRYPTIC_EYE.get());

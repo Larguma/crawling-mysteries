@@ -108,7 +108,7 @@ public class EternalGuardianEntity extends Monster implements GeoEntity {
   @Override
   public void die(DamageSource damageSource) {
     if (this.hasTombstone() && this.getTombstonePos().isPresent()) {
-      TombstoneBlockEntity tombstoneBlockEntity = getTombstone(this.getTombstonePos().get());
+      TombstoneBlockEntity tombstoneBlockEntity = getTombstone(this.getTombstonePos().get()); // NOSONAR
       if (tombstoneBlockEntity != null)
         tombstoneBlockEntity.setGuardianUUID(null);
     }
@@ -140,9 +140,9 @@ public class EternalGuardianEntity extends Monster implements GeoEntity {
   @Override
   public void addAdditionalSaveData(CompoundTag compound) {
     if (this.getTombstonePos().isPresent())
-      compound.put("tombstone_pose", NbtHelper.fromBlockPos(this.getTombstonePos().get()));
+      compound.put("tombstone_pose", NbtHelper.fromBlockPos(this.getTombstonePos().get())); // NOSONAR
     if (this.getTombstoneOwner().isPresent())
-      compound.putUUID("tombstone_owner", this.getTombstoneOwner().get());
+      compound.putUUID("tombstone_owner", this.getTombstoneOwner().get()); // NOSONAR
     compound.putString("tombstone_owner_name", this.getTombstoneOwnerName());
     super.addAdditionalSaveData(compound);
   }

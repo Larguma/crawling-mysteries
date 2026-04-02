@@ -19,7 +19,7 @@ public class ProtectTombstoneGoal extends MeleeAttackGoal {
   public boolean canUse() {
     LivingEntity livingEntity = this.entity.getTarget();
     if (this.entity.getTombstoneOwner().isPresent()) {
-      UUID tombstoneOwner = this.entity.getTombstoneOwner().get();
+      UUID tombstoneOwner = this.entity.getTombstoneOwner().get(); // NOSONAR
       if (livingEntity != null && livingEntity.getUUID().equals(tombstoneOwner)) {
         return false;
       }

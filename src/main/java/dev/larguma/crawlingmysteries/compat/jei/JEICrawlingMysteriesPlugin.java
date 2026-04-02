@@ -1,9 +1,8 @@
 package dev.larguma.crawlingmysteries.compat.jei;
 
 import dev.larguma.crawlingmysteries.CrawlingMysteries;
-import dev.larguma.crawlingmysteries.item.ModItems;
+import dev.larguma.crawlingmysteries.recipe.GrindstoneGrindRecipe;
 import dev.larguma.crawlingmysteries.recipe.ModRecipes;
-import java.util.Collections;
 import java.util.List;
 import mezz.jei.api.IModPlugin;
 import mezz.jei.api.JeiPlugin;
@@ -37,14 +36,14 @@ public class JEICrawlingMysteriesPlugin implements IModPlugin {
   public void registerRecipes(IRecipeRegistration registration) {
     RecipeManager recipeManager = Minecraft.getInstance().level.getRecipeManager();
 
-    List<RecipeHolder<SmithingRecipe>> recipes = recipeManager.getAllRecipesFor(RecipeType.SMITHING).stream()
+    List<RecipeHolder<SmithingRecipe>> smithingRecipes = recipeManager.getAllRecipesFor(RecipeType.SMITHING).stream()
         .filter(r -> r.value().getSerializer() == ModRecipes.SMITHING_AWAKENING.get()).toList();
+    registration.addRecipes(RecipeTypes.SMITHING, smithingRecipes);
 
-    registration.addRecipes(RecipeTypes.SMITHING, recipes);
-    registration.addRecipes(GrindstoneGrindCategory.RECIPE_TYPE, Collections.singletonList(new GrindstoneGrindRecipe(
-        new ItemStack(ModItems.PETRIFIED_EYE.get()),
-        new ItemStack(ModItems.AWAKENED_EYE.get()),
-        new ItemStack(Items.GRAVEL))));
+    List<GrindstoneGrindRecipe> grindstoneRecipes = recipeManager
+        .getAllRecipesFor(ModRecipes.GRINDSTONE_GRIND_TYPE.get()).stream()
+        .map(RecipeHolder::value).toList();
+    registration.addRecipes(GrindstoneGrindCategory.RECIPE_TYPE, grindstoneRecipes);
   }
 
   @Override

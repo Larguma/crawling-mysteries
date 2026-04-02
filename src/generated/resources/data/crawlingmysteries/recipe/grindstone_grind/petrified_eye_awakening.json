@@ -1,0 +1,15 @@
+{
+  "type": "crawlingmysteries:grindstone_grind",
+  "failure_output": {
+    "count": 1,
+    "id": "minecraft:gravel"
+  },
+  "input": {
+    "item": "crawlingmysteries:petrified_eye"
+  },
+  "success_chance": 0.3,
+  "success_output": {
+    "count": 1,
+    "id": "crawlingmysteries:awakened_eye"
+  }
+}

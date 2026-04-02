@@ -1,6 +1,7 @@
 package dev.larguma.crawlingmysteries.compat.jei;
 
 import dev.larguma.crawlingmysteries.CrawlingMysteries;
+import dev.larguma.crawlingmysteries.recipe.GrindstoneGrindRecipe;
 import mezz.jei.api.constants.VanillaTypes;
 import mezz.jei.api.gui.builder.IRecipeLayoutBuilder;
 import mezz.jei.api.gui.drawable.IDrawable;
@@ -58,18 +59,20 @@ public class GrindstoneGrindCategory implements IRecipeCategory<GrindstoneGrindR
 
   @Override
   public void setRecipe(IRecipeLayoutBuilder builder, GrindstoneGrindRecipe recipe, IFocusGroup focuses) {
-    builder.addSlot(RecipeIngredientRole.INPUT, 10, 22)
-        .addItemStack(recipe.input());
+    builder.addSlot(RecipeIngredientRole.INPUT, 10, 22).addIngredients(recipe.getInput());
+
+    int successChancePercent = Math.round(recipe.getSuccessChance() * 100);
+    int failureChancePercent = 100 - successChancePercent;
 
     builder.addSlot(RecipeIngredientRole.OUTPUT, 130, 10)
-        .addItemStack(recipe.output())
-        .addRichTooltipCallback(
-            (recipeSlotView, tooltip) -> tooltip.add(Component.translatable("jei.crawlingmysteries.chance", "30%")));
+        .addItemStack(recipe.getSuccessOutput())
+        .addRichTooltipCallback((recipeSlotView, tooltip) -> tooltip
+            .add(Component.translatable("jei.crawlingmysteries.chance", successChancePercent + "%")));
 
     builder.addSlot(RecipeIngredientRole.OUTPUT, 130, 34)
-        .addItemStack(recipe.failure())
-        .addRichTooltipCallback(
-            (recipeSlotView, tooltip) -> tooltip.add(Component.translatable("jei.crawlingmysteries.chance", "70%")));
+        .addItemStack(recipe.getFailureOutput())
+        .addRichTooltipCallback((recipeSlotView, tooltip) -> tooltip
+            .add(Component.translatable("jei.crawlingmysteries.chance", failureChancePercent + "%")));
   }
 
   @Override

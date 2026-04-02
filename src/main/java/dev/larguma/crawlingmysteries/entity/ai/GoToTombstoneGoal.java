@@ -18,7 +18,7 @@ public class GoToTombstoneGoal extends Goal {
   @Override
   public boolean canUse() {
     return this.eternalGuardian.getTombstonePos().isPresent()
-        && !this.eternalGuardian.isWithinDistance(this.eternalGuardian.getTombstonePos().get(), 2);
+        && !this.eternalGuardian.isWithinDistance(this.eternalGuardian.getTombstonePos().get(), 2); // NOSONAR
   }
 
   @Override
@@ -29,11 +29,11 @@ public class GoToTombstoneGoal extends Goal {
   @Override
   public void tick() {
     if (this.eternalGuardian.getTombstonePos().isPresent()) {
-      BlockPos pos = this.eternalGuardian.getTombstonePos().get();
+      BlockPos pos = this.eternalGuardian.getTombstonePos().get(); // NOSONAR
       if (pos == null || this.eternalGuardian.getNavigation().isInProgress()) {
         return;
       }
-      this.eternalGuardian.getNavigation().moveTo(pos.getX(), pos.getY(), pos.getZ(), 5, this.eternalGuardian.SPEED);
+      this.eternalGuardian.getNavigation().moveTo(pos.getX(), pos.getY(), pos.getZ(), 5, EternalGuardianEntity.SPEED);
     }
   }
 

@@ -36,7 +36,7 @@ public class SmithingAwakeningRecipeBuilder {
     return new SmithingAwakeningRecipeBuilder(template, base, addition, category, item);
   }
 
-  public SmithingAwakeningRecipeBuilder unlocks(String name, Criterion<?> criterion) {
+  public SmithingAwakeningRecipeBuilder unlockedBy(String name, Criterion<?> criterion) {
     this.criteria.put(name, criterion);
     return this;
   }

@@ -25,6 +25,7 @@ import dev.larguma.crawlingmysteries.codex.CodexRegistry;
 import dev.larguma.crawlingmysteries.codex.CodexUnlockManager;
 import dev.larguma.crawlingmysteries.data.ModDataComponents;
 import dev.larguma.crawlingmysteries.networking.packet.RequestStatsPacket;
+import dev.larguma.crawlingmysteries.recipe.GrindstoneGrindRecipe;
 import dev.larguma.crawlingmysteries.recipe.SmithingAwakeningRecipe;
 import dev.larguma.crawlingmysteries.spell.ModSpells;
 import dev.larguma.crawlingmysteries.spell.Spell;
@@ -47,6 +48,7 @@ import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.crafting.Ingredient;
 import net.minecraft.world.item.crafting.Recipe;
 import net.minecraft.world.item.crafting.RecipeHolder;
@@ -846,10 +848,11 @@ public class CrypticCodexScreen extends Screen {
 
     guiGraphics.enableScissor(x, y, x + width, y + maxHeight);
 
-    if (recipe instanceof SmithingRecipe smithingRecipe) {
-      renderSmithing(guiGraphics, x, y, width, maxHeight, page, smithingRecipe);
-    } else {
-      renderCraftingGrid(guiGraphics, x, y, width, maxHeight, page, recipe);
+    switch (recipe) {
+      case SmithingRecipe smithingRecipe -> renderSmithing(guiGraphics, x, y, width, maxHeight, page, smithingRecipe);
+      case GrindstoneGrindRecipe grindstoneRecipe ->
+        renderGrindstoneGrind(guiGraphics, x, y, width, maxHeight, page, grindstoneRecipe);
+      default -> renderCraftingGrid(guiGraphics, x, y, width, maxHeight, page, recipe);
     }
 
     guiGraphics.disableScissor();
@@ -881,7 +884,7 @@ public class CrypticCodexScreen extends Screen {
 
     int offsetY = y - contentScrollOffset;
 
-    Component title = Component.literal("§lCrafting Recipe");
+    Component title = Component.translatable("codex.crawlingmysteries.recipe_category.crafting");
     int titleWidth = this.font.width(title);
     guiGraphics.drawString(this.font, title, centerX - titleWidth / 2, offsetY, 0xFFFFFF, true);
 
@@ -971,7 +974,7 @@ public class CrypticCodexScreen extends Screen {
 
     int offsetY = y - contentScrollOffset;
 
-    Component title = Component.literal("§lSmithing Recipe");
+    Component title = Component.translatable("codex.crawlingmysteries.recipe_category.smithing");
     int titleWidth = this.font.width(title);
     guiGraphics.drawString(this.font, title, centerX - titleWidth / 2, offsetY, 0xFFFFFF, true);
 
@@ -982,7 +985,15 @@ public class CrypticCodexScreen extends Screen {
     int totalWidth = (slotSize * 3) + (gap * 2) + 20 + slotSize;
     int startX = centerX - totalWidth / 2;
 
-    NonNullList<Ingredient> ingredients = recipe.getIngredients();
+    NonNullList<Ingredient> ingredients;
+    if (recipe instanceof SmithingAwakeningRecipe awakeningRecipe) {
+      ingredients = NonNullList.create();
+      ingredients.add(awakeningRecipe.getTemplateIngredient());
+      ingredients.add(awakeningRecipe.getBaseIngredient());
+      ingredients.add(awakeningRecipe.getAdditionIngredient());
+    } else {
+      ingredients = recipe.getIngredients();
+    }
 
     // Slots
     for (int i = 0; i < 3; i++) {
@@ -1032,6 +1043,111 @@ public class CrypticCodexScreen extends Screen {
     guiGraphics.renderItemDecorations(this.font, resultStack, resultX + 4, startY + 4);
 
     int descY = startY + slotSize + 20;
+    if (!page.content().getString().isEmpty()) {
+      renderFormattedText(guiGraphics, page.content(), x, descY, width);
+    }
+  }
+
+  /**
+   * Renders a grindstone grind recipe page.
+   */
+  private void renderGrindstoneGrind(GuiGraphics guiGraphics, int x, int y, int width, int maxHeight, CodexPage page,
+      GrindstoneGrindRecipe recipe) {
+    int centerX = x + width / 2;
+
+    int slotSize = 24;
+    int contentHeight = 14 + 20 + (slotSize * 2) + 30 + 20;
+    if (!page.content().getString().isEmpty()) {
+      List<FormattedCharSequence> lines = this.font.split(page.content(), width);
+      contentHeight += lines.size() * 12;
+    }
+
+    maxContentScroll = Math.max(0, contentHeight - maxHeight);
+    contentScrollOffset = Mth.clamp(contentScrollOffset, 0, maxContentScroll);
+
+    int offsetY = y - contentScrollOffset;
+
+    Component title = Component.translatable("codex.crawlingmysteries.recipe_category.grindstone_grind");
+    int titleWidth = this.font.width(title);
+    guiGraphics.drawString(this.font, title, centerX - titleWidth / 2, offsetY, 0xFFFFFF, true);
+
+    Component subtitle = Component.translatable("codex.crawlingmysteries.recipe_category.grindstone_grind.subtitle");
+    int subtitleWidth = this.font.width(subtitle);
+    guiGraphics.drawString(this.font, subtitle, centerX - subtitleWidth / 2, offsetY + 14, TEXT_MUTED, false);
+
+    int startY = offsetY + 40;
+    int gap = 20;
+
+    // Layout: [Input] -> [Grindstone] -> [Outputs]
+    int totalWidth = slotSize + gap + slotSize + gap + slotSize;
+    int startX = centerX - totalWidth / 2;
+
+    // Input slot
+    int inputX = startX;
+    int inputY = startY + slotSize / 2;
+    guiGraphics.fill(inputX - 2, inputY - 2, inputX + slotSize + 2, inputY + slotSize + 2, 0x66000000);
+    PanelBorderRenderer.renderPanelBorder(guiGraphics, inputX - 2, inputY - 2, slotSize + 4, slotSize + 4, TEXT_MUTED,
+        3);
+    guiGraphics.fill(inputX + 1, inputY + 1, inputX + slotSize - 1, inputY + slotSize - 1, 0x44FFFFFF);
+
+    Ingredient input = recipe.getInput();
+    if (!input.isEmpty()) {
+      renderIngredient(guiGraphics, input, inputX + 4, inputY + 4);
+    }
+
+    // Arrow to grindstone
+    int arrow1X = inputX + slotSize + 6;
+    int arrowY = inputY + slotSize / 2 - 4;
+    guiGraphics.drawString(this.font, "→", arrow1X, arrowY, TEXT_COLOR, false);
+
+    // Grindstone icon
+    int grindstoneX = startX + slotSize + gap;
+    int grindstoneY = inputY;
+    guiGraphics.fill(grindstoneX - 2, grindstoneY - 2, grindstoneX + slotSize + 2, grindstoneY + slotSize + 2,
+        0x66000000);
+    PanelBorderRenderer.renderPanelBorder(guiGraphics, grindstoneX - 2, grindstoneY - 2, slotSize + 4, slotSize + 4,
+        SECONDARY_COLOR, 3);
+    guiGraphics.fill(grindstoneX + 1, grindstoneY + 1, grindstoneX + slotSize - 1, grindstoneY + slotSize - 1,
+        0x44FFFFFF);
+    guiGraphics.renderItem(new ItemStack(Items.GRINDSTONE), grindstoneX + 4, grindstoneY + 4);
+
+    // Arrow to outputs
+    int arrow2X = grindstoneX + slotSize + 6;
+    guiGraphics.drawString(this.font, "→", arrow2X, arrowY, TEXT_COLOR, false);
+
+    // Output slots (stacked vertically)
+    int outputX = startX + (slotSize + gap) * 2;
+
+    // Success output (top)
+    int successY = startY - 4;
+    guiGraphics.fill(outputX - 2, successY - 2, outputX + slotSize + 2, successY + slotSize + 2, 0x66000000);
+    PanelBorderRenderer.renderPanelBorder(guiGraphics, outputX - 2, successY - 2, slotSize + 4, slotSize + 4,
+        0x55FF55, 3);
+    guiGraphics.fill(outputX + 1, successY + 1, outputX + slotSize - 1, successY + slotSize - 1, 0x44FFFFFF);
+    guiGraphics.renderItem(recipe.getSuccessOutput(), outputX + 4, successY + 4);
+    guiGraphics.renderItemDecorations(this.font, recipe.getSuccessOutput(), outputX + 4, successY + 4);
+
+    int successChancePercent = Math.round(recipe.getSuccessChance() * 100);
+    Component successLabel = Component.literal("§a" + successChancePercent + "%");
+    guiGraphics.drawString(this.font, successLabel, outputX + slotSize + 6, successY + slotSize / 2 - 4, 0x55FF55,
+        false);
+
+    // Failure output (bottom)
+    int failureY = startY + slotSize + 3;
+    guiGraphics.fill(outputX - 2, failureY - 2, outputX + slotSize + 2, failureY + slotSize + 2, 0x66000000);
+    PanelBorderRenderer.renderPanelBorder(guiGraphics, outputX - 2, failureY - 2, slotSize + 4, slotSize + 4,
+        0xFF5555, 3);
+    guiGraphics.fill(outputX + 1, failureY + 1, outputX + slotSize - 1, failureY + slotSize - 1, 0x44FFFFFF);
+    guiGraphics.renderItem(recipe.getFailureOutput(), outputX + 4, failureY + 4);
+    guiGraphics.renderItemDecorations(this.font, recipe.getFailureOutput(), outputX + 4, failureY + 4);
+
+    int failureChancePercent = 100 - successChancePercent;
+    Component failureLabel = Component.literal("§c" + failureChancePercent + "%");
+    guiGraphics.drawString(this.font, failureLabel, outputX + slotSize + 6, failureY + slotSize / 2 - 4, 0xFF5555,
+        false);
+
+    // Description
+    int descY = failureY + slotSize + 20;
     if (!page.content().getString().isEmpty()) {
       renderFormattedText(guiGraphics, page.content(), x, descY, width);
     }

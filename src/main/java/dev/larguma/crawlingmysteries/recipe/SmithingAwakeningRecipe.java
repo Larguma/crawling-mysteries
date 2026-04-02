@@ -30,6 +30,14 @@ public class SmithingAwakeningRecipe extends SmithingTransformRecipe {
     return this.baseIngredient;
   }
 
+  public Ingredient getAdditionIngredient() {
+    return this.additionIngredient;
+  }
+
+  public Ingredient getTemplateIngredient() {
+    return this.templateIngredient;
+  }
+
   @Override
   public ItemStack assemble(SmithingRecipeInput input, HolderLookup.Provider registries) {
     ItemStack base = input.base();

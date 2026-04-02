@@ -87,10 +87,19 @@ public class ModRecipeProvider extends RecipeProvider {
         Ingredient.of(ModItems.AWAKENED_EYE.get()),
         RecipeCategory.MISC,
         ModItems.AWAKENED_EYE.get())
-        .unlocks("has_echo_shard", has(Items.ECHO_SHARD))
-        .unlocks("has_can_be_sentient", has(ModTags.Items.CAN_BE_SENTIENT))
-        .unlocks("has_awakened_eye", has(ModItems.AWAKENED_EYE.get()))
+        .unlockedBy("has_echo_shard", has(Items.ECHO_SHARD))
+        .unlockedBy("has_can_be_sentient", has(ModTags.Items.CAN_BE_SENTIENT))
+        .unlockedBy("has_awakened_eye", has(ModItems.AWAKENED_EYE.get()))
         .save(recipeOutput, CrawlingMysteries.MOD_ID + ":awakening_recipe");
+
+    GrindstoneGrindRecipeBuilder.grindstoneGrind(
+        Ingredient.of(ModItems.PETRIFIED_EYE.get()),
+        ModItems.AWAKENED_EYE.get(),
+        Items.GRAVEL,
+        0.3F,
+        RecipeCategory.MISC)
+        .unlockedBy("has_petrified_eye", has(ModItems.PETRIFIED_EYE.get()))
+        .save(recipeOutput, CrawlingMysteries.MOD_ID + ":grindstone_grind/petrified_eye_awakening");
   }
 
   private void buildHorseshoeUpgradeRecipes(RecipeOutput recipeOutput) {
