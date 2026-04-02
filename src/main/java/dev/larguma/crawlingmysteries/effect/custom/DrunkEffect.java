@@ -13,8 +13,8 @@ public class DrunkEffect extends MobEffect {
 
   @Override
   public boolean applyEffectTick(LivingEntity livingEntity, int amplifier) {
-    if (livingEntity.getRandom().nextFloat() < 0.2f) {
-      float strength = (amplifier + 1) * 0.1f;
+    if (livingEntity.getRandom().nextFloat() < 0.2F) {
+      float strength = (amplifier + 1) * 0.1F;
       double pushX = (livingEntity.getRandom().nextDouble()) * strength;
       double pushZ = (livingEntity.getRandom().nextDouble()) * strength;
 

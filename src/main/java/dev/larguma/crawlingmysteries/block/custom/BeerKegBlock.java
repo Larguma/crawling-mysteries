@@ -66,14 +66,14 @@ public class BeerKegBlock extends BaseEntityBlock {
   protected ItemInteractionResult useItemOn(ItemStack stack, BlockState state, Level level, BlockPos pos, Player player,
       InteractionHand hand, BlockHitResult hitResult) {
     if (stack.getItem() instanceof BeerMugItem item) {
-      if (!state.getValue(IS_POURING)) {
+      if (Boolean.TRUE.equals(state.getValue(IS_POURING))) {
         return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
       }
       if (item.getBeerLevel(stack) >= 4) {
         return super.useItemOn(stack, state, level, pos, player, hand, hitResult);
       }
       item.setBeerLevel(stack, 4);
-      level.playSound(null, pos, ModSounds.BEER_POUR.get(), SoundSource.BLOCKS, 1.0f, 1.0f);
+      level.playSound(null, pos, ModSounds.BEER_POUR.get(), SoundSource.BLOCKS, 1.0F, 1.0F);
       return ItemInteractionResult.sidedSuccess(level.isClientSide());
     }
     return super.useItemOn(stack, state, level, pos, player, hand, hitResult);

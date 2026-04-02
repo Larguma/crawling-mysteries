@@ -26,22 +26,22 @@ public class ModGlobalLootModifierProvider extends GlobalLootModifierProvider {
     add("eternal_guardians_band_from_ancient_city",
         new AddItemModifier(new LootItemCondition[] {
             new LootTableIdCondition.Builder(ResourceLocation.withDefaultNamespace("chests/ancient_city")).build()
-        }, ModItems.ETERNAL_GUARDIANS_BAND.get(), 0.1f));
+        }, ModItems.ETERNAL_GUARDIANS_BAND.get(), 0.1F));
 
-    addLuckyHorseshoeToChest("lucky_horseshoe_from_dungeon", "chests/simple_dungeon", 0.15f);
-    addLuckyHorseshoeToChest("lucky_horseshoe_from_mineshaft", "chests/abandoned_mineshaft", 0.12f);
-    addLuckyHorseshoeToChest("lucky_horseshoe_from_desert_pyramid", "chests/desert_pyramid", 0.18f);
-    addLuckyHorseshoeToChest("lucky_horseshoe_from_jungle_temple", "chests/jungle_temple", 0.18f);
-    addLuckyHorseshoeToChest("lucky_horseshoe_from_stronghold_corridor", "chests/stronghold_corridor", 0.12f);
-    addLuckyHorseshoeToChest("lucky_horseshoe_from_stronghold_crossing", "chests/stronghold_crossing", 0.12f);
-    addLuckyHorseshoeToChest("lucky_horseshoe_from_stronghold_library", "chests/stronghold_library", 0.15f);
-    addLuckyHorseshoeToChest("lucky_horseshoe_from_village_weaponsmith", "chests/village/village_weaponsmith", 0.20f);
-    addLuckyHorseshoeToChest("lucky_horseshoe_from_village_toolsmith", "chests/village/village_toolsmith", 0.20f);
-    addLuckyHorseshoeToChest("lucky_horseshoe_from_woodland_mansion", "chests/woodland_mansion", 0.10f);
-    addLuckyHorseshoeToChest("lucky_horseshoe_from_pillager_outpost", "chests/pillager_outpost", 0.15f);
-    addLuckyHorseshoeToChest("lucky_horseshoe_from_ruined_portal", "chests/ruined_portal", 0.12f);
-    addLuckyHorseshoeToChest("lucky_horseshoe_from_shipwreck_treasure", "chests/shipwreck_treasure", 0.10f);
-    addLuckyHorseshoeToChest("lucky_horseshoe_from_buried_treasure", "chests/buried_treasure", 0.25f);
+    addLuckyHorseshoeToChest("lucky_horseshoe_from_dungeon", "chests/simple_dungeon", 0.15F);
+    addLuckyHorseshoeToChest("lucky_horseshoe_from_mineshaft", "chests/abandoned_mineshaft", 0.12F);
+    addLuckyHorseshoeToChest("lucky_horseshoe_from_desert_pyramid", "chests/desert_pyramid", 0.18F);
+    addLuckyHorseshoeToChest("lucky_horseshoe_from_jungle_temple", "chests/jungle_temple", 0.18F);
+    addLuckyHorseshoeToChest("lucky_horseshoe_from_stronghold_corridor", "chests/stronghold_corridor", 0.12F);
+    addLuckyHorseshoeToChest("lucky_horseshoe_from_stronghold_crossing", "chests/stronghold_crossing", 0.12F);
+    addLuckyHorseshoeToChest("lucky_horseshoe_from_stronghold_library", "chests/stronghold_library", 0.15F);
+    addLuckyHorseshoeToChest("lucky_horseshoe_from_village_weaponsmith", "chests/village/village_weaponsmith", 0.20F);
+    addLuckyHorseshoeToChest("lucky_horseshoe_from_village_toolsmith", "chests/village/village_toolsmith", 0.20F);
+    addLuckyHorseshoeToChest("lucky_horseshoe_from_woodland_mansion", "chests/woodland_mansion", 0.10F);
+    addLuckyHorseshoeToChest("lucky_horseshoe_from_pillager_outpost", "chests/pillager_outpost", 0.15F);
+    addLuckyHorseshoeToChest("lucky_horseshoe_from_ruined_portal", "chests/ruined_portal", 0.12F);
+    addLuckyHorseshoeToChest("lucky_horseshoe_from_shipwreck_treasure", "chests/shipwreck_treasure", 0.10F);
+    addLuckyHorseshoeToChest("lucky_horseshoe_from_buried_treasure", "chests/buried_treasure", 0.25F);
   }
 
   private void addLuckyHorseshoeToChest(String modifierName, String lootTablePath, float chance) {

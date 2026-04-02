@@ -37,7 +37,7 @@ public class ModDataComponents {
   public static final DeferredHolder<DataComponentType<?>, DataComponentType<Float>> ATTUNEMENT = register(
       "attunement",
       builder -> builder.persistent(Codec.FLOAT),
-      ComponentType.FLOAT, 0f);
+      ComponentType.FLOAT, 0F);
 
   public static final DeferredHolder<DataComponentType<?>, DataComponentType<Integer>> SPELL_STAGE = register(
       "spell_stage",

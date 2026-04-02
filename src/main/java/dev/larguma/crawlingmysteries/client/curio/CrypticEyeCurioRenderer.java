@@ -23,7 +23,8 @@ public class CrypticEyeCurioRenderer implements ICurioRenderer {
       PoseStack matrixStack, RenderLayerParent<T, M> renderLayerParent, MultiBufferSource renderTypeBuffer, int light,
       float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
 
-    if (slotContext.entity() instanceof AbstractClientPlayer player && ConfigClient.CLIENT.renderTrinkets.get()) {
+    if (slotContext.entity() instanceof AbstractClientPlayer player
+        && Boolean.TRUE.equals(ConfigClient.CLIENT.renderTrinkets.get())) {
       if (player.isInvisible()) {
         return;
       }
@@ -33,7 +34,7 @@ public class CrypticEyeCurioRenderer implements ICurioRenderer {
       // x: + is left, - is right
       // y: + is down, - is up
       // z: + is back, - is forward
-      matrixStack.translate(-0.2f, -0.4f, 0.5f);
+      matrixStack.translate(-0.2F, -0.4F, 0.5F);
       Minecraft.getInstance().getItemRenderer()
           .renderStatic(stack, ItemDisplayContext.HEAD, light, OverlayTexture.NO_OVERLAY,
               matrixStack, renderTypeBuffer, slotContext.entity().level(), 0);

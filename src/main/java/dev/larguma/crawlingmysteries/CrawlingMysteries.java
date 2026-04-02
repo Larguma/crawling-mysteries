@@ -25,9 +25,9 @@ import dev.larguma.crawlingmysteries.villager.ModVillager;
 import net.minecraft.world.item.CreativeModeTabs;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.bus.api.SubscribeEvent;
+import net.neoforged.fml.ModContainer;
 import net.neoforged.fml.common.Mod;
 import net.neoforged.fml.config.ModConfig;
-import net.neoforged.fml.ModContainer;
 import net.neoforged.neoforge.common.NeoForge;
 import net.neoforged.neoforge.event.BuildCreativeModeTabContentsEvent;
 import net.neoforged.neoforge.event.server.ServerStartingEvent;
@@ -73,5 +73,6 @@ public class CrawlingMysteries {
 
   @SubscribeEvent
   public void onServerStarting(ServerStartingEvent event) {
+    LOGGER.info("Let the mysteries begin...");
   }
 }

@@ -8,19 +8,21 @@ import net.minecraft.world.entity.ai.goal.MeleeAttackGoal;
 
 public class ProtectTombstoneGoal extends MeleeAttackGoal {
 
-  protected final EternalGuardianEntity mob;
+  protected final EternalGuardianEntity entity;
 
   public ProtectTombstoneGoal(EternalGuardianEntity mob, double speed, boolean pauseWhenMobIdle) {
     super(mob, speed, pauseWhenMobIdle);
-    this.mob = mob;
+    this.entity = mob;
   }
 
   @Override
   public boolean canUse() {
-    LivingEntity livingEntity = this.mob.getTarget();
-    UUID tombstoneOwner = this.mob.getTombstoneOwner().get();
-    if (livingEntity != null && livingEntity.getUUID().equals(tombstoneOwner)) {
-      return false;
+    LivingEntity livingEntity = this.entity.getTarget();
+    if (this.entity.getTombstoneOwner().isPresent()) {
+      UUID tombstoneOwner = this.entity.getTombstoneOwner().get();
+      if (livingEntity != null && livingEntity.getUUID().equals(tombstoneOwner)) {
+        return false;
+      }
     }
     return super.canUse();
   }

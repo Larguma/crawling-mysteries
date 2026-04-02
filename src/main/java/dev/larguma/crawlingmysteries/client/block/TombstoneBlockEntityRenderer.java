@@ -49,12 +49,12 @@ public class TombstoneBlockEntityRenderer extends GeoBlockRenderer<TombstoneBloc
     }
 
     LocalPlayer player = minecraftClient.player;
-    Quaternionf rotation = new Quaternionf(0.0f, 0.0f, 0.0f, 1.0f);
+    Quaternionf rotation = new Quaternionf(0.0F, 0.0F, 0.0F, 1.0F);
     Boolean inverseView = minecraftClient.options.getCameraType().isMirrored();
-    float yaw = 0f;
-    float pitch = 0f;
-    if (inverseView) {
-      yaw = player.getYHeadRot() + 180.0f;
+    float yaw;
+    float pitch;
+    if (Boolean.TRUE.equals(inverseView)) {
+      yaw = player.getYHeadRot() + 180.0F;
       pitch = -player.getXRot();
     } else {
       yaw = player.getYHeadRot();
@@ -62,14 +62,14 @@ public class TombstoneBlockEntityRenderer extends GeoBlockRenderer<TombstoneBloc
     }
 
     poseStack.pushPose();
-    poseStack.translate(0.5f, 1.5f, 0.5f);
-    poseStack.mulPose(rotation.rotationYXZ(-yaw * ((float) Math.PI / 180), pitch * ((float) Math.PI / 180), 0.0f));
-    poseStack.scale(-0.025f, -0.025f, 0.025f);
+    poseStack.translate(0.5F, 1.5F, 0.5F);
+    poseStack.mulPose(rotation.rotationYXZ(-yaw * ((float) Math.PI / 180), pitch * ((float) Math.PI / 180), 0.0F));
+    poseStack.scale(-0.025F, -0.025F, 0.025F);
     Matrix4f matrix4f = poseStack.last().pose();
-    float g = minecraftClient.options.getBackgroundOpacity(0.25f);
-    int j = (int) (g * 255.0f) << 24;
-    float h = -font.width(text) / 2;
-    font.drawInBatch(text, h, 0f, 0xFFFFFFFF, false, matrix4f, bufferSource, Font.DisplayMode.NORMAL, j, packedLight);
+    float g = minecraftClient.options.getBackgroundOpacity(0.25F);
+    int j = (int) (g * 255.0F) << 24;
+    float h = (float) -font.width(text) / 2;
+    font.drawInBatch(text, h, 0F, 0xFFFFFFFF, false, matrix4f, bufferSource, Font.DisplayMode.NORMAL, j, packedLight);
     poseStack.popPose();
   }
 }

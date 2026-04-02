@@ -5,7 +5,6 @@ import com.mojang.serialization.codecs.RecordCodecBuilder;
 
 import dev.larguma.crawlingmysteries.data.ModDataComponents;
 import net.minecraft.core.HolderLookup;
-import net.minecraft.core.NonNullList;
 import net.minecraft.network.RegistryFriendlyByteBuf;
 import net.minecraft.network.codec.StreamCodec;
 import net.minecraft.world.item.ItemStack;
@@ -16,19 +15,19 @@ import net.minecraft.world.item.crafting.SmithingTransformRecipe;
 
 public class SmithingAwakeningRecipe extends SmithingTransformRecipe {
 
-  final Ingredient template;
-  final Ingredient base;
-  final Ingredient addition;
+  final Ingredient templateIngredient;
+  final Ingredient baseIngredient;
+  final Ingredient additionIngredient;
 
   public SmithingAwakeningRecipe(Ingredient template, Ingredient base, Ingredient addition) {
     super(template, base, addition, ItemStack.EMPTY);
-    this.template = template;
-    this.base = base;
-    this.addition = addition;
+    this.templateIngredient = template;
+    this.baseIngredient = base;
+    this.additionIngredient = addition;
   }
 
-  public Ingredient getBase() {
-    return this.base;
+  public Ingredient getBaseIngredient() {
+    return this.baseIngredient;
   }
 
   @Override
@@ -45,7 +44,7 @@ public class SmithingAwakeningRecipe extends SmithingTransformRecipe {
 
   @Override
   public ItemStack getResultItem(HolderLookup.Provider registries) {
-    ItemStack stack = this.base.getItems()[0].copy();
+    ItemStack stack = this.baseIngredient.getItems()[0].copy();
     stack.set(ModDataComponents.GOOGLY_EYES, true);
     return stack;
   }
@@ -55,33 +54,24 @@ public class SmithingAwakeningRecipe extends SmithingTransformRecipe {
     return ModRecipes.SMITHING_AWAKENING.get();
   }
 
-  @Override
-  public NonNullList<Ingredient> getIngredients() {
-    NonNullList<Ingredient> ingredients = NonNullList.create();
-    ingredients.add(this.template);
-    ingredients.add(this.base);
-    ingredients.add(this.addition);
-    return ingredients;
-  }
-
   public static class Serializer implements RecipeSerializer<SmithingAwakeningRecipe> {
-    public static final MapCodec<SmithingAwakeningRecipe> CODEC = RecordCodecBuilder.mapCodec(instance -> instance
+    public static final MapCodec<SmithingAwakeningRecipe> RECORD_CODEC = RecordCodecBuilder.mapCodec(instance -> instance
         .group(
-            Ingredient.CODEC.fieldOf("template").forGetter(r -> r.template),
-            Ingredient.CODEC.fieldOf("base").forGetter(r -> r.base),
-            Ingredient.CODEC.fieldOf("addition").forGetter(r -> r.addition))
+            Ingredient.CODEC.fieldOf("template").forGetter(r -> r.templateIngredient),
+            Ingredient.CODEC.fieldOf("base").forGetter(r -> r.baseIngredient),
+            Ingredient.CODEC.fieldOf("addition").forGetter(r -> r.additionIngredient))
         .apply(instance, SmithingAwakeningRecipe::new));
 
     public static final StreamCodec<RegistryFriendlyByteBuf, SmithingAwakeningRecipe> STREAM_CODEC = StreamCodec
         .composite(
-            Ingredient.CONTENTS_STREAM_CODEC, r -> r.template,
-            Ingredient.CONTENTS_STREAM_CODEC, r -> r.base,
-            Ingredient.CONTENTS_STREAM_CODEC, r -> r.addition,
+            Ingredient.CONTENTS_STREAM_CODEC, r -> r.templateIngredient,
+            Ingredient.CONTENTS_STREAM_CODEC, r -> r.baseIngredient,
+            Ingredient.CONTENTS_STREAM_CODEC, r -> r.additionIngredient,
             SmithingAwakeningRecipe::new);
 
     @Override
     public MapCodec<SmithingAwakeningRecipe> codec() {
-      return CODEC;
+      return RECORD_CODEC;
     }
 
     @Override

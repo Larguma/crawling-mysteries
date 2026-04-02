@@ -46,9 +46,8 @@ public class CommandHelper {
     return SharedSuggestionProvider.suggest(trinketIds, builder);
   };
 
-  public static final SuggestionProvider<CommandSourceStack> DATA_COMPONENT_SUGGESTIONS = (context, builder) -> {
-    return SharedSuggestionProvider.suggest(ModDataComponents.getComponentNames(), builder);
-  };
+  public static final SuggestionProvider<CommandSourceStack> DATA_COMPONENT_SUGGESTIONS = (context,
+      builder) -> SharedSuggestionProvider.suggest(ModDataComponents.getComponentNames(), builder);
 
   public static final SuggestionProvider<CommandSourceStack> SPELL_SUGGESTIONS = (context, builder) -> {
     List<String> spellIds = ModSpells.getAllSpells().stream()

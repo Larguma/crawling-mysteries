@@ -48,13 +48,11 @@ public class CodexUnlockManager {
     String type = parts[0];
     String value = parts[1];
 
-    boolean unlocked = switch (type.toUpperCase()) {
+    return switch (type.toUpperCase()) {
       case "HAS" -> checkHasItem(player, value, entryId);
       case "KILLED" -> checkKilledEntity(player, value, entryId);
       default -> false;
     };
-
-    return unlocked;
   }
 
   private static boolean checkHasItem(Player player, String itemId, String entryId) {

@@ -54,7 +54,7 @@ public class CookingAltarTier1Block extends BaseEntityBlock {
     super(BlockBehaviour.Properties.of()
         .mapColor(MapColor.STONE)
         .noOcclusion()
-        .strength(3.0f, 6.0f)
+        .strength(3.0F, 6.0F)
         .pushReaction(PushReaction.BLOCK)
         .lightLevel(state -> state.getValue(HALF) == DoubleBlockHalf.LOWER ? 10 : 0));
     this.registerDefaultState(this.stateDefinition.any()
@@ -139,11 +139,11 @@ public class CookingAltarTier1Block extends BaseEntityBlock {
         if (!facingState.is(this) || facingState.getValue(HALF) != DoubleBlockHalf.UPPER) {
           return Blocks.AIR.defaultBlockState();
         }
-      } else if (half == DoubleBlockHalf.UPPER && facing == Direction.DOWN) {
-        if (!facingState.is(this) || facingState.getValue(HALF) != DoubleBlockHalf.LOWER) {
-          return Blocks.AIR.defaultBlockState();
-        }
+      } else if (half == DoubleBlockHalf.UPPER && facing == Direction.DOWN
+          && (!facingState.is(this) || facingState.getValue(HALF) != DoubleBlockHalf.LOWER)) {
+        return Blocks.AIR.defaultBlockState();
       }
+
     }
 
     return super.updateShape(state, facing, facingState, level, pos, facingPos);
@@ -177,36 +177,33 @@ public class CookingAltarTier1Block extends BaseEntityBlock {
     if (level.getBlockEntity(bePos) instanceof CookingAltarTier1BlockEntity blockEntity) {
       CookingAltarTier1BlockEntity.CookingState cookingState = blockEntity.getCookingState();
 
-      if (cookingState == CookingAltarTier1BlockEntity.CookingState.IDLE) {
-        if (isValidIngredient(stack)) {
-          if (!level.isClientSide) {
-            if (!player.getAbilities().instabuild) {
-              stack.shrink(1);
-            }
-            blockEntity.startCooking();
-            level.playSound(null, pos, SoundEvents.FIRE_AMBIENT, SoundSource.BLOCKS, 1.0f, 1.0f);
+      if (cookingState == CookingAltarTier1BlockEntity.CookingState.IDLE && isValidIngredient(stack)) {
+        if (!level.isClientSide) {
+          if (!player.getAbilities().instabuild) {
+            stack.shrink(1);
           }
-          return ItemInteractionResult.sidedSuccess(level.isClientSide);
+          blockEntity.startCooking();
+          level.playSound(null, pos, SoundEvents.FIRE_AMBIENT, SoundSource.BLOCKS, 1.0F, 1.0F);
         }
+        return ItemInteractionResult.sidedSuccess(level.isClientSide);
       }
 
-      if (cookingState == CookingAltarTier1BlockEntity.CookingState.DONE) {
-        if (stack.is(Items.BOWL)) {
-          if (!level.isClientSide) {
-            if (!player.getAbilities().instabuild) {
-              stack.shrink(1);
-            }
-            // TODO: Replace with SoulStew
-            ItemStack stewStack = new ItemStack(Items.SUSPICIOUS_STEW);
-            if (!player.getInventory().add(stewStack)) {
-              player.drop(stewStack, false);
-            }
-            blockEntity.collectOutput();
-            level.playSound(null, pos, SoundEvents.BOTTLE_FILL, SoundSource.BLOCKS, 1.0f, 1.0f);
+      if (cookingState == CookingAltarTier1BlockEntity.CookingState.DONE && stack.is(Items.BOWL)) {
+        if (!level.isClientSide) {
+          if (!player.getAbilities().instabuild) {
+            stack.shrink(1);
           }
-          return ItemInteractionResult.sidedSuccess(level.isClientSide);
+          // TODO: Replace with SoulStew
+          ItemStack stewStack = new ItemStack(Items.SUSPICIOUS_STEW);
+          if (!player.getInventory().add(stewStack)) {
+            player.drop(stewStack, false);
+          }
+          blockEntity.collectOutput();
+          level.playSound(null, pos, SoundEvents.BOTTLE_FILL, SoundSource.BLOCKS, 1.0F, 1.0F);
         }
+        return ItemInteractionResult.sidedSuccess(level.isClientSide);
       }
+
     }
 
     return super.useItemOn(stack, state, level, pos, player, hand, hitResult);

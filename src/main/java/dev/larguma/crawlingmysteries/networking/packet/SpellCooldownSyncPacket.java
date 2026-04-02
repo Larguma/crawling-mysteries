@@ -10,7 +10,7 @@ import net.minecraft.resources.ResourceLocation;
 public record SpellCooldownSyncPacket(String spellId, long remainingTicks, int totalTicks)
     implements CustomPacketPayload {
 
-  public static final CustomPacketPayload.Type<SpellCooldownSyncPacket> TYPE = new CustomPacketPayload.Type<>(
+  public static final CustomPacketPayload.Type<SpellCooldownSyncPacket> PAYLOAD_TYPE = new CustomPacketPayload.Type<>(
       ResourceLocation.fromNamespaceAndPath(CrawlingMysteries.MOD_ID, "spell_cooldown_sync"));
 
   public static final StreamCodec<ByteBuf, SpellCooldownSyncPacket> STREAM_CODEC = StreamCodec.composite(
@@ -24,6 +24,6 @@ public record SpellCooldownSyncPacket(String spellId, long remainingTicks, int t
 
   @Override
   public Type<? extends CustomPacketPayload> type() {
-    return TYPE;
+    return PAYLOAD_TYPE;
   }
 }

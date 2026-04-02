@@ -22,7 +22,7 @@ public class ClearAllCooldowns {
                     .then(Commands.argument("player", EntityArgument.player())
                         .executes(this::executeSelect))
                     .executes(this::executeSelf)))));
-  };
+  }
 
   private int executeSelf(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
     ServerPlayer player = context.getSource().getPlayerOrException();
@@ -34,7 +34,7 @@ public class ClearAllCooldowns {
     return execute(context, player);
   }
 
-  private int execute(CommandContext<CommandSourceStack> context, ServerPlayer player) throws CommandSyntaxException {
+  private int execute(CommandContext<CommandSourceStack> context, ServerPlayer player) {
     SpellCooldownManager.clearAllCooldowns(player);
     SpellCooldownManager.syncAllCooldownsToClient(player);
 

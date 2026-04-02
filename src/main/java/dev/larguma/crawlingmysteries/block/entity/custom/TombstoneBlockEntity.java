@@ -177,8 +177,4 @@ public class TombstoneBlockEntity extends BlockEntity implements GeoBlockEntity 
   public boolean hasGuardianUUID() {
     return this.guardianUUID != null;
   }
-
-  @Override
-  public void setChanged() {
-  }
 }

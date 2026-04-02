@@ -48,7 +48,7 @@ public class EternalGuardianHeadItem extends Item implements GeoItem {
 
   @Override
   public void registerControllers(ControllerRegistrar controllers) {
-
+    // No animation controllers needed for this item
   }
 
   @Override

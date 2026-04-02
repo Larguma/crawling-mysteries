@@ -53,7 +53,7 @@ public class EternalGuardianMaskItem extends Item implements GeoItem, ICurioItem
 
     tooltipComponents.add(Component.translatable("tooltip.crawlingmysteries.blank"));
     if (Screen.hasShiftDown()) {
-      if (ItemDataHelper.getAttunement(stack) >= 1.0f) {
+      if (ItemDataHelper.getAttunement(stack) >= 1.0F) {
         tooltipComponents.add(Component.translatable("tooltip.crawlingmysteries.attuned"));
       } else {
         tooltipComponents.add(Component.translatable("tooltip.crawlingmysteries.attunement"));
@@ -74,15 +74,15 @@ public class EternalGuardianMaskItem extends Item implements GeoItem, ICurioItem
   // #region Curio
   @Override
   public void curioTick(SlotContext slotContext, ItemStack stack) {
-    float attunementPerTick = 1.0f / (ATTUNEMENT_MINUTES * 60 * 20);
+    float attunementPerTick = 1.0F / (ATTUNEMENT_MINUTES * 60 * 20);
     float attunement = ItemDataHelper.setAttunement(stack, ItemDataHelper.getAttunement(stack) + attunementPerTick);
     int amplifier = 0;
 
-    if (attunement >= 1.0f) {
+    if (attunement >= 1.0F) {
       amplifier = 3;
-    } else if (attunement >= 0.75f) {
+    } else if (attunement >= 0.75F) {
       amplifier = 2;
-    } else if (attunement >= 0.5f) {
+    } else if (attunement >= 0.5F) {
       amplifier = 1;
     }
 
@@ -131,7 +131,7 @@ public class EternalGuardianMaskItem extends Item implements GeoItem, ICurioItem
 
   @Override
   public void registerControllers(ControllerRegistrar controllers) {
-
+    // No animation controllers needed for this item
   }
 
   @Override

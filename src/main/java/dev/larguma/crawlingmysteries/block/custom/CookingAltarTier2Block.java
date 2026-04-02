@@ -50,7 +50,7 @@ public class CookingAltarTier2Block extends BaseEntityBlock {
     super(BlockBehaviour.Properties.of()
         .mapColor(MapColor.COLOR_BROWN)
         .noOcclusion()
-        .strength(4.0f, 6.0f)
+        .strength(4.0F, 6.0F)
         .pushReaction(PushReaction.BLOCK)
         .lightLevel(state -> state.getValue(PART) == 0 ? 12 : 0));
     this.registerDefaultState(this.stateDefinition.any()

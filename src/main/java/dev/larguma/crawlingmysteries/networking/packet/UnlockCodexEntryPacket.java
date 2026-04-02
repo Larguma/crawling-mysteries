@@ -9,7 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public record UnlockCodexEntryPacket(String entryId) implements CustomPacketPayload {
 
-  public static final Type<UnlockCodexEntryPacket> TYPE = new CustomPacketPayload.Type<>(
+  public static final Type<UnlockCodexEntryPacket> PAYLOAD_TYPE = new CustomPacketPayload.Type<>(
       ResourceLocation.fromNamespaceAndPath(CrawlingMysteries.MOD_ID, "unlock_codex_entry"));
 
   public static final StreamCodec<ByteBuf, UnlockCodexEntryPacket> STREAM_CODEC = StreamCodec.composite(
@@ -19,6 +19,6 @@ public record UnlockCodexEntryPacket(String entryId) implements CustomPacketPayl
 
   @Override
   public Type<? extends CustomPacketPayload> type() {
-    return TYPE;
+    return PAYLOAD_TYPE;
   }
 }

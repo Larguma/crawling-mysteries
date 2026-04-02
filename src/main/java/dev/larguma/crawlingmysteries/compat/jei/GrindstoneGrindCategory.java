@@ -22,12 +22,10 @@ public class GrindstoneGrindCategory implements IRecipeCategory<GrindstoneGrindR
   public static final RecipeType<GrindstoneGrindRecipe> RECIPE_TYPE = RecipeType.create(CrawlingMysteries.MOD_ID,
       "grindstone_grind", GrindstoneGrindRecipe.class);
 
-  private final IDrawable background;
   private final IDrawable icon;
   private final IDrawable arrow;
 
   public GrindstoneGrindCategory(IGuiHelper guiHelper) {
-    this.background = guiHelper.createBlankDrawable(160, 60);
     this.icon = guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(Items.GRINDSTONE));
     this.arrow = guiHelper.createDrawable(ResourceLocation.withDefaultNamespace("textures/gui/container/furnace.png"),
         79, 34, 24, 17);
@@ -44,13 +42,18 @@ public class GrindstoneGrindCategory implements IRecipeCategory<GrindstoneGrindR
   }
 
   @Override
-  public IDrawable getBackground() {
-    return this.background;
+  public IDrawable getIcon() {
+    return this.icon;
   }
 
   @Override
-  public IDrawable getIcon() {
-    return this.icon;
+  public int getWidth() {
+    return 160;
+  }
+
+  @Override
+  public int getHeight() {
+    return 60;
   }
 
   @Override
@@ -60,15 +63,13 @@ public class GrindstoneGrindCategory implements IRecipeCategory<GrindstoneGrindR
 
     builder.addSlot(RecipeIngredientRole.OUTPUT, 130, 10)
         .addItemStack(recipe.output())
-        .addRichTooltipCallback((recipeSlotView, tooltip) -> {
-          tooltip.add(Component.translatable("jei.crawlingmysteries.chance", "30%"));
-        });
+        .addRichTooltipCallback(
+            (recipeSlotView, tooltip) -> tooltip.add(Component.translatable("jei.crawlingmysteries.chance", "30%")));
 
     builder.addSlot(RecipeIngredientRole.OUTPUT, 130, 34)
         .addItemStack(recipe.failure())
-        .addRichTooltipCallback((recipeSlotView, tooltip) -> {
-          tooltip.add(Component.translatable("jei.crawlingmysteries.chance", "70%"));
-        });
+        .addRichTooltipCallback(
+            (recipeSlotView, tooltip) -> tooltip.add(Component.translatable("jei.crawlingmysteries.chance", "70%")));
   }
 
   @Override

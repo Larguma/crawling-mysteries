@@ -64,19 +64,19 @@ public class GooglyEyesLayer<T extends GeoAnimatable> extends GeoRenderLayer<T> 
     poseStack.pushPose();
     poseStack.translate(dx, dy, dz);
     poseStack.mulPose(Axis.YP.rotationDegrees(rotation));
-    poseStack.scale(0.08f, 0.08f, 0.08f);
+    poseStack.scale(0.08F, 0.08F, 0.08F);
 
-    float leftPupilX = Mth.sin(time * 0.1f) * 0.1f;
-    float leftPupilY = Mth.cos(time * 0.13f) * 0.1f;
+    float leftPupilX = Mth.sin(time * 0.1F) * 0.1F;
+    float leftPupilY = Mth.cos(time * 0.13F) * 0.1F;
     poseStack.pushPose();
-    poseStack.translate(1.2, 0, 0);
+    poseStack.translate(1.2F, 0, 0);
     renderEye(poseStack, builder, packedLight, packedOverlay, leftPupilX, leftPupilY);
     poseStack.popPose();
 
-    float rightPupilX = Mth.sin(time * 0.11f + 2.0f) * 0.1f;
-    float rightPupilY = Mth.cos(time * 0.14f + 1.0f) * 0.1f;
+    float rightPupilX = Mth.sin(time * 0.11F + 2.0F) * 0.1F;
+    float rightPupilY = Mth.cos(time * 0.14F + 1.0F) * 0.1F;
     poseStack.pushPose();
-    poseStack.translate(-1.2, 0, 0);
+    poseStack.translate(-1.2F, 0, 0);
     renderEye(poseStack, builder, packedLight, packedOverlay, rightPupilX, rightPupilY);
     poseStack.popPose();
 
@@ -92,11 +92,11 @@ public class GooglyEyesLayer<T extends GeoAnimatable> extends GeoRenderLayer<T> 
 
     // Black
     poseStack.pushPose();
-    poseStack.translate(0, 0, -0.05f);
+    poseStack.translate(0, 0, -0.05F);
 
-    poseStack.translate(0.2f + pupilOffsetX, -0.2f + pupilOffsetY, 0);
+    poseStack.translate(0.2F + pupilOffsetX, -0.2F + pupilOffsetY, 0);
     PoseStack.Pose pupilPose = poseStack.last();
-    drawQuad(pupilPose, builder, -0.4f, -0.4f, 0, 0.8f, 0.8f, 0xFF000000, packedLight, packedOverlay);
+    drawQuad(pupilPose, builder, -0.4F, -0.4F, 0, 0.8F, 0.8F, 0xFF000000, packedLight, packedOverlay);
     poseStack.popPose();
   }
 

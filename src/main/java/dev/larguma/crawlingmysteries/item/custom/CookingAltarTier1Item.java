@@ -44,9 +44,7 @@ public class CookingAltarTier1Item extends BlockItem implements GeoItem {
 
   @Override
   public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-    controllers.add(new AnimationController<>(this, "Idle", 0, state -> {
-      return state.setAndContinue(IDLE_ANIM);
-    }));
+    controllers.add(new AnimationController<>(this, "Idle", 0, state -> state.setAndContinue(IDLE_ANIM)));
   }
 
   @Override

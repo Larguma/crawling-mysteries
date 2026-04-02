@@ -24,11 +24,11 @@ public record HorseshoeDataComponent(int tier) {
    */
   public float getFallReduction() {
     return switch (tier) {
-      case 1 -> 0.50f;
-      case 2 -> 0.75f;
-      case 3 -> 0.90f;
-      case 4 -> 1.00f;
-      default -> 0.0f;
+      case 1 -> 0.50F;
+      case 2 -> 0.75F;
+      case 3 -> 0.90F;
+      case 4 -> 1.00F;
+      default -> 0.0F;
     };
   }
 

@@ -11,9 +11,9 @@ public class Config {
   private static final String CONFIG_PREFIX = "config." + CrawlingMysteries.MOD_ID;
 
   static {
-    final Pair<Server, ModConfigSpec> SERVER_PAIR = new ModConfigSpec.Builder().configure(Server::new);
-    SERVER_SPEC = SERVER_PAIR.getRight();
-    SERVER = SERVER_PAIR.getLeft();
+    final Pair<Server, ModConfigSpec> serverPair = new ModConfigSpec.Builder().configure(Server::new);
+    SERVER_SPEC = serverPair.getRight();
+    SERVER = serverPair.getLeft();
   }
 
   public static class Server {

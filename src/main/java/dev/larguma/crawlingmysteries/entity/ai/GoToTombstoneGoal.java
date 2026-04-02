@@ -33,7 +33,7 @@ public class GoToTombstoneGoal extends Goal {
       if (pos == null || this.eternalGuardian.getNavigation().isInProgress()) {
         return;
       }
-      this.eternalGuardian.getNavigation().moveTo(pos.getX(), pos.getY(), pos.getZ(), 5, this.eternalGuardian.speed);
+      this.eternalGuardian.getNavigation().moveTo(pos.getX(), pos.getY(), pos.getZ(), 5, this.eternalGuardian.SPEED);
     }
   }
 

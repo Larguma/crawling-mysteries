@@ -50,7 +50,7 @@ public class ModBlockLootTableProvider extends BlockLootSubProvider {
                 .include(DataComponents.BLOCK_ENTITY_DATA))
             .apply(
                 List.of(2, 3, 4),
-                count -> SetItemCountFunction.setCount(ConstantValue.exactly((float) count.intValue()))
+                count -> SetItemCountFunction.setCount(ConstantValue.exactly(count.intValue()))
                     .when(LootItemBlockStatePropertyCondition.hasBlockStateProperties(block).setProperties(
                         StatePropertiesPredicate.Builder.properties().hasProperty(BeerMugBlock.MUGS,
                             count.intValue())))))));

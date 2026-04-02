@@ -70,7 +70,9 @@ public class ItemHelper {
 
     ICuriosItemHandler inventory = curiosHandler.get();
     for (SlotResult slotResult : inventory.findCurios(stack -> stack.is(targetItem))) {
-      return slotResult.stack();
+      if (!slotResult.stack().isEmpty()) {
+        return slotResult.stack();
+      }
     }
 
     if (player.getMainHandItem().is(targetItem)) {

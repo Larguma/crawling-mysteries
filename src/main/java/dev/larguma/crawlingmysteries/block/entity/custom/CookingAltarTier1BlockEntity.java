@@ -145,7 +145,7 @@ public class CookingAltarTier1BlockEntity extends BlockEntity implements GeoBloc
 
   public static void clientTick(Level level, BlockPos pos, BlockState state, CookingAltarTier1BlockEntity blockEntity) {
     if (blockEntity.cookingState == CookingState.BOILING || blockEntity.cookingState == CookingState.DONE) {
-      if (level.random.nextFloat() < 0.1f) {
+      if (level.random.nextFloat() < 0.1F) {
         double x = pos.getX() + 0.5 + (level.random.nextDouble() - 0.5) * 0.5;
         double y = pos.getY() + 1.0;
         double z = pos.getZ() + 0.5 + (level.random.nextDouble() - 0.5) * 0.5;
@@ -153,25 +153,22 @@ public class CookingAltarTier1BlockEntity extends BlockEntity implements GeoBloc
         level.addParticle(ParticleTypes.FLAME, x, y, z, 0, 0.06, 0);
       }
 
-      if (blockEntity.cookingState == CookingState.BOILING) {
-        if (level.random.nextFloat() < 0.2f) {
-          double x = pos.getX() + 0.5 + (level.random.nextDouble() - 0.5) * 0.3;
-          double y = pos.getY() + 1.0;
-          double z = pos.getZ() + 0.5 + (level.random.nextDouble() - 0.5) * 0.3;
-          level.addParticle(ParticleTypes.BUBBLE_POP, x, y, z, 0, 0.1, 0);
-        }
+      if (blockEntity.cookingState == CookingState.BOILING && level.random.nextFloat() < 0.2F) {
+        double x = pos.getX() + 0.5 + (level.random.nextDouble() - 0.5) * 0.3;
+        double y = pos.getY() + 1.0;
+        double z = pos.getZ() + 0.5 + (level.random.nextDouble() - 0.5) * 0.3;
+        level.addParticle(ParticleTypes.BUBBLE_POP, x, y, z, 0, 0.1, 0);
       }
+
     }
 
-    if (blockEntity.cookingState == CookingState.DONE) {
-      // Sparkle particles when done
-      if (level.random.nextFloat() < 0.05f) {
-        double x = pos.getX() + 0.5 + (level.random.nextDouble() - 0.5) * 0.3;
-        double y = pos.getY() + 1.2;
-        double z = pos.getZ() + 0.5 + (level.random.nextDouble() - 0.5) * 0.3;
-        level.addParticle(ParticleTypes.END_ROD, x, y, z, 0, 0.02, 0);
-      }
+    if (blockEntity.cookingState == CookingState.DONE && level.random.nextFloat() < 0.05F) {
+      double x = pos.getX() + 0.5 + (level.random.nextDouble() - 0.5) * 0.3;
+      double y = pos.getY() + 1.2;
+      double z = pos.getZ() + 0.5 + (level.random.nextDouble() - 0.5) * 0.3;
+      level.addParticle(ParticleTypes.END_ROD, x, y, z, 0, 0.02, 0);
     }
+
   }
   // #endregion Cooking Logic
 

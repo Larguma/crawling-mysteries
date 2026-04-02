@@ -100,13 +100,10 @@ public class BeerKegBlockEntity extends BlockEntity implements GeoBlockEntity {
 
       // The locator is -7 pixels forward from center in Blockbench
       double offsetForward = -7.0 / 16.0;
-      double x, z;
+      double x;
+      double z;
 
       switch (facing) {
-        case NORTH: // -Z
-          x = pos.getX() + 0.5;
-          z = pos.getZ() + 0.5 + offsetForward;
-          break;
         case SOUTH: // +Z
           x = pos.getX() + 0.5;
           z = pos.getZ() + 0.5 - offsetForward;

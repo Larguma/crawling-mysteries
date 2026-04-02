@@ -15,6 +15,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.DropExperienceBlock;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.registries.DeferredBlock;
 import net.neoforged.neoforge.registries.DeferredRegister;
@@ -23,20 +24,20 @@ public class ModBlocks {
   public static final DeferredRegister.Blocks BLOCKS = DeferredRegister.createBlocks(CrawlingMysteries.MOD_ID);
 
   // Custom
-  public static final DeferredBlock<Block> TOMBSTONE = registerBlock("tombstone", () -> new TombstoneBlock());
-  public static final DeferredBlock<Block> BEER_KEG = registerBlock("beer_keg", () -> new BeerKegBlock(),
+  public static final DeferredBlock<Block> TOMBSTONE = registerBlock("tombstone", TombstoneBlock::new);
+  public static final DeferredBlock<Block> BEER_KEG = registerBlock("beer_keg", BeerKegBlock::new,
       block -> new BeerKegItem(block, new Item.Properties()));
-  public static final DeferredBlock<Block> BEER_MUG = registerBlock("beer_mug", () -> new BeerMugBlock(),
+  public static final DeferredBlock<Block> BEER_MUG = registerBlock("beer_mug", BeerMugBlock::new,
       block -> new BeerMugItem(block, new Item.Properties()));
   public static final DeferredBlock<Block> COOKING_ALTAR_TIER_1 = registerBlock("cooking_altar_tier_1",
-      () -> new CookingAltarTier1Block(), block -> new CookingAltarTier1Item(block, new Item.Properties()));
+      CookingAltarTier1Block::new, block -> new CookingAltarTier1Item(block, new Item.Properties()));
   public static final DeferredBlock<Block> COOKING_ALTAR_TIER_2 = registerBlock("cooking_altar_tier_2",
-      () -> new CookingAltarTier2Block(), block -> new CookingAltarTier2Item(block, new Item.Properties()));
+      CookingAltarTier2Block::new, block -> new CookingAltarTier2Item(block, new Item.Properties()));
 
   // Standard
   public static final DeferredBlock<Block> MYSTERIOUS_STONE = registerBlock("mysterious_stone",
       () -> new DropExperienceBlock(UniformInt.of(2, 5),
-          Block.Properties.of().strength(3f).requiresCorrectToolForDrops()));
+          BlockBehaviour.Properties.of().strength(3F).requiresCorrectToolForDrops()));
 
   private static <T extends Block> DeferredBlock<T> registerBlock(String name, Supplier<T> block) {
     DeferredBlock<T> toReturn = BLOCKS.register(name, block);
@@ -53,11 +54,12 @@ public class ModBlocks {
 
   private static <T extends Block> void registerBlockItem(String name, DeferredBlock<T> block) {
     ModItems.ITEMS.register(name, () -> new BlockItem(block.get(), new Item.Properties()) {
+      @Override
       public void appendHoverText(ItemStack stack, TooltipContext context, List<Component> tooltipComponents,
           TooltipFlag tooltipFlag) {
         tooltipComponents.add(Component.translatable("block.crawlingmysteries." + name + ".tooltip"));
         super.appendHoverText(stack, context, tooltipComponents, tooltipFlag);
-      };
+      }
     });
   }
 

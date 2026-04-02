@@ -64,8 +64,8 @@ public class MusicHandler {
 
     if (insideTavern) {
       if (customMusicPlaying == null) {
-        FadeableSoundInstance soundInstance = new FadeableSoundInstance(ModSounds.OST_02.get(), SoundSource.MUSIC, 1.0f,
-            1.0f, minecraft.level.random, 60);
+        FadeableSoundInstance soundInstance = new FadeableSoundInstance(ModSounds.OST_02.get(), SoundSource.MUSIC, 1.0F,
+            1.0F, minecraft.level.random, 60);
         minecraft.getSoundManager().play(soundInstance);
         customMusicPlaying = soundInstance;
       }
@@ -94,7 +94,7 @@ public class MusicHandler {
     int randomIndex = minecraft.level.random.nextInt(musicTracks.size());
     SoundEvent musicSound = musicTracks.get(randomIndex);
 
-    FadeableSoundInstance soundInstance = new FadeableSoundInstance(musicSound, SoundSource.MUSIC, 1.0f, 1.0f,
+    FadeableSoundInstance soundInstance = new FadeableSoundInstance(musicSound, SoundSource.MUSIC, 1.0F, 1.0F,
         minecraft.level.random, 60);
     minecraft.getSoundManager().play(soundInstance);
     customMusicPlaying = soundInstance;
@@ -110,9 +110,6 @@ public class MusicHandler {
   }
 
   private static boolean shouldPlayCustomMusic() {
-    if (minecraft.level.random.nextFloat() > 0.3f) {
-      return false;
-    }
-    return true;
+    return minecraft.level.random.nextFloat() > 0.3F;
   }
 }

@@ -23,39 +23,39 @@ public class PayloadHandlersEvents {
   public static void register(final RegisterPayloadHandlersEvent event) {
     final PayloadRegistrar registrar = event.registrar("1");
     registrar.playToServer(
-        SpellSelectPacket.TYPE,
+        SpellSelectPacket.PAYLOAD_TYPE,
         SpellSelectPacket.STREAM_CODEC,
         ServerPayloadHandler::handleSpellSelect);
     registrar.playToServer(
-        RequestStatsPacket.TYPE,
+        RequestStatsPacket.PAYLOAD_TYPE,
         RequestStatsPacket.STREAM_CODEC,
         ServerPayloadHandler::handleRequestStats);
     registrar.playToServer(
-        UnlockCodexEntryPacket.TYPE,
+        UnlockCodexEntryPacket.PAYLOAD_TYPE,
         UnlockCodexEntryPacket.STREAM_CODEC,
         ServerPayloadHandler::handleUnlockCodexEntry);
     registrar.playToServer(
-        DistilleryActionPacket.TYPE,
+        DistilleryActionPacket.PAYLOAD_TYPE,
         DistilleryActionPacket.STREAM_CODEC,
         ServerPayloadHandler::handleDistilleryAction);
     registrar.playToClient(
-        SpellCooldownSyncPacket.TYPE,
+        SpellCooldownSyncPacket.PAYLOAD_TYPE,
         SpellCooldownSyncPacket.STREAM_CODEC,
         ClientPayloadHandler::handleSpellCooldownSync);
     registrar.playToClient(
-        BetterToastPacket.TYPE,
+        BetterToastPacket.PAYLOAD_TYPE,
         BetterToastPacket.STREAM_CODEC,
         ClientPayloadHandler::handleBetterToast);
     registrar.playToClient(
-        TotemAnimationPacket.TYPE,
+        TotemAnimationPacket.PAYLOAD_TYPE,
         TotemAnimationPacket.STREAM_CODEC,
         ClientPayloadHandler::handleTotemAnimation);
     registrar.playToClient(
-        SyncUnlockedEntriesPacket.TYPE,
+        SyncUnlockedEntriesPacket.PAYLOAD_TYPE,
         SyncUnlockedEntriesPacket.STREAM_CODEC,
         ClientPayloadHandler::handleSyncUnlockedEntries);
     registrar.playToClient(
-        TavernMusicPacket.TYPE,
+        TavernMusicPacket.PAYLOAD_TYPE,
         TavernMusicPacket.STREAM_CODEC,
         ClientPayloadHandler::handleTavernMusic);
   }

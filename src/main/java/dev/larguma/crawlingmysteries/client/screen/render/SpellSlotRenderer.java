@@ -22,18 +22,18 @@ public final class SpellSlotRenderer {
   public static final ResourceLocation SLOT_SELECTED_TEXTURE = ResourceLocation.fromNamespaceAndPath(
       CrawlingMysteries.MOD_ID, "gui/spell_slot_selected");
 
-  public static final float PULSE_SPEED = 0.05f;
-  public static final float BOB_SPEED_NORMAL = 0.06f;
-  public static final float BOB_SPEED_SELECTED = 0.12f;
-  public static final float BOB_AMOUNT_NORMAL = 1.5f;
-  public static final float BOB_AMOUNT_SELECTED = 3.0f;
+  public static final float PULSE_SPEED = 0.05F;
+  public static final float BOB_SPEED_NORMAL = 0.06F;
+  public static final float BOB_SPEED_SELECTED = 0.12F;
+  public static final float BOB_AMOUNT_NORMAL = 1.5F;
+  public static final float BOB_AMOUNT_SELECTED = 3.0F;
 
-  public static final float BURST_DURATION = 15.0f; // ticks
-  public static final float BURST_MAX_SCALE = 2.5f;
+  public static final float BURST_DURATION = 15.0F; // ticks
+  public static final float BURST_MAX_SCALE = 2.5F;
 
   private static final int[] GLOW_SIZES_LARGE = { 32, 28, 24 };
   private static final int[] GLOW_SIZES_SMALL = { 24, 20, 16 };
-  private static final float[] GLOW_ALPHA_MULTIPLIERS = { 0.3f, 0.5f, 0.7f };
+  private static final float[] GLOW_ALPHA_MULTIPLIERS = { 0.3F, 0.5F, 0.7F };
 
   /**
    * Renders a pulsing glow effect behind a spell slot.
@@ -47,7 +47,7 @@ public final class SpellSlotRenderer {
    */
   public static void renderPulsingGlow(GuiGraphics guiGraphics, int centerX, int centerY, int glowColor,
       float animationTick, boolean large) {
-    float pulse = (float) (0.4f + 0.4f * Math.sin(animationTick * PULSE_SPEED));
+    float pulse = (float) (0.4F + 0.4F * Math.sin(animationTick * PULSE_SPEED));
     int baseAlpha = (int) (pulse * 255);
 
     int[] glowSizes = large ? GLOW_SIZES_LARGE : GLOW_SIZES_SMALL;
@@ -99,12 +99,12 @@ public final class SpellSlotRenderer {
     Minecraft minecraft = Minecraft.getInstance();
     TextureAtlasSprite sprite = minecraft.getTextureAtlas(InventoryMenu.BLOCK_ATLAS).apply(spell.icon());
 
-    float tint = onCooldown ? 0.4f : 1.0f;
-    RenderSystem.setShaderColor(tint, tint, tint, 1.0f);
+    float tint = onCooldown ? 0.4F : 1.0F;
+    RenderSystem.setShaderColor(tint, tint, tint, 1.0F);
 
     guiGraphics.blit(x, y, 0, iconSize, iconSize, sprite);
 
-    RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+    RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
   }
 
   /**
@@ -175,18 +175,18 @@ public final class SpellSlotRenderer {
    */
   public static void renderCooldownCompleteBurst(GuiGraphics guiGraphics, int centerX, int centerY, int burstColor,
       float burstProgress, int baseSize) {
-    if (burstProgress >= 1.0f || burstProgress < 0.0f) {
+    if (burstProgress >= 1.0F || burstProgress < 0.0F) {
       return;
     }
 
-    float easedProgress = 1.0f - (1.0f - burstProgress) * (1.0f - burstProgress);
-    float scale = 1.0f + (BURST_MAX_SCALE - 1.0f) * easedProgress;
-    float alpha = 1.0f - easedProgress;
+    float easedProgress = 1.0F - (1.0F - burstProgress) * (1.0F - burstProgress);
+    float scale = 1.0F + (BURST_MAX_SCALE - 1.0F) * easedProgress;
+    float alpha = 1.0F - easedProgress;
     int currentSize = (int) (baseSize * scale);
 
     for (int ring = 0; ring < 3; ring++) {
-      float ringScale = 1.0f - (ring * 0.15f);
-      float ringAlpha = alpha * (1.0f - ring * 0.3f);
+      float ringScale = 1.0F - (ring * 0.15F + burstProgress * 0.5F);
+      float ringAlpha = alpha * (1.0F - ring * 0.3F);
       int ringSize = (int) (currentSize * ringScale);
 
       if (ringAlpha > 0) {
@@ -196,8 +196,8 @@ public final class SpellSlotRenderer {
     }
 
     // Central flash
-    if (burstProgress < 0.3f) {
-      float flashAlpha = (0.3f - burstProgress) / 0.3f * 0.8f;
+    if (burstProgress < 0.3F) {
+      float flashAlpha = (0.3F - burstProgress) / 0.3F * 0.8F;
       int flashSize = baseSize + 4;
       int flashArgb = RenderUtils.withAlpha(0xFFFFFF, flashAlpha);
       guiGraphics.fill(

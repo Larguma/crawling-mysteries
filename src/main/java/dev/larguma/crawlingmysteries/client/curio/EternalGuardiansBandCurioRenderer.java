@@ -23,14 +23,15 @@ public class EternalGuardiansBandCurioRenderer implements ICurioRenderer {
       PoseStack matrixStack, RenderLayerParent<T, M> renderLayerParent, MultiBufferSource renderTypeBuffer, int light,
       float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
 
-    if (slotContext.entity() instanceof AbstractClientPlayer player && ConfigClient.CLIENT.renderTrinkets.get()) {
+    if (slotContext.entity() instanceof AbstractClientPlayer player
+        && Boolean.TRUE.equals(ConfigClient.CLIENT.renderTrinkets.get())) {
       if (player.isInvisible()) {
         return;
       }
 
       matrixStack.pushPose();
       CurioRenderers.translateToRightArm(matrixStack, player);
-      matrixStack.translate(0f, -0.75f, 0f);
+      matrixStack.translate(0F, -0.75F, 0F);
       Minecraft.getInstance().getItemRenderer()
           .renderStatic(stack, ItemDisplayContext.HEAD, light, OverlayTexture.NO_OVERLAY,
               matrixStack, renderTypeBuffer, slotContext.entity().level(), 0);

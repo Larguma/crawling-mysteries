@@ -8,6 +8,6 @@ import dev.larguma.crawlingmysteries.client.item.GooglyEyesLayer;
 public class BeerMugBlockEntityRenderer extends GeoBlockRenderer<BeerMugBlockEntity> {
   public BeerMugBlockEntityRenderer(BlockEntityRendererProvider.Context context) {
     super(new BeerMugBlockEntityModel());
-    addRenderLayer(new GooglyEyesLayer<BeerMugBlockEntity>(this, 0.13d, 0.35d, 0d, 270f));
+    addRenderLayer(new GooglyEyesLayer<>(this, 0.13D, 0.35D, 0D, 270F));
   }
 }

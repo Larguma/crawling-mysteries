@@ -35,8 +35,8 @@ public final class RenderUtils {
    * Draws a line between two points using filled rectangles.
    */
   public static void drawLine(GuiGraphics guiGraphics, int x1, int y1, int x2, int y2, int width, int color) {
-    double dx = x2 - x1;
-    double dy = y2 - y1;
+    double dx = (double) x2 - x1;
+    double dy = (double) y2 - y1;
     double length = Math.sqrt(dx * dx + dy * dy);
 
     if (length == 0) {

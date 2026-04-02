@@ -16,7 +16,7 @@ public class ModEntities {
 
   public static final Supplier<EntityType<EternalGuardianEntity>> ETERNAL_GUARDIAN = ENTITY_TYPES
       .register("eternal_guardian", () -> EntityType.Builder.<EternalGuardianEntity>of(
-          EternalGuardianEntity::new, MobCategory.CREATURE).sized(1f, 3f).build("eternal_guardian"));
+          EternalGuardianEntity::new, MobCategory.CREATURE).sized(1F, 3F).build("eternal_guardian"));
 
   public static void register(IEventBus eventBus) {
     ENTITY_TYPES.register(eventBus);

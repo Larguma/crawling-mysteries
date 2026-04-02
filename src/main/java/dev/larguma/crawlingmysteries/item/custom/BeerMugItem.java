@@ -63,11 +63,10 @@ public class BeerMugItem extends BlockItem implements GeoItem {
 
   @Override
   public void inventoryTick(ItemStack stack, Level level, Entity entity, int slotId, boolean isSelected) {
-    if (!level.isClientSide && entity instanceof ServerPlayer serverPlayer) {
-      if (ItemDataHelper.isSentient(stack)) {
-        ItemDataHelper.introduce(stack, serverPlayer);
-      }
+    if (!level.isClientSide && entity instanceof ServerPlayer serverPlayer && ItemDataHelper.isSentient(stack)) {
+      ItemDataHelper.introduce(stack, serverPlayer);
     }
+
   }
 
   @Override
@@ -157,7 +156,7 @@ public class BeerMugItem extends BlockItem implements GeoItem {
           look.z * speed + (level.random.nextDouble() - 0.5) * 0.5, 1.0);
     }
     level.playSound(null, player.getX(), player.getY(), player.getZ(), SoundEvents.BUCKET_EMPTY,
-        SoundSource.PLAYERS, 1.0f, 1.0f);
+        SoundSource.PLAYERS, 1.0F, 1.0F);
 
     List<LivingEntity> entities = level.getEntitiesOfClass(LivingEntity.class,
         player.getBoundingBox().expandTowards(look.scale(5.0)).inflate(1.0),
@@ -173,12 +172,11 @@ public class BeerMugItem extends BlockItem implements GeoItem {
 
   @Override
   public ItemStack finishUsingItem(ItemStack stack, Level level, LivingEntity livingEntity) {
-    Player player = livingEntity instanceof Player ? (Player) livingEntity : null;
-    if (player instanceof ServerPlayer) {
-      CriteriaTriggers.CONSUME_ITEM.trigger((ServerPlayer) player, stack);
-    }
+    if (livingEntity instanceof Player player) {
+      if (player instanceof ServerPlayer serverPlayer) {
+        CriteriaTriggers.CONSUME_ITEM.trigger(serverPlayer, stack);
+      }
 
-    if (player != null) {
       player.awardStat(Stats.ITEM_USED.get(this));
       setBeerLevel(stack, getBeerLevel(stack) - 1);
       if (player.getEffect(ModMobEffects.DRUNK) != null) {

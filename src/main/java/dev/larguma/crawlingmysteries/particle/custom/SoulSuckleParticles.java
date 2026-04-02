@@ -24,17 +24,17 @@ public class SoulSuckleParticles extends TextureSheetParticle {
 
     this.targetPlayer = level.getNearestPlayer(x, y, z, 10.0, false);
 
-    this.friction = 1.0f;
-    this.gravity = 0f;
+    this.friction = 1.0F;
+    this.gravity = 0F;
 
     this.lifetime = 40;
     this.setSpriteFromAge(spriteSet);
 
-    this.rCol = 0.4f;
-    this.gCol = 0.9f;
-    this.bCol = 1.0f;
+    this.rCol = 0.4F;
+    this.gCol = 0.9F;
+    this.bCol = 1.0F;
 
-    this.initialScale = 0.2f + this.random.nextFloat() * 0.15f;
+    this.initialScale = 0.2F + this.random.nextFloat() * 0.15F;
     this.quadSize = this.initialScale;
 
     this.xd = (this.random.nextDouble() - 0.5) * 0.05;
@@ -56,7 +56,7 @@ public class SoulSuckleParticles extends TextureSheetParticle {
     // if no player, float up and fade
     if (this.targetPlayer == null || !this.targetPlayer.isAlive()) {
       this.yd += 0.01;
-      this.alpha -= 0.05f;
+      this.alpha -= 0.05F;
       if (this.alpha <= 0) {
         this.remove();
       }
@@ -106,12 +106,12 @@ public class SoulSuckleParticles extends TextureSheetParticle {
     this.setSpriteFromAge(this.spriteSet);
 
     // fade and shrink when near target
-    this.alpha = 0.9f - progress * 0.3f;
-    this.quadSize = this.initialScale * (1.0f - progress * 0.5f);
+    this.alpha = 0.9F - progress * 0.3F;
+    this.quadSize = this.initialScale * (1.0F - progress * 0.5F);
 
-    this.rCol = 0.4f + progress * 0.6f;
-    this.gCol = 0.9f + progress * 0.1f;
-    this.bCol = 1.0f;
+    this.rCol = 0.4F + progress * 0.6F;
+    this.gCol = 0.9F + progress * 0.1F;
+    this.bCol = 1.0F;
   }
 
   @Override

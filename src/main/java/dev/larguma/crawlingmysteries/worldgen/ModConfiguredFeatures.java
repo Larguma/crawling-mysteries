@@ -35,9 +35,9 @@ public class ModConfiguredFeatures {
         ResourceLocation.fromNamespaceAndPath(CrawlingMysteries.MOD_ID, name));
   }
 
-  private static <FC extends FeatureConfiguration, F extends Feature<FC>> void register(
+  private static <C extends FeatureConfiguration, F extends Feature<C>> void register(
       BootstrapContext<ConfiguredFeature<?, ?>> context, ResourceKey<ConfiguredFeature<?, ?>> key, F feature,
-      FC configuration) {
+      C configuration) {
     context.register(key, new ConfiguredFeature<>(feature, configuration));
   }
 }

@@ -17,7 +17,7 @@ public class CodexRegistry {
 
   private static final Map<ResourceLocation, CodexEntry> ENTRIES = new HashMap<>();
   private static final Map<CodexCategory, List<CodexEntry>> ENTRIES_BY_CATEGORY = new HashMap<>();
-  private static List<CodexCategory> CATEGORIES = new ArrayList<>();
+  private static List<CodexCategory> categories = new ArrayList<>();
   private static boolean initialized = false;
 
   /**
@@ -31,21 +31,21 @@ public class CodexRegistry {
 
     ENTRIES.clear();
     ENTRIES_BY_CATEGORY.clear();
-    CATEGORIES.clear();
+    categories.clear();
 
-    CATEGORIES = CodexLoader.loadAllCategories();
-    for (CodexCategory category : CATEGORIES) {
+    categories = CodexLoader.loadAllCategories();
+    for (CodexCategory category : categories) {
       ENTRIES_BY_CATEGORY.put(category, new ArrayList<>());
     }
 
-    List<CodexEntry> loadedEntries = CodexLoader.loadAllEntries(CATEGORIES);
+    List<CodexEntry> loadedEntries = CodexLoader.loadAllEntries(categories);
     for (CodexEntry entry : loadedEntries) {
       register(entry);
     }
 
     initialized = true;
     CrawlingMysteries.LOGGER.info("Codex registry initialized with {} entries and {} categories", ENTRIES.size(),
-        CATEGORIES.size());
+        categories.size());
   }
 
   /**
@@ -86,7 +86,7 @@ public class CodexRegistry {
 
   public static List<CodexCategory> getCategories() {
     ensureInitialized();
-    return new ArrayList<>(CATEGORIES);
+    return new ArrayList<>(categories);
   }
 
   public static int getEntryCount() {

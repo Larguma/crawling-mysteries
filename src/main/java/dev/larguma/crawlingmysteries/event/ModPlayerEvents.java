@@ -62,7 +62,7 @@ public class ModPlayerEvents {
     boolean insideTavern = player.serverLevel().structureManager()
         .getStructureWithPieceAt(player.blockPosition(), TAVERN_TAG).isValid();
 
-    if (insideTavernMap.getOrDefault(player.getUUID(), false) != insideTavern) {
+    if (Boolean.TRUE.equals(insideTavernMap.getOrDefault(player.getUUID(), false)) != insideTavern) {
       insideTavernMap.put(player.getUUID(), insideTavern);
       PacketDistributor.sendToPlayer(player, new TavernMusicPacket(insideTavern));
     }
@@ -75,7 +75,7 @@ public class ModPlayerEvents {
       return;
     }
 
-    if (!player.getData(ModDataAttachments.STARTER_RECEIVED)) {
+    if (Boolean.FALSE.equals(player.getData(ModDataAttachments.STARTER_RECEIVED))) {
       player.getInventory().add(new ItemStack(ModItems.CRYPTIC_EYE.get()));
       player.setData(ModDataAttachments.STARTER_RECEIVED, true);
     }
@@ -130,7 +130,7 @@ public class ModPlayerEvents {
 
     float reduction = component.getFallReduction();
 
-    if (reduction < 1.0f) {
+    if (reduction < 1.0F) {
       if (player.getRandom().nextFloat() < reduction) {
         event.setNewDamage(0);
       }
@@ -150,19 +150,19 @@ public class ModPlayerEvents {
       event.setCancellationResult(InteractionResult.SUCCESS);
 
       if (!level.isClientSide) {
-        level.playSound(null, pos, SoundEvents.GRINDSTONE_USE, SoundSource.BLOCKS, 1.0f, 1.0f);
+        level.playSound(null, pos, SoundEvents.GRINDSTONE_USE, SoundSource.BLOCKS, 1.0F, 1.0F);
 
         if (!event.getEntity().isCreative()) {
           event.getItemStack().shrink(1);
         }
 
-        if (level.random.nextFloat() < 0.3f) {
+        if (level.random.nextFloat() < 0.3F) {
           ItemHelper.spawnItemAboveBlock(level, pos, new ItemStack(ModItems.AWAKENED_EYE.get()));
           ((ServerLevel) level).sendParticles(ParticleTypes.HAPPY_VILLAGER, pos.getX() + 0.5, pos.getY() + 0.5,
               pos.getZ() + 0.5, 5, 0.2, 0.2, 0.2, 0.0);
         } else {
           ItemHelper.spawnItemAboveBlock(level, pos, new ItemStack(Items.GRAVEL));
-          level.playSound(null, pos, SoundEvents.ITEM_BREAK, SoundSource.BLOCKS, 1.0f, 0.8f);
+          level.playSound(null, pos, SoundEvents.ITEM_BREAK, SoundSource.BLOCKS, 1.0F, 0.8F);
           ((ServerLevel) level).sendParticles(ParticleTypes.SMOKE, pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5,
               5, 0.2, 0.2, 0.2, 0.0);
         }

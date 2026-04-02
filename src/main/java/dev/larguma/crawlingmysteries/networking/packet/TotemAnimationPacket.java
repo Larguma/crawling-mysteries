@@ -9,7 +9,7 @@ import net.minecraft.world.item.ItemStack;
 
 public record TotemAnimationPacket(ItemStack itemStack) implements CustomPacketPayload {
 
-  public static final CustomPacketPayload.Type<TotemAnimationPacket> TYPE = new CustomPacketPayload.Type<>(
+  public static final CustomPacketPayload.Type<TotemAnimationPacket> PAYLOAD_TYPE = new CustomPacketPayload.Type<>(
       ResourceLocation.fromNamespaceAndPath(CrawlingMysteries.MOD_ID, "totem_animation"));
 
   public static final StreamCodec<RegistryFriendlyByteBuf, TotemAnimationPacket> STREAM_CODEC = StreamCodec.composite(
@@ -18,6 +18,6 @@ public record TotemAnimationPacket(ItemStack itemStack) implements CustomPacketP
 
   @Override
   public Type<? extends CustomPacketPayload> type() {
-    return TYPE;
+    return PAYLOAD_TYPE;
   }
 }

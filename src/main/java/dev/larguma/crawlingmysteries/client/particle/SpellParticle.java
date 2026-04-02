@@ -33,8 +33,8 @@ public class SpellParticle {
     this.orbitSpeed = orbitSpeed;
     this.size = size;
     this.color = color;
-    this.alpha = 0.0f;
-    this.alphaSpeed = 0.02f + RANDOM.nextFloat() * 0.03f;
+    this.alpha = 0.0F;
+    this.alphaSpeed = 0.02F + RANDOM.nextFloat() * 0.03F;
     this.fadingIn = true;
     this.verticalOffset = RANDOM.nextFloat() * (float) Math.PI * 2;
   }
@@ -47,14 +47,14 @@ public class SpellParticle {
 
     if (fadingIn) {
       alpha += alphaSpeed;
-      if (alpha >= 0.8f) {
-        alpha = 0.8f;
+      if (alpha >= 0.8F) {
+        alpha = 0.8F;
         fadingIn = false;
       }
     } else {
-      alpha -= alphaSpeed * 0.5f;
-      if (alpha <= 0.2f) {
-        alpha = 0.2f;
+      alpha -= alphaSpeed * 0.5F;
+      if (alpha <= 0.2F) {
+        alpha = 0.2F;
         fadingIn = true;
       }
     }
@@ -65,7 +65,7 @@ public class SpellParticle {
   }
 
   private float getY(int centerY, float animationTick) {
-    float bobbing = (float) Math.sin(animationTick * 0.05f + verticalOffset) * 2;
+    float bobbing = (float) Math.sin(animationTick * 0.05F + verticalOffset) * 2;
     return centerY + (float) Math.sin(angle) * orbitRadius + bobbing;
   }
 
@@ -76,7 +76,7 @@ public class SpellParticle {
     for (int i = 0; i < MAX_PARTICLES_PER_SPELL; i++) {
       float angle = RANDOM.nextFloat() * (float) Math.PI * 2;
       float orbitRadius = 20 + RANDOM.nextFloat() * 15;
-      float orbitSpeed = 0.02f + RANDOM.nextFloat() * 0.03f;
+      float orbitSpeed = 0.02F + RANDOM.nextFloat() * 0.03F;
       if (RANDOM.nextBoolean()) {
         orbitSpeed = -orbitSpeed;
       }
@@ -105,7 +105,7 @@ public class SpellParticle {
       float y = particle.getY(slotCenterY, animationTick);
 
       int argb = RenderUtils.withAlpha(particle.color, particle.alpha);
-      int glowArgb = RenderUtils.withAlpha(particle.color, particle.alpha * 0.4f);
+      int glowArgb = RenderUtils.withAlpha(particle.color, particle.alpha * 0.4F);
 
       float size = particle.size;
 

@@ -11,14 +11,12 @@ import net.neoforged.fml.event.lifecycle.FMLClientSetupEvent;
 public class ItemProperty {
 
   public static void register(FMLClientSetupEvent event) {
-    event.enqueueWork(() -> {
-      ItemProperties.register(
-          ModItems.LUCKY_HORSESHOE.get(),
-          ResourceLocation.fromNamespaceAndPath(CrawlingMysteries.MOD_ID, "tier"),
-          (stack, level, entity, seed) -> {
-            HorseshoeDataComponent component = stack.get(ModDataComponents.HORSESHOE_TIER.get());
-            return component != null ? (float) component.tier() : 1.0f;
-          });
-    });
+    event.enqueueWork(() -> ItemProperties.register(
+        ModItems.LUCKY_HORSESHOE.get(),
+        ResourceLocation.fromNamespaceAndPath(CrawlingMysteries.MOD_ID, "tier"),
+        (stack, level, entity, seed) -> {
+          HorseshoeDataComponent component = stack.get(ModDataComponents.HORSESHOE_TIER.get());
+          return component != null ? (float) component.tier() : 1.0F;
+        }));
   }
 }

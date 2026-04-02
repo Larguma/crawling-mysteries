@@ -268,9 +268,7 @@ public class CrypticEyeItem extends Item implements GeoItem, ICurioItem {
 
   @Override
   public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
-    controllers.add(new AnimationController<>(this, "Idle", 0, state -> {
-      return state.setAndContinue(IDLE_ANIM);
-    }));
+    controllers.add(new AnimationController<>(this, "Idle", 0, state -> state.setAndContinue(IDLE_ANIM)));
     controllers.add(new AnimationController<>(this, "Consume", 0, state -> PlayState.STOP)
         .triggerableAnim("consume", CONSUME_ANIM));
   }

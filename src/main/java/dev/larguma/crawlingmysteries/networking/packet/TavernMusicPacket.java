@@ -9,7 +9,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public record TavernMusicPacket(boolean insideTavern) implements CustomPacketPayload {
 
-  public static final CustomPacketPayload.Type<TavernMusicPacket> TYPE = new CustomPacketPayload.Type<>(
+  public static final CustomPacketPayload.Type<TavernMusicPacket> PAYLOAD_TYPE = new CustomPacketPayload.Type<>(
       ResourceLocation.fromNamespaceAndPath(CrawlingMysteries.MOD_ID, "tavern_music"));
 
   public static final StreamCodec<ByteBuf, TavernMusicPacket> STREAM_CODEC = StreamCodec.composite(
@@ -18,6 +18,6 @@ public record TavernMusicPacket(boolean insideTavern) implements CustomPacketPay
 
   @Override
   public Type<? extends CustomPacketPayload> type() {
-    return TYPE;
+    return PAYLOAD_TYPE;
   }
 }

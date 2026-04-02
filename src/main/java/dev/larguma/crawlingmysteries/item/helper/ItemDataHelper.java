@@ -80,7 +80,7 @@ public final class ItemDataHelper {
    */
   public static float getAttunement(ItemStack stack) {
     if (!stack.has(ModDataComponents.ATTUNEMENT))
-      stack.set(ModDataComponents.ATTUNEMENT, 0f);
+      stack.set(ModDataComponents.ATTUNEMENT, 0F);
     return stack.get(ModDataComponents.ATTUNEMENT);
   }
 
@@ -88,10 +88,10 @@ public final class ItemDataHelper {
    * Sets the attunement value, clamped between 0 and 1.
    */
   public static float setAttunement(ItemStack stack, float value) {
-    if (value < 0f)
-      value = 0f;
-    if (value > 1f)
-      value = 1f;
+    if (value < 0F)
+      value = 0F;
+    if (value > 1F)
+      value = 1F;
     return stack.set(ModDataComponents.ATTUNEMENT, value);
   }
 

@@ -41,6 +41,7 @@ public class BeerKegItem extends BlockItem implements GeoItem {
 
   @Override
   public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+    // No animation controllers needed for this item
   }
 
   @Override

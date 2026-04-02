@@ -105,11 +105,10 @@ public class BeerMugBlock extends BushBlock implements EntityBlock {
 
   @Override
   public void setPlacedBy(Level level, BlockPos pos, BlockState state, LivingEntity placer, ItemStack stack) {
-    if (level.getBlockEntity(pos) instanceof BeerMugBlockEntity be) {
-      if (stack.has(ModDataComponents.GOOGLY_EYES.get())) {
-        be.setHasGooglyEyes(stack.get(ModDataComponents.GOOGLY_EYES.get()));
-      }
+    if (level.getBlockEntity(pos) instanceof BeerMugBlockEntity be && stack.has(ModDataComponents.GOOGLY_EYES.get())) {
+      be.setHasGooglyEyes(stack.get(ModDataComponents.GOOGLY_EYES.get()));
     }
+
     super.setPlacedBy(level, pos, state, placer, stack);
   }
 

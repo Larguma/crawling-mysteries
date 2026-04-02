@@ -33,7 +33,7 @@ public class PassiveSpellHudOverlay implements LayeredDraw.Layer {
   private static final int MARGIN_BOTTOM = 40;
 
   private static final int MAX_PARTICLES_PER_SPELL = 8;
-  private static final float PARTICLE_SPAWN_RATE = 0.15f;
+  private static final float PARTICLE_SPAWN_RATE = 0.15F;
 
   private float animationTick = 0;
 
@@ -45,7 +45,7 @@ public class PassiveSpellHudOverlay implements LayeredDraw.Layer {
   public void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
     Minecraft minecraft = Minecraft.getInstance();
 
-    if (minecraft.player == null || minecraft.options.hideGui || !ConfigClient.CLIENT.renderPassiveSpellHud.get()) {
+    if (minecraft.player == null || minecraft.options.hideGui || Boolean.TRUE.equals(!ConfigClient.CLIENT.renderPassiveSpellHud.get())) {
       return;
     }
 
@@ -88,7 +88,7 @@ public class PassiveSpellHudOverlay implements LayeredDraw.Layer {
       Boolean wasOnCooldown = previousCooldownStates.get(spellId);
 
       if (wasOnCooldown != null && wasOnCooldown && !currentlyOnCooldown) {
-        burstAnimationTimers.put(spellId, 0.0f);
+        burstAnimationTimers.put(spellId, 0.0F);
       }
 
       Float burstTimer = burstAnimationTimers.get(spellId);

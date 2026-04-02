@@ -55,13 +55,13 @@ public class ServerPayloadHandler {
   public static void handleSpellSelect(final SpellSelectPacket data, final IPayloadContext context) {
     ServerPlayer player = (ServerPlayer) context.player();
     String id = data.id();
-    String last_spell = player.getData(ModDataAttachments.LAST_USED_SPELL);
+    String lastSpell = player.getData(ModDataAttachments.LAST_USED_SPELL);
 
     if (id.isEmpty()) {
-      id = last_spell;
+      id = lastSpell;
     }
 
-    if (!last_spell.equals(id)) {
+    if (!lastSpell.equals(id)) {
       player.setData(ModDataAttachments.LAST_USED_SPELL, id);
     }
 

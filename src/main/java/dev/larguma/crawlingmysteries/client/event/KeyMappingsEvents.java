@@ -52,11 +52,11 @@ public class KeyMappingsEvents {
     }
 
     while (OPEN_CODEX.get().consumeClick()) {
-      if (minecraft.player != null && minecraft.screen == null) {
-        if (ItemHelper.hasItem(minecraft.player, ModItems.CRYPTIC_EYE.get())) {
-          minecraft.setScreen(new CrypticCodexScreen());
-        }
+      if (minecraft.player != null && minecraft.screen == null
+          && ItemHelper.hasItem(minecraft.player, ModItems.CRYPTIC_EYE.get())) {
+        minecraft.setScreen(new CrypticCodexScreen());
       }
+
     }
 
     while (CAST_LAST_SPELL.get().consumeClick()) {

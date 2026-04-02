@@ -16,8 +16,10 @@ import net.minecraft.client.gui.GuiGraphics;
 public class FloatingEmberParticle {
   private static final Random RANDOM = new Random();
 
-  private float x, y;
-  private float u, v;
+  private float x;
+  private float y;
+  private float u;
+  private float v;
   private float lifetime;
   private final float maxLifetime;
   private final float size;
@@ -39,8 +41,8 @@ public class FloatingEmberParticle {
     y += v * deltaTicks;
 
     // wandering motion
-    u += (RANDOM.nextFloat() - 0.5f) * 0.02f * deltaTicks;
-    v -= 0.005f * deltaTicks; // upward drift
+    u += (RANDOM.nextFloat() - 0.5F) * 0.02F * deltaTicks;
+    v -= 0.005F * deltaTicks; // upward drift
 
     lifetime -= deltaTicks;
   }
@@ -54,19 +56,19 @@ public class FloatingEmberParticle {
 
     // Fade in and out
     float alpha;
-    if (lifeRatio > 0.8f) {
-      alpha = (1.0f - lifeRatio) / 0.2f; // Fade in
-    } else if (lifeRatio < 0.3f) {
-      alpha = lifeRatio / 0.3f; // Fade out
+    if (lifeRatio > 0.8F) {
+      alpha = (1.0F - lifeRatio) / 0.2F; // Fade in
+    } else if (lifeRatio < 0.3F) {
+      alpha = lifeRatio / 0.3F; // Fade out
     } else {
-      alpha = 1.0f;
+      alpha = 1.0F;
     }
-    alpha *= 0.7f;
+    alpha *= 0.7F;
 
-    float twinkle = 0.7f + 0.3f * (float) Math.sin(lifetime * 0.5f);
+    float twinkle = 0.7F + 0.3F * (float) Math.sin(lifetime * 0.5F);
     alpha *= twinkle;
 
-    int currentSize = (int) (size * (0.5f + 0.5f * lifeRatio));
+    int currentSize = (int) (size * (0.5F + 0.5F * lifeRatio));
     if (currentSize < 1)
       currentSize = 1;
 
@@ -77,7 +79,7 @@ public class FloatingEmberParticle {
 
     // bright center
     if (currentSize > 1) {
-      int brightArgb = RenderUtils.withAlpha(0xFFFFFF, alpha * 0.6f);
+      int brightArgb = RenderUtils.withAlpha(0xFFFFFF, alpha * 0.6F);
       guiGraphics.fill((int) x, (int) y, (int) x + 1, (int) y + 1, brightArgb);
     }
   }
@@ -89,11 +91,11 @@ public class FloatingEmberParticle {
     float x = centerX + (float) Math.cos(angle) * distance;
     float y = centerY + (float) Math.sin(angle) * distance;
 
-    float u = (RANDOM.nextFloat() - 0.5f) * 0.3f;
-    float v = -0.2f - RANDOM.nextFloat() * 0.4f;
+    float u = (RANDOM.nextFloat() - 0.5F) * 0.3F;
+    float v = -0.2F - RANDOM.nextFloat() * 0.4F;
 
     float lifetime = 30 + RANDOM.nextFloat() * 40;
-    float size = 1.5f + RANDOM.nextFloat() * 2f;
+    float size = 1.5F + RANDOM.nextFloat() * 2F;
 
     return new FloatingEmberParticle(x, y, u, v, lifetime, size, color);
   }
@@ -103,9 +105,10 @@ public class FloatingEmberParticle {
   }
 
   public static FloatingEmberParticle createInArea(int x, int y, int width, int height, int color) {
-    float spawnX, spawnY;
+    float spawnX;
+    float spawnY;
 
-    if (RANDOM.nextFloat() < 0.7f) {
+    if (RANDOM.nextFloat() < 0.7F) {
       // Spawn along edges
       int edge = RANDOM.nextInt(4);
       switch (edge) {
@@ -132,11 +135,11 @@ public class FloatingEmberParticle {
       spawnY = y + RANDOM.nextFloat() * height;
     }
 
-    float u = (RANDOM.nextFloat() - 0.5f) * 0.3f;
-    float v = -0.2f - RANDOM.nextFloat() * 0.4f;
+    float u = (RANDOM.nextFloat() - 0.5F) * 0.3F;
+    float v = -0.2F - RANDOM.nextFloat() * 0.4F;
 
     float lifetime = 30 + RANDOM.nextFloat() * 40;
-    float size = 1.5f + RANDOM.nextFloat() * 2f;
+    float size = 1.5F + RANDOM.nextFloat() * 2F;
 
     return new FloatingEmberParticle(spawnX, spawnY, u, v, lifetime, size, color);
   }

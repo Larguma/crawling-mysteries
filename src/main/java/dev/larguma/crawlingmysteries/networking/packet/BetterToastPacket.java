@@ -20,7 +20,7 @@ public record BetterToastPacket(Component message, int toastType, String iconDat
   private static final String ITEM_PREFIX = "item:";
   private static final String TEXTURE_PREFIX = "texture:";
 
-  public static final CustomPacketPayload.Type<BetterToastPacket> TYPE = new CustomPacketPayload.Type<>(
+  public static final CustomPacketPayload.Type<BetterToastPacket> PAYLOAD_TYPE = new CustomPacketPayload.Type<>(
       ResourceLocation.fromNamespaceAndPath(CrawlingMysteries.MOD_ID, "better_toast"));
 
   public static final StreamCodec<RegistryFriendlyByteBuf, BetterToastPacket> STREAM_CODEC = StreamCodec.composite(
@@ -82,6 +82,6 @@ public record BetterToastPacket(Component message, int toastType, String iconDat
 
   @Override
   public Type<? extends CustomPacketPayload> type() {
-    return TYPE;
+    return PAYLOAD_TYPE;
   }
 }

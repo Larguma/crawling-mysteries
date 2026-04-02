@@ -28,7 +28,7 @@ public class GetCooldowns {
                         .then(Commands.argument("spell", StringArgumentType.string())
                             .suggests(CommandHelper.SPELL_SUGGESTIONS)
                             .executes(this::execute)))))));
-  };
+  }
 
   private int execute(CommandContext<CommandSourceStack> context) throws CommandSyntaxException {
     ServerPlayer player = EntityArgument.getPlayer(context, "player");

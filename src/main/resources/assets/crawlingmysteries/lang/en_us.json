@@ -162,7 +162,6 @@
   "screen.crawlingmysteries.alchemical_distillery": "Alchemical Distillery",
   "screen.crawlingmysteries.alchemical_distillery.start": "Start",
   "screen.crawlingmysteries.alchemical_distillery.stabilize": "Stabilize",
-  "screen.crawlingmysteries.alchemical_distillery.stability": "Stability: %d%%",
   "spell.crawlingmysteries": "====== Spells ======",
   "spell.crawlingmysteries.empty": "We don't know this spell",
   "spell.crawlingmysteries.unimplemented": "Unimplemented Spell: %s",

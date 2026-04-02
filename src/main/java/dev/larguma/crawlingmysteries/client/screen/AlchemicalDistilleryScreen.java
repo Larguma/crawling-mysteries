@@ -37,7 +37,7 @@ public class AlchemicalDistilleryScreen extends AbstractContainerScreen<Alchemic
   private static final int ARROW_PIVOT_X = 6;
   private static final int ARROW_PIVOT_Y = 10;
 
-  private static final float MAX_NEEDLE_ANGLE = 130.0f;
+  private static final float MAX_NEEDLE_ANGLE = 130.0F;
 
   private Button startButton;
   private Button stabilizeButton;
@@ -103,7 +103,7 @@ public class AlchemicalDistilleryScreen extends AbstractContainerScreen<Alchemic
   private void renderNeedle(GuiGraphics guiGraphics, int guiX, int guiY) {
     int needlePos = this.menu.getNeedlePosition();
 
-    float angle = (needlePos / 100.0f) * MAX_NEEDLE_ANGLE;
+    float angle = (needlePos / 100.0F) * MAX_NEEDLE_ANGLE;
     int gaugeCenterX = guiX + GAUGE_CENTER_X;
     int gaugeCenterY = guiY + GAUGE_CENTER_Y;
 
@@ -125,20 +125,6 @@ public class AlchemicalDistilleryScreen extends AbstractContainerScreen<Alchemic
     int textX = guiX + GAUGE_CENTER_X + 1 - this.font.width(progressText) / 2;
     int textY = guiY + GAUGE_CENTER_Y + 10;
     guiGraphics.drawString(this.font, progressText, textX, textY, 0xFFFFFF, true);
-
-    int stability = this.menu.getStabilityScore();
-    int maxStability = 200;
-    int stabilityPercent = Math.min(100, (stability * 100) / maxStability);
-
-    int color = 0xFF5555;
-    if (stabilityPercent > 50) {
-      color = 0x55FF55;
-    } else if (stabilityPercent > 25) {
-      color = 0xFFFF55;
-    }
-    String stabilityText = Component.translatable("screen.crawlingmysteries.alchemical_distillery.stability",
-        stabilityPercent).getString();
-    guiGraphics.drawString(this.font, stabilityText, guiX + 18, guiY + 84, color, true);
   }
 
   @Override
@@ -171,7 +157,7 @@ public class AlchemicalDistilleryScreen extends AbstractContainerScreen<Alchemic
 
   private void playErrorSound() {
     if (this.minecraft != null) {
-      this.minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.NOTE_BLOCK_BASS.value(), 0.5f, 0.5f));
+      this.minecraft.getSoundManager().play(SimpleSoundInstance.forUI(SoundEvents.NOTE_BLOCK_BASS.value(), 0.5F, 0.5F));
     }
   }
 

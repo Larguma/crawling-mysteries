@@ -107,8 +107,8 @@ public class CrypticCodexScreen extends Screen {
   private List<CodexEntry> currentEntries = new ArrayList<>();
 
   // Entity display state
-  private float entityRotationY = -30f;
-  private float entityRotationX = 0f;
+  private float entityRotationY = -30F;
+  private float entityRotationX = 0F;
   private boolean isDraggingEntity = false;
   private double lastMouseX = 0;
   private double lastMouseY = 0;
@@ -200,9 +200,9 @@ public class CrypticCodexScreen extends Screen {
     int lineY = 28;
     int lineWidth = 200;
     int lineX = (this.width - lineWidth) / 2;
-    float pulse = 1.0f;
+    float pulse = 1.0F;
     if (animate) {
-      pulse = 0.5f + 0.5f * (float) Math.sin(this.animationTick * 0.05f);
+      pulse = 0.5F + 0.5F * (float) Math.sin(this.animationTick * 0.05F);
     }
     int alpha = (int) (pulse * 128) + 64;
     guiGraphics.fill(lineX, lineY, lineX + lineWidth, lineY + 1, (alpha << 24) | (PRIMARY_COLOR & 0xFFFFFF));
@@ -305,8 +305,14 @@ public class CrypticCodexScreen extends Screen {
    */
   private void renderCategoryButton(GuiGraphics guiGraphics, int x, int y, CodexCategory category,
       boolean isSelected, boolean isHovered) {
-    int bgColor = isSelected ? (0xAA000000 | (category.getColor() & 0xFFFFFF))
-        : (isHovered ? 0x44FFFFFF : 0x22FFFFFF);
+    int bgColor;
+    if (isSelected) {
+      bgColor = 0xAA000000 | (category.getColor() & 0xFFFFFF);
+    } else if (isHovered) {
+      bgColor = 0x44FFFFFF;
+    } else {
+      bgColor = 0x22FFFFFF;
+    }
 
     guiGraphics.fill(x, y, x + SIDEBAR_WIDTH, y + CATEGORY_BUTTON_HEIGHT, bgColor);
 
@@ -327,7 +333,14 @@ public class CrypticCodexScreen extends Screen {
     }
 
     // Text
-    int textColor = isSelected ? 0xFFFFFF : (isHovered ? 0xDDDDDD : TEXT_COLOR);
+    int textColor;
+    if (isSelected) {
+      textColor = 0xFFFFFF;
+    } else if (isHovered) {
+      textColor = 0xDDDDDD;
+    } else {
+      textColor = TEXT_COLOR;
+    }
     int titleX = x + 8 + iconPadding;
     guiGraphics.drawString(this.font, category.getName(), titleX, y + (CATEGORY_BUTTON_HEIGHT - 8) / 2,
         textColor, false);
@@ -338,8 +351,14 @@ public class CrypticCodexScreen extends Screen {
    */
   private void renderEntryButton(GuiGraphics guiGraphics, int x, int y, CodexEntry entry,
       boolean isSelected, boolean isHovered) {
-    int bgColor = isSelected ? 0x44000000 | (PRIMARY_COLOR & 0xFFFFFF)
-        : (isHovered ? 0x33FFFFFF : 0x11FFFFFF);
+    int bgColor;
+    if (isSelected) {
+      bgColor = 0x44000000 | (PRIMARY_COLOR & 0xFFFFFF);
+    } else if (isHovered) {
+      bgColor = 0x33FFFFFF;
+    } else {
+      bgColor = 0x11FFFFFF;
+    }
 
     guiGraphics.fill(x + 4, y, x + SIDEBAR_WIDTH - 4, y + ENTRY_BUTTON_HEIGHT, bgColor);
 
@@ -366,7 +385,14 @@ public class CrypticCodexScreen extends Screen {
       title = this.font.plainSubstrByWidth(title, maxTitleWidth - 8) + "...";
     }
 
-    int textColor = isSelected ? 0xFFFFFF : (isHovered ? 0xDDDDDD : TEXT_COLOR);
+    int textColor;
+    if (isSelected) {
+      textColor = 0xFFFFFF;
+    } else if (isHovered) {
+      textColor = 0xDDDDDD;
+    } else {
+      textColor = TEXT_COLOR;
+    }
     guiGraphics.drawString(this.font, title, x + 12 + (int) (iconSize * 1.2), y + (ENTRY_BUTTON_HEIGHT - 8) / 2,
         textColor, false);
   }
@@ -453,27 +479,14 @@ public class CrypticCodexScreen extends Screen {
     CodexPage page = selectedEntry.pages().get(currentPage);
 
     switch (page.type()) {
-      case TEXT -> {
-        renderTextPage(guiGraphics, x, y, width, maxHeight, page);
-      }
-      case ITEM_SHOWCASE -> {
-        renderItemShowcasePage(guiGraphics, x, y, width, maxHeight, page);
-      }
-      case SPELL_INFO -> {
-        renderSpellInfoPage(guiGraphics, x, y, width, maxHeight, page);
-      }
-      case IMAGE -> {
-        renderImagePage(guiGraphics, x, y, width, maxHeight, page);
-      }
-      case CRAFTING -> {
-        renderCraftingPage(guiGraphics, x, y, width, maxHeight, page);
-      }
-      case ENTITY_DISPLAY -> {
-        renderEntityDisplayPage(guiGraphics, x, y, width, maxHeight, page);
-      }
-      default -> {
-        maxContentScroll = 0;
-      }
+      case TEXT -> renderTextPage(guiGraphics, x, y, width, maxHeight, page);
+      case ITEM_SHOWCASE -> renderItemShowcasePage(guiGraphics, x, y, width, maxHeight, page);
+      case SPELL_INFO -> renderSpellInfoPage(guiGraphics, x, y, width, maxHeight, page);
+      case IMAGE -> renderImagePage(guiGraphics, x, y, width, maxHeight, page);
+      case CRAFTING -> renderCraftingPage(guiGraphics, x, y, width, maxHeight, page);
+      case ENTITY_DISPLAY -> renderEntityDisplayPage(guiGraphics, x, y, width, maxHeight, page);
+      default -> maxContentScroll = 0;
+
     }
   }
 
@@ -574,7 +587,7 @@ public class CrypticCodexScreen extends Screen {
     // Render item scaled up
     guiGraphics.pose().pushPose();
     guiGraphics.pose().translate(itemX, itemY, 0);
-    guiGraphics.pose().scale(4.0f, 4.0f, 1.0f);
+    guiGraphics.pose().scale(4.0F, 4.0F, 1.0F);
     guiGraphics.renderItem(itemStack, 0, 0);
     guiGraphics.pose().popPose();
 
@@ -584,7 +597,7 @@ public class CrypticCodexScreen extends Screen {
 
     int descY = itemY + itemSize + 32;
     if (!page.content().getString().isEmpty()) {
-      descY = renderFormattedText(guiGraphics, page.content(), x, descY, width);
+      renderFormattedText(guiGraphics, page.content(), x, descY, width);
     }
 
     guiGraphics.disableScissor();
@@ -667,7 +680,7 @@ public class CrypticCodexScreen extends Screen {
     int statsY = iconY + iconSize + 28;
 
     if (spell.cooldownTicks() > 0) {
-      String cooldownText = String.format("§7Cooldown: §e" + SpellCooldownManager.getTotalCooldownFormatted(spell));
+      String cooldownText = String.format("§7Cooldown: §e%s", SpellCooldownManager.getTotalCooldownFormatted(spell));
       int cooldownWidth = this.font.width(cooldownText);
       guiGraphics.drawString(this.font, cooldownText, centerX - cooldownWidth / 2, statsY, TEXT_COLOR, false);
       statsY += 14;
@@ -688,7 +701,7 @@ public class CrypticCodexScreen extends Screen {
 
     if (!page.content().getString().isEmpty()) {
       statsY += 8;
-      statsY = renderFormattedText(guiGraphics, page.content(), x, statsY, width);
+      renderFormattedText(guiGraphics, page.content(), x, statsY, width);
     }
 
     guiGraphics.disableScissor();
@@ -780,7 +793,7 @@ public class CrypticCodexScreen extends Screen {
     // Caption text below image
     int captionY = imageY + imageHeight + 12;
     if (!page.content().getString().isEmpty()) {
-      captionY = renderFormattedText(guiGraphics, page.content(), x, captionY, width, true, TEXT_MUTED);
+      renderFormattedText(guiGraphics, page.content(), x, captionY, width, true, TEXT_MUTED);
     }
 
     guiGraphics.disableScissor();
@@ -934,7 +947,7 @@ public class CrypticCodexScreen extends Screen {
 
     int descY = gridY + gridSize + 20;
     if (!page.content().getString().isEmpty()) {
-      descY = renderFormattedText(guiGraphics, page.content(), x, descY, width);
+      renderFormattedText(guiGraphics, page.content(), x, descY, width);
     }
   }
 
@@ -996,7 +1009,7 @@ public class CrypticCodexScreen extends Screen {
     ItemStack resultStack;
 
     if (recipe instanceof SmithingAwakeningRecipe awakeningRecipe) {
-      ItemStack[] baseItems = awakeningRecipe.getBase().getItems();
+      ItemStack[] baseItems = awakeningRecipe.getBaseIngredient().getItems();
       if (baseItems.length > 0) {
         int index = (int) (animationTick / 20) % baseItems.length;
         if (index < 0)
@@ -1020,7 +1033,7 @@ public class CrypticCodexScreen extends Screen {
 
     int descY = startY + slotSize + 20;
     if (!page.content().getString().isEmpty()) {
-      descY = renderFormattedText(guiGraphics, page.content(), x, descY, width);
+      renderFormattedText(guiGraphics, page.content(), x, descY, width);
     }
   }
 
@@ -1062,8 +1075,8 @@ public class CrypticCodexScreen extends Screen {
       cachedEntity = entityTypeOpt.get().create(mc.level);
       cachedEntityId = entityId;
       // Reset rotation when entity changes
-      entityRotationY = -30f;
-      entityRotationX = 0f;
+      entityRotationY = -30F;
+      entityRotationX = 0F;
     }
 
     if (cachedEntity == null) {
@@ -1130,7 +1143,7 @@ public class CrypticCodexScreen extends Screen {
     // Rotation hint with animated opacity
     int hintAlpha = 200;
     if (animate) {
-      float hintPulse = 0.5f + 0.3f * (float) Math.sin(animationTick * 0.08f);
+      float hintPulse = 0.5F + 0.3F * (float) Math.sin(animationTick * 0.08F);
       hintAlpha = (int) (hintPulse * 200);
     }
     String rotateHint = "§7⟲ Drag to rotate";
@@ -1164,8 +1177,7 @@ public class CrypticCodexScreen extends Screen {
       statsY += 8;
       guiGraphics.fill(x + 20, statsY, x + width - 20, statsY + 1, 0x44FFFFFF);
       statsY += 12;
-
-      statsY = renderFormattedText(guiGraphics, page.content(), x, statsY, width);
+      renderFormattedText(guiGraphics, page.content(), x, statsY, width);
     }
 
     guiGraphics.disableScissor();
@@ -1184,7 +1196,7 @@ public class CrypticCodexScreen extends Screen {
     float entityHeight = entity.getBbHeight();
     float entityWidth = entity.getBbWidth();
     float maxDimension = Math.max(entityHeight, entityWidth);
-    int scale = (int) ((displaySize * 0.6f) / maxDimension);
+    int scale = (int) ((displaySize * 0.6F) / maxDimension);
     scale = Mth.clamp(scale, 10, 80);
 
     // Position entity in center of display area
@@ -1302,7 +1314,7 @@ public class CrypticCodexScreen extends Screen {
         }
       }
 
-      if (currentLine.length() > 0) {
+      if (!currentLine.isEmpty()) {
         lines.add(currentLine.toString());
         carriedFormatting = getActiveFormatting(currentLine.toString());
       }
@@ -1336,20 +1348,20 @@ public class CrypticCodexScreen extends Screen {
    * Extracts the active formatting codes at the end of a string.
    */
   private String getActiveFormatting(String text) {
-    String formatting = "";
+    StringBuilder formatting = new StringBuilder();
     for (int i = 0; i < text.length() - 1; i++) {
       if (text.charAt(i) == '§') {
         char code = text.charAt(i + 1);
         if (code == 'r') {
-          formatting = "";
+          formatting = new StringBuilder();
         } else if ("0123456789abcdef".indexOf(code) >= 0) {
-          formatting = "§" + code;
+          formatting = new StringBuilder().append("§").append(code);
         } else if ("klmno".indexOf(code) >= 0) {
-          formatting += "§" + code;
+          formatting.append("§").append(code);
         }
       }
     }
-    return formatting;
+    return formatting.toString();
   }
 
   /**
@@ -1459,7 +1471,7 @@ public class CrypticCodexScreen extends Screen {
   private void playClickSound() {
     if (this.minecraft != null) {
       this.minecraft.getSoundManager().play(
-          SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK.value(), 1.2f, 0.3f));
+          SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK.value(), 1.2F, 0.3F));
     }
   }
 
@@ -1470,8 +1482,8 @@ public class CrypticCodexScreen extends Screen {
   private void clearCachedEntity() {
     cachedEntity = null;
     cachedEntityId = null;
-    entityRotationY = -30f;
-    entityRotationX = 0f;
+    entityRotationY = -30F;
+    entityRotationX = 0F;
     isDraggingEntity = false;
   }
 
@@ -1633,11 +1645,11 @@ public class CrypticCodexScreen extends Screen {
       double deltaY = mouseY - lastMouseY;
 
       // Update rotation based on mouse movement
-      entityRotationY += (float) deltaX * 0.8f;
-      entityRotationX += (float) deltaY * 0.5f;
+      entityRotationY += (float) deltaX * 0.8F;
+      entityRotationX += (float) deltaY * 0.5F;
 
       // Clamp vertical rotation to prevent flipping
-      entityRotationX = Mth.clamp(entityRotationX, -45f, 45f);
+      entityRotationX = Mth.clamp(entityRotationX, -45F, 45F);
 
       lastMouseX = mouseX;
       lastMouseY = mouseY;

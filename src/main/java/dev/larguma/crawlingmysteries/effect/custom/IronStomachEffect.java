@@ -30,7 +30,7 @@ public class IronStomachEffect extends MobEffect {
     }
 
     player.getFoodData().setFoodLevel(20);
-    player.getFoodData().setSaturation(20.0f);
+    player.getFoodData().setSaturation(20.0F);
 
     return super.applyEffectTick(entity, amplifier);
   }

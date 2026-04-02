@@ -8,7 +8,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public record RequestStatsPacket() implements CustomPacketPayload {
 
-  public static final Type<RequestStatsPacket> TYPE = new CustomPacketPayload.Type<>(
+  public static final Type<RequestStatsPacket> PAYLOAD_TYPE = new CustomPacketPayload.Type<>(
       ResourceLocation.fromNamespaceAndPath(CrawlingMysteries.MOD_ID, "request_stats"));
 
   public static final StreamCodec<ByteBuf, RequestStatsPacket> STREAM_CODEC = StreamCodec
@@ -16,6 +16,6 @@ public record RequestStatsPacket() implements CustomPacketPayload {
 
   @Override
   public Type<? extends CustomPacketPayload> type() {
-    return TYPE;
+    return PAYLOAD_TYPE;
   }
 }

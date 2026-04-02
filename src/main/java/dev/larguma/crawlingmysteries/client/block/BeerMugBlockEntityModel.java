@@ -49,11 +49,7 @@ public class BeerMugBlockEntityModel extends GeoModel<BeerMugBlockEntity> {
 
       GeoBone foamBone = this.getAnimationProcessor().getBone("foam" + suffix);
       if (foamBone != null) {
-        if (beerLevel == 4) {
-          foamBone.setHidden(false);
-        } else {
-          foamBone.setHidden(true);
-        }
+        foamBone.setHidden(beerLevel != 4);
       }
     }
   }

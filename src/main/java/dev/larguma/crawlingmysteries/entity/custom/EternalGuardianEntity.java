@@ -54,7 +54,7 @@ public class EternalGuardianEntity extends Monster implements GeoEntity {
       EternalGuardianEntity.class, EntityDataSerializers.OPTIONAL_UUID);
   public static final EntityDataAccessor<String> TOMBSTONE_OWNER_NAME = SynchedEntityData.defineId(
       EternalGuardianEntity.class, EntityDataSerializers.STRING);
-  public final float speed = 1f;
+  public static final float SPEED = 1F;
 
   public EternalGuardianEntity(EntityType<? extends Monster> entityType, Level level) {
     super(entityType, level);
@@ -74,7 +74,7 @@ public class EternalGuardianEntity extends Monster implements GeoEntity {
         .add(Attributes.MAX_HEALTH, 60)
         .add(Attributes.ATTACK_DAMAGE, 5)
         .add(Attributes.ATTACK_SPEED, 2)
-        .add(Attributes.MOVEMENT_SPEED, 0.25f)
+        .add(Attributes.MOVEMENT_SPEED, 0.25F)
         .add(Attributes.KNOCKBACK_RESISTANCE, 1000)
         .add(Attributes.ARMOR, 20)
         .add(Attributes.ARMOR_TOUGHNESS, 15);
@@ -82,12 +82,12 @@ public class EternalGuardianEntity extends Monster implements GeoEntity {
 
   @Override
   protected void registerGoals() {
-    this.goalSelector.addGoal(1, new ProtectTombstoneGoal(this, speed, false));
+    this.goalSelector.addGoal(1, new ProtectTombstoneGoal(this, SPEED, false));
     this.goalSelector.addGoal(2, new GoToTombstoneGoal(this));
     this.goalSelector.addGoal(3, new FloatGoal(this));
-    this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 8f));
+    this.goalSelector.addGoal(4, new LookAtPlayerGoal(this, Player.class, 8F));
     this.goalSelector.addGoal(5, new RandomLookAroundGoal(this));
-    this.goalSelector.addGoal(6, new RandomStrollGoal(this, speed));
+    this.goalSelector.addGoal(6, new RandomStrollGoal(this, SPEED));
 
     this.targetSelector.addGoal(1, new HurtByTargetGoal(this));
     this.targetSelector.addGoal(2, new NearestAttackableTargetGoal<>(this, Player.class, false) {
@@ -98,7 +98,7 @@ public class EternalGuardianEntity extends Monster implements GeoEntity {
   @Override
   public boolean hurt(DamageSource source, float amount) {
     Entity entity = source.getEntity();
-    if ((entity == null || !(entity instanceof Player) || source.is(DamageTypeTags.IS_PROJECTILE))
+    if ((!(entity instanceof Player) || source.is(DamageTypeTags.IS_PROJECTILE))
         && !source.is(DamageTypeTags.BYPASSES_INVULNERABILITY)) {
       return false;
     }
@@ -107,7 +107,7 @@ public class EternalGuardianEntity extends Monster implements GeoEntity {
 
   @Override
   public void die(DamageSource damageSource) {
-    if (this.hasTombstone()) {
+    if (this.hasTombstone() && this.getTombstonePos().isPresent()) {
       TombstoneBlockEntity tombstoneBlockEntity = getTombstone(this.getTombstonePos().get());
       if (tombstoneBlockEntity != null)
         tombstoneBlockEntity.setGuardianUUID(null);
@@ -168,7 +168,7 @@ public class EternalGuardianEntity extends Monster implements GeoEntity {
   }
 
   protected <E extends EternalGuardianEntity> PlayState attackAnimController(final AnimationState<E> event) {
-    if (this.swinging && event.getController().getAnimationState().equals(State.STOPPED)) {
+    if (this.swinging && event.getController().getAnimationState() == State.STOPPED) {
       event.getController().forceAnimationReset();
       event.getController().setAnimation(MELEE_ANIM);
       this.swinging = false;
@@ -238,7 +238,7 @@ public class EternalGuardianEntity extends Monster implements GeoEntity {
     if (pos == null) {
       return false;
     }
-    return pos.closerThan(this.blockPosition(), (double) distance);
+    return pos.closerThan(this.blockPosition(), distance);
   }
   // #endregion Tombstone
 }

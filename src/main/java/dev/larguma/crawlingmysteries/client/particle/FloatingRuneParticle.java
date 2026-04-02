@@ -36,9 +36,12 @@ public class FloatingRuneParticle {
       0xAF7AC5 // Light purple
   };
 
-  private float x, y;
-  private float prevX, prevY;
-  private final float vx, vy;
+  private float x;
+  private float y;
+  private float prevX;
+  private float prevY;
+  private final float vx;
+  private final float vy;
   private final int runePattern;
   private final int color;
   private final float scale;
@@ -49,7 +52,8 @@ public class FloatingRuneParticle {
   private final int maxAge;
   private final float wobbleOffset;
 
-  private FloatingRuneParticle(float x, float y, float vx, float vy, int runePattern, int color, float scale, int maxAge) {
+  private FloatingRuneParticle(float x, float y, float vx, float vy, int runePattern, int color, float scale,
+      int maxAge) {
     this.x = x;
     this.y = y;
     this.prevX = x;
@@ -60,8 +64,8 @@ public class FloatingRuneParticle {
     this.color = color;
     this.scale = scale;
     this.alpha = 0;
-    this.alphaTarget = 0.3f + RANDOM.nextFloat() * 0.3f;
-    this.alphaSpeed = 0.01f + RANDOM.nextFloat() * 0.02f;
+    this.alphaTarget = 0.3F + RANDOM.nextFloat() * 0.3F;
+    this.alphaSpeed = 0.01F + RANDOM.nextFloat() * 0.02F;
     this.age = 0;
     this.maxAge = maxAge;
     this.wobbleOffset = RANDOM.nextFloat() * (float) Math.PI * 2;
@@ -71,7 +75,7 @@ public class FloatingRuneParticle {
     prevX = x;
     prevY = y;
 
-    float wobble = (float) Math.sin(animationTick * 0.03f + wobbleOffset) * 0.3f;
+    float wobble = (float) Math.sin(animationTick * 0.03F + wobbleOffset) * 0.3F;
     x += vx + wobble;
     y += vy;
 
@@ -88,7 +92,7 @@ public class FloatingRuneParticle {
         alpha = 0;
       }
     } else {
-      float pulse = (float) Math.sin(animationTick * 0.05f + wobbleOffset) * 0.1f;
+      float pulse = (float) Math.sin(animationTick * 0.05F + wobbleOffset) * 0.1F;
       alpha = alphaTarget + pulse;
     }
   }
@@ -117,12 +121,12 @@ public class FloatingRuneParticle {
     float x = RANDOM.nextFloat() * screenWidth;
     float y = RANDOM.nextFloat() * screenHeight;
 
-    float vx = (RANDOM.nextFloat() - 0.5f) * 0.2f;
-    float vy = (RANDOM.nextFloat() - 0.5f) * 0.15f - 0.1f;
+    float vx = (RANDOM.nextFloat() - 0.5F) * 0.2F;
+    float vy = (RANDOM.nextFloat() - 0.5F) * 0.15F - 0.1F;
 
     int runePattern = RANDOM.nextInt(RUNE_PATTERNS.length);
     int color = RUNE_COLORS[RANDOM.nextInt(RUNE_COLORS.length)];
-    float scale = 0.8f + RANDOM.nextFloat() * 0.8f;
+    float scale = 0.8F + RANDOM.nextFloat() * 0.8F;
     int maxAge = 300 + RANDOM.nextInt(200);
 
     FloatingRuneParticle rune = new FloatingRuneParticle(x, y, vx, vy, runePattern, color, scale, maxAge);
@@ -161,15 +165,15 @@ public class FloatingRuneParticle {
       float y = rune.getY(partialTick);
 
       int argb = RenderUtils.withAlpha(rune.color, rune.alpha);
-      int glowArgb = RenderUtils.withAlpha(rune.color, rune.alpha * 0.04f);
+      int glowArgb = RenderUtils.withAlpha(rune.color, rune.alpha * 0.04F);
 
       // Render glow
       int glowSize = (int) (12 * rune.scale);
       guiGraphics.fill(
-          (int) (x - glowSize / 2),
-          (int) (y - glowSize / 2),
-          (int) (x + glowSize / 2),
-          (int) (y + glowSize / 2),
+          (int) (x - (double) glowSize / 2),
+          (int) (y - (double) glowSize / 2),
+          (int) (x + (double) glowSize / 2),
+          (int) (y + (double) glowSize / 2),
           glowArgb);
 
       // Render rune pattern

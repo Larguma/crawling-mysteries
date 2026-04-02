@@ -63,7 +63,7 @@ public class TombstoneBlock extends BaseEntityBlock implements SimpleWaterlogged
 
   public TombstoneBlock() {
     super(BlockBehaviour.Properties.ofFullCopy(Blocks.ENCHANTING_TABLE)
-        .strength(-1.0f, 3600000.0f).noOcclusion().noLootTable().randomTicks());
+        .strength(-1.0F, 3600000.0F).noOcclusion().noLootTable().randomTicks());
     this.particle = ParticleTypes.SOUL_FIRE_FLAME;
     this.registerDefaultState(
         this.stateDefinition.any().setValue(FACING, Direction.NORTH).setValue(WATERLOGGED, Boolean.valueOf(false)));
@@ -103,7 +103,8 @@ public class TombstoneBlock extends BaseEntityBlock implements SimpleWaterlogged
 
   @Override
   protected FluidState getFluidState(BlockState state) {
-    return state.getValue(WATERLOGGED) ? Fluids.WATER.getSource(false) : super.getFluidState(state);
+    return Boolean.TRUE.equals(state.getValue(WATERLOGGED)) ? Fluids.WATER.getSource(false)
+        : super.getFluidState(state);
   }
 
   @Override
@@ -114,14 +115,14 @@ public class TombstoneBlock extends BaseEntityBlock implements SimpleWaterlogged
   @Override
   public void animateTick(BlockState state, Level level, BlockPos pos, RandomSource random) {
     super.animateTick(state, level, pos, random);
-    double x = (double) pos.getX() + random.nextDouble();
-    double y = (double) pos.getY() + random.nextDouble() + random.nextDouble();
-    double z = (double) pos.getZ() + random.nextDouble();
+    double x = pos.getX() + random.nextDouble();
+    double y = pos.getY() + random.nextDouble() + random.nextDouble();
+    double z = pos.getZ() + random.nextDouble();
     level.addParticle(this.particle, x, y, z, 0, 0, 0);
 
-    double d0 = (double) pos.getX() + 0.5;
-    double d1 = (double) pos.getY();
-    double d2 = (double) pos.getZ() + 0.5;
+    double d0 = pos.getX() + 0.5;
+    double d1 = pos.getY();
+    double d2 = pos.getZ() + 0.5;
     if (random.nextDouble() < 0.1) {
       level.playLocalSound(d0, d1, d2, SoundEvents.SOUL_ESCAPE.value(), SoundSource.BLOCKS, 1.0F, 1.0F, false);
     }
@@ -194,28 +195,26 @@ public class TombstoneBlock extends BaseEntityBlock implements SimpleWaterlogged
 
       if (slottedItem.isMainInventory()) {
         int slot = slottedItem.slotIndex();
-        if (slot >= 0 && slot < player.getInventory().items.size()) {
-          if (player.getInventory().items.get(slot).isEmpty()) {
-            player.getInventory().items.set(slot, slottedItem.stack().copy());
-            restored = true;
-          }
+        if (slot >= 0 && slot < player.getInventory().items.size() && player.getInventory().items.get(slot).isEmpty()) {
+          player.getInventory().items.set(slot, slottedItem.stack().copy());
+          restored = true;
         }
+
       } else if (slottedItem.isArmor()) {
         int slot = slottedItem.slotIndex();
-        if (slot >= 0 && slot < player.getInventory().armor.size()) {
-          if (player.getInventory().armor.get(slot).isEmpty()) {
-            player.getInventory().armor.set(slot, slottedItem.stack().copy());
-            restored = true;
-          }
+        if (slot >= 0 && slot < player.getInventory().armor.size() && player.getInventory().armor.get(slot).isEmpty()) {
+          player.getInventory().armor.set(slot, slottedItem.stack().copy());
+          restored = true;
         }
+
       } else if (slottedItem.isOffhand()) {
         int slot = slottedItem.slotIndex();
-        if (slot >= 0 && slot < player.getInventory().offhand.size()) {
-          if (player.getInventory().offhand.get(slot).isEmpty()) {
-            player.getInventory().offhand.set(slot, slottedItem.stack().copy());
-            restored = true;
-          }
+        if (slot >= 0 && slot < player.getInventory().offhand.size()
+            && player.getInventory().offhand.get(slot).isEmpty()) {
+          player.getInventory().offhand.set(slot, slottedItem.stack().copy());
+          restored = true;
         }
+
       } else if (slottedItem.isCurios()) {
         restored = restoreCuriosItem(player, slottedItem);
       }
@@ -225,7 +224,6 @@ public class TombstoneBlock extends BaseEntityBlock implements SimpleWaterlogged
       }
     }
 
-    // Place overflow items in any available slot
     for (ItemStack stack : overflowItems) {
       if (!stack.isEmpty()) {
         player.getInventory().placeItemBackInInventory(stack);
@@ -251,12 +249,11 @@ public class TombstoneBlock extends BaseEntityBlock implements SimpleWaterlogged
         .map(entry -> {
           IDynamicStackHandler stacks = isCosmetic ? entry.getValue().getCosmeticStacks()
               : entry.getValue().getStacks();
-          if (slotIndex >= 0 && slotIndex < stacks.getSlots()) {
-            if (stacks.getStackInSlot(slotIndex).isEmpty()) {
-              stacks.setStackInSlot(slotIndex, slottedItem.stack().copy());
-              return true;
-            }
+          if (slotIndex >= 0 && slotIndex < stacks.getSlots() && stacks.getStackInSlot(slotIndex).isEmpty()) {
+            stacks.setStackInSlot(slotIndex, slottedItem.stack().copy());
+            return true;
           }
+
           return false;
         }).orElse(false);
   }
@@ -325,8 +322,8 @@ public class TombstoneBlock extends BaseEntityBlock implements SimpleWaterlogged
         tombstoneBlockEntity.setChanged();
         block.playerWillDestroy(level, blockPos, blockState, player);
 
-        CrawlingMysteries.LOGGER.info("Tombstone for player: " + player.getName().getString()
-            + " spawned at: " + pos.getX() + ", " + pos.getY() + ", " + pos.getZ());
+        CrawlingMysteries.LOGGER.info("Tombstone for player: {} spawned at: {}, {}, {}",
+            player.getName().getString(), pos.getX(), pos.getY(), pos.getZ());
 
         player.sendSystemMessage(
             Component.translatable("block.crawlingmysteries.tombstone.death", pos.getX(), pos.getY(), pos.getZ()));
@@ -349,7 +346,7 @@ public class TombstoneBlock extends BaseEntityBlock implements SimpleWaterlogged
     eternalGuardianEntity.setTombstonePos(pos);
     eternalGuardianEntity.setTombstoneOwner(gameProfile.getId());
     eternalGuardianEntity.setTombstoneOwnerName(gameProfile.getName());
-    eternalGuardianEntity.moveTo((double) pos.getX() + 0.5, pos.getY(), (double) pos.getZ() + 0.5, 0.0f, 0.0f);
+    eternalGuardianEntity.moveTo(pos.getX() + 0.5, pos.getY(), pos.getZ() + 0.5, 0.0F, 0.0F);
     eternalGuardianEntity.spawnAnim();
     return eternalGuardianEntity.getUUID();
   }

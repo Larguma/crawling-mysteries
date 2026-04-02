@@ -19,11 +19,9 @@ import top.theillusivec4.curios.api.client.CuriosRendererRegistry;
 public class CurioRenderers {
 
   public static void register() {
-    CuriosRendererRegistry.register(ModItems.CRYPTIC_EYE.get(), () -> new CrypticEyeCurioRenderer());
-    CuriosRendererRegistry.register(ModItems.ETERNAL_GUARDIANS_BAND.get(),
-        () -> new EternalGuardiansBandCurioRenderer());
-    CuriosRendererRegistry.register(ModItems.ETERNAL_GUARDIAN_MASK.get(),
-        () -> new EternalGuardianMaskCurioRenderer());
+    CuriosRendererRegistry.register(ModItems.CRYPTIC_EYE.get(), CrypticEyeCurioRenderer::new);
+    CuriosRendererRegistry.register(ModItems.ETERNAL_GUARDIANS_BAND.get(), EternalGuardiansBandCurioRenderer::new);
+    CuriosRendererRegistry.register(ModItems.ETERNAL_GUARDIAN_MASK.get(), EternalGuardianMaskCurioRenderer::new);
   }
 
   // pitch = xRot, yaw = yRot, roll = zRot
@@ -35,6 +33,9 @@ public class CurioRenderers {
       float headPitch) {
 
     HumanoidModel<LivingEntity> model = getPlayerModel(player);
+    if (model == null) {
+      return;
+    }
     if (player.isSwimming() || player.isFallFlying()) {
       matrixStack.mulPose(Axis.ZP.rotationDegrees(model.head.zRot));
       matrixStack.mulPose(Axis.YP.rotationDegrees(netHeadYaw));
@@ -55,7 +56,9 @@ public class CurioRenderers {
   public static void translateToRightArm(final PoseStack matrixStack, AbstractClientPlayer player) {
 
     HumanoidModel<LivingEntity> model = getPlayerModel(player);
-
+    if (model == null) {
+      return;
+    }
     if (player.isCrouching() && !model.riding && !player.isSwimming()) {
       matrixStack.translate(0.0F, 0.2, 0.0F);
     }

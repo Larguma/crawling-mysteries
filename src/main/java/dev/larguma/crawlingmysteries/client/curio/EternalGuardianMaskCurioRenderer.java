@@ -24,7 +24,8 @@ public class EternalGuardianMaskCurioRenderer implements ICurioRenderer {
       PoseStack matrixStack, RenderLayerParent<T, M> renderLayerParent, MultiBufferSource renderTypeBuffer, int light,
       float limbSwing, float limbSwingAmount, float partialTicks, float ageInTicks, float netHeadYaw, float headPitch) {
 
-    if (slotContext.entity() instanceof AbstractClientPlayer player && ConfigClient.CLIENT.renderTrinkets.get()) {
+    if (slotContext.entity() instanceof AbstractClientPlayer player
+        && Boolean.TRUE.equals(ConfigClient.CLIENT.renderTrinkets.get())) {
       if (player.isInvisible()) {
         return;
       }

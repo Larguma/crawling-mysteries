@@ -37,7 +37,7 @@ public class EternalGuardiansBandItem extends Item implements ICurioItem {
 
     tooltipComponents.add(Component.translatable("tooltip.crawlingmysteries.blank"));
     if (Screen.hasShiftDown()) {
-      if (ItemDataHelper.getAttunement(stack) >= 1.0f) {
+      if (ItemDataHelper.getAttunement(stack) >= 1.0F) {
         tooltipComponents.add(Component.translatable("tooltip.crawlingmysteries.attuned"));
       } else {
         tooltipComponents.add(Component.translatable("tooltip.crawlingmysteries.attunement"));
@@ -51,7 +51,7 @@ public class EternalGuardiansBandItem extends Item implements ICurioItem {
       tooltipComponents.add(Component.translatable("tooltip.crawlingmysteries.press_shift"));
     }
 
-    if (!Config.SERVER.enableTombstone.get()) {
+    if (Boolean.FALSE.equals(Config.SERVER.enableTombstone.get())) {
       tooltipComponents.add(Component.translatable("tooltip.crawlingmysteries.blank"));
       tooltipComponents.add(Component.translatable("tooltip.crawlingmysteries.config_disabled"));
     }
@@ -61,13 +61,13 @@ public class EternalGuardiansBandItem extends Item implements ICurioItem {
   @Override
   public void curioTick(SlotContext slotContext, ItemStack stack) {
     float currentAttunement = ItemDataHelper.getAttunement(stack);
-    if (currentAttunement < 1.0f && slotContext.entity().level().getGameTime() % 20 == 0) {
+    if (currentAttunement < 1.0F && slotContext.entity().level().getGameTime() % 20 == 0) {
       Player player = (Player) slotContext.entity();
       int soulsSucked = suckSoulsNearby(player, stack);
       if (soulsSucked > 0) {
-        float attunementPerSoul = 1f / ATTUNEMENT_SOULS;
+        float attunementPerSoul = 1F / ATTUNEMENT_SOULS;
         float totalAttunement = currentAttunement + attunementPerSoul * soulsSucked;
-        if (totalAttunement >= 1.0f) {
+        if (totalAttunement >= 1.0F) {
           ItemDataHelper.setEnabled(stack, true);
         }
         ItemDataHelper.setAttunement(stack, totalAttunement);
@@ -87,7 +87,7 @@ public class EternalGuardiansBandItem extends Item implements ICurioItem {
     }
 
     for (Monster hostile : hostiles) {
-      hostile.hurt(player.damageSources().magic(), 0.1f);
+      hostile.hurt(player.damageSources().magic(), 0.1F);
 
       if (!player.level().isClientSide()
           && player.level() instanceof ServerLevel serverLevel) {
@@ -108,8 +108,8 @@ public class EternalGuardiansBandItem extends Item implements ICurioItem {
     }
 
     if (!player.level().isClientSide()) {
-      float pitch = 0.8f + player.level().random.nextFloat() * 0.4f;
-      float volume = Math.min(0.5f + hostiles.size() * 0.1f, 1f);
+      float pitch = 0.8F + player.level().random.nextFloat() * 0.4F;
+      float volume = Math.min(0.5F + hostiles.size() * 0.1F, 1F);
       player.level().playSound(null, player.getX(), player.getY(), player.getZ(),
           SoundEvents.SOUL_ESCAPE, SoundSource.PLAYERS, volume, pitch);
     }

@@ -106,6 +106,8 @@ public class CookingAltarTier2BlockEntity extends BlockEntity implements GeoBloc
         case AlchemicalDistilleryMenu.DATA_COOKING_TIME -> cookingTime = value;
         case AlchemicalDistilleryMenu.DATA_STABILITY_SCORE -> stabilityScore = value;
         case AlchemicalDistilleryMenu.DATA_IS_COOKING -> isCooking = value == 1;
+        default -> { // --- IGNORE ---
+        }
       }
     }
 
@@ -210,22 +212,22 @@ public class CookingAltarTier2BlockEntity extends BlockEntity implements GeoBloc
     if (blockEntity.isCooking) {
       blockEntity.tickMinigame();
 
-      if (level.random.nextFloat() < 0.05f) {
-        level.playSound(null, pos, SoundEvents.BUBBLE_COLUMN_UPWARDS_AMBIENT, SoundSource.BLOCKS, 0.3f, 1.0f);
+      if (level.random.nextFloat() < 0.05F) {
+        level.playSound(null, pos, SoundEvents.BUBBLE_COLUMN_UPWARDS_AMBIENT, SoundSource.BLOCKS, 0.3F, 1.0F);
       }
     }
   }
 
   public static void clientTick(Level level, BlockPos pos, BlockState state, CookingAltarTier2BlockEntity blockEntity) {
     if (blockEntity.isCooking) {
-      if (level.random.nextFloat() < 0.15f) {
+      if (level.random.nextFloat() < 0.15F) {
         double x = pos.getX() + 0.5 + (level.random.nextDouble() - 0.5) * 0.8;
         double y = pos.getY() + 1.5;
         double z = pos.getZ() + 0.5 + (level.random.nextDouble() - 0.5) * 0.8;
         level.addParticle(ParticleTypes.SMOKE, x, y, z, 0, 0.05, 0);
       }
 
-      if (level.random.nextFloat() < 0.1f) {
+      if (level.random.nextFloat() < 0.1F) {
         double x = pos.getX() + 0.5 + (level.random.nextDouble() - 0.5) * 0.4;
         double y = pos.getY() + 1.2;
         double z = pos.getZ() + 0.5 + (level.random.nextDouble() - 0.5) * 0.4;
@@ -242,7 +244,7 @@ public class CookingAltarTier2BlockEntity extends BlockEntity implements GeoBloc
       needlePosition = Math.clamp(needlePosition, -100, 100);
     }
 
-    if (level != null && level.random.nextFloat() < 0.05f) {
+    if (level != null && level.random.nextFloat() < 0.05F) {
       needleVelocity += level.random.nextInt(3) - 1; // -1, 0, or 1
       needleVelocity = Math.clamp(needleVelocity, -5, 5);
     }
@@ -307,19 +309,20 @@ public class CookingAltarTier2BlockEntity extends BlockEntity implements GeoBloc
     }
 
     ItemStack outputItem;
+    // TODO: Replace with the actuals items
     if (success) {
       setDistillingState(DistillingState.SUCCESS);
       outputItem = new ItemStack(Items.SUSPICIOUS_STEW);
       // Play success sound
       if (level != null && !level.isClientSide) {
-        level.playSound(null, worldPosition, SoundEvents.PLAYER_LEVELUP, SoundSource.BLOCKS, 0.7f, 1.2f);
+        level.playSound(null, worldPosition, SoundEvents.PLAYER_LEVELUP, SoundSource.BLOCKS, 0.7F, 1.2F);
       }
     } else {
       setDistillingState(DistillingState.FAILED);
       outputItem = new ItemStack(Items.ROTTEN_FLESH);
       // Play failure sound
       if (level != null && !level.isClientSide) {
-        level.playSound(null, worldPosition, SoundEvents.FIRE_EXTINGUISH, SoundSource.BLOCKS, 0.5f, 0.8f);
+        level.playSound(null, worldPosition, SoundEvents.FIRE_EXTINGUISH, SoundSource.BLOCKS, 0.5F, 0.8F);
       }
     }
 

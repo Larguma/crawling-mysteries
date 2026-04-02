@@ -30,9 +30,9 @@ public class BetterToastOverlay implements LayeredDraw.Layer {
   private static final int SUCCESS_COLOR = 0x66FF99; // Green
   private static final int WARNING_COLOR = 0xFFCC66; // Orange
 
-  private static final float SLIDE_IN_DURATION = 8.0f; // ticks
-  private static final float DISPLAY_DURATION = 60.0f; // ticks
-  private static final float FADE_OUT_DURATION = 15.0f; // ticks
+  private static final float SLIDE_IN_DURATION = 8.0F; // ticks
+  private static final float DISPLAY_DURATION = 60.0F; // ticks
+  private static final float FADE_OUT_DURATION = 15.0F; // ticks
   private static final float TOTAL_DURATION = SLIDE_IN_DURATION + DISPLAY_DURATION + FADE_OUT_DURATION;
 
   private static final int PADDING_X = 8;
@@ -44,9 +44,9 @@ public class BetterToastOverlay implements LayeredDraw.Layer {
   private static final int ICON_SIZE = 16;
   private static final int ICON_PADDING = 4;
 
-  private static float globalAnimationTick = 0;
-
   private static final List<BetterToast> activeToasts = new ArrayList<>();
+  
+  private float globalAnimationTick = 0;
 
   @Override
   public void render(GuiGraphics guiGraphics, DeltaTracker deltaTracker) {
@@ -99,7 +99,7 @@ public class BetterToastOverlay implements LayeredDraw.Layer {
     float slideProgress = toast.getSlideProgress();
     float fadeAlpha = toast.getFadeAlpha();
 
-    if (fadeAlpha <= 0.05f) {
+    if (fadeAlpha <= 0.05F) {
       return toastHeight;
     }
 
@@ -124,7 +124,7 @@ public class BetterToastOverlay implements LayeredDraw.Layer {
     if (hasIcon) {
       int iconY = currentYPos + (toastHeight - ICON_SIZE) / 2;
 
-      RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, fadeAlpha);
+      RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, fadeAlpha);
       if (toast.getIconItem().isPresent()) {
         guiGraphics.renderItem(toast.getIconItem().get(), contentX, iconY);
       } else if (toast.getIconTexture().isPresent()) {
@@ -132,12 +132,12 @@ public class BetterToastOverlay implements LayeredDraw.Layer {
         RenderSystem.setShaderTexture(0, textureLoc);
         guiGraphics.blit(textureLoc, contentX, iconY, ICON_SIZE, ICON_SIZE, 0, 0, 16, 16, 16, 16);
       }
-      RenderSystem.setShaderColor(1.0f, 1.0f, 1.0f, 1.0f);
+      RenderSystem.setShaderColor(1.0F, 1.0F, 1.0F, 1.0F);
 
       contentX += ICON_SIZE + ICON_PADDING;
     }
 
-    int glowColor = RenderUtils.withAlpha(accentColor, fadeAlpha * 0.3f);
+    int glowColor = RenderUtils.withAlpha(accentColor, fadeAlpha * 0.3F);
     guiGraphics.drawString(font, text, contentX + 1, textY + 1, glowColor, false);
     guiGraphics.drawString(font, text, contentX - 1, textY, glowColor, false);
 
@@ -149,10 +149,10 @@ public class BetterToastOverlay implements LayeredDraw.Layer {
 
   private void renderEtherealGlow(GuiGraphics guiGraphics, int x, int y, int width, int height, int accentColor,
       float alpha) {
-    float pulseIntensity = 0.5f + 0.2f * (float) Math.sin(globalAnimationTick * 0.1f);
+    float pulseIntensity = 0.5F + 0.2F * (float) Math.sin(globalAnimationTick * 0.1F);
 
     for (int i = 3; i >= 1; i--) {
-      float glowAlpha = alpha * 0.08f * pulseIntensity * (4 - i) / 3f;
+      float glowAlpha = alpha * 0.08F * pulseIntensity * (4 - i) / 3F;
       int glowColor = RenderUtils.withAlpha(accentColor, glowAlpha);
       int offset = i * 2;
       guiGraphics.fill(x - offset, y - offset, x + width + offset, y + height + offset, glowColor);
@@ -165,21 +165,21 @@ public class BetterToastOverlay implements LayeredDraw.Layer {
         && toast.getLifetime() < SLIDE_IN_DURATION + DISPLAY_DURATION;
 
     FloatingEmberParticle.updateAndRenderInArea(guiGraphics, toast.getParticles(), x, y, width, height, accentColor,
-        deltaTicks, 12, 0.15f, shouldSpawn);
+        deltaTicks, 12, 0.15F, shouldSpawn);
   }
 
   private void renderToastPanel(GuiGraphics guiGraphics, int x, int y, int width, int height, int accentColor,
       float alpha) {
-    float pulse = 0.85f + 0.1f * (float) Math.sin(globalAnimationTick * 0.08f);
-    int bgColor = RenderUtils.withAlpha(0x0a0a18, alpha * pulse * 0.85f);
+    float pulse = 0.85F + 0.1F * (float) Math.sin(globalAnimationTick * 0.08F);
+    int bgColor = RenderUtils.withAlpha(0x0a0a18, alpha * pulse * 0.85F);
     guiGraphics.fill(x, y, x + width, y + height, bgColor);
 
-    int innerGlow = RenderUtils.withAlpha(accentColor, alpha * 0.08f);
+    int innerGlow = RenderUtils.withAlpha(accentColor, alpha * 0.08F);
     guiGraphics.fill(x + 2, y + 2, x + width - 2, y + height - 2, innerGlow);
 
-    float borderPulse = 0.6f + 0.4f * (float) Math.sin(globalAnimationTick * 0.12f);
-    int borderColor1 = RenderUtils.withAlpha(accentColor, alpha * 0.7f * borderPulse);
-    int borderColor2 = RenderUtils.withAlpha(accentColor, alpha * 0.4f * borderPulse);
+    float borderPulse = 0.6F + 0.4F * (float) Math.sin(globalAnimationTick * 0.12F);
+    int borderColor1 = RenderUtils.withAlpha(accentColor, alpha * 0.7F * borderPulse);
+    int borderColor2 = RenderUtils.withAlpha(accentColor, alpha * 0.4F * borderPulse);
 
     // top
     guiGraphics.fill(x, y, x + width, y + 1, borderColor1);
@@ -190,9 +190,9 @@ public class BetterToastOverlay implements LayeredDraw.Layer {
     // right
     guiGraphics.fill(x + width - 1, y, x + width, y + height, borderColor2);
 
-    float cornerPulse = 0.7f + 0.3f * (float) Math.sin(globalAnimationTick * 0.15f + 0.5f);
+    float cornerPulse = 0.7F + 0.3F * (float) Math.sin(globalAnimationTick * 0.15F + 0.5F);
     int cornerColor = RenderUtils.withAlpha(accentColor, alpha * cornerPulse);
-    int cornerGlow = RenderUtils.withAlpha(0xFFFFFF, alpha * 0.5f * cornerPulse);
+    int cornerGlow = RenderUtils.withAlpha(0xFFFFFF, alpha * 0.5F * cornerPulse);
 
     // top-left
     guiGraphics.fill(x, y, x + 5, y + 1, cornerColor);
@@ -214,10 +214,10 @@ public class BetterToastOverlay implements LayeredDraw.Layer {
     guiGraphics.fill(x + width - 1, y + height - 5, x + width, y + height, cornerColor);
     guiGraphics.fill(x + width - 2, y + height - 2, x + width - 1, y + height - 1, cornerGlow);
 
-    int glowColor = RenderUtils.withAlpha(accentColor, alpha * 0.2f);
+    int glowColor = RenderUtils.withAlpha(accentColor, alpha * 0.2F);
     guiGraphics.fill(x + 2, y + 2, x + width - 2, y + 3, glowColor);
 
-    int accentLine = RenderUtils.withAlpha(accentColor, alpha * 0.25f);
+    int accentLine = RenderUtils.withAlpha(accentColor, alpha * 0.25F);
     guiGraphics.fill(x + 3, y + height - 2, x + width - 3, y + height - 1, accentLine);
   }
 
@@ -324,21 +324,21 @@ public class BetterToastOverlay implements LayeredDraw.Layer {
       if (lifetime < SLIDE_IN_DURATION) {
         float t = lifetime / SLIDE_IN_DURATION;
         // Ease out cubic
-        return 1.0f - (1.0f - t) * (1.0f - t) * (1.0f - t);
+        return 1.0F - (1.0F - t) * (1.0F - t) * (1.0F - t);
       }
-      return 1.0f;
+      return 1.0F;
     }
 
     public float getFadeAlpha() {
       if (lifetime < SLIDE_IN_DURATION) {
         // Fade in during slide
-        return Math.min(1.0f, lifetime / (SLIDE_IN_DURATION * 0.5f));
+        return Math.min(1.0F, lifetime / (SLIDE_IN_DURATION * 0.5F));
       } else if (lifetime > SLIDE_IN_DURATION + DISPLAY_DURATION) {
         // Fade out
         float fadeProgress = (lifetime - SLIDE_IN_DURATION - DISPLAY_DURATION) / FADE_OUT_DURATION;
-        return 1.0f - Math.min(1.0f, fadeProgress);
+        return 1.0F - Math.min(1.0F, fadeProgress);
       }
-      return 1.0f;
+      return 1.0F;
     }
   }
 }

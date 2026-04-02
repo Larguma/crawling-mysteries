@@ -25,9 +25,12 @@ public class BackgroundParticle {
       0xAF7AC5 // Light purple
   };
 
-  private float x, y;
-  private float prevX, prevY;
-  private final float vx, vy;
+  private float x;
+  private float y;
+  private float prevX;
+  private float prevY;
+  private final float vx;
+  private final float vy;
   private int age;
   private final int maxAge;
   private final int color;
@@ -59,9 +62,9 @@ public class BackgroundParticle {
   }
 
   private float getAlpha() {
-    float fadeIn = Math.min(1.0f, age / 20.0f);
-    float fadeOut = Math.min(1.0f, (maxAge - age) / 20.0f);
-    return fadeIn * fadeOut * 0.6f;
+    float fadeIn = Math.min(1.0F, age / 20.0F);
+    float fadeOut = Math.min(1.0F, (maxAge - age) / 20.0F);
+    return fadeIn * fadeOut * 0.6F;
   }
 
   private float getX(float partialTick) {
@@ -117,12 +120,12 @@ public class BackgroundParticle {
   private static BackgroundParticle createParticle(int screenWidth, int screenHeight, boolean randomAge) {
     float x = RANDOM.nextFloat() * screenWidth;
     float y = RANDOM.nextFloat() * screenHeight;
-    float vx = (RANDOM.nextFloat() - 0.5f) * 0.5f;
-    float vy = -RANDOM.nextFloat() * 0.8f - 0.2f;
+    float vx = (RANDOM.nextFloat() - 0.5F) * 0.5F;
+    float vy = -RANDOM.nextFloat() * 0.8F - 0.2F;
     int maxAge = 60 + RANDOM.nextInt(120);
     int age = randomAge ? RANDOM.nextInt(maxAge) : 0;
     int color = PARTICLE_COLORS[RANDOM.nextInt(PARTICLE_COLORS.length)];
-    float size = 1.5f + RANDOM.nextFloat() * 2.5f;
+    float size = 1.5F + RANDOM.nextFloat() * 2.5F;
 
     return new BackgroundParticle(x, y, vx, vy, age, maxAge, color, size);
   }

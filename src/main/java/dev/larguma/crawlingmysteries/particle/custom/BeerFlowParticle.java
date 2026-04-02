@@ -22,7 +22,7 @@ public class BeerFlowParticle extends TextureSheetParticle {
 
     this.setSize(0.01F, 0.01F);
     this.gravity = 0.06F;
-    this.lifetime = (int) (64.0D / (Math.random() * 0.8D + 0.2D));
+    this.lifetime = 51 + this.random.nextInt(13);
 
     // Golden
     this.rCol = 0.95F;
@@ -46,7 +46,7 @@ public class BeerFlowParticle extends TextureSheetParticle {
       return;
     }
 
-    this.yd -= 0.04D * (double) this.gravity;
+    this.yd -= 0.04D * this.gravity;
     this.move(this.xd, this.yd, this.zd);
 
     this.xd *= 0.98F;

@@ -115,17 +115,17 @@ public class SpellSelectMenuScreen extends Screen {
     RenderSystem.defaultBlendFunc();
 
     float rotation = 0;
-    float pulse = 1.0f;
+    float pulse = 1.0F;
     if (animate) {
-      rotation = animationTick * 0.02f;
-      pulse = (float) (0.3f + 0.2f * Math.sin(animationTick * SpellSlotRenderer.PULSE_SPEED));
+      rotation = animationTick * 0.02F;
+      pulse = (float) (0.3F + 0.2F * Math.sin(animationTick * SpellSlotRenderer.PULSE_SPEED));
     }
 
     int outerRadius = RADIUS + 30;
     drawRuneRing(guiGraphics, centerX, centerY, outerRadius, rotation, pulse, PRIMARY_COLOR);
 
     int innerRadius = RADIUS - 25;
-    drawRuneRing(guiGraphics, centerX, centerY, innerRadius, -rotation * 1.5f, pulse, SECONDARY_COLOR);
+    drawRuneRing(guiGraphics, centerX, centerY, innerRadius, -rotation * 1.5F, pulse, SECONDARY_COLOR);
 
     int middleRadius = RADIUS + 2;
     drawDecorativeRing(guiGraphics, centerX, centerY, middleRadius, pulse);
@@ -147,7 +147,7 @@ public class SpellSelectMenuScreen extends Screen {
 
       float runeAlpha = alpha;
       if (animate) {
-        runeAlpha = alpha * (0.5f + 0.5f * (float) Math.sin(animationTick * 0.05f + i));
+        runeAlpha = alpha * (0.5F + 0.5F * (float) Math.sin(animationTick * 0.05F + i));
       }
       int a = (int) (runeAlpha * 255);
       int argb = (a << 24) | (r << 16) | (g << 8) | b;
@@ -165,7 +165,7 @@ public class SpellSelectMenuScreen extends Screen {
       int x2 = centerX + (int) (Math.cos(angle2) * radius);
       int y2 = centerY + (int) (Math.sin(angle2) * radius);
 
-      float segmentAlpha = alpha * 0.3f;
+      float segmentAlpha = alpha * 0.3F;
       int a = (int) (segmentAlpha * 255);
       int argb = (a << 24) | (r << 16) | (g << 8) | b;
 
@@ -192,6 +192,8 @@ public class SpellSelectMenuScreen extends Screen {
         guiGraphics.fill(x - 2, y - size + 2, x + 2, y - size + 4, color);
         guiGraphics.fill(x - 3, y - size + 4, x + 3, y - size + 6, color);
         break;
+      default:
+        break;
     }
   }
 
@@ -208,7 +210,7 @@ public class SpellSelectMenuScreen extends Screen {
 
       float dotAlpha = alpha;
       if (animate) {
-        dotAlpha = alpha * (0.4f + 0.3f * (float) Math.sin(animationTick * 0.08f + i * 0.5f));
+        dotAlpha = alpha * (0.4F + 0.3F * (float) Math.sin(animationTick * 0.08F + i * 0.5F));
       }
       int a = (int) (dotAlpha * 255);
       int argb = (a << 24) | (r1 << 16) | (g1 << 8) | b1;
@@ -224,9 +226,9 @@ public class SpellSelectMenuScreen extends Screen {
     RenderSystem.defaultBlendFunc();
     RenderSystem.setShader(GameRenderer::getPositionColorShader);
 
-    float pulse = 1.0f;
+    float pulse = 1.0F;
     if (animate) {
-      pulse = (float) (0.5f + 0.3f * Math.sin(animationTick * SpellSlotRenderer.PULSE_SPEED));
+      pulse = (float) (0.5F + 0.3F * Math.sin(animationTick * SpellSlotRenderer.PULSE_SPEED));
     }
     int innerAlpha = (int) (pulse * 180);
     RenderUtils.drawCircle(guiGraphics, centerX, centerY, 8, PRIMARY_COLOR, innerAlpha);
@@ -246,8 +248,8 @@ public class SpellSelectMenuScreen extends Screen {
     }
 
     // distance and angle from center
-    double dx = mouseX - centerX;
-    double dy = mouseY - centerY;
+    double dx = (double) mouseX - centerX;
+    double dy = (double) mouseY - centerY;
     double distance = Math.sqrt(dx * dx + dy * dy);
 
     if (distance < CENTER_DEADZONE) {
@@ -282,14 +284,14 @@ public class SpellSelectMenuScreen extends Screen {
   private void playHoverSound() {
     if (this.minecraft != null) {
       this.minecraft.getSoundManager().play(
-          SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK.value(), 1.5f, 0.2f));
+          SimpleSoundInstance.forUI(SoundEvents.UI_BUTTON_CLICK.value(), 1.5F, 0.2F));
     }
   }
 
   private void playSelectSound() {
     if (this.minecraft != null) {
       this.minecraft.getSoundManager().play(
-          SimpleSoundInstance.forUI(SoundEvents.ENCHANTMENT_TABLE_USE, 1.2f, 0.6f));
+          SimpleSoundInstance.forUI(SoundEvents.ENCHANTMENT_TABLE_USE, 1.2F, 0.6F));
     }
   }
 
@@ -334,7 +336,7 @@ public class SpellSelectMenuScreen extends Screen {
 
       SpellSlotRenderer.renderSlotBackground(guiGraphics, slotX, slotY, SLOT_TEXTURE_SIZE, isSelected);
 
-      float phaseOffset = i * 0.8f;
+      float phaseOffset = i * 0.8F;
       int bobOffset = 0;
       if (animate) {
         bobOffset = SpellSlotRenderer.calculateBobOffset(animationTick, phaseOffset, isSelected);
@@ -360,9 +362,9 @@ public class SpellSelectMenuScreen extends Screen {
       return;
     }
 
-    float pulse = 1.0f;
+    float pulse = 1.0F;
     if (animate) {
-      pulse = (float) (0.4f + 0.4f * Math.sin(animationTick * SpellSlotRenderer.PULSE_SPEED));
+      pulse = (float) (0.4F + 0.4F * Math.sin(animationTick * SpellSlotRenderer.PULSE_SPEED));
     }
     int alpha = (int) (pulse * 200);
     int color = spell.getPrimaryColor();
@@ -371,7 +373,7 @@ public class SpellSelectMenuScreen extends Screen {
     int argb = RenderUtils.withAlpha(color, alpha);
     RenderUtils.drawLine(guiGraphics, x1, y1, x2, y2, lineWidth, argb);
 
-    int glowArgb = RenderUtils.withAlpha(color, (int) (alpha * 0.3f));
+    int glowArgb = RenderUtils.withAlpha(color, (int) (alpha * 0.3F));
     RenderUtils.drawLine(guiGraphics, x1, y1, x2, y2, lineWidth + 4, glowArgb);
   }
 
@@ -514,7 +516,7 @@ public class SpellSelectMenuScreen extends Screen {
   private void playCooldownSound() {
     if (this.minecraft != null) {
       this.minecraft.getSoundManager().play(
-          SimpleSoundInstance.forUI(SoundEvents.NOTE_BLOCK_BASS.value(), 0.5f, 0.5f));
+          SimpleSoundInstance.forUI(SoundEvents.NOTE_BLOCK_BASS.value(), 0.5F, 0.5F));
     }
   }
 

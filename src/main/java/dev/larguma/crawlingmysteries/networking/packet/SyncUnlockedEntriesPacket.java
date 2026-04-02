@@ -12,7 +12,7 @@ import net.minecraft.resources.ResourceLocation;
 
 public record SyncUnlockedEntriesPacket(Set<String> unlockedEntries) implements CustomPacketPayload {
 
-  public static final Type<SyncUnlockedEntriesPacket> TYPE = new CustomPacketPayload.Type<>(
+  public static final Type<SyncUnlockedEntriesPacket> PAYLOAD_TYPE = new CustomPacketPayload.Type<>(
       ResourceLocation.fromNamespaceAndPath(CrawlingMysteries.MOD_ID, "sync_unlocked_entries"));
 
   public static final StreamCodec<ByteBuf, SyncUnlockedEntriesPacket> STREAM_CODEC = StreamCodec.composite(
@@ -22,6 +22,6 @@ public record SyncUnlockedEntriesPacket(Set<String> unlockedEntries) implements 
 
   @Override
   public Type<? extends CustomPacketPayload> type() {
-    return TYPE;
+    return PAYLOAD_TYPE;
   }
 }

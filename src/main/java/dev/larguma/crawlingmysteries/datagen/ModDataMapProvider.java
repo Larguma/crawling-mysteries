@@ -14,5 +14,6 @@ public class ModDataMapProvider extends DataMapProvider {
 
   @Override
   protected void gather(Provider provider) {
+    // Register data providers here
   }
 }

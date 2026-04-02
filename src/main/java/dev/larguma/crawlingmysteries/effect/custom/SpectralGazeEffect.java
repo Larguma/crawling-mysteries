@@ -62,7 +62,7 @@ public class SpectralGazeEffect extends MobEffect {
 
     List<LivingEntity> entities = entity.level().getEntitiesOfClass(
         LivingEntity.class,
-        entity.getBoundingBox().inflate(EFFECT_RADIUS * (1 + amplifier)),
+        entity.getBoundingBox().inflate((double) EFFECT_RADIUS * (1 + amplifier)),
         livingEntity -> amplifier == 0 || livingEntity != entity);
 
     for (LivingEntity livingEntity : entities) {

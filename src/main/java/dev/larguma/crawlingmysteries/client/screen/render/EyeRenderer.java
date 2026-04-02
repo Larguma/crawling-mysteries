@@ -10,8 +10,6 @@ import net.minecraft.util.Mth;
  */
 public final class EyeRenderer {
 
-  private static float eyeTargetX = 0;
-  private static float eyeTargetY = 0;
   private static float eyeCurrentX = 0;
   private static float eyeCurrentY = 0;
   private static float blinkProgress = 0;
@@ -33,7 +31,7 @@ public final class EyeRenderer {
   public static void renderEye(GuiGraphics guiGraphics, int mouseX, int mouseY, float animationTick, int primaryColor,
       int eyePosX, int eyePosY, int size) {
 
-    float pulse = 0.3f + 0.2f * (float) Math.sin(animationTick * 0.05f);
+    float pulse = 0.3F + 0.2F * (float) Math.sin(animationTick * 0.05F);
     int glowAlpha = (int) (pulse * 100);
     int glowColor = (glowAlpha << 24) | (primaryColor & 0xFFFFFF);
 
@@ -49,7 +47,7 @@ public final class EyeRenderer {
 
     // Pupil that tracks mouse
     int pupilSize = size / 3;
-    float maxOffset = (size - pupilSize) / 4f;
+    float maxOffset = (size - pupilSize) / 4F;
     int pupilX = eyePosX + size / 2 - pupilSize / 2 + (int) (eyeCurrentX * maxOffset);
     int pupilY = eyePosY + size / 2 - pupilSize / 2 + (int) (eyeCurrentY * maxOffset);
 
@@ -57,7 +55,7 @@ public final class EyeRenderer {
     int blinkOffset = 0;
     if (isBlinking) {
       float blinkCurve = (float) Math.sin(blinkProgress * Math.PI);
-      blinkOffset = (int) (size * 0.4f * blinkCurve);
+      blinkOffset = (int) (size * 0.4F * blinkCurve);
     }
 
     // Draw iris
@@ -103,8 +101,8 @@ public final class EyeRenderer {
       blinkProgress = 0;
     }
     if (isBlinking) {
-      blinkProgress += 0.15f;
-      if (blinkProgress >= 1.0f) {
+      blinkProgress += 0.15F;
+      if (blinkProgress >= 1.0F) {
         isBlinking = false;
         nextBlinkTime = deltaTime + 60 + (float) (Math.random() * 120);
       }
@@ -112,15 +110,17 @@ public final class EyeRenderer {
   }
 
   private static void updateEyeTracking(int mouseX, int mouseY, float partialTick, int guiWidth, int guiHeight) {
+    float eyeTargetY = 0;
+    float eyeTargetX = 0;
     // Calculate target based on mouse position relative to screen center
-    float targetX = (mouseX - guiWidth / 2f) / (guiWidth / 2f);
-    float targetY = (mouseY - guiHeight / 2f) / (guiHeight / 2f);
+    float targetX = (mouseX - guiWidth / 2F) / (guiWidth / 2F);
+    float targetY = (mouseY - guiHeight / 2F) / (guiHeight / 2F);
 
-    eyeTargetX = Mth.clamp(targetX, -1f, 1f);
-    eyeTargetY = Mth.clamp(targetY, -1f, 1f);
+    eyeTargetX = Mth.clamp(targetX, -1F, 1F);
+    eyeTargetY = Mth.clamp(targetY, -1F, 1F);
 
     // Smooth interpolation
-    float speed = 0.1f;
+    float speed = 0.1F;
     eyeCurrentX += (eyeTargetX - eyeCurrentX) * speed;
     eyeCurrentY += (eyeTargetY - eyeCurrentY) * speed;
   }

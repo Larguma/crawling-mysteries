@@ -17,7 +17,7 @@ public class ModSoundDefinitionProvider extends SoundDefinitionsProvider {
   public void registerSounds() {
     add(ModSounds.OST_01, SoundDefinition.definition().with(sound(CrawlingMysteries.MOD_ID + ":ost_01").stream(true)));
     add(ModSounds.OST_02, SoundDefinition.definition().with(sound(CrawlingMysteries.MOD_ID + ":ost_02").stream(true)));
-    add(ModSounds.BEER_POUR, SoundDefinition.definition().with(sound(CrawlingMysteries.MOD_ID + ":beer_pour").volume(0.5f)));
+    add(ModSounds.BEER_POUR, SoundDefinition.definition().with(sound(CrawlingMysteries.MOD_ID + ":beer_pour").volume(0.5F)));
     add(ModSounds.BEER_DRINK, SoundDefinition.definition().with(sound(CrawlingMysteries.MOD_ID + ":beer_drink")));
   }
 

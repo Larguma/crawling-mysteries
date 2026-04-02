@@ -20,33 +20,33 @@ public class NbtHelper {
   @Nullable
   public static GameProfile toGameProfile(CompoundTag nbt) {
     UUID uUID = nbt.hasUUID("Id") ? nbt.getUUID("Id") : Util.NIL_UUID;
-    String string = nbt.getString("Name");
+    String name = nbt.getString("Name");
 
     try {
-      GameProfile gameProfile = new GameProfile(uUID, string);
+      GameProfile gameProfile = new GameProfile(uUID, name);
       if (nbt.contains("Properties", 10)) {
-        CompoundTag nbtCompound = nbt.getCompound("Properties");
-        Iterator<String> var5 = nbtCompound.getAllKeys().iterator();
+        CompoundTag propertiesCompound = nbt.getCompound("Properties");
+        Iterator<String> iterator = propertiesCompound.getAllKeys().iterator();
 
-        while (var5.hasNext()) {
-          String string2 = (String) var5.next();
-          ListTag nbtList = nbtCompound.getList(string2, 10);
+        while (iterator.hasNext()) {
+          String key = iterator.next();
+          ListTag nbtList = propertiesCompound.getList(key, 10);
 
           for (int i = 0; i < nbtList.size(); ++i) {
-            CompoundTag nbtCompound2 = nbtList.getCompound(i);
-            String string3 = nbtCompound2.getString("Value");
-            if (nbtCompound2.contains("Signature", 8)) {
-              gameProfile.getProperties().put(string2,
-                  new Property(string2, string3, nbtCompound2.getString("Signature")));
+            CompoundTag currentNbtCompound = nbtList.getCompound(i);
+            String value = currentNbtCompound.getString("Value");
+            if (currentNbtCompound.contains("Signature", 8)) {
+              gameProfile.getProperties().put(key,
+                  new Property(key, value, currentNbtCompound.getString("Signature")));
             } else {
-              gameProfile.getProperties().put(string2, new Property(string2, string3));
+              gameProfile.getProperties().put(key, new Property(key, value));
             }
           }
         }
       }
 
       return gameProfile;
-    } catch (Throwable var11) {
+    } catch (Exception e) {
       return null;
     }
   }
@@ -62,25 +62,25 @@ public class NbtHelper {
 
     if (!profile.getProperties().isEmpty()) {
       CompoundTag nbtCompound = new CompoundTag();
-      Iterator<String> var3 = profile.getProperties().keySet().iterator();
+      Iterator<String> propertyKeyIterator = profile.getProperties().keySet().iterator();
 
-      while (var3.hasNext()) {
-        String string = (String) var3.next();
+      while (propertyKeyIterator.hasNext()) {
+        String propertyKey = propertyKeyIterator.next();
         ListTag nbtList = new ListTag();
 
-        CompoundTag nbtCompound2;
-        for (Iterator<Property> var6 = profile.getProperties().get(string).iterator(); var6.hasNext(); nbtList
-            .add(nbtCompound2)) {
-          Property property = (Property) var6.next();
-          nbtCompound2 = new CompoundTag();
-          nbtCompound2.putString("Value", property.value());
-          String string2 = property.signature();
-          if (string2 != null) {
-            nbtCompound2.putString("Signature", string2);
+        CompoundTag nbtCompoundData;
+        for (Iterator<Property> propertyIterator = profile.getProperties().get(propertyKey).iterator(); propertyIterator
+            .hasNext(); nbtList.add(nbtCompoundData)) {
+          Property property = propertyIterator.next();
+          nbtCompoundData = new CompoundTag();
+          nbtCompoundData.putString("Value", property.value());
+          String propertySignature = property.signature();
+          if (propertySignature != null) {
+            nbtCompoundData.putString("Signature", propertySignature);
           }
         }
 
-        nbtCompound.put(string, nbtList);
+        nbtCompound.put(propertyKey, nbtList);
       }
 
       nbt.put("Properties", nbtCompound);

@@ -15,7 +15,7 @@ import net.neoforged.neoforge.common.loot.IGlobalLootModifier;
 import net.neoforged.neoforge.common.loot.LootModifier;
 
 public class AddItemModifier extends LootModifier {
-  public static final MapCodec<AddItemModifier> CODEC = RecordCodecBuilder
+  public static final MapCodec<AddItemModifier> RECORD_CODEC = RecordCodecBuilder
       .mapCodec(inst -> LootModifier.codecStart(inst)
           .and(BuiltInRegistries.ITEM.byNameCodec().fieldOf("item").forGetter(e -> e.item))
           .and(Codec.FLOAT.fieldOf("chance").forGetter(e -> e.chance))
@@ -55,7 +55,7 @@ public class AddItemModifier extends LootModifier {
 
   @Override
   public MapCodec<? extends IGlobalLootModifier> codec() {
-    return CODEC;
+    return RECORD_CODEC;
   }
 
 }

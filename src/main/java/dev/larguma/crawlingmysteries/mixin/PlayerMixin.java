@@ -31,7 +31,7 @@ public abstract class PlayerMixin {
 
   @Inject(at = @At("HEAD"), method = "dropEquipment")
   private void dropEquipment(CallbackInfo info) {
-    if (!Config.SERVER.enableTombstone.get()) {
+    if (Boolean.FALSE.equals(Config.SERVER.enableTombstone.get())) {
       return;
     }
 
@@ -42,9 +42,8 @@ public abstract class PlayerMixin {
     Optional<ICuriosItemHandler> curiosInventory = CuriosApi.getCuriosInventory(player);
     List<SlotResult> eternalGuardiansBand = curiosInventory
         .map(inv -> inv.findCurios(ModItems.ETERNAL_GUARDIANS_BAND.get())).orElse(List.of());
-    boolean hasEternalGuardiansBand = eternalGuardiansBand.stream().anyMatch(slot -> {
-      return ItemDataHelper.getAttunement(slot.stack()) >= 1.0f;
-    });
+    boolean hasEternalGuardiansBand = eternalGuardiansBand.stream()
+        .anyMatch(slot -> ItemDataHelper.getAttunement(slot.stack()) >= 1.0F);
     curiosInventory.ifPresent(inv -> collectTrinkets(inv, trinketStacks, keepInventory));
 
     if (hasEternalGuardiansBand) {
@@ -84,7 +83,8 @@ public abstract class PlayerMixin {
         }
         case DESTROY -> handler.setStackInSlot(i, ItemStack.EMPTY);
         case ALWAYS_KEEP -> {
-          /* do nothing */ }
+          // do nothing
+        }
         default -> {
           if (!keepInventory && !EnchantmentHelper.has(stack, EnchantmentEffectComponents.PREVENT_EQUIPMENT_DROP)) {
             trinketStacks.add(SlottedItemStack.forCurios(stack.copy(), slotId, i, isCosmetic));

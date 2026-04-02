@@ -15,7 +15,7 @@ public record DistilleryActionPacket(BlockPos pos, Action action) implements Cus
     STABILIZE
   }
 
-  public static final Type<DistilleryActionPacket> TYPE = new CustomPacketPayload.Type<>(
+  public static final Type<DistilleryActionPacket> PAYLOAD_TYPE = new CustomPacketPayload.Type<>(
       ResourceLocation.fromNamespaceAndPath(CrawlingMysteries.MOD_ID, "distillery_action"));
 
   public static final StreamCodec<ByteBuf, DistilleryActionPacket> STREAM_CODEC = StreamCodec.composite(
@@ -25,6 +25,6 @@ public record DistilleryActionPacket(BlockPos pos, Action action) implements Cus
 
   @Override
   public Type<? extends CustomPacketPayload> type() {
-    return TYPE;
+    return PAYLOAD_TYPE;
   }
 }
