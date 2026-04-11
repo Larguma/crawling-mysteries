@@ -6,6 +6,7 @@ import com.mojang.serialization.MapCodec;
 
 import dev.larguma.crawlingmysteries.block.entity.ModBlockEntities;
 import dev.larguma.crawlingmysteries.block.entity.custom.CookingAltarTier1BlockEntity;
+import dev.larguma.crawlingmysteries.item.ModItems;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -193,8 +194,7 @@ public class CookingAltarTier1Block extends BaseEntityBlock {
           if (!player.getAbilities().instabuild) {
             stack.shrink(1);
           }
-          // TODO: Replace with SoulStew
-          ItemStack stewStack = new ItemStack(Items.SUSPICIOUS_STEW);
+          ItemStack stewStack = new ItemStack(ModItems.SOUL_STEW.get());
           if (!player.getInventory().add(stewStack)) {
             player.drop(stewStack, false);
           }

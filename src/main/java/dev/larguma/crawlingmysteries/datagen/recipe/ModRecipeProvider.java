@@ -30,25 +30,43 @@ public class ModRecipeProvider extends RecipeProvider {
   protected void buildRecipes(RecipeOutput recipeOutput) {
     ShapedRecipeBuilder.shaped(RecipeCategory.FOOD,
         ModBlocks.COOKING_ALTAR_TIER_1.get())
-        .define('m', ModBlocks.MYSTERIOUS_STONE.get())
-        .define('l', ItemTags.LOGS)
-        .define('c', Items.CAMPFIRE)
-        .define('d', Items.CAULDRON)
-        .pattern("lml")
-        .pattern("ldl")
-        .pattern("lcl")
-        .unlockedBy("has_mysterious_stone", has(ModBlocks.MYSTERIOUS_STONE.get()))
-        .unlockedBy("has_log", has(ItemTags.LOGS))
+        .define('C', Items.CAMPFIRE)
+        .define('D', Items.CAULDRON)
+        .define('L', ItemTags.LOGS)
+        .define('M', ModBlocks.MYSTERIOUS_STONE.get())
+        .pattern("LML")
+        .pattern("LDL")
+        .pattern("LCL")
         .unlockedBy("has_campfire", has(Items.CAMPFIRE))
         .unlockedBy("has_cauldron", has(Items.CAULDRON))
+        .unlockedBy("has_log", has(ItemTags.LOGS))
+        .unlockedBy("has_mysterious_stone", has(ModBlocks.MYSTERIOUS_STONE.get()))
+        .save(recipeOutput);
+
+    ShapedRecipeBuilder.shaped(RecipeCategory.FOOD,
+        ModBlocks.COOKING_ALTAR_TIER_2.get())
+        .define('A', ModBlocks.COOKING_ALTAR_TIER_1.get())
+        .define('B', Items.BREWING_STAND)
+        .define('C', Items.CAULDRON)
+        .define('G', Items.GLASS_BOTTLE)
+        .define('Q', Items.QUARTZ)
+        .define('I', Items.IRON_INGOT)
+        .pattern("GBG")
+        .pattern("QAQ")
+        .pattern("ICI")
+        .unlockedBy("has_cooking_altar_tier_1", has(ModBlocks.COOKING_ALTAR_TIER_1.get()))
+        .unlockedBy("has_brewing_stand", has(Items.BREWING_STAND))
+        .unlockedBy("has_cauldron", has(Items.CAULDRON))
+        .unlockedBy("has_quartz", has(Items.QUARTZ))
+        .unlockedBy("has_iron_ingot", has(Items.IRON_INGOT))
         .save(recipeOutput);
 
     ShapedRecipeBuilder.shaped(RecipeCategory.TOOLS, ModItems.ETERNAL_GUARDIAN_MASK.get())
-        .define('l', Items.LEATHER)
-        .define('h', ModItems.ETERNAL_GUARDIAN_HEAD)
-        .pattern("lhl")
+        .define('L', Items.LEATHER)
+        .define('H', ModItems.ETERNAL_GUARDIAN_HEAD)
+        .pattern("LHL")
         .unlockedBy("has_leather", has(Items.LEATHER))
-        .unlockedBy("has_eternal_guardina_head", has(ModItems.ETERNAL_GUARDIAN_HEAD))
+        .unlockedBy("has_eternal_guardian_head", has(ModItems.ETERNAL_GUARDIAN_HEAD))
         .save(recipeOutput);
 
     buildHorseshoeUpgradeRecipes(recipeOutput);

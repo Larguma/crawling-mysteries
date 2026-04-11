@@ -1,14 +1,19 @@
 package dev.larguma.crawlingmysteries.item;
 
 import dev.larguma.crawlingmysteries.CrawlingMysteries;
+import dev.larguma.crawlingmysteries.effect.ModMobEffects;
 import dev.larguma.crawlingmysteries.entity.ModEntities;
 import dev.larguma.crawlingmysteries.item.custom.CrypticEyeItem;
 import dev.larguma.crawlingmysteries.item.custom.EternalGuardianHeadItem;
 import dev.larguma.crawlingmysteries.item.custom.EternalGuardianMaskItem;
 import dev.larguma.crawlingmysteries.item.custom.EternalGuardiansBandItem;
 import dev.larguma.crawlingmysteries.item.custom.LuckyHorseshoe;
+import dev.larguma.crawlingmysteries.item.custom.StewItem;
 import dev.larguma.crawlingmysteries.sound.ModSounds;
+import net.minecraft.world.effect.MobEffectInstance;
+import net.minecraft.world.food.FoodProperties;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.item.Rarity;
 import net.neoforged.bus.api.IEventBus;
 import net.neoforged.neoforge.common.DeferredSpawnEggItem;
@@ -39,6 +44,26 @@ public class ModItems {
       () -> new Item(new Item.Properties()));
   public static final DeferredItem<Item> AWAKENED_EYE = ITEMS.register("awakened_eye",
       () -> new Item(new Item.Properties()));
+  public static final DeferredItem<Item> SOUL_STEW = ITEMS.register("soul_stew",
+      () -> new StewItem(new Item.Properties()
+          .stacksTo(1)
+          .food(new FoodProperties.Builder()
+              .nutrition(8)
+              .saturationModifier(0.8F)
+              .usingConvertsTo(Items.BOWL)
+              .alwaysEdible()
+              .effect(() -> new MobEffectInstance(ModMobEffects.IRON_STOMACH, 20 * 60 * 30, 0), 1.0F)
+              .build()), "item.crawlingmysteries.soul_stew.tooltip"));
+  public static final DeferredItem<Item> ALCHEMICAL_STEW = ITEMS.register("alchemical_stew",
+      () -> new StewItem(new Item.Properties()
+          .stacksTo(1)
+          .food(new FoodProperties.Builder()
+              .nutrition(8)
+              .saturationModifier(0.8F)
+              .usingConvertsTo(Items.BOWL)
+              .alwaysEdible()
+              .effect(() -> new MobEffectInstance(ModMobEffects.AETHER_SIGHT, 20 * 60 * 30, 0), 1.0F)
+              .build()), "item.crawlingmysteries.alchemical_stew.tooltip"));
 
   // #endregion Simple
 

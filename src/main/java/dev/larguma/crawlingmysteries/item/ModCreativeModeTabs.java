@@ -26,6 +26,8 @@ public class ModCreativeModeTabs {
             output.accept(ModItems.LUCKY_HORSESHOE.get());
             output.accept(ModItems.PETRIFIED_EYE.get());
             output.accept(ModItems.AWAKENED_EYE.get());
+            output.accept(ModItems.SOUL_STEW.get());
+            output.accept(ModItems.ALCHEMICAL_STEW.get());
 
             output.accept(ModItems.ETERNAL_GUARDIAN_SPAWN_EGG.get());
 

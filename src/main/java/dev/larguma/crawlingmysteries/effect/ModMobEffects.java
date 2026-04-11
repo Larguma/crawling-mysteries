@@ -16,7 +16,6 @@ public class ModMobEffects {
   public static final Holder<MobEffect> DRUNK = MOB_EFFECTS.register("drunk", DrunkEffect::new);
   public static final Holder<MobEffect> IRON_STOMACH = MOB_EFFECTS.register("iron_stomach", IronStomachEffect::new);
   public static final Holder<MobEffect> AETHER_SIGHT = MOB_EFFECTS.register("aether_sight", AetherSightEffect::new);
-  public static final Holder<MobEffect> VOID_WALKER = MOB_EFFECTS.register("void_walker", VoidWalkerEffect::new);
 
   public static void register(IEventBus eventBus) {
     MOB_EFFECTS.register(eventBus);

@@ -2,23 +2,23 @@
   "type": "minecraft:crafting_shaped",
   "category": "misc",
   "key": {
-    "c": {
+    "C": {
       "item": "minecraft:campfire"
     },
-    "d": {
+    "D": {
       "item": "minecraft:cauldron"
     },
-    "l": {
+    "L": {
       "tag": "minecraft:logs"
     },
-    "m": {
+    "M": {
       "item": "crawlingmysteries:mysterious_stone"
     }
   },
   "pattern": [
-    "lml",
-    "ldl",
-    "lcl"
+    "LML",
+    "LDL",
+    "LCL"
   ],
   "result": {
     "count": 1,

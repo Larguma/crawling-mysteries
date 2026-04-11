@@ -1,7 +1,7 @@
 {
   "parent": "minecraft:recipes/root",
   "criteria": {
-    "has_eternal_guardina_head": {
+    "has_eternal_guardian_head": {
       "conditions": {
         "items": [
           {
@@ -32,7 +32,7 @@
     [
       "has_the_recipe",
       "has_leather",
-      "has_eternal_guardina_head"
+      "has_eternal_guardian_head"
     ]
   ],
   "rewards": {

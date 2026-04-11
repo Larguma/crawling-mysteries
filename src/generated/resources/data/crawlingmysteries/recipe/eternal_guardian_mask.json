@@ -2,15 +2,15 @@
   "type": "minecraft:crafting_shaped",
   "category": "equipment",
   "key": {
-    "h": {
+    "H": {
       "item": "crawlingmysteries:eternal_guardian_head"
     },
-    "l": {
+    "L": {
       "item": "minecraft:leather"
     }
   },
   "pattern": [
-    "lhl"
+    "LHL"
   ],
   "result": {
     "count": 1,

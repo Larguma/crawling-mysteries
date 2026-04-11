@@ -1,6 +1,7 @@
 package dev.larguma.crawlingmysteries.block.entity.custom;
 
 import dev.larguma.crawlingmysteries.block.entity.ModBlockEntities;
+import dev.larguma.crawlingmysteries.item.ModItems;
 import dev.larguma.crawlingmysteries.screen.custom.AlchemicalDistilleryMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup.Provider;
@@ -309,18 +310,15 @@ public class CookingAltarTier2BlockEntity extends BlockEntity implements GeoBloc
     }
 
     ItemStack outputItem;
-    // TODO: Replace with the actuals items
     if (success) {
       setDistillingState(DistillingState.SUCCESS);
-      outputItem = new ItemStack(Items.SUSPICIOUS_STEW);
-      // Play success sound
+      outputItem = new ItemStack(ModItems.ALCHEMICAL_STEW.get());
       if (level != null && !level.isClientSide) {
         level.playSound(null, worldPosition, SoundEvents.PLAYER_LEVELUP, SoundSource.BLOCKS, 0.7F, 1.2F);
       }
     } else {
       setDistillingState(DistillingState.FAILED);
       outputItem = new ItemStack(Items.ROTTEN_FLESH);
-      // Play failure sound
       if (level != null && !level.isClientSide) {
         level.playSound(null, worldPosition, SoundEvents.FIRE_EXTINGUISH, SoundSource.BLOCKS, 0.5F, 0.8F);
       }
