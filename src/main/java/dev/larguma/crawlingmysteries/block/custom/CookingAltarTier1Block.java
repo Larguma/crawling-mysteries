@@ -94,7 +94,6 @@ public class CookingAltarTier1Block extends BaseEntityBlock {
 
   // #region Double Block Placement Logic
 
-  // TODO: when we look only at the upper half, the block don't render
   @Nullable
   @Override
   public BlockState getStateForPlacement(BlockPlaceContext context) {
@@ -150,6 +149,7 @@ public class CookingAltarTier1Block extends BaseEntityBlock {
     return super.updateShape(state, facing, facingState, level, pos, facingPos);
   }
 
+  // TODO: no break animation if not master block
   @Override
   public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
     if (!level.isClientSide) {

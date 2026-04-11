@@ -8,6 +8,7 @@ import com.mojang.serialization.MapCodec;
 
 import dev.larguma.crawlingmysteries.block.entity.ModBlockEntities;
 import dev.larguma.crawlingmysteries.block.entity.custom.CookingAltarTier2BlockEntity;
+import dev.larguma.crawlingmysteries.block.ModBlocks;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.server.level.ServerPlayer;
@@ -238,9 +239,13 @@ public class CookingAltarTier2Block extends BaseEntityBlock {
     return super.updateShape(state, facing, facingState, level, pos, facingPos);
   }
 
+  // TODO: no break animation if not master block
   @Override
   public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
     if (!level.isClientSide) {
+      if (state.getValue(PART) != 0 && !player.isCreative()) {
+        Block.popResource(level, pos, new ItemStack(ModBlocks.COOKING_ALTAR_TIER_2.get()));
+      }
       destroyMultiblock(level, pos, state, player);
     }
     return super.playerWillDestroy(level, pos, state, player);
