@@ -27,7 +27,7 @@ public class ModConfiguredFeatures {
     List<OreConfiguration.TargetBlockState> mysteriousStoneOres = List.of(
         OreConfiguration.target(deepslateReplaceables, ModBlocks.MYSTERIOUS_STONE.get().defaultBlockState()));
 
-    register(context, MYSTERIOUS_STONE_ORE_KEY, Feature.ORE, new OreConfiguration(mysteriousStoneOres, 3));
+    register(context, MYSTERIOUS_STONE_ORE_KEY, Feature.ORE, new OreConfiguration(mysteriousStoneOres, 1));
   }
 
   public static ResourceKey<ConfiguredFeature<?, ?>> registerKey(String name) {
