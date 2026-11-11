@@ -1,6 +1,11 @@
 package dev.larguma.crawlingmysteries.screen.custom;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import dev.larguma.crawlingmysteries.block.entity.custom.CookingAltarTier2BlockEntity;
+import dev.larguma.crawlingmysteries.recipe.CookingAltarTier2RecipeInput;
+import dev.larguma.crawlingmysteries.recipe.ModRecipes;
 import dev.larguma.crawlingmysteries.screen.ModMenuTypes;
 import net.minecraft.network.FriendlyByteBuf;
 import net.minecraft.world.entity.player.Inventory;
@@ -11,7 +16,6 @@ import net.minecraft.world.inventory.ContainerLevelAccess;
 import net.minecraft.world.inventory.SimpleContainerData;
 import net.minecraft.world.inventory.Slot;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.neoforged.neoforge.items.IItemHandler;
@@ -93,27 +97,14 @@ public class AlchemicalDistilleryMenu extends AbstractContainerMenu {
   }
 
   public boolean hasValidIngredients() {
-    IItemHandler handler = this.blockEntity.getItemHandler();
-    for (int i = 0; i < handler.getSlots(); i++) {
-      ItemStack stack = handler.getStackInSlot(i);
-      if (!isRawMeat(stack)) {
-        return false;
-      }
+    List<ItemStack> list = new ArrayList<>(4);
+    for (int i = 36; i < 40; i++) {
+      list.add(this.getSlot(i).getItem());
     }
-    return true;
-  }
-
-  private boolean isRawMeat(ItemStack stack) {
-    if (stack.isEmpty()) {
-      return false;
-    }
-    return stack.is(Items.BEEF)
-        || stack.is(Items.PORKCHOP)
-        || stack.is(Items.CHICKEN)
-        || stack.is(Items.MUTTON)
-        || stack.is(Items.RABBIT)
-        || stack.is(Items.COD)
-        || stack.is(Items.SALMON);
+    return this.level.getRecipeManager()
+        .getRecipeFor(ModRecipes.COOKING_ALTAR_TIER_2_TYPE.get(),
+            new CookingAltarTier2RecipeInput(list), this.level)
+        .isPresent();
   }
 
   @Override

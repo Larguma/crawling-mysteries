@@ -1,0 +1,10 @@
+{
+  "type": "crawlingmysteries:cooking_altar_tier_1",
+  "input": {
+    "tag": "c:foods/raw_meat"
+  },
+  "result": {
+    "count": 1,
+    "id": "crawlingmysteries:soul_stew"
+  }
+}

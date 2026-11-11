@@ -29,6 +29,28 @@ public class ModRecipes {
         }
       });
 
+  public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<CookingAltarTier1Recipe>> COOKING_ALTAR_TIER_1 = SERIALIZERS
+      .register("cooking_altar_tier_1", CookingAltarTier1Recipe.Serializer::new);
+
+  public static final DeferredHolder<RecipeType<?>, RecipeType<CookingAltarTier1Recipe>> COOKING_ALTAR_TIER_1_TYPE = RECIPE_TYPES
+      .register("cooking_altar_tier_1", () -> new RecipeType<CookingAltarTier1Recipe>() { // NOSONAR
+        @Override
+        public String toString() {
+          return CrawlingMysteries.MOD_ID + ":cooking_altar_tier_1";
+        }
+      });
+
+  public static final DeferredHolder<RecipeSerializer<?>, RecipeSerializer<CookingAltarTier2Recipe>> COOKING_ALTAR_TIER_2 = SERIALIZERS
+      .register("cooking_altar_tier_2", CookingAltarTier2Recipe.Serializer::new);
+
+  public static final DeferredHolder<RecipeType<?>, RecipeType<CookingAltarTier2Recipe>> COOKING_ALTAR_TIER_2_TYPE = RECIPE_TYPES
+      .register("cooking_altar_tier_2", () -> new RecipeType<CookingAltarTier2Recipe>() { // NOSONAR
+        @Override
+        public String toString() {
+          return CrawlingMysteries.MOD_ID + ":cooking_altar_tier_2";
+        }
+      });
+
   public static void register(IEventBus eventBus) {
     SERIALIZERS.register(eventBus);
     RECIPE_TYPES.register(eventBus);

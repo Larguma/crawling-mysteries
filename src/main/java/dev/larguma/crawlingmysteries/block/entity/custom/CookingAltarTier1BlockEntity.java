@@ -1,6 +1,10 @@
 package dev.larguma.crawlingmysteries.block.entity.custom;
 
+import java.util.Optional;
+
 import dev.larguma.crawlingmysteries.block.entity.ModBlockEntities;
+import dev.larguma.crawlingmysteries.item.ModItems;
+import dev.larguma.crawlingmysteries.recipe.CookingAltarTier1Recipe;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.core.particles.ParticleTypes;
@@ -8,6 +12,10 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
@@ -27,7 +35,10 @@ public class CookingAltarTier1BlockEntity extends BlockEntity implements GeoBloc
   protected static final RawAnimation DONE_ANIM = RawAnimation.begin().thenLoop("done");
   public static final String COOKING_STATE_KEY = "cooking_state";
   public static final String COOKING_PROGRESS_KEY = "cooking_progress";
-  public static final int COOKING_TIME = 100;
+  public static final String COOKING_OUTPUT_KEY = "cooking_output";
+  public static final String ACTIVE_RECIPE_ID_KEY = "active_recipe_id";
+  public static final String MAX_COOKING_TIME_KEY = "max_cooking_time";
+  public static final int DEFAULT_COOKING_TIME = 100;
 
   public enum CookingState {
     IDLE,
@@ -37,7 +48,10 @@ public class CookingAltarTier1BlockEntity extends BlockEntity implements GeoBloc
 
   private CookingState cookingState = CookingState.IDLE;
   private int cookingProgress = 0;
+  private int maxCookingTime = DEFAULT_COOKING_TIME;
   private boolean hasIngredients = false;
+  private ItemStack cookingOutput = ItemStack.EMPTY;
+  private ResourceLocation activeRecipeId = null;
 
   public CookingAltarTier1BlockEntity(BlockPos pos, BlockState state) {
     super(ModBlockEntities.COOKING_ALTAR_TIER_1_BE.get(), pos, state);
@@ -52,6 +66,15 @@ public class CookingAltarTier1BlockEntity extends BlockEntity implements GeoBloc
     if (tag.contains(COOKING_PROGRESS_KEY)) {
       this.cookingProgress = tag.getInt(COOKING_PROGRESS_KEY);
     }
+    if (tag.contains(MAX_COOKING_TIME_KEY)) {
+      this.maxCookingTime = tag.getInt(MAX_COOKING_TIME_KEY);
+    }
+    if (tag.contains(ACTIVE_RECIPE_ID_KEY)) {
+      this.activeRecipeId = ResourceLocation.tryParse(tag.getString(ACTIVE_RECIPE_ID_KEY));
+    }
+    if (tag.contains(COOKING_OUTPUT_KEY)) {
+      this.cookingOutput = ItemStack.parse(registries, tag.getCompound(COOKING_OUTPUT_KEY)).orElse(ItemStack.EMPTY);
+    }
     super.loadAdditional(tag, registries);
   }
 
@@ -59,6 +82,13 @@ public class CookingAltarTier1BlockEntity extends BlockEntity implements GeoBloc
   protected void saveAdditional(CompoundTag tag, Provider registries) {
     tag.putInt(COOKING_STATE_KEY, this.cookingState.ordinal());
     tag.putInt(COOKING_PROGRESS_KEY, this.cookingProgress);
+    tag.putInt(MAX_COOKING_TIME_KEY, this.maxCookingTime);
+    if (this.activeRecipeId != null) {
+      tag.putString(ACTIVE_RECIPE_ID_KEY, this.activeRecipeId.toString());
+    }
+    if (!this.cookingOutput.isEmpty()) {
+      tag.put(COOKING_OUTPUT_KEY, this.cookingOutput.save(registries));
+    }
     super.saveAdditional(tag, registries);
   }
 
@@ -110,33 +140,67 @@ public class CookingAltarTier1BlockEntity extends BlockEntity implements GeoBloc
   // #endregion Getters and Setters
 
   // #region Cooking Logic
-  public void startCooking() {
+  public void startCooking(ResourceLocation recipeId, CookingAltarTier1Recipe recipe) {
     if (this.cookingState == CookingState.IDLE) {
       this.cookingState = CookingState.BOILING;
       this.cookingProgress = 0;
       this.hasIngredients = true;
+      this.activeRecipeId = recipeId;
+      this.cookingOutput = recipe.getResult().copy();
+      this.maxCookingTime = recipe.getCookingTime();
       this.setChanged();
       syncToClients();
     }
   }
 
-  public void collectOutput() {
+  public boolean canCollectWith(ItemStack stack, Level level) {
+    if (this.cookingState != CookingState.DONE) {
+      return false;
+    }
+    if (this.activeRecipeId != null && level != null) {
+      Optional<RecipeHolder<?>> holder = level.getRecipeManager().byKey(this.activeRecipeId);
+      if (holder.isPresent() && holder.get().value() instanceof CookingAltarTier1Recipe recipe) {
+        return recipe.getContainer().test(stack);
+      }
+    }
+    return stack.is(Items.BOWL);
+  }
+
+  public ItemStack collectOutput(Level level) {
+    ItemStack output = ItemStack.EMPTY;
     if (this.cookingState == CookingState.DONE) {
+      if (this.activeRecipeId != null && level != null) {
+        Optional<RecipeHolder<?>> holder = level.getRecipeManager().byKey(this.activeRecipeId);
+        if (holder.isPresent() && holder.get().value() instanceof CookingAltarTier1Recipe recipe) {
+          output = recipe.getResult().copy();
+        }
+      }
+      if (output.isEmpty() && !this.cookingOutput.isEmpty()) {
+        output = this.cookingOutput.copy();
+      }
+      if (output.isEmpty()) {
+        output = new ItemStack(ModItems.SOUL_STEW.get());
+      }
+
       this.cookingState = CookingState.IDLE;
       this.cookingProgress = 0;
       this.hasIngredients = false;
+      this.activeRecipeId = null;
+      this.cookingOutput = ItemStack.EMPTY;
+      this.maxCookingTime = DEFAULT_COOKING_TIME;
       this.setChanged();
       syncToClients();
     }
+    return output;
   }
 
   public static void serverTick(Level level, BlockPos pos, BlockState state, CookingAltarTier1BlockEntity blockEntity) {
     if (blockEntity.cookingState == CookingState.BOILING) {
       blockEntity.cookingProgress++;
 
-      if (blockEntity.cookingProgress >= COOKING_TIME) {
+      if (blockEntity.cookingProgress >= blockEntity.maxCookingTime) {
         blockEntity.cookingState = CookingState.DONE;
-        blockEntity.cookingProgress = COOKING_TIME;
+        blockEntity.cookingProgress = blockEntity.maxCookingTime;
         blockEntity.setChanged();
         blockEntity.syncToClients();
       }

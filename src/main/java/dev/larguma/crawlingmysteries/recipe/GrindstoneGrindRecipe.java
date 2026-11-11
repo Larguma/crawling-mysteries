@@ -102,10 +102,10 @@ public class GrindstoneGrindRecipe implements Recipe<GrindstoneGrindRecipeInput>
 
     public static final StreamCodec<RegistryFriendlyByteBuf, GrindstoneGrindRecipe> STREAM_CODEC = StreamCodec
         .composite(
-            Ingredient.CONTENTS_STREAM_CODEC, r -> r.input,
-            ItemStack.STREAM_CODEC, r -> r.successOutput,
-            ItemStack.STREAM_CODEC, r -> r.failureOutput,
-            ByteBufCodecs.FLOAT, r -> r.successChance,
+            Ingredient.CONTENTS_STREAM_CODEC, GrindstoneGrindRecipe::getInput,
+            ItemStack.STREAM_CODEC, GrindstoneGrindRecipe::getSuccessOutput,
+            ItemStack.STREAM_CODEC, GrindstoneGrindRecipe::getFailureOutput,
+            ByteBufCodecs.FLOAT, GrindstoneGrindRecipe::getSuccessChance,
             GrindstoneGrindRecipe::new);
 
     @Override

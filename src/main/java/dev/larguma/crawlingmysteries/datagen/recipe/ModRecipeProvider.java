@@ -1,5 +1,6 @@
 package dev.larguma.crawlingmysteries.datagen.recipe;
 
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 import dev.larguma.crawlingmysteries.CrawlingMysteries;
@@ -118,6 +119,28 @@ public class ModRecipeProvider extends RecipeProvider {
         RecipeCategory.MISC)
         .unlockedBy("has_petrified_eye", has(ModItems.PETRIFIED_EYE.get()))
         .save(recipeOutput, CrawlingMysteries.MOD_ID + ":grindstone_grind/petrified_eye_awakening");
+
+    CookingAltarTier1RecipeBuilder.cookingAltarTier1(
+        Ingredient.of(Tags.Items.FOODS_RAW_MEAT),
+        Ingredient.of(Items.BOWL),
+        ModItems.SOUL_STEW.get(),
+        100,
+        RecipeCategory.FOOD)
+        .unlockedBy("has_cooking_altar_tier_1", has(ModBlocks.COOKING_ALTAR_TIER_1.get()))
+        .save(recipeOutput, CrawlingMysteries.MOD_ID + ":cooking_altar_tier_1/soul_stew");
+
+    CookingAltarTier2RecipeBuilder.cookingAltarTier2(
+        List.of(
+            Ingredient.of(Tags.Items.FOODS_VEGETABLE),
+            Ingredient.of(Tags.Items.FOODS_FRUIT),
+            Ingredient.of(Tags.Items.FOODS_RAW_MEAT),
+            Ingredient.of(Tags.Items.FOODS_BREAD)),
+        ModItems.ALCHEMICAL_STEW.get(),
+        Items.ROTTEN_FLESH,
+        200,
+        RecipeCategory.FOOD)
+        .unlockedBy("has_cooking_altar_tier_2", has(ModBlocks.COOKING_ALTAR_TIER_2.get()))
+        .save(recipeOutput, CrawlingMysteries.MOD_ID + ":cooking_altar_tier_2/alchemical_stew");
   }
 
   private void buildHorseshoeUpgradeRecipes(RecipeOutput recipeOutput) {

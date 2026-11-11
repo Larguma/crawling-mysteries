@@ -1,7 +1,14 @@
 package dev.larguma.crawlingmysteries.block.entity.custom;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import dev.larguma.crawlingmysteries.block.entity.ModBlockEntities;
 import dev.larguma.crawlingmysteries.item.ModItems;
+import dev.larguma.crawlingmysteries.recipe.CookingAltarTier2Recipe;
+import dev.larguma.crawlingmysteries.recipe.CookingAltarTier2RecipeInput;
+import dev.larguma.crawlingmysteries.recipe.ModRecipes;
 import dev.larguma.crawlingmysteries.screen.custom.AlchemicalDistilleryMenu;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup.Provider;
@@ -11,6 +18,7 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.network.protocol.Packet;
 import net.minecraft.network.protocol.game.ClientGamePacketListener;
 import net.minecraft.network.protocol.game.ClientboundBlockEntityDataPacket;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.sounds.SoundSource;
 import net.minecraft.world.MenuProvider;
@@ -20,10 +28,10 @@ import net.minecraft.world.inventory.AbstractContainerMenu;
 import net.minecraft.world.inventory.ContainerData;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.block.entity.BlockEntity;
 import net.minecraft.world.level.block.state.BlockState;
-import net.neoforged.neoforge.common.Tags;
 import net.neoforged.neoforge.items.ItemStackHandler;
 import software.bernie.geckolib.animatable.GeoBlockEntity;
 import software.bernie.geckolib.animatable.instance.AnimatableInstanceCache;
@@ -54,13 +62,7 @@ public class CookingAltarTier2BlockEntity extends BlockEntity implements GeoBloc
 
     @Override
     public boolean isItemValid(int slot, ItemStack stack) {
-      for (int i = 0; i < getSlots(); i++) {
-        if (getStackInSlot(i).isEmpty()) {
-          return stack.is(Tags.Items.FOODS_RAW_MEAT);
-        }
-      }
-
-      return super.isItemValid(slot, stack);
+      return true;
     }
   };
 
@@ -75,7 +77,9 @@ public class CookingAltarTier2BlockEntity extends BlockEntity implements GeoBloc
   private static final int GREEN_ZONE_MIN = -20;
   private static final int GREEN_ZONE_MAX = 20;
   private static final int MAX_RED_ZONE_TICKS = 60;
-  private static final int TOTAL_COOKING_TICKS = 200;
+  public static final int TOTAL_COOKING_TICKS = 200;
+  private int totalCookingTicks = TOTAL_COOKING_TICKS;
+  private ResourceLocation activeRecipeId = null;
 
   public enum DistillingState {
     IDLE,
@@ -137,6 +141,12 @@ public class CookingAltarTier2BlockEntity extends BlockEntity implements GeoBloc
     ticksInRedZone = tag.getInt("ticksInRedZone");
     isCooking = tag.getBoolean("isCooking");
     distillingState = DistillingState.values()[tag.getInt("distillingState")];
+    if (tag.contains("totalCookingTicks")) {
+      totalCookingTicks = tag.getInt("totalCookingTicks");
+    }
+    if (tag.contains("activeRecipeId")) {
+      activeRecipeId = ResourceLocation.tryParse(tag.getString("activeRecipeId"));
+    }
   }
 
   @Override
@@ -150,6 +160,10 @@ public class CookingAltarTier2BlockEntity extends BlockEntity implements GeoBloc
     tag.putInt("ticksInRedZone", ticksInRedZone);
     tag.putBoolean("isCooking", isCooking);
     tag.putInt("distillingState", distillingState.ordinal());
+    tag.putInt("totalCookingTicks", totalCookingTicks);
+    if (activeRecipeId != null) {
+      tag.putString("activeRecipeId", activeRecipeId.toString());
+    }
   }
 
   @Override
@@ -165,6 +179,14 @@ public class CookingAltarTier2BlockEntity extends BlockEntity implements GeoBloc
   // #endregion NBT
 
   // #region Getters and Setters
+
+  public CookingAltarTier2RecipeInput getRecipeInput() {
+    List<ItemStack> list = new ArrayList<>(itemHandler.getSlots());
+    for (int i = 0; i < itemHandler.getSlots(); i++) {
+      list.add(itemHandler.getStackInSlot(i));
+    }
+    return new CookingAltarTier2RecipeInput(list);
+  }
 
   public ItemStackHandler getItemHandler() {
     return this.itemHandler;
@@ -260,15 +282,15 @@ public class CookingAltarTier2BlockEntity extends BlockEntity implements GeoBloc
     }
 
     cookingTime++;
-    cookingProgress = (cookingTime * 100) / TOTAL_COOKING_TICKS;
+    cookingProgress = (cookingTime * 100) / totalCookingTicks;
 
     if (ticksInRedZone >= MAX_RED_ZONE_TICKS) {
       finishCooking(false);
       return;
     }
 
-    if (cookingTime >= TOTAL_COOKING_TICKS) {
-      boolean success = stabilityScore >= (TOTAL_COOKING_TICKS * 0.8);
+    if (cookingTime >= totalCookingTicks) {
+      boolean success = stabilityScore >= (totalCookingTicks * 0.8);
       finishCooking(success);
     }
 
@@ -279,6 +301,23 @@ public class CookingAltarTier2BlockEntity extends BlockEntity implements GeoBloc
   public void startCooking() {
     if (isCooking)
       return;
+
+    CookingAltarTier2Recipe recipe = null;
+    if (level != null) {
+      Optional<RecipeHolder<CookingAltarTier2Recipe>> recipeOpt = level
+          .getRecipeManager()
+          .getRecipeFor(ModRecipes.COOKING_ALTAR_TIER_2_TYPE.get(), getRecipeInput(), level);
+
+      if (recipeOpt.isPresent()) {
+        activeRecipeId = recipeOpt.get().id();
+        recipe = recipeOpt.get().value();
+        totalCookingTicks = recipe.getCookingTime();
+      } else {
+        return;
+      }
+    } else {
+      totalCookingTicks = TOTAL_COOKING_TICKS;
+    }
 
     isCooking = true;
     needlePosition = 0;
@@ -305,6 +344,14 @@ public class CookingAltarTier2BlockEntity extends BlockEntity implements GeoBloc
     isCooking = false;
     cookingProgress = 100;
 
+    CookingAltarTier2Recipe recipe = null;
+    if (level != null && activeRecipeId != null) {
+      recipe = level.getRecipeManager().byKey(activeRecipeId)
+          .filter(r -> r.value() instanceof CookingAltarTier2Recipe)
+          .map(r -> (CookingAltarTier2Recipe) r.value())
+          .orElse(null);
+    }
+
     for (int i = 0; i < itemHandler.getSlots(); i++) {
       itemHandler.setStackInSlot(i, ItemStack.EMPTY);
     }
@@ -312,13 +359,13 @@ public class CookingAltarTier2BlockEntity extends BlockEntity implements GeoBloc
     ItemStack outputItem;
     if (success) {
       setDistillingState(DistillingState.SUCCESS);
-      outputItem = new ItemStack(ModItems.ALCHEMICAL_STEW.get());
+      outputItem = recipe != null ? recipe.getSuccessOutput().copy() : new ItemStack(ModItems.ALCHEMICAL_STEW.get());
       if (level != null && !level.isClientSide) {
         level.playSound(null, worldPosition, SoundEvents.PLAYER_LEVELUP, SoundSource.BLOCKS, 0.7F, 1.2F);
       }
     } else {
       setDistillingState(DistillingState.FAILED);
-      outputItem = new ItemStack(Items.ROTTEN_FLESH);
+      outputItem = recipe != null ? recipe.getFailureOutput().copy() : new ItemStack(Items.ROTTEN_FLESH);
       if (level != null && !level.isClientSide) {
         level.playSound(null, worldPosition, SoundEvents.FIRE_EXTINGUISH, SoundSource.BLOCKS, 0.5F, 0.8F);
       }
@@ -330,6 +377,8 @@ public class CookingAltarTier2BlockEntity extends BlockEntity implements GeoBloc
     cookingProgress = 0;
     stabilityScore = 0;
     ticksInRedZone = 0;
+    activeRecipeId = null;
+    totalCookingTicks = TOTAL_COOKING_TICKS;
 
     setChanged();
     syncToClients();

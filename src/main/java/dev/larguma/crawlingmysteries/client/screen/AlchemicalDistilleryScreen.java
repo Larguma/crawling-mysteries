@@ -79,6 +79,7 @@ public class AlchemicalDistilleryScreen extends AbstractContainerScreen<Alchemic
 
     boolean isCooking = this.menu.isCooking();
     this.startButton.visible = !isCooking;
+    this.startButton.active = !isCooking && this.menu.hasValidIngredients();
     this.stabilizeButton.visible = isCooking;
   }
 
@@ -109,7 +110,7 @@ public class AlchemicalDistilleryScreen extends AbstractContainerScreen<Alchemic
 
     PoseStack poseStack = guiGraphics.pose();
     poseStack.pushPose();
-    poseStack.translate(gaugeCenterX, gaugeCenterY, 0);
+    poseStack.translate((float) gaugeCenterX, (float) gaugeCenterY, 0);
     poseStack.mulPose(Axis.ZP.rotationDegrees(angle));
 
     guiGraphics.blit(TEXTURE, -ARROW_PIVOT_X, -ARROW_PIVOT_Y, ARROW_U, ARROW_V, ARROW_WIDTH, ARROW_HEIGHT,

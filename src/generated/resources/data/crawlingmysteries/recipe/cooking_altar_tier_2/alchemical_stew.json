@@ -1,0 +1,25 @@
+{
+  "type": "crawlingmysteries:cooking_altar_tier_2",
+  "failure_output": {
+    "count": 1,
+    "id": "minecraft:rotten_flesh"
+  },
+  "inputs": [
+    {
+      "tag": "c:foods/vegetable"
+    },
+    {
+      "tag": "c:foods/fruit"
+    },
+    {
+      "tag": "c:foods/raw_meat"
+    },
+    {
+      "tag": "c:foods/bread"
+    }
+  ],
+  "success_output": {
+    "count": 1,
+    "id": "crawlingmysteries:alchemical_stew"
+  }
+}

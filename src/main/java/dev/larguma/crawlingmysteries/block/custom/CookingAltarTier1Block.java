@@ -1,12 +1,16 @@
 package dev.larguma.crawlingmysteries.block.custom;
 
+import java.util.Optional;
+
 import org.jetbrains.annotations.Nullable;
 
 import com.mojang.serialization.MapCodec;
 
 import dev.larguma.crawlingmysteries.block.entity.ModBlockEntities;
 import dev.larguma.crawlingmysteries.block.entity.custom.CookingAltarTier1BlockEntity;
-import dev.larguma.crawlingmysteries.item.ModItems;
+import dev.larguma.crawlingmysteries.recipe.CookingAltarTier1Recipe;
+import dev.larguma.crawlingmysteries.recipe.CookingAltarTier1RecipeInput;
+import dev.larguma.crawlingmysteries.recipe.ModRecipes;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.network.chat.Component;
@@ -18,8 +22,8 @@ import net.minecraft.world.ItemInteractionResult;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.ItemStack;
-import net.minecraft.world.item.Items;
 import net.minecraft.world.item.context.BlockPlaceContext;
+import net.minecraft.world.item.crafting.RecipeHolder;
 import net.minecraft.world.level.BlockGetter;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.level.LevelAccessor;
@@ -43,7 +47,6 @@ import net.minecraft.world.level.material.PushReaction;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
-import net.neoforged.neoforge.common.Tags;
 
 public class CookingAltarTier1Block extends BaseEntityBlock {
   public static final MapCodec<CookingAltarTier1Block> CODEC = simpleCodec(CookingAltarTier1Block::new);
@@ -177,27 +180,33 @@ public class CookingAltarTier1Block extends BaseEntityBlock {
     if (level.getBlockEntity(bePos) instanceof CookingAltarTier1BlockEntity blockEntity) {
       CookingAltarTier1BlockEntity.CookingState cookingState = blockEntity.getCookingState();
 
-      if (cookingState == CookingAltarTier1BlockEntity.CookingState.IDLE && isValidIngredient(stack)) {
-        if (!level.isClientSide) {
-          if (!player.getAbilities().instabuild) {
-            stack.shrink(1);
+      if (cookingState == CookingAltarTier1BlockEntity.CookingState.IDLE) {
+        Optional<RecipeHolder<CookingAltarTier1Recipe>> recipeOpt = level
+            .getRecipeManager()
+            .getRecipeFor(ModRecipes.COOKING_ALTAR_TIER_1_TYPE.get(), new CookingAltarTier1RecipeInput(stack), level);
+
+        if (recipeOpt.isPresent()) {
+          if (!level.isClientSide) {
+            RecipeHolder<CookingAltarTier1Recipe> holder = recipeOpt.get();
+            if (!player.getAbilities().instabuild) {
+              stack.shrink(1);
+            }
+            blockEntity.startCooking(holder.id(), holder.value());
+            level.playSound(null, pos, SoundEvents.FIRE_AMBIENT, SoundSource.BLOCKS, 1.0F, 1.0F);
           }
-          blockEntity.startCooking();
-          level.playSound(null, pos, SoundEvents.FIRE_AMBIENT, SoundSource.BLOCKS, 1.0F, 1.0F);
+          return ItemInteractionResult.sidedSuccess(level.isClientSide);
         }
-        return ItemInteractionResult.sidedSuccess(level.isClientSide);
       }
 
-      if (cookingState == CookingAltarTier1BlockEntity.CookingState.DONE && stack.is(Items.BOWL)) {
+      if (cookingState == CookingAltarTier1BlockEntity.CookingState.DONE && blockEntity.canCollectWith(stack, level)) {
         if (!level.isClientSide) {
           if (!player.getAbilities().instabuild) {
             stack.shrink(1);
           }
-          ItemStack stewStack = new ItemStack(ModItems.SOUL_STEW.get());
+          ItemStack stewStack = blockEntity.collectOutput(level);
           if (!player.getInventory().add(stewStack)) {
             player.drop(stewStack, false);
           }
-          blockEntity.collectOutput();
           level.playSound(null, pos, SoundEvents.BOTTLE_FILL, SoundSource.BLOCKS, 1.0F, 1.0F);
         }
         return ItemInteractionResult.sidedSuccess(level.isClientSide);
@@ -225,10 +234,6 @@ public class CookingAltarTier1Block extends BaseEntityBlock {
       return InteractionResult.sidedSuccess(level.isClientSide);
     }
     return super.useWithoutItem(state, level, pos, player, hitResult);
-  }
-
-  private boolean isValidIngredient(ItemStack stack) {
-    return stack.is(Tags.Items.FOODS_RAW_MEAT);
   }
 
   @Nullable
