@@ -1,6 +1,7 @@
 package dev.larguma.crawlingmysteries.block.entity.custom;
 
 import dev.larguma.crawlingmysteries.block.entity.ModBlockEntities;
+import dev.larguma.crawlingmysteries.client.GooglyEyesHolder;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.HolderLookup.Provider;
 import net.minecraft.nbt.CompoundTag;
@@ -18,7 +19,7 @@ import software.bernie.geckolib.animation.PlayState;
 import software.bernie.geckolib.animation.RawAnimation;
 import software.bernie.geckolib.util.GeckoLibUtil;
 
-public class BeerMugBlockEntity extends BlockEntity implements GeoBlockEntity {
+public class BeerMugBlockEntity extends BlockEntity implements GeoBlockEntity, GooglyEyesHolder {
   protected static final RawAnimation IDLE_ANIM = RawAnimation.begin().thenLoop("idle");
   private final AnimatableInstanceCache cache = GeckoLibUtil.createInstanceCache(this);
   private static final int MAX_BEER_LEVEL = 4;

@@ -4,9 +4,8 @@ import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.blaze3d.vertex.VertexConsumer;
 import com.mojang.math.Axis;
 
-import dev.larguma.crawlingmysteries.block.entity.custom.BeerMugBlockEntity;
-import dev.larguma.crawlingmysteries.data.ModDataComponents;
-import dev.larguma.crawlingmysteries.item.custom.BeerMugItem;
+import dev.larguma.crawlingmysteries.client.GooglyEyesHolder;
+import dev.larguma.crawlingmysteries.item.helper.ItemDataHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.RenderType;
@@ -15,6 +14,7 @@ import net.minecraft.util.Mth;
 import net.minecraft.world.item.ItemStack;
 import software.bernie.geckolib.animatable.GeoAnimatable;
 import software.bernie.geckolib.cache.object.BakedGeoModel;
+import software.bernie.geckolib.cache.object.GeoBone;
 import software.bernie.geckolib.renderer.GeoItemRenderer;
 import software.bernie.geckolib.renderer.GeoRenderer;
 import software.bernie.geckolib.renderer.layer.GeoRenderLayer;
@@ -27,33 +27,41 @@ public class GooglyEyesLayer<T extends GeoAnimatable> extends GeoRenderLayer<T> 
   private final double dy;
   private final double dz;
   private final float rotation;
+  private final String boneName;
 
-  public GooglyEyesLayer(GeoRenderer<T> entityRendererIn, double dx, double dy, double dz, float rotation) {
+  public GooglyEyesLayer(GeoRenderer<T> renderer, double dx, double dy, double dz, float rotation) {
+    this(renderer, dx, dy, dz, rotation, null);
+  }
+
+  public GooglyEyesLayer(GeoRenderer<T> entityRendererIn, double dx, double dy, double dz, float rotation,
+      String boneName) {
     super(entityRendererIn);
     this.dx = dx;
     this.dy = dy;
     this.dz = dz;
     this.rotation = rotation;
+    this.boneName = boneName;
   }
 
   @Override
   public void render(PoseStack poseStack, T animatable, BakedGeoModel bakedModel, RenderType renderType,
       MultiBufferSource bufferSource, VertexConsumer buffer, float partialTick, int packedLight, int packedOverlay) {
     boolean hasEyes = false;
-    if (animatable instanceof BeerMugItem && this.getRenderer() instanceof GeoItemRenderer) {
-      ItemStack stack = ((GeoItemRenderer<?>) this.getRenderer()).getCurrentItemStack();
-      hasEyes = Boolean.TRUE.equals(stack.get(ModDataComponents.GOOGLY_EYES.get()));
-    } else if (animatable instanceof BeerMugBlockEntity be) {
-      hasEyes = be.hasGooglyEyes();
+    if (this.getRenderer() instanceof GeoItemRenderer<?> itemRenderer) {
+      ItemStack stack = itemRenderer.getCurrentItemStack();
+      hasEyes = ItemDataHelper.isSentient(stack);
+    } else if (animatable instanceof GooglyEyesHolder holder) {
+      hasEyes = holder.hasGooglyEyes();
     }
 
     if (hasEyes) {
-      renderGooglyEyes(poseStack, bufferSource, packedLight, packedOverlay, partialTick);
+      GeoBone bone = boneName != null ? bakedModel.getBone(boneName).orElse(null) : null;
+      renderGooglyEyes(poseStack, bufferSource, packedLight, packedOverlay, partialTick, bone);
     }
   }
 
   private void renderGooglyEyes(PoseStack poseStack, MultiBufferSource bufferSource, int packedLight, int packedOverlay,
-      float partialTick) {
+      float partialTick, GeoBone bone) {
     VertexConsumer builder = bufferSource.getBuffer(RenderType.entityCutoutNoCull(WHITE_TEXTURE));
 
     float time = 0;
@@ -62,6 +70,19 @@ public class GooglyEyesLayer<T extends GeoAnimatable> extends GeoRenderLayer<T> 
     }
 
     poseStack.pushPose();
+
+    // The eyes move in sync with the animation
+    if (bone != null) {
+      double pivotX = bone.getPivotX() / 16.0;
+      double pivotY = bone.getPivotY() / 16.0;
+      double pivotZ = bone.getPivotZ() / 16.0;
+      poseStack.translate(pivotX, pivotY, pivotZ);
+      poseStack.mulPose(Axis.XP.rotation(bone.getRotX()));
+      poseStack.mulPose(Axis.YP.rotation(bone.getRotY()));
+      poseStack.mulPose(Axis.ZP.rotation(bone.getRotZ()));
+      poseStack.translate(-pivotX, -pivotY, -pivotZ);
+    }
+
     poseStack.translate(dx, dy, dz);
     poseStack.mulPose(Axis.YP.rotationDegrees(rotation));
     poseStack.scale(0.08F, 0.08F, 0.08F);
