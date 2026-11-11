@@ -192,7 +192,7 @@ public class CookingAltarTier2Block extends BaseEntityBlock {
     };
   }
 
-  private BlockPos getMasterPos(BlockPos partPos, BlockState state) {
+  public BlockPos getMasterPos(BlockPos partPos, BlockState state) {
     int part = state.getValue(PART);
     if (part == 0) {
       return partPos;
@@ -239,7 +239,6 @@ public class CookingAltarTier2Block extends BaseEntityBlock {
     return super.updateShape(state, facing, facingState, level, pos, facingPos);
   }
 
-  // TODO: no break animation if not master block
   @Override
   public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
     if (!level.isClientSide) {

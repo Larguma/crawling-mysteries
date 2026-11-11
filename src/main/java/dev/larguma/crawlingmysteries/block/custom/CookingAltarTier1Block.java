@@ -149,7 +149,6 @@ public class CookingAltarTier1Block extends BaseEntityBlock {
     return super.updateShape(state, facing, facingState, level, pos, facingPos);
   }
 
-  // TODO: no break animation if not master block
   @Override
   public BlockState playerWillDestroy(Level level, BlockPos pos, BlockState state, Player player) {
     if (!level.isClientSide) {

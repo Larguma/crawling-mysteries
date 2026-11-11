@@ -15,6 +15,6 @@ public class CookingAltarTier2BlockEntityRenderer extends GeoBlockRenderer<Cooki
   @Override
   public AABB getRenderBoundingBox(CookingAltarTier2BlockEntity blockEntity) {
     BlockPos pos = blockEntity.getBlockPos();
-    return AABB.encapsulatingFullBlocks(pos, pos.offset(1, 1, 1));
+    return AABB.encapsulatingFullBlocks(pos.offset(-1,0,-1), pos.offset(1, 1, 1));
   }
 }
