@@ -46,13 +46,10 @@ public class CookingAltarTier2Category implements IRecipeCategory<CookingAltarTi
   private static final int GAUGE_SIZE = 24;
 
   private final IDrawable icon;
-  private final IDrawable arrow;
 
   public CookingAltarTier2Category(IGuiHelper guiHelper) {
     this.icon = guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK,
         new ItemStack(ModBlocks.COOKING_ALTAR_TIER_2.get()));
-    this.arrow = guiHelper.createDrawable(ResourceLocation.withDefaultNamespace("textures/gui/container/furnace.png"),
-        79, 34, 24, 17);
   }
 
   @Override
@@ -117,7 +114,7 @@ public class CookingAltarTier2Category implements IRecipeCategory<CookingAltarTi
   public void draw(CookingAltarTier2Recipe recipe, IRecipeSlotsView recipeSlotsView, GuiGraphics guiGraphics,
       double mouseX, double mouseY) {
 
-    this.arrow.draw(guiGraphics, 44, 25);
+    JeiDrawingHelper.drawHorizontalArrow(guiGraphics, 46, 61, 66, 33);
 
     this.icon.draw(guiGraphics, 70, 25);
 

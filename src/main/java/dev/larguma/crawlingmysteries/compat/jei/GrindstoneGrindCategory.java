@@ -14,7 +14,6 @@ import mezz.jei.api.recipe.category.IRecipeCategory;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.network.chat.Component;
-import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Items;
 
@@ -24,12 +23,9 @@ public class GrindstoneGrindCategory implements IRecipeCategory<GrindstoneGrindR
       "grindstone_grind", GrindstoneGrindRecipe.class);
 
   private final IDrawable icon;
-  private final IDrawable arrow;
 
   public GrindstoneGrindCategory(IGuiHelper guiHelper) {
     this.icon = guiHelper.createDrawableIngredient(VanillaTypes.ITEM_STACK, new ItemStack(Items.GRINDSTONE));
-    this.arrow = guiHelper.createDrawable(ResourceLocation.withDefaultNamespace("textures/gui/container/furnace.png"),
-        79, 34, 24, 17);
   }
 
   @Override
@@ -49,27 +45,27 @@ public class GrindstoneGrindCategory implements IRecipeCategory<GrindstoneGrindR
 
   @Override
   public int getWidth() {
-    return 160;
+    return 162;
   }
 
   @Override
   public int getHeight() {
-    return 60;
+    return 68;
   }
 
   @Override
   public void setRecipe(IRecipeLayoutBuilder builder, GrindstoneGrindRecipe recipe, IFocusGroup focuses) {
-    builder.addSlot(RecipeIngredientRole.INPUT, 10, 22).addIngredients(recipe.getInput());
+    builder.addSlot(RecipeIngredientRole.INPUT, 10, 26).addIngredients(recipe.getInput());
 
     int successChancePercent = Math.round(recipe.getSuccessChance() * 100);
     int failureChancePercent = 100 - successChancePercent;
 
-    builder.addSlot(RecipeIngredientRole.OUTPUT, 130, 10)
+    builder.addSlot(RecipeIngredientRole.OUTPUT, 130, 14)
         .addItemStack(recipe.getSuccessOutput())
         .addRichTooltipCallback((recipeSlotView, tooltip) -> tooltip
             .add(Component.translatable("jei.crawlingmysteries.chance", successChancePercent + "%")));
 
-    builder.addSlot(RecipeIngredientRole.OUTPUT, 130, 34)
+    builder.addSlot(RecipeIngredientRole.OUTPUT, 130, 38)
         .addItemStack(recipe.getFailureOutput())
         .addRichTooltipCallback((recipeSlotView, tooltip) -> tooltip
             .add(Component.translatable("jei.crawlingmysteries.chance", failureChancePercent + "%")));
@@ -80,12 +76,12 @@ public class GrindstoneGrindCategory implements IRecipeCategory<GrindstoneGrindR
       double mouseX, double mouseY) {
     Minecraft minecraft = Minecraft.getInstance();
 
-    this.icon.draw(guiGraphics, 72, 22);
-    this.arrow.draw(guiGraphics, 38, 22);
-    this.arrow.draw(guiGraphics, 98, 22);
+    this.icon.draw(guiGraphics, 72, 26);
+    JeiDrawingHelper.drawHorizontalArrow(guiGraphics, 38, 55, 60, 34);
+    JeiDrawingHelper.drawHorizontalArrow(guiGraphics, 98, 115, 120, 34);
 
     Component text = Component.translatable("jei.crawlingmysteries.right_click");
     int width = minecraft.font.width(text);
-    guiGraphics.drawString(minecraft.font, text, (160 - width) / 2, 5, 0xFF808080, false);
+    guiGraphics.drawString(minecraft.font, text, (getWidth() - width) / 2, 5, 0xFF808080, false);
   }
 }
