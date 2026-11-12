@@ -9,20 +9,12 @@
     {
       "type": "item_showcase",
       "extra": "crawlingmysteries:eternal_guardian_mask",
-      "content": "A mask crafted from the head of a slain Eternal Guardian, granting Spectral Vision."
-    },
-    {
-      "type": "text",
-      "content": "Crafted from the head of a slain §cEternal Guardian§r, this mask grants the wearer §dSpectral Vision§r.\n\nWhile wearing the mask, you can reveal hidden entities and see through walls."
+      "content": "A spectral mask fashioned from the skull of an Eternal Guardian. Equips in the Mask curio slot, providing §a+4 Armor§r and preventing §3Endermen§r from angering when looked at.\n\n§6Attunement & Spectral Gaze§r\nGrants the §6Spectral Gaze§r ability to detect entities through walls. Wearing the mask gradually attunes it over 6 hours of continuous use, expanding its range and clarity:\n• §6Stage I (0-3h):§r 16-block radius (white glow)\n• §6Stage II (3-4.5h):§r 32-block radius\n• §6Stage III (4.5-6h):§r 48-block radius\n• §6Stage IV (6h+):§r 64-block radius with chromatic outlines: §cRed§r (hostile), §eYellow§r (neutral), §aGreen§r (passive), §bAqua§r (aquatic), and §fWhite§r (players & villagers)."
     },
     {
       "type": "crafting",
       "extra": "crawlingmysteries:eternal_guardian_mask",
-      "content": "Craft the mask by adding two leather pieces to the sides of the §5Eternal Guardian's Head§r."
-    },
-    {
-      "type": "text",
-      "content": "§6Growing Power§r\n\nThe longer you wear the mask, the more powerful the Spectral Gaze ability becomes, increasing its range and adding colors."
+      "content": "Crafted by fastening Leather straps to both sides of an §5Eternal Guardian Head§r."
     }
   ]
 }

@@ -1,0 +1,15 @@
+{
+  "id": "tombstone",
+  "category": "items",
+  "title": "Tombstone",
+  "subtitle": "Sanctuary of the fallen",
+  "icon": "textures/block/tombstone.png",
+  "unlock_condition": "HAS_ETERNAL_GUARDIANS_BAND",
+  "pages": [
+    {
+      "type": "item_showcase",
+      "extra": "crawlingmysteries:tombstone",
+      "content": "A stone monument wreathed in blue soulfire, erected at your exact point of death when wearing an attuned §5Eternal Guardian's Band§r.\n\n§6Preservation & Defense§r\n• Holds all items from your hotbar, main inventory, armor, offhand, and Curios slots.\n• Preserves 100% of your accumulated experience points without penalty.\n• Broadcasts death coordinates to your chat so you can navigate back.\n• Spawns an §cEternal Guardian§r to stand vigil against intruders until you return.\n\n§6Reclaiming Your Gear§r\nRight-click the tombstone to instantly restore every item to its original slot and absorb your saved experience. The guardian peacefully dismisses as the stone crumbles."
+    }
+  ]
+}

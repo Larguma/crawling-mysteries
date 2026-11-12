@@ -1,0 +1,15 @@
+{
+  "id": "mysterious_stone",
+  "category": "items",
+  "title": "Mysterious Stone",
+  "subtitle": "Fossil of the deep",
+  "icon": "textures/block/mysterious_stone.png",
+  "unlock_condition": "ALWAYS",
+  "pages": [
+    {
+      "type": "item_showcase",
+      "extra": "crawlingmysteries:mysterious_stone",
+      "content": "A dense deepslate block laced with calcified fossils and ancient energetic veins.\n\n§6Mining & Distribution§r\nGenerates deep underground in deepslate strata between §bY = -64 and Y = 0§r (most common around §bY = -32§r) as single-block deposits. Mining it requires a pickaxe and awards 2-5 experience points alongside the block.\n\n§6Significance§r\nMysterious Stone is the only natural source of dormant §5Petrified Eyes§r, and serves as the heat-focusing base needed to assemble the §5Soul Cauldron§r."
+    }
+  ]
+}

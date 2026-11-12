@@ -1,0 +1,15 @@
+{
+  "id": "eternal_guardian_head",
+  "category": "items",
+  "title": "Eternal Guardian Head",
+  "subtitle": "Severed spectral relic",
+  "icon": "textures/item/eternal_guardian_head_2d.png",
+  "unlock_condition": "HAS_ETERNAL_GUARDIAN_HEAD",
+  "pages": [
+    {
+      "type": "item_showcase",
+      "extra": "crawlingmysteries:eternal_guardian_head",
+      "content": "The severed spectral skull of an Eternal Guardian, claimed after defeating one in close combat. Pale soulfire still flickers within its hollow eye sockets.\n\n§6Acquisition & Use§r\nGuaranteed drop when an Eternal Guardian is slain with melee attacks. While unwearable on its own, fastening leather straps to both sides at a crafting table yields the §5Eternal Guardian Mask§r."
+    }
+  ]
+}

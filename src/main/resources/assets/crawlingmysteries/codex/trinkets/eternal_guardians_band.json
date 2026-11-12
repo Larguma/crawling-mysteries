@@ -9,15 +9,11 @@
     {
       "type": "item_showcase",
       "extra": "crawlingmysteries:eternal_guardians_band",
-      "content": "An ancient ring found in the depths of the Ancient City. When first discovered, it is broken and dormant."
+      "content": "An ancient ring found entombed in Ancient City chests and hidden tavern cellars. Dormant upon discovery, it hums with a hunger for hostile souls.\n\n§6Soul Siphoning Attunement§r\nEquip in a Ring curio slot to begin attunement. Every second, the ring siphons essence from nearby hostile monsters within 5 blocks, dealing minor magic damage. Siphoning 1,000 hostile souls awakens its protective ward."
     },
     {
       "type": "text",
-      "content": "§5The Eternal Guardian's Band§r is an ancient ring found in the depths of the Ancient City. When first discovered, it is broken and dormant.\n\nTo attune to the ring, you must §csuck the souls§r of hostile creatures."
-    },
-    {
-      "type": "text",
-      "content": "§6Death Protection§r\n\nOnce attuned, when you die with the ring equipped, a §5Tombstone§r will be created containing all your items and experience.\n\nAn §cEternal Guardian§r will spawn to protect your belongings from other players."
+      "content": "§6The Tombstone Ward§r\nIf you fall in battle while wearing the attuned ring:\n• An indestructible §5Tombstone§r is placed at your death site, holding all your items, armor, offhand gear, and Curios trinkets.\n• §6100% of your accumulated experience points§r are preserved without penalty.\n• An §cEternal Guardian§r is summoned to stand watch, attacking any players or monsters who approach.\n\nRight-click the tombstone to instantly restore your gear to its original slots and retrieve your XP. The guardian dismisses peacefully once your belongings are recovered."
     }
   ]
 }

@@ -2,18 +2,19 @@
   "id": "beer_barrel",
   "category": "items",
   "title": "Beer Barrel",
-  "subtitle": "A large empty barrel",
+  "subtitle": "Reinforced wooden barrel",
   "icon": "textures/item/beer_barrel.png",
   "unlock_condition": "HAS_BEER_BARREL",
   "pages": [
     {
-      "type": "text",
-      "content": "The Beer Barrel is just a crafting ingredient used to create a §5Beer Keg§r."
+      "type": "item_showcase",
+      "extra": "crawlingmysteries:beer_barrel",
+      "content": "A heavy wooden cask bound with iron bands, built for fermenting and aging tavern ale.\n\nServes as the main component for assembling a §5Beer Keg§r. Tavern barkeepers often keep spare barrels around and will trade for them."
     },
     {
       "type": "crafting",
       "extra": "crawlingmysteries:beer_barrel",
-      "content": "You can craft a Beer Barrel using §aOak Planks§r and §aIron Bars§r."
+      "content": "Crafted with Oak Planks along the top and bottom rows, reinforced with Iron Bars through the middle."
     }
   ]
 }

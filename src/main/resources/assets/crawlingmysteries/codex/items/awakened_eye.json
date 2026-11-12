@@ -2,18 +2,19 @@
   "id": "awakened_eye",
   "category": "items",
   "title": "Awakened Eye",
-  "subtitle": "A mysterious, ancient eye",
+  "subtitle": "Living ocular organism",
   "icon": "textures/item/awakened_eye.png",
   "unlock_condition": "HAS_AWAKENED_EYE",
   "pages": [
     {
-      "type": "text",
-      "content": "The §5Awakened Eye§r is a powerful trinket that can be attached to certain items to unlock hidden abilities.\n\nTo awaken an item, you must attach it to an item in the §5Smithing Table§r with an §5Echo Shard§r. The Eye will bond with the item, granting it new powers."
+      "type": "item_showcase",
+      "extra": "crawlingmysteries:awakened_eye",
+      "content": "A living eye chipped free from the rocky crust of a Petrified Eye. Its pupil darts around on its own, watching the world with quiet curiosity.\n\nActs as a catalyst of consciousness. Fusing it to compatible gear—such as a §5Beer Mug§r—awakens the item's latent sentience, giving it animated expressions and unique abilities."
     },
     {
       "type": "crafting",
       "extra": "crawlingmysteries:awakening_recipe",
-      "content": "§6Awaken an item§r using an §aEcho Shard§r."
+      "content": "§6Awakening at the Smithing Table§r\n\nCombine an §bEcho Shard§r (Template), the target item (Base), and the §5Awakened Eye§r (Addition). The shard's deep resonance binds the living eye to the object."
     }
   ]
 }

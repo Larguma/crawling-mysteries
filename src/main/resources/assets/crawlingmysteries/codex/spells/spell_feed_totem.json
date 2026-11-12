@@ -9,11 +9,7 @@
     {
       "type": "spell_info",
       "extra": "feed_totem",
-      "content": "Requires a Totem of Undying in your inventory to activate."
-    },
-    {
-      "type": "text",
-      "content": "This spell allows you to feed a §eTotem of Undying§r to your Cryptic Eye from anywhere in your inventory.\n\nThe Eye speaks when fed, revealing fragments of its mysterious nature."
+      "content": "Draws a Totem of Undying from your inventory or offhand to feed your equipped Cryptic Eye.\n\n§6Immediate Wards§r\nConsuming a totem instantly applies §aRegeneration II§r (45s), §eAbsorption II§r (5s), §6Fire Resistance§r (40s), and purges active debuffs without needing to hold the totem.\n\n§6Vitality Progression§r\nEvery 5 totems consumed permanently adds §c+1 Max Health§r (+0.5 heart), stacking up to §c+10 Max Health§r (5 extra hearts) at 50 totems. Consuming all 50 unlocks the passive §6Be Totem§r spell."
     }
   ]
 }

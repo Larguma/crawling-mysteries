@@ -9,19 +9,11 @@
     {
       "type": "item_showcase",
       "extra": "crawlingmysteries:cryptic_eye",
-      "content": "A mysterious eye that seems to have chosen you as its bearer. It watches over you with an intelligence that feels... ancient."
+      "content": "A sentient eye that was at your side when you first arrived in this world. Its pupil watches your actions with quiet intelligence.\n\n§6Curio Properties & Functions§r\n• §7Slot:§r Curio / Charm\n• §7Passive:§r Grants §a+1 Ring Slot§r in your Curios inventory.\n• §7Codex Access:§r Right-click or press the Codex keybind to open this guide.\n\nThe eye hungers for §eTotems of Undying§r, which can be fed to it using the §6Feed Totem§r spell."
     },
     {
       "type": "text",
-      "content": "§5The Cryptic Eye§r appeared with you when you first awoke in this world. Its origins are unknown, but it seems to have chosen you as its bearer.\n\nThe Eye watches over you with an intelligence that feels... §oancient§r."
-    },
-    {
-      "type": "text",
-      "content": "§6Feeding§r\n\nThe Eye hungers for §eTotem of Undying§r. When you hold one, the Eye will consume it, growing stronger with each sacrifice.\n\nEach 5 totems consumed grants §c+1 max health§r."
-    },
-    {
-      "type": "text",
-      "content": "§6Totem Absorption§r\n\nAfter consuming §e50 totems§r, the Eye becomes fully satiated and unlocks a new power: it can act as a §eTotem of Undying§r itself, saving you from death every 5 minutes."
+      "content": "§6Vitality & Ascension§r\nFeeding totems to the eye yields permanent rewards:\n\n• §cMax Health:§r Every 5 totems consumed permanently adds §c+1 Max Health§r (+0.5 heart). This stacks up to 50 totems for a maximum bonus of §c+10 Max Health§r (5 hearts).\n\n• §dSpell Evolution:§r Once fed 50 totems, the eye reaches Stage 2 and awakens the §6Be Totem§r spell—passively saving your life from fatal damage once every 5 minutes."
     }
   ]
 }

@@ -2,17 +2,13 @@
   "id": "origins",
   "category": "lore",
   "title": "Origins",
-  "subtitle": "The beginning",
+  "subtitle": "Echoes of the deep",
   "icon": "textures/gui/codex/lore/origins.png",
   "unlock_condition": "ALWAYS",
   "pages": [
     {
       "type": "text",
-      "content": "§oWhere do these artifacts come from? Who created them, and why did they choose you?§r\n\nThe answers lie scattered across the world, waiting to be discovered..."
-    },
-    {
-      "type": "text",
-      "content": "Some say the trinkets were forged in the End, by beings older than the Ender Dragon itself. Others whisper of a connection to the Deep Dark...\n\n§8More will be revealed as you bond with your trinkets.§r"
+      "content": "Long before surface settlements took root, ancient civilizations flourished in the deep underground. Carving great halls from dark slate and sculk, their scholars sought mastery over the boundary between life, death, and matter.\n\nFrom their rites emerged artifacts that defied nature—calcified eyes imbued with consciousness, and spectral sentinels sworn by ancient oaths to guard their masters' possessions into the afterlife.\n\nWhen catastrophe buried the deep cities, their relics were swallowed by the earth, mineralizing into rare deposits of §5Mysterious Stone§r. When you first opened your eyes in this world, one of those ancient watchers was already beside you."
     }
   ]
 }

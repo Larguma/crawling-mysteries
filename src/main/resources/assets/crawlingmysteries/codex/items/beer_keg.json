@@ -1,0 +1,20 @@
+{
+  "id": "beer_keg",
+  "category": "items",
+  "title": "Beer Keg",
+  "subtitle": "Tap into the brew",
+  "icon": "textures/block/beer_keg.png",
+  "unlock_condition": "HAS_BEER_KEG",
+  "pages": [
+    {
+      "type": "item_showcase",
+      "extra": "crawlingmysteries:beer_keg",
+      "content": "A stout wooden barrel fitted with brass hoops and a dispensing tap, filled with fresh tavern ale.\n\n§6Function & Uses§r\n• §7Pouring Ale:§r Right-click with an empty or partially drained §5Beer Mug§r to refill it.\n• §7Barkeeper Workstation:§r Placing a keg near an unemployed villager will assign them the §6Barkeeper§r profession."
+    },
+    {
+      "type": "crafting",
+      "extra": "crawlingmysteries:beer_keg",
+      "content": "Crafted by reinforcing a §5Beer Barrel§r with four Iron Ingots."
+    }
+  ]
+}

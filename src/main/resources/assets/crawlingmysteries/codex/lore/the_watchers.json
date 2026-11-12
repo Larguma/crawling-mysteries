@@ -2,13 +2,13 @@
   "id": "the_watchers",
   "category": "lore",
   "title": "The Watchers",
-  "subtitle": "They see all",
+  "subtitle": "Eyes in the dark",
   "icon": "textures/gui/codex/lore/the_watchers.png",
   "unlock_condition": "HAS_CRYPTIC_EYE",
   "pages": [
     {
       "type": "text",
-      "content": "The Cryptic Eye is not alone. There are others like it, watching from the shadows.\n\nThey call themselves §5The Watchers§r, and they have taken an interest in you."
+      "content": "The Cryptic Eye is not an isolated curiosity—it is a conduit to an unseen collective known only as §5The Watchers§r, observing the mortal realm from between dimensions.\n\nBonding with a bearer is an exchange, not charity. By feeding the eye §eTotems of Undying§r and attuning ancient relics, you fuel their curiosity. In return, they lend you their sight, ward your soul from fatal blows, and inscribe your findings into this codex.\n\nKeep your wits sharp. Whatever you encounter in the deep, they are watching."
     }
   ]
 }

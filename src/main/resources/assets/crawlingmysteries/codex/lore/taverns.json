@@ -1,0 +1,14 @@
+{
+  "id": "taverns",
+  "category": "lore",
+  "title": "Taverns & Barkeepers",
+  "subtitle": "Hearth of travelers",
+  "icon": "textures/item/music_disc_ost_02.png",
+  "unlock_condition": "ALWAYS",
+  "pages": [
+    {
+      "type": "text",
+      "content": "Scattered across plains, forests, and snowy taigas, rustic taverns offer a warm hearth and safe shelter from the night.\n\n§6Barkeepers & Commerce§r\nInside, a §6Barkeeper§r tends to the tap. Any unemployed villager provided with a §5Beer Keg§r will take up the trade, offering beer barrels, mugs, brewing ingredients, and occasionally rare petrified eyes.\n\n§6Hidden Cellars§r\nStepping inside transitions the ambient sounds to the acoustic bounce of §6\"Tavern Time\"§r. Look closely around the tavern floorboards—many conceal secret cellars storing reserve supplies, jukeboxes, and chests that occasionally hide an §5Eternal Guardian's Band§r."
+    }
+  ]
+}

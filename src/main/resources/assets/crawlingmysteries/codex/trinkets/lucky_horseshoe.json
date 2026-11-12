@@ -7,23 +7,14 @@
   "unlock_condition": "HAS_LUCKY_HORSESHOE",
   "pages": [
     {
-      "type": "text",
-      "content": "§5The Lucky Horseshoe§r is a trinket that brings good fortune to its bearer. It might negate some fall damage.\n\nThere is a total of §a4 tiers§r of Lucky Horseshoes, each providing increased benefits. Upgrade your horseshoe to enhance its luck!\n\nTo upgrade/downgrade a §bLucky Horseshoe§r, arrange §a8 Emeralds§r, §a8 Diamonds§r or §a8 Netherite Ingots§r around a §bLucky Horseshoe§r in a crafting table.\n\nEvery tier can be upgraded to every other tier using the same recipe. The material used determines the tier of the resulting horseshoe."
+      "type": "item_showcase",
+      "extra": "crawlingmysteries:lucky_horseshoe",
+      "content": "An enchanted iron shoe that bends luck in your favor. Equips in the Feet or Charm curio slot to grant a chance to completely negate fall damage.\n\n§6Discovery & Tiers§r\nFound in buried treasure, dungeons, desert temples, mineshafts, and shipwrecks. Can be reforged into higher tiers at a crafting table:\n• §fTier 1 (Iron):§r §a50%§r fall damage negation\n• §aTier 2 (Emerald):§r §a75%§r fall damage negation\n• §bTier 3 (Diamond):§r §a90%§r fall damage negation\n• §5Tier 4 (Netherite):§r §6100%§r fall damage immunity"
     },
     {
       "type": "crafting",
       "extra": "crawlingmysteries:lucky_horseshoe_upgrade_tier_2",
-      "content": "§6Upgrade to Tier 2§r using §a8 Emeralds§r."
-    },
-    {
-      "type": "crafting",
-      "extra": "crawlingmysteries:lucky_horseshoe_upgrade_tier_3",
-      "content": "§6Upgrade to Tier 3§r using §a8 Diamonds§r."
-    },
-    {
-      "type": "crafting",
-      "extra": "crawlingmysteries:lucky_horseshoe_upgrade_tier_4",
-      "content": "§6Upgrade to Tier 4§r using §a8 Netherite Ingots§r."
+      "content": "§6Reforging at the Crafting Table§r\nSurround any tier horseshoe with 8 upgrade materials:\n• §a8 Emeralds:§r Tier 2 (75% negation)\n• §b8 Diamonds:§r Tier 3 (90% negation)\n• §58 Netherite Ingots:§r Tier 4 (100% immunity)\n\nAny tier can be directly upgraded into a higher tier."
     }
   ]
 }

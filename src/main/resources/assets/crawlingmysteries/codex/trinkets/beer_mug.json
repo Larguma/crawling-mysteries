@@ -8,17 +8,18 @@
   "pages": [
     {
       "type": "item_showcase",
-      "extra": "crawlingmysteries:beer_mug[crawlingmysteries:googly_eyes=true]",
-      "content": "A frothy mug of ale that seems to invite you to take a sip. It carries the warmth and cheer of a tavern on a cold night."
-    },
-    {
-      "type": "text",
-      "content": "§5The Beer Mug§r is a totally normal drinking mug that can be refilled with a §5Beer Keg§r... but it has a secret. It can be awakened by slapping an §5Awakened Eye§r onto it!\n\nOnce awakened, the §5Beer Mug§r gains the ability to spill its contents on command to make all the foes around you drunk.§n\n\n§6Effect of the Beer Mug's spill ability:§r\n§7Drunk§r - Enemies affected will stagger and start attacking each others."
+      "extra": "crawlingmysteries:beer_mug",
+      "content": "A heavy wooden drinking stein made for tavern ale. Holds up to 4 drinks, refilled by right-clicking on a §5Beer Keg§r.\n\n§6Drinking & Placement§r\n• §7The Drunk Effect:§r Each drink inflicts 10 seconds of the §6Drunk§r effect, stacking up to amplifier IV. Expect swaying vision and stumbling movement.\n• §7Decorative Placement:§r Sneak-right-click any solid block to place the mug down. Up to 4 mugs can cluster on a single block surface."
     },
     {
       "type": "crafting",
       "extra": "crawlingmysteries:beer_mug",
-      "content": "You can craft a Beer Mug using any §abarrel§r and a §aStick§r."
+      "content": "Crafted from any wooden barrel and a stick, or purchased directly from a Barkeeper."
+    },
+    {
+      "type": "item_showcase",
+      "extra": "crawlingmysteries:beer_mug[crawlingmysteries:googly_eyes=true]",
+      "content": "§6Awakened Mug & Beer Spill§r\nFused with an §5Awakened Eye§r and an §bEcho Shard§r at a smithing table, the mug develops lively googly eyes and refuses to be drunk from.\n\nInstead, right-clicking unleashes a §6Beer Spill§r extending 5 blocks forward. Monsters caught in the spray are afflicted with the §6Drunk§r effect, scramble their targets, and attack whatever living creature is closest to them."
     }
   ]
 }

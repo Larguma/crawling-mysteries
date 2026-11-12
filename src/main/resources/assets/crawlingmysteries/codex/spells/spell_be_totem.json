@@ -9,11 +9,7 @@
     {
       "type": "spell_info",
       "extra": "be_totem",
-      "content": "Passive ability - triggers automatically when you take fatal damage."
-    },
-    {
-      "type": "text",
-      "content": "After the Cryptic Eye has consumed §e50 totems§r, it unlocks this passive ability.\n\nWhen you would take fatal damage, the Eye will sacrifice some of its stored power to save your life, granting regeneration and fire resistance."
+      "content": "A passive ward unlocked once the Cryptic Eye consumes 50 Totems of Undying (Spell Stage 2).\n\nWhen you suffer fatal damage while the eye is equipped:\n• Death is averted, leaving you at §c1.0 HP§r.\n• Immediately applies §aRegeneration II§r (45s), §eAbsorption II§r (5s), and §6Fire Resistance§r (40s).\n• Cleanses all active negative status effects.\n• Incurs a 5-minute cooldown before it can save you again."
     }
   ]
 }

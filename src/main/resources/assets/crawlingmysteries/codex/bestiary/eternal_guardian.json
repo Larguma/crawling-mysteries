@@ -9,11 +9,7 @@
     {
       "type": "entity_display",
       "extra": "crawlingmysteries:eternal_guardian",
-      "content": "The §cEternal Guardian§r is a spectral entity summoned to protect fallen warriors' belongings. They are bound to the §5Eternal Guardian's Band§r and will attack anyone who approaches the tombstone they guard."
-    },
-    {
-      "type": "text",
-      "content": "§6Defeating a Guardian§r\n\nWhen slain, the Guardian drops its §5Head§r, which can be crafted into the powerful §5Eternal Guardian Mask§r.\n\n§7Warning: Guardians are formidable opponents. Prepare accordingly.§r"
+      "content": "A towering spectral sentinel called forth when a bearer of the §5Eternal Guardian's Band§r falls in battle. Bound to the place of death, it patrols the perimeter of its master's tombstone without ever despawning.\n\n§6Allegiance & Behavior§r\n• §aMaster:§r Completely docile. Recognizes its summoner and allows them to freely reclaim their grave.\n• §cIntruders:§r Mercilessly hostile to any other player or monster that approaches the tombstone.\n\n§6Combat Tactics§r\nImmune to all projectile attacks—arrows, tridents, and fireballs do nothing. You have to fight it up close in melee. It hits hard and cannot be knocked back.\n\nWhen slain in melee by a player, it drops its severed §5Head§r (100% chance), the core component for the §5Eternal Guardian Mask§r."
     }
   ]
 }

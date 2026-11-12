@@ -9,11 +9,7 @@
     {
       "type": "spell_info",
       "extra": "spectral_gaze",
-      "content": "Active ability - toggle to reveal all nearby entities."
-    },
-    {
-      "type": "text",
-      "content": "Channel the power of the §5Eternal Guardian Mask§r to apply the §dGlowing§r effect to all nearby entities.\n\nThis reveals hidden enemies and allows you to track creatures through walls."
+      "content": "A toggle ability channeled through the Eternal Guardian Mask. Has no cooldown or resource cost.\n\nWhen active, outlines living creatures through solid terrain and pitch darkness. The detection range and visual clarity scale with the mask's attunement level:\n• §7Stage I (0-49%):§r 16-block radius (white outline)\n• §7Stage II (50-74%):§r 32-block radius\n• §7Stage III (75-99%):§r 48-block radius\n• §6Stage IV (100%):§r 64-block radius with chromatic outlines: §cRed§r (hostile), §eYellow§r (neutral), §aGreen§r (passive animals), §bAqua§r (aquatic), and §fWhite§r (players and villagers)."
     }
   ]
 }

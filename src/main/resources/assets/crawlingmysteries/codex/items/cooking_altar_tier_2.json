@@ -1,0 +1,20 @@
+{
+  "id": "cooking_altar_tier_2",
+  "category": "items",
+  "title": "Alchemical Distillery",
+  "subtitle": "Tier 2 Cooking Altar",
+  "icon": "textures/block/cooking_altar_tier_2.png",
+  "unlock_condition": "ALWAYS",
+  "pages": [
+    {
+      "type": "item_showcase",
+      "extra": "crawlingmysteries:cooking_altar_tier_2",
+      "content": "A 2x2x2 multiblock distillation apparatus with condensation coils, pressure regulators, and an alchemical core. Used to brew §bAlchemical Stew§r.\n\n§6Placement§r\nRequires a clear 2x2 footprint and 2 blocks of height. Placing it down automatically forms the full structure, and breaking any part safely drops the entire distillery.\n\n§6Distillation & Pressure§r\nRight-click to open the brewing interface. Load the four slots with §a1 vegetable§r, §a1 fruit§r, §a1 raw meat§r, and §a1 bread§r, then press §6Start§r.\n\nDuring the 10-second cycle, monitor the pressure gauge. Click §6Stabilize§r to keep the needle in the green zone (-20 to +20). If the needle stays in the red zone for more than 3 cumulative seconds, the batch overheats into §4Rotten Flesh§r."
+    },
+    {
+      "type": "crafting",
+      "extra": "crawlingmysteries:cooking_altar_tier_2",
+      "content": "Crafted from a §5Soul Cauldron§r, a Brewing Stand, a Cauldron, Glass Bottles, Iron Ingots, and Nether Quartz."
+    }
+  ]
+}

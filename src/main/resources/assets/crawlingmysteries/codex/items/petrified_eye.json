@@ -2,18 +2,19 @@
   "id": "petrified_eye",
   "category": "items",
   "title": "Petrified Eye",
-  "subtitle": "A fossilized eye of unknown origin",
+  "subtitle": "Fossilized ocular relic",
   "icon": "textures/item/petrified_eye.png",
   "unlock_condition": "HAS_PETRIFIED_EYE",
   "pages": [
     {
-      "type": "text",
-      "content": "The §5Petrified Eye§r is just a crafting ingredient used to create a §5Awakened Eye§r.\nYou can find §5Petrified Eyes§r only in §5Mysterious Stone§r who generate in the deepslate.\n\nTo transform a §5Petrified Eye§r into an §5Awakened Eye§r, you must grind it on a §5Grindstone§r, but be careful, the process is delicate and requires precision."
+      "type": "item_showcase",
+      "extra": "crawlingmysteries:petrified_eye",
+      "content": "A calcified, rock-hard eyeball preserved deep in the earth. Beneath the dense mineral crust, a faint spark still lingers.\n\n§6Discovery§r\n• §7Mining:§r Found encased within deposits of §5Mysterious Stone§r between §bY = -64 and Y = 0§r.\n• §7Trading:§r Seasoned tavern §6Barkeepers§r occasionally stock petrified eyes for 20 Emeralds."
     },
     {
       "type": "crafting",
       "extra": "crawlingmysteries:grindstone_grind/petrified_eye_awakening",
-      "content": "§5Petrified Eye§r + §5Grindstone§r = §5Awakened Eye§r (sometimes)"
+      "content": "§6Awakening on the Grindstone§r\n\nRight-click a §bGrindstone§r with a Petrified Eye to carefully carve away the fossilized stone. Success yields an §5Awakened Eye§r, though excessive friction can shatter the brittle shell into dust."
     }
   ]
 }

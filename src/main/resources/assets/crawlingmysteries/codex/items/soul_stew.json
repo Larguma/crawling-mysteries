@@ -1,0 +1,15 @@
+{
+  "id": "soul_stew",
+  "category": "items",
+  "title": "Soul Stew",
+  "subtitle": "Sustenance of the soul",
+  "icon": "textures/item/soul_stew.png",
+  "unlock_condition": "HAS_SOUL_STEW",
+  "pages": [
+    {
+      "type": "item_showcase",
+      "extra": "crawlingmysteries:soul_stew",
+      "content": "A warm, soulfire-simmered broth ladled straight from the Soul Cauldron.\n\n§6The Iron Stomach Effect§r\nDrinking Soul Stew grants §6Iron Stomach§r for §e30 minutes§r:\n• Hunger and saturation are locked at maximum (20.0).\n• Food points never drain from sprinting, swimming, or natural healing.\n• The HUD food bar is hidden while active, and the stew can be consumed even when full."
+    }
+  ]
+}

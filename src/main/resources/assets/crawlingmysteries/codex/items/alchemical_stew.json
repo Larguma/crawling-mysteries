@@ -1,0 +1,15 @@
+{
+  "id": "alchemical_stew",
+  "category": "items",
+  "title": "Alchemical Stew",
+  "subtitle": "Transmuted perfection",
+  "icon": "textures/item/alchemical_stew.png",
+  "unlock_condition": "HAS_ALCHEMICAL_STEW",
+  "pages": [
+    {
+      "type": "item_showcase",
+      "extra": "crawlingmysteries:alchemical_stew",
+      "content": "An iridescent broth brewed in the Alchemical Distillery by balancing four distinct food groups.\n\nConsuming it bestows §bAether Sight§r for §e30 minutes§r:\n• §9Night Vision:§r Crystal-clear visibility in deep caves, murky water, and nighttime.\n• §6Iron Stomach:§r Hunger and saturation are locked at maximum—sprinting, swimming, and regenerating health will never deplete your food.\n\nCan be eaten even when your hunger bar is completely full."
+    }
+  ]
+}

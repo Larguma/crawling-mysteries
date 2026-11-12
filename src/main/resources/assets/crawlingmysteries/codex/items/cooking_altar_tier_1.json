@@ -1,0 +1,20 @@
+{
+  "id": "cooking_altar_tier_1",
+  "category": "items",
+  "title": "Soul Cauldron",
+  "subtitle": "Tier 1 Cooking Altar",
+  "icon": "textures/block/cooking_altar_tier_1.png",
+  "unlock_condition": "ALWAYS",
+  "pages": [
+    {
+      "type": "item_showcase",
+      "extra": "crawlingmysteries:cooking_altar_tier_1",
+      "content": "A two-block ritual cooking cauldron set over a hearth of soul embers and reinforced with Mysterious Stone. Used to brew §5Soul Stew§r.\n\n§6Brewing Process§r\n1. §eAdd Meat:§r Right-click the cauldron with any raw meat (beef, pork, mutton, chicken, etc.) to start the boil.\n2. §6Simmer:§r The cauldron bubbles with soulfire for 5 seconds.\n3. §aCollect:§r Right-click with an empty wooden bowl to scoop out your §5Soul Stew§r.\n\nRight-click with an empty hand at any time to check its status on your action bar (Idle, Boiling, or Done)."
+    },
+    {
+      "type": "crafting",
+      "extra": "crawlingmysteries:cooking_altar_tier_1",
+      "content": "Assembled from stripped logs, a campfire, a cauldron, and a base of §5Mysterious Stone§r."
+    }
+  ]
+}
