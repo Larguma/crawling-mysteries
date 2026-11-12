@@ -9,6 +9,8 @@ import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.suggestion.SuggestionProvider;
 
 import dev.larguma.crawlingmysteries.CrawlingMysteries;
+import dev.larguma.crawlingmysteries.codex.CodexEntry;
+import dev.larguma.crawlingmysteries.codex.CodexRegistry;
 import dev.larguma.crawlingmysteries.data.ModDataComponents;
 import dev.larguma.crawlingmysteries.item.helper.ItemHelper;
 import dev.larguma.crawlingmysteries.spell.ModSpells;
@@ -55,6 +57,14 @@ public class CommandHelper {
         .toList();
 
     return SharedSuggestionProvider.suggest(spellIds, builder);
+  };
+
+  public static final SuggestionProvider<CommandSourceStack> CODEX_ENTRY_SUGGESTIONS = (context, builder) -> {
+    List<String> entryIds = CodexRegistry.getAll().stream()
+        .map(CodexEntry::id)
+        .toList();
+
+    return SharedSuggestionProvider.suggest(entryIds, builder);
   };
 
   // #endregion Suggestions

@@ -2,13 +2,17 @@ package dev.larguma.crawlingmysteries.codex;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import dev.larguma.crawlingmysteries.CrawlingMysteries;
+import dev.larguma.crawlingmysteries.data.ModDataAttachments;
 import dev.larguma.crawlingmysteries.item.helper.ItemHelper;
+import dev.larguma.crawlingmysteries.networking.packet.SyncUnlockedEntriesPacket;
 import dev.larguma.crawlingmysteries.networking.packet.UnlockCodexEntryPacket;
 import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.stats.Stats;
 import net.minecraft.world.entity.EntityType;
 import net.minecraft.world.entity.player.Player;
@@ -16,7 +20,9 @@ import net.neoforged.neoforge.network.PacketDistributor;
 
 public class CodexUnlockManager {
 
-  // Client-side cache of unlocked entries, synced from server
+  /**
+   * Client-side cache of unlocked entries, synced from server
+   */
   private static Set<String> clientUnlockedEntries = new HashSet<>();
 
   /**
@@ -24,6 +30,51 @@ public class CodexUnlockManager {
    */
   public static void setUnlockedEntries(Set<String> entries) {
     clientUnlockedEntries = new HashSet<>(entries);
+  }
+
+  /**
+   * Server-side: Unlocks an entry for the player and syncs to client.
+   *
+   * @return true if the entry was newly unlocked.
+   */
+  public static boolean unlockEntry(ServerPlayer player, String entryId) {
+    Set<String> unlockedEntries = new HashSet<>(player.getData(ModDataAttachments.UNLOCKED_CODEX_ENTRIES));
+    if (unlockedEntries.add(entryId)) {
+      player.setData(ModDataAttachments.UNLOCKED_CODEX_ENTRIES, unlockedEntries);
+      PacketDistributor.sendToPlayer(player, new SyncUnlockedEntriesPacket(unlockedEntries));
+      return true;
+    }
+    return false;
+  }
+
+  /**
+   * Server-side: Unlocks multiple entries for the player and syncs to client.
+   *
+   * @return The number of newly unlocked entries.
+   */
+  public static int unlockEntries(ServerPlayer player, Set<String> entryIds) {
+    Set<String> unlockedEntries = new HashSet<>(player.getData(ModDataAttachments.UNLOCKED_CODEX_ENTRIES));
+    int initialSize = unlockedEntries.size();
+    unlockedEntries.addAll(entryIds);
+    int added = unlockedEntries.size() - initialSize;
+
+    player.setData(ModDataAttachments.UNLOCKED_CODEX_ENTRIES, unlockedEntries);
+    PacketDistributor.sendToPlayer(player, new SyncUnlockedEntriesPacket(unlockedEntries));
+
+    return added;
+  }
+
+  /**
+   * Server-side: Unlocks all entries from CodexRegistry for the player.
+   *
+   * @return The total number of entries unlocked.
+   */
+  public static int unlockAll(ServerPlayer player) {
+    Set<String> allEntryIds = CodexRegistry.getAll().stream()
+        .map(CodexEntry::id)
+        .collect(Collectors.toSet());
+    unlockEntries(player, allEntryIds);
+    return allEntryIds.size();
   }
 
   /**

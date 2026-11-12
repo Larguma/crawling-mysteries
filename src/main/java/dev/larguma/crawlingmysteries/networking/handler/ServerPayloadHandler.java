@@ -1,10 +1,10 @@
 package dev.larguma.crawlingmysteries.networking.handler;
 
-import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 
 import dev.larguma.crawlingmysteries.block.entity.custom.CookingAltarTier2BlockEntity;
+import dev.larguma.crawlingmysteries.codex.CodexUnlockManager;
 import dev.larguma.crawlingmysteries.data.ModDataAttachments;
 import dev.larguma.crawlingmysteries.networking.packet.BetterToastPacket;
 import dev.larguma.crawlingmysteries.networking.packet.DistilleryActionPacket;
@@ -39,14 +39,7 @@ public class ServerPayloadHandler {
    */
   public static void handleUnlockCodexEntry(final UnlockCodexEntryPacket data, final IPayloadContext context) {
     ServerPlayer player = (ServerPlayer) context.player();
-    String entryId = data.entryId();
-
-    Set<String> unlockedEntries = new HashSet<>(player.getData(ModDataAttachments.UNLOCKED_CODEX_ENTRIES));
-    if (!unlockedEntries.contains(entryId)) {
-      unlockedEntries.add(entryId);
-      player.setData(ModDataAttachments.UNLOCKED_CODEX_ENTRIES, unlockedEntries);
-      PacketDistributor.sendToPlayer(player, new SyncUnlockedEntriesPacket(unlockedEntries));
-    }
+    CodexUnlockManager.unlockEntry(player, data.entryId());
   }
 
   /**

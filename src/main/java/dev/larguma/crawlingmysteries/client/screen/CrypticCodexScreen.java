@@ -588,7 +588,7 @@ public class CrypticCodexScreen extends Screen {
 
     // Render item scaled up
     guiGraphics.pose().pushPose();
-    guiGraphics.pose().translate(itemX, itemY, 0);
+    guiGraphics.pose().translate((float) itemX, (float) itemY, 0);
     guiGraphics.pose().scale(4.0F, 4.0F, 1.0F);
     guiGraphics.renderItem(itemStack, 0, 0);
     guiGraphics.pose().popPose();
@@ -682,13 +682,22 @@ public class CrypticCodexScreen extends Screen {
     int statsY = iconY + iconSize + 28;
 
     if (spell.cooldownTicks() > 0) {
-      String cooldownText = String.format("§7Cooldown: §e%s", SpellCooldownManager.getTotalCooldownFormatted(spell));
+      String cooldownText = Component.translatable("codex.crawlingmysteries.category.spells.cooldown",
+          SpellCooldownManager.getTotalCooldownFormatted(spell)).getString();
       int cooldownWidth = this.font.width(cooldownText);
       guiGraphics.drawString(this.font, cooldownText, centerX - cooldownWidth / 2, statsY, TEXT_COLOR, false);
       statsY += 14;
     }
 
-    Component sourceText = Component.literal("§7Source: §b" + spell.sourceItem().getPath().replace("_", " "));
+    String sourceItemPath = spell.sourceItem().getPath();
+    String[] words = sourceItemPath.split("_");
+    StringBuilder capitalizedSource = new StringBuilder();
+    for (String word : words) {
+      if (!word.isEmpty()) {
+        capitalizedSource.append(Character.toUpperCase(word.charAt(0))).append(word.substring(1)).append(" ");
+      }
+    }
+    String sourceText = Component.translatable("codex.crawlingmysteries.category.spells.source", capitalizedSource.toString().trim()).getString();
     int sourceWidth = this.font.width(sourceText);
     guiGraphics.drawString(this.font, sourceText, centerX - sourceWidth / 2, statsY, TEXT_COLOR, false);
     statsY += 20;
@@ -1279,7 +1288,7 @@ public class CrypticCodexScreen extends Screen {
       statsY += 14;
 
       // Armor
-      float armor = livingEntity.getArmorValue();
+      float armor = (float) livingEntity.getArmorValue();
       if (armor > 0) {
         String armorText = String.format("§9🛡 §7Armor: §f%.0f", armor);
         int armorWidth = this.font.width(armorText);
@@ -1335,7 +1344,7 @@ public class CrypticCodexScreen extends Screen {
     entity.yBodyRot = 0;
     entity.setXRot(0);
 
-    renderEntityWithoutScissor(guiGraphics, entityX, entityY, scale, rotation, entity);
+    renderEntityWithoutScissor(guiGraphics, (float) entityX, (float) entityY, (float) scale, rotation, entity);
 
     // Restore entity properties
     entity.setYRot(oldYaw);

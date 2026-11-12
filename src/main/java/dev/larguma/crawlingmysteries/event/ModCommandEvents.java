@@ -1,6 +1,8 @@
 package dev.larguma.crawlingmysteries.event;
 
 import dev.larguma.crawlingmysteries.CrawlingMysteries;
+import dev.larguma.crawlingmysteries.command.codex.UnlockAllEntries;
+import dev.larguma.crawlingmysteries.command.codex.UnlockEntry;
 import dev.larguma.crawlingmysteries.command.spell.ClearAllCooldowns;
 import dev.larguma.crawlingmysteries.command.spell.ClearCooldowns;
 import dev.larguma.crawlingmysteries.command.spell.GetCooldowns;
@@ -21,6 +23,8 @@ public class ModCommandEvents {
     new GetCooldowns(event.getDispatcher());
     new SetTrinketData(event.getDispatcher());
     new GetTrinketData(event.getDispatcher());
+    new UnlockAllEntries(event.getDispatcher());
+    new UnlockEntry(event.getDispatcher());
 
     ConfigCommand.register(event.getDispatcher());
   }
