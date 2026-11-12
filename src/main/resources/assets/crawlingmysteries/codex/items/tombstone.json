@@ -3,6 +3,7 @@
   "category": "items",
   "title": "Tombstone",
   "subtitle": "Sanctuary of the fallen",
+  "icon_item": "crawlingmysteries:tombstone",
   "icon": "textures/block/tombstone.png",
   "unlock_condition": "HAS_ETERNAL_GUARDIANS_BAND",
   "pages": [

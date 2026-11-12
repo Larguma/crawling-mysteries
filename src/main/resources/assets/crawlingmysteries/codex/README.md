@@ -19,7 +19,9 @@ The pages are generated from JSON, the text can be formatted with all of Minecra
   // page subtitle
   // translatable (e.g.: "subtitle": "my.translation.entry1.subtitle", )
   "subtitle": "A watchful companion", 
-  // page icon path
+  // optional: item registry id to render as a 3D item/block icon (e.g.: "icon_item": "crawlingmysteries:tombstone") or use "icon": "item:<item_id>"
+  "icon_item": "crawlingmysteries:cryptic_eye",
+  // page icon 2D texture path (used if icon_item is omitted or not found)
   "icon": "textures/item/cryptic_eye_2d.png", 
   // condition to unlock the page, can be ALWAYS, HAS_<item_id>, KILLED_<entity_id>
   "unlock_condition": "ALWAYS", 

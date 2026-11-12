@@ -3,6 +3,7 @@
   "category": "items",
   "title": "Beer Keg",
   "subtitle": "Tap into the brew",
+  "icon_item": "crawlingmysteries:beer_keg",
   "icon": "textures/block/beer_keg.png",
   "unlock_condition": "HAS_BEER_KEG",
   "pages": [

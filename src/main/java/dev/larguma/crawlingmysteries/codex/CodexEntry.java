@@ -5,6 +5,8 @@ import java.util.List;
 import dev.larguma.crawlingmysteries.CrawlingMysteries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.ItemLike;
 
 /**
  * Represents a single entry in the Cryptic Codex wiki.
@@ -15,8 +17,24 @@ public record CodexEntry(
     Component title,
     Component subtitle,
     ResourceLocation icon,
+    ItemStack iconItem,
     List<CodexPage> pages,
     String unlockCondition) {
+
+  public CodexEntry(
+      String id,
+      CodexCategory category,
+      Component title,
+      Component subtitle,
+      ResourceLocation icon,
+      List<CodexPage> pages,
+      String unlockCondition) {
+    this(id, category, title, subtitle, icon, ItemStack.EMPTY, pages, unlockCondition);
+  }
+
+  public boolean hasIconItem() {
+    return iconItem != null && !iconItem.isEmpty();
+  }
 
   public static Builder builder(String id, CodexCategory category) {
     return new Builder(id, category);
@@ -32,6 +50,7 @@ public record CodexEntry(
     private Component title;
     private Component subtitle = Component.empty();
     private ResourceLocation icon;
+    private ItemStack iconItem = ItemStack.EMPTY;
     private List<CodexPage> pages = List.of();
     private String unlockCondition = "ALWAYS";
 
@@ -73,6 +92,16 @@ public record CodexEntry(
       return this;
     }
 
+    public Builder iconItem(ItemStack iconItem) {
+      this.iconItem = iconItem != null ? iconItem : ItemStack.EMPTY;
+      return this;
+    }
+
+    public Builder iconItem(ItemLike item) {
+      this.iconItem = item != null ? new ItemStack(item) : ItemStack.EMPTY;
+      return this;
+    }
+
     public Builder pages(CodexPage... pages) {
       this.pages = List.of(pages);
       return this;
@@ -89,7 +118,7 @@ public record CodexEntry(
     }
 
     public CodexEntry build() {
-      return new CodexEntry(id, category, title, subtitle, icon, pages, unlockCondition);
+      return new CodexEntry(id, category, title, subtitle, icon, iconItem, pages, unlockCondition);
     }
   }
 }

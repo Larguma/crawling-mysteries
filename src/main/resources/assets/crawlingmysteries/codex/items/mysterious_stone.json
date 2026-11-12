@@ -3,6 +3,7 @@
   "category": "items",
   "title": "Mysterious Stone",
   "subtitle": "Fossil of the deep",
+  "icon_item": "crawlingmysteries:mysterious_stone",
   "icon": "textures/block/mysterious_stone.png",
   "unlock_condition": "ALWAYS",
   "pages": [

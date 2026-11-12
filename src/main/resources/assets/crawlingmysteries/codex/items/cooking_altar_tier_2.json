@@ -3,6 +3,7 @@
   "category": "items",
   "title": "Alchemical Distillery",
   "subtitle": "Tier 2 Cooking Altar",
+  "icon_item": "crawlingmysteries:cooking_altar_tier_2",
   "icon": "textures/block/cooking_altar_tier_2.png",
   "unlock_condition": "ALWAYS",
   "pages": [

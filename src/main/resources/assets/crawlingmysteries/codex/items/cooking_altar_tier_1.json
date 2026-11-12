@@ -3,6 +3,7 @@
   "category": "items",
   "title": "Soul Cauldron",
   "subtitle": "Tier 1 Cooking Altar",
+  "icon_item": "crawlingmysteries:cooking_altar_tier_1",
   "icon": "textures/block/cooking_altar_tier_1.png",
   "unlock_condition": "ALWAYS",
   "pages": [

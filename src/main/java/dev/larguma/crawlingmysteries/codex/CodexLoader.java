@@ -23,10 +23,13 @@ import com.google.gson.JsonObject;
 import dev.larguma.crawlingmysteries.CrawlingMysteries;
 import dev.larguma.crawlingmysteries.codex.CodexPage.PageType;
 import net.minecraft.client.Minecraft;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.packs.resources.Resource;
 import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.neoforged.fml.ModList;
 import net.neoforged.fml.loading.FMLEnvironment;
 
@@ -206,7 +209,56 @@ public class CodexLoader {
     String iconPath = getStringOrDefault(json, "icon", "textures/gui/codex/entry_" + id + ".png");
     String unlockStr = getStringOrDefault(json, "unlock_condition", "ALWAYS");
 
-    ResourceLocation icon = ResourceLocation.fromNamespaceAndPath(CrawlingMysteries.MOD_ID, iconPath);
+    ItemStack iconItem = ItemStack.EMPTY;
+    if (json.has("icon_item")) {
+      String itemStr = json.get("icon_item").getAsString();
+      try {
+        ResourceLocation itemLoc = ResourceLocation.parse(itemStr);
+        if (BuiltInRegistries.ITEM.containsKey(itemLoc)) {
+          var item = BuiltInRegistries.ITEM.get(itemLoc);
+          if (item != Items.AIR) {
+            iconItem = new ItemStack(item);
+          }
+        }
+      } catch (Exception e) {
+        CrawlingMysteries.LOGGER.warn("Invalid icon_item '{}' in codex entry {}", itemStr, id);
+      }
+    } else if (iconPath.startsWith("item:")) {
+      String itemStr = iconPath.substring(5);
+      try {
+        ResourceLocation itemLoc = ResourceLocation.parse(itemStr);
+        if (BuiltInRegistries.ITEM.containsKey(itemLoc)) {
+          var item = BuiltInRegistries.ITEM.get(itemLoc);
+          if (item != Items.AIR) {
+            iconItem = new ItemStack(item);
+          }
+        }
+      } catch (Exception e) {
+        CrawlingMysteries.LOGGER.warn("Invalid icon item '{}' in codex entry {}", itemStr, id);
+      }
+    } else if (iconPath.startsWith("textures/block/")) {
+      // Auto-detect item model for block entries to prevent rendering flat UV texture maps
+      try {
+        ResourceLocation itemLoc = ResourceLocation.fromNamespaceAndPath(CrawlingMysteries.MOD_ID, id);
+        if (BuiltInRegistries.ITEM.containsKey(itemLoc)) {
+          var item = BuiltInRegistries.ITEM.get(itemLoc);
+          if (item != Items.AIR) {
+            iconItem = new ItemStack(item);
+          }
+        }
+      } catch (Exception ignored) {
+        // Ignore if no item is found for the block entry
+      }
+    }
+
+    ResourceLocation icon;
+    if (iconPath.startsWith("item:")) {
+      icon = ResourceLocation.fromNamespaceAndPath(CrawlingMysteries.MOD_ID, "textures/gui/codex/entry_" + id + ".png");
+    } else if (iconPath.contains(":")) {
+      icon = ResourceLocation.parse(iconPath);
+    } else {
+      icon = ResourceLocation.fromNamespaceAndPath(CrawlingMysteries.MOD_ID, iconPath);
+    }
 
     List<CodexPage> pages = new ArrayList<>();
     if (json.has("pages") && json.get("pages").isJsonArray()) {
@@ -218,8 +270,8 @@ public class CodexLoader {
       }
     }
 
-    return new CodexEntry(id, category, Component.translatable(title), Component.translatable(subtitle), icon, pages,
-        unlockStr);
+    return new CodexEntry(id, category, Component.translatable(title), Component.translatable(subtitle), icon,
+        iconItem, pages, unlockStr);
   }
 
   /**

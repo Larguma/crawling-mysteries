@@ -372,11 +372,9 @@ public class CrypticCodexScreen extends Screen {
     int iconSize = 0;
     int iconX = x + 10;
     int iconPadding = 0;
-    ResourceLocation iconLoc = entry.icon();
-    if (this.minecraft.getResourceManager().getResource(iconLoc).isPresent()) {
+    int iconY = y + (ENTRY_BUTTON_HEIGHT - 16) / 2;
+    if (renderEntryIcon(guiGraphics, entry, iconX, iconY, 16)) {
       iconSize = 16;
-      int iconY = y + (ENTRY_BUTTON_HEIGHT - iconSize) / 2;
-      guiGraphics.blit(iconLoc, iconX, iconY, 0, 0, iconSize, iconSize, iconSize, iconSize);
       iconPadding = 36;
     }
 
@@ -400,6 +398,46 @@ public class CrypticCodexScreen extends Screen {
   }
 
   /**
+   * Renders an entry's icon, using its 3D item model if an item is associated,
+   * or falling back to a 2D texture.
+   *
+   * @param guiGraphics the graphics context
+   * @param entry the codex entry
+   * @param x the top-left X coordinate
+   * @param y the top-left Y coordinate
+   * @param size the icon width and height (e.g. 16 or 24)
+   * @return true if an icon was rendered, false otherwise
+   */
+  private boolean renderEntryIcon(GuiGraphics guiGraphics, CodexEntry entry, int x, int y, int size) {
+    if (entry == null) {
+      return false;
+    }
+
+    if (entry.hasIconItem()) {
+      ItemStack stack = entry.iconItem();
+      if (size == 16) {
+        guiGraphics.renderItem(stack, x, y);
+      } else {
+        float scale = size / 16.0F;
+        guiGraphics.pose().pushPose();
+        guiGraphics.pose().translate((float) x, (float) y, 0);
+        guiGraphics.pose().scale(scale, scale, 1.0F);
+        guiGraphics.renderItem(stack, 0, 0);
+        guiGraphics.pose().popPose();
+      }
+      return true;
+    }
+
+    ResourceLocation iconLoc = entry.icon();
+    if (iconLoc != null && this.minecraft.getResourceManager().getResource(iconLoc).isPresent()) {
+      guiGraphics.blit(iconLoc, x, y, 0, 0, size, size, size, size);
+      return true;
+    }
+
+    return false;
+  }
+
+  /**
    * Renders the main content area with the selected entry and page.
    */
   private void renderContent(GuiGraphics guiGraphics, int x, int y, int width, int height,
@@ -420,11 +458,8 @@ public class CrypticCodexScreen extends Screen {
     int headerIconSize = 0;
     int headerIconX = x + CONTENT_PADDING;
     int headerIconY = y + CONTENT_PADDING - 2;
-    ResourceLocation iconLoc = selectedEntry.icon();
-    if (this.minecraft.getResourceManager().getResource(iconLoc).isPresent()) {
+    if (renderEntryIcon(guiGraphics, selectedEntry, headerIconX, headerIconY, 24)) {
       headerIconSize = 24;
-      guiGraphics.blit(iconLoc, headerIconX, headerIconY, 0, 0, headerIconSize, headerIconSize, headerIconSize,
-          headerIconSize);
     }
 
     // Entry title
